@@ -1,0 +1,454 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>BLUE MOUSEの想い | 放課後等デイサービス BLUE MOUSE</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="./layout.css" />
+  <style>
+    /* ===== ヒーロー ===== */
+    .ph-hero {
+      position: relative;
+      height: 38vh;
+      min-height: 220px;
+      margin: -40px -36px 0;
+      overflow: hidden;
+      background: #1a1f2a;
+    }
+    .ph-hero img {
+      position: absolute;
+      inset: 0;
+      width: 100%; height: 100%;
+      object-fit: cover;
+      object-position: center 35%;
+      opacity: .45;
+      display: block;
+    }
+    .ph-hero__overlay {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      padding: 32px 36px;
+    }
+    .ph-hero__kicker {
+      font-family: "Inter", sans-serif;
+      font-size: 10px;
+      letter-spacing: .22em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,.5);
+      margin-bottom: 8px;
+    }
+    .ph-hero__title {
+      font-family: "koburina-gothic-w6", "A-OTF こぶりなゴシック Std W6", "Hiragino Kaku Gothic ProN", "Noto Sans JP", sans-serif;
+      font-size: clamp(1.5rem, 2.8vw, 2.2rem);
+      font-weight: 700;
+      color: #fff;
+      margin: 0;
+      line-height: 1.3;
+    }
+
+    /* ===== 共通 ===== */
+    .ph-section { padding: 52px 0 0; }
+    .ph-label {
+      font-family: "Inter", sans-serif;
+      font-size: 10px;
+      letter-spacing: .22em;
+      text-transform: uppercase;
+      color: #f5a155;
+      margin-bottom: 10px;
+      font-weight: 400;
+    }
+    .ph-title {
+      font-family: "Noto Sans JP", sans-serif;
+      font-size: clamp(1.05rem, 1.4vw, 1.25rem);
+      font-weight: 500;
+      color: #2a2a2a;
+      margin: 0 0 20px;
+      line-height: 1.55;
+    }
+    .ph-text {
+      font-size: 14px;
+      color: #555;
+      line-height: 2.1;
+      font-weight: 400;
+      margin: 0 0 16px;
+    }
+    .ph-text:last-child { margin-bottom: 0; }
+    .ph-divider {
+      height: 1px;
+      background: rgba(0,0,0,.07);
+      margin: 52px 0 0;
+    }
+
+    /* ===== リードブロック ===== */
+    .ph-lead {
+      padding: 40px 0 0;
+    }
+    .ph-lead__inner {
+      background: #fef9f3;
+      border-left: 3px solid #f5a155;
+      border-radius: 0 8px 8px 0;
+      padding: 22px 26px;
+    }
+    .ph-lead__text {
+      font-size: 15px;
+      color: #333;
+      line-height: 2;
+      font-weight: 400;
+      margin: 0;
+    }
+
+    /* ===== 統計ハイライト ===== */
+    .ph-stat {
+      display: flex;
+      align-items: center;
+      gap: 24px;
+      background: #fff;
+      border: 1px solid rgba(0,0,0,.07);
+      border-radius: 10px;
+      padding: 24px 28px;
+      margin: 24px 0 0;
+    }
+    .ph-stat__num {
+      font-family: "Inter", sans-serif;
+      font-size: 52px;
+      font-weight: 600;
+      color: #c46b3e;
+      line-height: 1;
+      flex-shrink: 0;
+    }
+    .ph-stat__body {}
+    .ph-stat__title {
+      font-size: 13px;
+      font-weight: 500;
+      color: #1a1a1a;
+      margin: 0 0 4px;
+    }
+    .ph-stat__desc {
+      font-size: 12px;
+      color: #888;
+      line-height: 1.75;
+      margin: 0;
+    }
+
+    /* ===== ポイントリスト ===== */
+    .ph-points {
+      margin: 24px 0 0;
+      display: flex;
+      flex-direction: column;
+    }
+    .ph-point {
+      display: flex;
+      align-items: flex-start;
+      gap: 14px;
+      font-size: 13px;
+      color: #444;
+      line-height: 1.85;
+      padding: 14px 0;
+      border-bottom: 1px solid rgba(0,0,0,.07);
+      font-weight: 400;
+    }
+    .ph-point:first-child { border-top: 1px solid rgba(0,0,0,.07); }
+    .ph-point__check {
+      flex-shrink: 0;
+      margin-top: 3px;
+    }
+    .ph-point__check svg {
+      width: 13px; height: 13px;
+      stroke: #3a6b5e;
+      display: block;
+    }
+
+    /* ===== 比較ブロック ===== */
+    .ph-compare {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin: 24px 0 0;
+    }
+    .ph-compare__card {
+      border-radius: 10px;
+      padding: 20px 20px 18px;
+    }
+    .ph-compare__card--other {
+      background: #f7f5f2;
+      border: 1px solid rgba(0,0,0,.07);
+    }
+    .ph-compare__card--bm {
+      background: #1e2e30;
+      border: 1px solid #1e2e30;
+    }
+    .ph-compare__label {
+      font-family: "Inter", sans-serif;
+      font-size: 9px;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      margin-bottom: 10px;
+      display: block;
+    }
+    .ph-compare__card--other .ph-compare__label { color: #aaa; }
+    .ph-compare__card--bm   .ph-compare__label { color: rgba(255,255,255,.45); }
+    .ph-compare__title {
+      font-size: 13px;
+      font-weight: 500;
+      margin: 0 0 8px;
+      line-height: 1.5;
+    }
+    .ph-compare__card--other .ph-compare__title { color: #777; }
+    .ph-compare__card--bm   .ph-compare__title { color: #fff; }
+    .ph-compare__text {
+      font-size: 12px;
+      line-height: 1.8;
+      margin: 0;
+    }
+    .ph-compare__card--other .ph-compare__text { color: #aaa; }
+    .ph-compare__card--bm   .ph-compare__text { color: rgba(255,255,255,.65); }
+
+    /* ===== CTA ===== */
+    .ph-cta {
+      margin-top: 52px;
+      padding: 36px 28px;
+      background: #1e2e30;
+      border-radius: 12px;
+      text-align: center;
+      margin-bottom: 60px;
+    }
+    .ph-cta__text {
+      font-size: 13px;
+      color: rgba(255,255,255,.7);
+      line-height: 1.9;
+      margin: 0 0 20px;
+    }
+    .ph-cta__btns {
+      display: flex;
+      gap: 10px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+    .ph-cta__back {
+      display: inline-block;
+      padding: 11px 22px;
+      border: 1px solid rgba(255,255,255,.25);
+      color: rgba(255,255,255,.75);
+      border-radius: 8px;
+      text-decoration: none;
+      font-size: 13px;
+      transition: border-color .2s, color .2s;
+    }
+    .ph-cta__back:hover { border-color: rgba(255,255,255,.6); color: #fff; }
+
+    /* ===== アニメーション ===== */
+    .anim-up {
+      opacity: 0;
+      transform: translateY(28px);
+      transition: opacity 1.1s cubic-bezier(.22,1,.36,1), transform 1.1s cubic-bezier(.22,1,.36,1);
+    }
+    .anim-up.is-visible { opacity: 1; transform: none; }
+
+    @media (max-width: 780px) {
+      .ph-hero { margin: -72px -16px 0; }
+      .ph-hero__overlay { padding: 24px 20px; }
+      .ph-compare { grid-template-columns: 1fr; }
+      .ph-stat { flex-direction: column; gap: 12px; }
+    }
+  </style>
+</head>
+<body>
+<div class="bm-layout">
+
+  <!-- ===== 左サイドバー ===== -->
+  <aside class="bm-left">
+    <a class="bm-logo" href="./index.html">
+      <img src="./logo.webp" alt="BLUE MOUSE" />
+    </a>
+    <nav class="bm-nav">
+      <a href="./index.html" class="bm-nav__item" data-page="index">トップページ</a>
+
+      <div class="bm-nav__group">
+        <div class="bm-nav__group-header">
+          <a href="./child.html" class="bm-nav__group-link">児童発達支援事業</a>
+          <button type="button" class="bm-nav__toggle" data-group="child" data-target="nav-child">
+            <span class="bm-nav__arrow">▶</span>
+          </button>
+        </div>
+
+      <div class="bm-nav__group">
+        <div class="bm-nav__group-header">
+          <a href="./afterschool.html" class="bm-nav__group-link">放課後等デイサービス</a>
+          <button type="button" class="bm-nav__toggle" data-group="afterschool" data-target="nav-after">
+            <span class="bm-nav__arrow">▶</span>
+          </button>
+        </div>
+        <ul class="bm-nav__sub" id="nav-after">
+          <li>
+            <a href="./afterschool.html#program" class="bm-nav__subitem" data-group="afterschool" data-hash="#program">事業内容</a>
+            <ul class="bm-nav__deeplist">
+              <li><a href="./typing.html" class="bm-nav__deepitem">タイピング練習</a></li>
+              <li><a href="./programming.html" class="bm-nav__deepitem">プログラミング学習</a></li>
+              <li><a href="./office.html" class="bm-nav__deepitem">オフィスソフト操作</a></li>
+              <li><a href="./communication.html" class="bm-nav__deepitem">コミュニケーション支援</a></li>
+            </ul>
+          </li>
+          <li><a href="./afterschool.html#pricing" class="bm-nav__subitem" data-group="afterschool" data-hash="#pricing">料金表</a></li>
+        </ul>
+      </div>
+        <ul class="bm-nav__sub" id="nav-child">
+          <li><a href="./child.html#overview" class="bm-nav__subitem" data-group="child" data-hash="#overview">事業内容</a></li>
+          <li><a href="./child.html#pricing"  class="bm-nav__subitem" data-group="child" data-hash="#pricing">料金表</a></li>
+        </ul>
+      </div>
+
+      <a href="./philosophy.html" class="bm-nav__item is-active" data-page="philosophy">BLUE MOUSEの想い</a>
+      <a href="./contact.html" class="bm-nav__item" data-page="contact">お問い合わせ</a>
+      <a href="https://bouemouse.studio.site" class="bm-nav__item" target="_blank" rel="noopener">採用情報</a>
+    </nav>
+  </aside>
+
+  <!-- ===== メインコンテンツ ===== -->
+  <main class="bm-main">
+
+    <!-- ヒーロー -->
+    <div class="ph-hero">
+      <img src="./1.webp" alt="BLUE MOUSEの想い" />
+      <div class="ph-hero__overlay">
+        <p class="ph-hero__kicker">Our Philosophy</p>
+        <h1 class="ph-hero__title">BLUE MOUSEの想い</h1>
+      </div>
+    </div>
+
+    <!-- リード -->
+    <div class="ph-lead anim-up">
+      <div class="ph-lead__inner">
+        <p class="ph-lead__text">
+          主体性療育から、IT療育へ。<br>
+          経済的自立から逆算した、10年間の確かなロードマップ。
+        </p>
+      </div>
+    </div>
+
+    <!-- Section 1：「自立」という現実 -->
+    <div class="ph-section anim-up">
+      <p class="ph-label">Reality</p>
+      <h2 class="ph-title">「自立」という、シビアな現実。</h2>
+      <p class="ph-text">特性を持つこどもたちが大人になった時、直面する社会は決して甘くありません。強い特性を持つ成人は、そうでない成人と比べ収入に大きな格差が生じるというデータがあります。</p>
+      <p class="ph-text">「この子は将来、自分の力で生きていけるのか」——既存の療育では、その根本的な不安を拭い去ることが難しいのが現実です。BLUE MOUSEは、その問いと正面から向き合うところから始まりました。</p>
+
+      <div class="ph-stat">
+        <div class="ph-stat__num">50<span style="font-size:24px; font-weight:400;">%</span></div>
+        <div class="ph-stat__body">
+          <p class="ph-stat__title">強い特性を持つ成人の収入格差</p>
+          <p class="ph-stat__desc">特性のある成人とそうでない成人の間には、統計上およそ50%もの収入差が生じるとされています。この現実と向き合うことが、BLUE MOUSEの出発点です。</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="ph-divider"></div>
+
+    <!-- Section 2：凸凹を武器に -->
+    <div class="ph-section anim-up">
+      <p class="ph-label">Approach</p>
+      <h2 class="ph-title">凸凹と向き合いながら、「武器」を手にする。</h2>
+      <p class="ph-text">こどもたちは日々、コミュニケーションや落ち着きのなさなど、自分の「苦手」と向き合っています。しかし、苦手をカバーして「みんなと同じ」に近づけたとしても、学習面の遅れという別の壁が立ちはだかることが少なくありません。</p>
+      <p class="ph-text">苦手をゼロにするための努力だけで、貴重な時間を費やすのではなく——その子が持つ「強み（特性）」を、社会で生き抜くための「武器」へと育てていく。AIが社会を激変させていく現代において、私たちが「経済的自立」から逆算して辿り着いた最も確かな道。それが<strong style="color:#1a1a1a;">小学生からのITスキルの獲得</strong>です。</p>
+
+      <div class="ph-points">
+        <div class="ph-point">
+          <div class="ph-point__check"><svg fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>
+          <span>苦手を補う支援と、強みを伸ばす支援を同時に行う</span>
+        </div>
+        <div class="ph-point">
+          <div class="ph-point__check"><svg fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>
+          <span>「経済的自立」から逆算したITスキルの習得プログラム</span>
+        </div>
+        <div class="ph-point">
+          <div class="ph-point__check"><svg fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>
+          <span>小学生から始める、10年間を見据えたロードマップ</span>
+        </div>
+        <div class="ph-point">
+          <div class="ph-point__check"><svg fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>
+          <span>AI時代に求められるデジタルスキルを実践的に育てる</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="ph-divider"></div>
+
+    <!-- Section 3：伴走者の存在 -->
+    <div class="ph-section anim-up">
+      <p class="ph-label">Difference</p>
+      <h2 class="ph-title">専門的な「伴走者」の存在。</h2>
+      <p class="ph-text">分からない時に、周囲が応じてくれるHELPを出せるか。自分のペースではなく、決められた時間に行動を切り替えられるか。強いこだわりを一旦横に置いて、求められたルールで課題に取り組めるか。</p>
+      <p class="ph-text">専門的な知識を持ったスタッフの伴走のもとで、こどもたちはIT課題を通して、特性への対処法や社会性を学びます。この「伴走者」の存在こそが、一般的なパソコン教室との明確な違いです。</p>
+
+      <div class="ph-compare">
+        <div class="ph-compare__card ph-compare__card--other">
+          <span class="ph-compare__label">一般的なパソコン教室</span>
+          <p class="ph-compare__title">操作スキルの習得が目的</p>
+          <p class="ph-compare__text">タイピングや操作方法を教えることがメインで、その子の特性や社会性への支援は行われません。</p>
+        </div>
+        <div class="ph-compare__card ph-compare__card--bm">
+          <span class="ph-compare__label">BLUE MOUSE</span>
+          <p class="ph-compare__title">ITを通じた自立支援</p>
+          <p class="ph-compare__text">専門スタッフが伴走し、IT課題を通じて特性への対処法・社会性・自己調整力を同時に育てます。</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- CTA -->
+    <div class="ph-cta anim-up">
+      <p class="ph-cta__text">見学・体験は無料です。まずはお気軽にお問い合わせください。</p>
+      <div class="ph-cta__btns">
+        <a href="./contact.html" class="bm-btn bm-btn--primary" style="font-size:13px; padding:11px 28px;">見学・お問い合わせ</a>
+        <a href="./afterschool.html" class="ph-cta__back">放課後等デイサービスを見る</a>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- ===== 右サイドバー ===== -->
+  <aside class="bm-right">
+    <p class="side-heading">BLUE MOUSE</p>
+    <div class="side-cards">
+      <div class="side-card">
+        <span class="side-card__badge">放課後等デイ</span>
+        <p class="side-card__title">小学生〜高校生</p>
+        <p class="side-card__sub">岡山市中区 徳吉町</p>
+        <a href="https://maps.google.com/?q=岡山県岡山市中区徳吉町二丁目11番地25" target="_blank" rel="noopener" class="side-card__link">場所を見る</a>
+      </div>
+      <div class="side-card">
+        <span class="side-card__badge">児童発達支援</span>
+        <p class="side-card__title">2〜5歳</p>
+        <p class="side-card__sub">岡山市北区 辰巳</p>
+        <a href="https://maps.google.com/?q=岡山県岡山市北区辰巳26-102" target="_blank" rel="noopener" class="side-card__link">場所を見る</a>
+      </div>
+    </div>
+    <a href="./contact.html" class="side-cta">
+      見学・お問い合わせ
+      <span class="side-cta__icon">›</span>
+    </a>
+    <p class="bm-copy" style="text-align:center; margin-top:14px;">© BLUE MOUSE All Rights Reserved.</p>
+  </aside>
+
+</div>
+<script src="./layout.js"></script>
+<script>
+(function () {
+  var observer = new IntersectionObserver(function (entries) {
+    entries.forEach(function (entry) {
+      if (!entry.isIntersecting) return;
+      entry.target.classList.add('is-visible');
+      observer.unobserve(entry.target);
+    });
+  }, { threshold: 0.1 });
+  document.querySelectorAll('.anim-up').forEach(function (el) {
+    observer.observe(el);
+  });
+})();
+</script>
+</body>
+</html>

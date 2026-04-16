@@ -1,0 +1,539 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>お問い合わせ | BLUE MOUSE</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="./layout.css" />
+  <style>
+    /* ===== ページ見出し ===== */
+    .ct-header {
+      padding: 40px 0 32px;
+      border-bottom: 1px solid rgba(0,0,0,.07);
+      margin-bottom: 36px;
+    }
+    .ct-kicker {
+      font-family: "Inter", sans-serif;
+      font-size: 11px;
+      letter-spacing: .14em;
+      text-transform: uppercase;
+      color: #f8a11a;
+      margin-bottom: 8px;
+      font-weight: 500;
+    }
+    .ct-title {
+      font-family: "Noto Sans JP", sans-serif;
+      font-size: clamp(1.25rem, 1.8vw, 1.55rem);
+      font-weight: 500;
+      color: #2a2a2a;
+      margin: 0 0 10px;
+    }
+    .ct-lead {
+      font-size: 14px;
+      color: #666;
+      line-height: 1.85;
+    }
+
+    /* ===== 事業所カード ===== */
+    .ct-facilities {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      margin-bottom: 40px;
+    }
+    .ct-facility {
+      border-radius: 10px;
+      overflow: hidden;
+      border: 1px solid rgba(0,0,0,.08);
+      background: #fff;
+      cursor: pointer;
+      transition: box-shadow .2s, transform .2s;
+    }
+    .ct-facility:hover {
+      box-shadow: 0 6px 24px rgba(0,0,0,.1);
+      transform: translateY(-2px);
+    }
+    .ct-facility.is-selected {
+      border-color: #f8a11a;
+      box-shadow: 0 0 0 2px rgba(248,161,26,.3);
+    }
+    .ct-facility__img {
+      height: 140px;
+      overflow: hidden;
+      position: relative;
+    }
+    .ct-facility__img img {
+      width: 100%; height: 100%;
+      object-fit: cover;
+      object-position: center 30%;
+      display: block;
+    }
+    .ct-facility__badge {
+      position: absolute;
+      top: 10px; left: 10px;
+      background: rgba(248,161,26,.9);
+      color: #fff;
+      font-size: 10px;
+      font-weight: 600;
+      padding: 3px 10px;
+      border-radius: 4px;
+      font-family: "Noto Sans JP", sans-serif;
+    }
+    .ct-facility__body {
+      padding: 14px 16px 16px;
+    }
+    .ct-facility__name {
+      font-family: "Noto Sans JP", sans-serif;
+      font-size: 14px;
+      font-weight: 500;
+      color: #2a2a2a;
+      margin: 0 0 6px;
+    }
+    .ct-facility__type {
+      font-size: 11px;
+      color: #f8a11a;
+      font-weight: 500;
+      margin-bottom: 8px;
+    }
+    .ct-facility__addr {
+      font-size: 12px;
+      color: #666;
+      line-height: 1.7;
+    }
+    .ct-facility__access {
+      font-size: 11px;
+      color: #999;
+      margin-top: 4px;
+    }
+    .ct-facility__open {
+      display: inline-block;
+      margin-top: 6px;
+      font-size: 10px;
+      background: rgba(248,161,26,.1);
+      color: #b86e00;
+      padding: 2px 8px;
+      border-radius: 4px;
+      font-weight: 500;
+    }
+    .ct-select-hint {
+      font-size: 12px;
+      color: #999;
+      margin-bottom: 12px;
+    }
+
+    /* ===== フォーム ===== */
+    .ct-section {
+      padding: 32px 0;
+      border-top: 1px solid rgba(0,0,0,.07);
+    }
+    .ct-section-title {
+      font-family: "Noto Sans JP", sans-serif;
+      font-size: 13px;
+      font-weight: 500;
+      color: #2a2a2a;
+      margin: 0 0 20px;
+    }
+
+    /* ===== アクセス ===== */
+    .ct-access-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+    }
+    .ct-access-card {
+      border: 1px solid rgba(0,0,0,.08);
+      border-radius: 10px;
+      overflow: hidden;
+      background: #fff;
+    }
+    .ct-access-card__img {
+      height: 120px;
+      overflow: hidden;
+    }
+    .ct-access-card__img img {
+      width: 100%; height: 100%;
+      object-fit: cover;
+      object-position: center 30%;
+    }
+    .ct-access-card__body {
+      padding: 14px 16px;
+    }
+    .ct-access-card__name {
+      font-family: "Noto Sans JP", sans-serif;
+      font-size: 13px;
+      font-weight: 500;
+      margin: 0 0 8px;
+    }
+    .ct-access-card__row {
+      display: flex;
+      gap: 8px;
+      font-size: 12px;
+      color: #555;
+      line-height: 1.6;
+      margin-bottom: 4px;
+    }
+    .ct-access-card__row span:first-child {
+      color: #aaa;
+      flex-shrink: 0;
+      width: 3em;
+    }
+    .ct-map {
+      margin-top: 10px;
+      border-radius: 6px;
+      overflow: hidden;
+      height: 160px;
+    }
+    .ct-map iframe {
+      width: 100%; height: 100%;
+      border: 0; display: block;
+    }
+    .ct-map-btn {
+      display: inline-block;
+      margin-top: 8px;
+      font-size: 11px;
+      color: #f8a11a;
+      text-decoration: none;
+      font-weight: 500;
+    }
+    .ct-map-btn:hover { text-decoration: underline; }
+
+    @media (max-width: 780px) {
+      .ct-facilities, .ct-access-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+<div class="bm-layout">
+
+  <!-- ===== 左サイドバー ===== -->
+  <aside class="bm-left">
+    <a class="bm-logo" href="./index.html">
+      <img src="./logo.webp" alt="BLUE MOUSE" />
+    </a>
+    <nav class="bm-nav">
+      <a href="./index.html" class="bm-nav__item" data-page="index">トップページ</a>
+
+      <div class="bm-nav__group">
+        <div class="bm-nav__group-header">
+          <a href="./child.html" class="bm-nav__group-link">児童発達支援事業</a>
+          <button type="button" class="bm-nav__toggle" data-group="child" data-target="nav-child">
+            <span class="bm-nav__arrow">▶</span>
+          </button>
+        </div>
+
+      <div class="bm-nav__group">
+        <div class="bm-nav__group-header">
+          <a href="./afterschool.html" class="bm-nav__group-link">放課後等デイサービス</a>
+          <button type="button" class="bm-nav__toggle" data-group="afterschool" data-target="nav-after">
+            <span class="bm-nav__arrow">▶</span>
+          </button>
+        </div>
+        <ul class="bm-nav__sub" id="nav-after">
+          <li><a href="./afterschool.html#program"  class="bm-nav__subitem" data-group="afterschool" data-hash="#program">事業内容</a></li>
+          <li><a href="./afterschool.html#pricing"  class="bm-nav__subitem" data-group="afterschool" data-hash="#pricing">料金表</a></li>
+        </ul>
+      </div>
+        <ul class="bm-nav__sub" id="nav-child">
+          <li><a href="./child.html#overview" class="bm-nav__subitem" data-group="child" data-hash="#overview">事業内容</a></li>
+          <li><a href="./child.html#pricing"  class="bm-nav__subitem" data-group="child" data-hash="#pricing">料金表</a></li>
+        </ul>
+      </div>
+
+      <a href="./philosophy.html" class="bm-nav__item" data-page="philosophy">BLUE MOUSEの想い</a>
+      <a href="./company.html" class="bm-nav__item" data-page="company">会社概要</a>
+      <a href="./contact.html" class="bm-nav__item is-active" data-page="contact">お問い合わせ</a>
+      <a href="https://bouemouse.studio.site" class="bm-nav__item" target="_blank" rel="noopener">採用情報</a>
+    </nav>
+  </aside>
+
+  <!-- ===== メインコンテンツ ===== -->
+  <main class="bm-main">
+
+    <div class="ct-header">
+      <h1 class="ct-title">お問い合わせ・見学予約</h1>
+      <p class="ct-lead">見学・体験・ご相談など、お気軽にご連絡ください。<br>2営業日以内にご返信いたします。</p>
+    </div>
+
+    <!-- 事業所を選択 -->
+    <p class="ct-select-hint">お問い合わせの事業所をお選びください（任意）</p>
+    <div class="ct-facilities">
+
+      <!-- BLUE MOUSE -->
+      <div class="ct-facility is-selected" id="fac-blue" onclick="selectFacility('blue')">
+        <div class="ct-facility__img">
+          <img src="./1.webp" alt="BLUE MOUSE" />
+          <span class="ct-facility__badge">放課後等デイサービス</span>
+        </div>
+        <div class="ct-facility__body">
+          <h2 class="ct-facility__name">BLUE MOUSE</h2>
+          <p class="ct-facility__type">放課後等デイサービス</p>
+          <p class="ct-facility__addr">岡山県岡山市中区<br>徳吉町二丁目11番地25</p>
+          <p class="ct-facility__access">東山電停から徒歩1分</p>
+        </div>
+      </div>
+
+      <!-- LITTLE BLUE MOUSE -->
+      <div class="ct-facility" id="fac-little" onclick="selectFacility('little')">
+        <div class="ct-facility__img">
+          <img src="./5.webp" alt="LITTLE BLUE MOUSE" />
+          <span class="ct-facility__badge">児童発達支援事業</span>
+        </div>
+        <div class="ct-facility__body">
+          <h2 class="ct-facility__name">LITTLE BLUE MOUSE</h2>
+          <p class="ct-facility__type">児童発達支援事業</p>
+          <p class="ct-facility__addr">岡山県岡山市北区<br>辰巳２６−１０２</p>
+          <p class="ct-facility__access">北長瀬駅から徒歩約18分</p>
+          <span class="ct-facility__open">2025年12月1日 オープン予定</span>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- フォーム -->
+    <div class="ct-section">
+      <h2 class="ct-section-title">お問い合わせフォーム</h2>
+      <form class="bm-form" id="contact-form" novalidate>
+        <div class="bm-form__row">
+          <div class="bm-form__field">
+            <label class="bm-form__label" for="f-name">お名前<span class="bm-form__req">*</span></label>
+            <input class="bm-form__input" id="f-name" name="name" type="text" placeholder="山田 太郎" autocomplete="name" />
+            <span class="bm-form__error" id="err-name">お名前を入力してください。</span>
+          </div>
+          <div class="bm-form__field">
+            <label class="bm-form__label" for="f-age">お子さまの年齢<span class="bm-form__req">*</span></label>
+            <select class="bm-form__select" id="f-age" name="child_age">
+              <option value="">選択してください</option>
+              <option>2〜5歳（未就学）</option>
+              <option>6〜9歳（小学1〜3年）</option>
+              <option>10〜12歳（小学4〜6年）</option>
+              <option>13〜15歳（中学生）</option>
+              <option>16〜18歳（高校生）</option>
+            </select>
+            <span class="bm-form__error" id="err-age">年齢を選択してください。</span>
+          </div>
+          <div class="bm-form__field">
+            <label class="bm-form__label" for="f-email">メールアドレス<span class="bm-form__req">*</span></label>
+            <input class="bm-form__input" id="f-email" name="email" type="email" placeholder="example@mail.com" autocomplete="email" />
+            <span class="bm-form__error" id="err-email">有効なメールアドレスを入力してください。</span>
+          </div>
+          <div class="bm-form__field">
+            <label class="bm-form__label" for="f-tel">電話番号</label>
+            <input class="bm-form__input" id="f-tel" name="phone" type="tel" placeholder="000-0000-0000" autocomplete="tel" />
+          </div>
+          <div class="bm-form__field bm-form__field--full">
+            <label class="bm-form__label" for="facility-select">ご希望の事業所<span class="bm-form__req">*</span></label>
+            <select class="bm-form__select" id="facility-select" name="facility">
+              <option value="">選択してください</option>
+              <option value="BLUE MOUSE（放課後等デイサービス）">BLUE MOUSE（放課後等デイサービス）</option>
+              <option value="LITTLE BLUE MOUSE（児童発達支援事業）">LITTLE BLUE MOUSE（児童発達支援事業）</option>
+              <option value="どちらでも">どちらでも</option>
+            </select>
+            <span class="bm-form__error" id="err-facility">事業所を選択してください。</span>
+          </div>
+          <div class="bm-form__field bm-form__field--full">
+            <label class="bm-form__label" for="f-type">お問い合わせ種別<span class="bm-form__req">*</span></label>
+            <select class="bm-form__select" id="f-type" name="inquiry_type">
+              <option value="">選択してください</option>
+              <option>施設見学のご希望</option>
+              <option>事業内容について</option>
+              <option>料金・手続きについて</option>
+              <option>受給者証の取得について</option>
+              <option>その他</option>
+            </select>
+            <span class="bm-form__error" id="err-type">お問い合わせ種別を選択してください。</span>
+          </div>
+          <div class="bm-form__field bm-form__field--full">
+            <label class="bm-form__label" for="f-message">ご質問・ご要望</label>
+            <textarea class="bm-form__textarea" id="f-message" name="message" placeholder="見学希望日・ご質問などをご記入ください"></textarea>
+          </div>
+        </div>
+        <div class="bm-form__submit">
+          <button class="bm-btn bm-btn--primary" id="submit-btn" type="submit" style="font-size:14px; padding:12px 36px;">送信する</button>
+          <p style="margin-top:10px; font-size:12px; color:#aaa;">送信いただいた情報はお問い合わせへの返信目的にのみ使用します。</p>
+        </div>
+      </form>
+    </div>
+
+    <!-- アクセス -->
+    <div class="ct-section">
+      <h2 class="ct-section-title">施設へのアクセス</h2>
+      <div class="ct-access-grid">
+
+        <!-- BLUE MOUSE -->
+        <div class="ct-access-card">
+          <div class="ct-access-card__img">
+            <img src="./1.webp" alt="BLUE MOUSE" />
+          </div>
+          <div class="ct-access-card__body">
+            <h3 class="ct-access-card__name">BLUE MOUSE</h3>
+            <div class="ct-access-card__row"><span>住所</span><span>岡山県岡山市中区徳吉町二丁目11番地25</span></div>
+            <div class="ct-access-card__row"><span>最寄</span><span>東山電停から徒歩1分</span></div>
+            <div class="ct-access-card__row"><span>営業</span><span>月〜土 放課後〜18:00<br>長期休暇中 10:00〜18:00</span></div>
+            <div class="ct-map">
+              <iframe src="https://maps.google.com/maps?q=岡山県岡山市中区徳吉町二丁目11番地25&output=embed"
+                allowfullscreen loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+            </div>
+            <a class="ct-map-btn" href="https://maps.google.com/?q=岡山県岡山市中区徳吉町二丁目11番地25" target="_blank" rel="noopener">場所を見る</a>
+          </div>
+        </div>
+
+        <!-- LITTLE BLUE MOUSE -->
+        <div class="ct-access-card">
+          <div class="ct-access-card__img">
+            <img src="./5.webp" alt="LITTLE BLUE MOUSE" />
+          </div>
+          <div class="ct-access-card__body">
+            <h3 class="ct-access-card__name">LITTLE BLUE MOUSE</h3>
+            <div class="ct-access-card__row"><span>住所</span><span>岡山県岡山市北区辰巳２６−１０２</span></div>
+            <div class="ct-access-card__row"><span>最寄</span><span>北長瀬駅から徒歩約18分</span></div>
+            <div class="ct-access-card__row"><span>営業</span><span>平日 9:30〜18:30<br>土曜 9:00〜18:00</span></div>
+            <div class="ct-map">
+              <iframe src="https://maps.google.com/maps?q=岡山県岡山市北区辰巳26-102&output=embed"
+                allowfullscreen loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+            </div>
+            <a class="ct-map-btn" href="https://maps.google.com/?q=岡山県岡山市北区辰巳26-102" target="_blank" rel="noopener">場所を見る</a>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+  </main>
+
+  <!-- ===== 右サイドバー ===== -->
+  <aside class="bm-right">
+    <p class="side-heading">CONTACT</p>
+    <div class="side-cards">
+      <div class="side-card">
+        <span class="side-card__badge">BLUE MOUSE</span>
+        <p class="side-card__title">放課後等デイサービス</p>
+        <p class="side-card__sub">岡山市中区 徳吉町</p>
+      </div>
+      <div class="side-card">
+        <span class="side-card__badge">LITTLE BLUE MOUSE</span>
+        <p class="side-card__title">児童発達支援事業</p>
+        <p class="side-card__sub">岡山市北区 辰巳</p>
+        <p class="side-card__sub" style="color:#b86e00; font-size:10px;">2025年12月オープン予定</p>
+      </div>
+      <div class="side-card">
+        <span class="side-card__badge">メール</span>
+        <p class="side-card__title" style="font-size:12px;">tokuyoshi@blue-mouse.net</p>
+      </div>
+      <div class="side-card">
+        <span class="side-card__badge">電話</span>
+        <p class="side-card__title">086-273-3880</p>
+      </div>
+    </div>
+    <a href="#" class="side-cta" onclick="document.querySelector('.ct-gform-wrap').scrollIntoView({behavior:'smooth'}); return false;">
+      フォームへ進む
+      <span class="side-cta__icon">›</span>
+    </a>
+    <p class="bm-copy" style="text-align:center; margin-top:14px;">© BLUE MOUSE All Rights Reserved.</p>
+  </aside>
+
+</div>
+<script src="./layout.js"></script>
+<script>
+  /* ---- 事業所カード選択 ---- */
+  function selectFacility(type) {
+    document.getElementById('fac-blue').classList.toggle('is-selected', type === 'blue');
+    document.getElementById('fac-little').classList.toggle('is-selected', type === 'little');
+    var sel = document.getElementById('facility-select');
+    if (sel) {
+      sel.value = type === 'blue' ? 'BLUE MOUSE（放課後等デイサービス）'
+                : type === 'little' ? 'LITTLE BLUE MOUSE（児童発達支援事業）' : '';
+      clearError(sel, 'err-facility');
+    }
+  }
+
+  /* ---- バリデーションヘルパー ---- */
+  function showError(el, errId) {
+    el.classList.add('is-error');
+    var e = document.getElementById(errId);
+    if (e) e.classList.add('is-show');
+  }
+  function clearError(el, errId) {
+    el.classList.remove('is-error');
+    var e = document.getElementById(errId);
+    if (e) e.classList.remove('is-show');
+  }
+
+  /* ---- リアルタイムエラー解除 ---- */
+  [['f-name','err-name'],['f-age','err-age'],['f-email','err-email'],
+   ['facility-select','err-facility'],['f-type','err-type']].forEach(function(pair) {
+    var el = document.getElementById(pair[0]);
+    if (!el) return;
+    ['input','change'].forEach(function(ev) {
+      el.addEventListener(ev, function() { clearError(el, pair[1]); });
+    });
+  });
+
+  /* ---- ページ初期化 ---- */
+  document.addEventListener('DOMContentLoaded', function() {
+    var sel = document.getElementById('facility-select');
+    if (sel) sel.value = 'BLUE MOUSE（放課後等デイサービス）';
+  });
+
+  /* ---- フォーム送信 ---- */
+  document.getElementById('contact-form').addEventListener('submit', function(e) {
+    e.preventDefault();
+
+    var nameEl     = document.getElementById('f-name');
+    var ageEl      = document.getElementById('f-age');
+    var emailEl    = document.getElementById('f-email');
+    var facilityEl = document.getElementById('facility-select');
+    var typeEl     = document.getElementById('f-type');
+    var valid = true;
+
+    if (!nameEl.value.trim())                               { showError(nameEl,     'err-name');     valid = false; } else clearError(nameEl,     'err-name');
+    if (!ageEl.value)                                       { showError(ageEl,      'err-age');      valid = false; } else clearError(ageEl,      'err-age');
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailEl.value)) { showError(emailEl,    'err-email');    valid = false; } else clearError(emailEl,    'err-email');
+    if (!facilityEl.value)                                  { showError(facilityEl, 'err-facility'); valid = false; } else clearError(facilityEl, 'err-facility');
+    if (!typeEl.value)                                      { showError(typeEl,     'err-type');     valid = false; } else clearError(typeEl,     'err-type');
+
+    if (!valid) {
+      var first = document.querySelector('.bm-form__input.is-error, .bm-form__select.is-error');
+      if (first) first.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      return;
+    }
+
+    var btn = document.getElementById('submit-btn');
+    btn.disabled = true;
+    btn.textContent = '送信中…';
+
+    fetch('https://api.web3forms.com/submit', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+      body: JSON.stringify({
+        access_key:   'a29dfa4e-2c38-4961-93dd-9e9b197d0e19',
+        subject:      '【BLUE MOUSE】お問い合わせが届きました',
+        from_name:    'BLUE MOUSE お問い合わせフォーム',
+        name:         nameEl.value,
+        email:        emailEl.value,
+        child_age:    ageEl.value,
+        phone:        document.getElementById('f-tel').value,
+        facility:     facilityEl.value,
+        inquiry_type: typeEl.value,
+        message:      document.getElementById('f-message').value
+      })
+    })
+    .then(function(r) { return r.json(); })
+    .then(function(j) {
+      if (j.success) {
+        window.location.href = './thanks.html';
+      } else {
+        throw new Error(j.message || 'error');
+      }
+    })
+    .catch(function() {
+      btn.disabled = false;
+      btn.textContent = '送信する';
+      alert('送信に失敗しました。時間をおいて再度お試しいただくか、お電話にてお問い合わせください。');
+    });
+  });
+</script>
+</body>
+</html>

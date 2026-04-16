@@ -1,0 +1,426 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>BLUE MOUSE | 放課後等デイサービス・児童発達支援</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="./layout.css" />
+  <style>
+    html, body { overflow: hidden; }
+
+    /* 中央をスクロールスナップコンテナに */
+    .bm-main {
+      padding: 0 !important;
+      height: 100vh !important;
+      overflow-y: scroll !important;
+      scroll-snap-type: y mandatory !important;
+      -webkit-overflow-scrolling: touch !important;
+      scrollbar-width: none !important;
+    }
+    .bm-main::-webkit-scrollbar { display: none; }
+
+    /* 各スライドパネル */
+    #box-1, #box-2 {
+      scroll-snap-align: start;
+      scroll-snap-stop: always;
+      height: 100vh;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .slide-img {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center 35%;
+    }
+
+    /* box-1：左下 ・ 暗めグラデ */
+    #box-1 .slide-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(160deg, rgba(0,0,0,.02) 30%, rgba(20,10,5,.72) 100%);
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      padding: 48px 44px;
+    }
+    /* box-2：右上寄せ ・ 青みグラデ */
+    #box-2 .slide-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(200deg, rgba(10,25,30,.7) 0%, rgba(0,0,0,.1) 60%);
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      align-items: flex-end;
+      text-align: right;
+      padding: 52px 44px 48px;
+    }
+
+    .slide-title {
+      font-family: "koburina-gothic-w6", "A-OTF こぶりなゴシック Std W6", "Hiragino Kaku Gothic ProN", "M PLUS Rounded 1c", "Noto Sans JP", sans-serif;
+      font-weight: normal;
+      color: #fff;
+      line-height: 1.3;
+      margin: 0 0 14px;
+    }
+    #box-1 .slide-title { font-size: clamp(1.8rem, 3vw, 2.6rem); }
+    #box-2 .slide-title { font-size: clamp(1.4rem, 2.2vw, 2rem); letter-spacing: .04em; }
+
+    .slide-lead {
+      font-family: "M PLUS Rounded 1c", "Noto Sans JP", system-ui, sans-serif;
+      color: rgba(255,255,255,.78);
+      font-size: 13px;
+      font-weight: 400;
+      line-height: 1.95;
+      margin: 0 0 24px;
+    }
+
+    /* box-1 のボタン：テラコッタ */
+    #box-1 .slide-btn {
+      display: inline-block;
+      padding: 11px 26px;
+      background: #c46b3e;
+      color: #fff;
+      font-family: "M PLUS Rounded 1c", sans-serif;
+      font-size: 13px;
+      font-weight: 500;
+      border-radius: 6px;
+      border: 1.5px solid #c46b3e;
+      text-decoration: none;
+      align-self: flex-start;
+      transition: background .2s, color .2s, transform .15s;
+    }
+    #box-1 .slide-btn:hover { background: transparent; color: #fff; transform: translateY(-1px); }
+
+    /* box-2 のボタン：透明アウトライン */
+    #box-2 .slide-btn {
+      display: inline-block;
+      padding: 10px 24px;
+      background: transparent;
+      color: #fff;
+      font-family: "M PLUS Rounded 1c", sans-serif;
+      font-size: 13px;
+      font-weight: 500;
+      border-radius: 6px;
+      border: 1.5px solid rgba(255,255,255,.6);
+      text-decoration: none;
+      align-self: flex-end;
+      transition: background .2s, border-color .2s, transform .15s;
+    }
+    #box-2 .slide-btn:hover { background: rgba(255,255,255,.12); border-color: #fff; transform: translateY(-1px); }
+
+    /* ドットナビゲーション（中央カラム右端） */
+    #bm-dots {
+      position: fixed;
+      right: calc(100vw / 4 + 14px);
+      top: 50%;
+      transform: translateY(-50%);
+      z-index: 9999;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      pointer-events: auto;
+    }
+    .bm-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: rgba(255,255,255,.35);
+      cursor: pointer;
+      transition: all .25s ease;
+      border: none;
+      padding: 0;
+    }
+    .bm-dot:hover { background: rgba(255,255,255,.75); transform: scale(1.3); }
+    .bm-dot.bm-active { background: #fff; transform: scale(1.6); }
+
+    /* セクションカウンター */
+    #bm-counter {
+      position: fixed;
+      left: calc(100vw / 4 + 16px);
+      bottom: 28px;
+      z-index: 9999;
+      font-size: 11px;
+      color: rgba(255,255,255,.45);
+      font-family: monospace;
+      pointer-events: none;
+    }
+
+    /* スクロールヒント */
+    #bm-hint {
+      position: fixed;
+      right: calc(100vw / 4 + 16px);
+      bottom: 28px;
+      z-index: 9999;
+      font-size: 10px;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,.35);
+      font-family: monospace;
+      writing-mode: vertical-rl;
+      transition: opacity .4s;
+      pointer-events: none;
+    }
+
+    /* レスポンシブ（サイドバー非表示時） */
+    @media (max-width: 780px) {
+      #bm-dots    { right: 16px; }
+      #bm-counter { left: 16px; }
+      #bm-hint    { right: 16px; }
+    }
+  </style>
+</head>
+<body>
+<div class="bm-layout">
+
+  <!-- ===== 左サイドバー ===== -->
+  <aside class="bm-left">
+    <a class="bm-logo" href="./index.html">
+      <img src="./logo.webp" alt="BLUE MOUSE" />
+    </a>
+
+    <nav class="bm-nav">
+      <a href="./index.html" class="bm-nav__item is-active" data-page="index">トップページ</a>
+
+      <div class="bm-nav__group">
+        <div class="bm-nav__group-header">
+          <a href="./child.html" class="bm-nav__group-link">児童発達支援事業</a>
+          <button type="button" class="bm-nav__toggle" data-group="child" data-target="nav-child">
+            <span class="bm-nav__arrow">▶</span>
+          </button>
+        </div>
+
+      <div class="bm-nav__group">
+        <div class="bm-nav__group-header">
+          <a href="./afterschool.html" class="bm-nav__group-link">放課後等デイサービス</a>
+          <button type="button" class="bm-nav__toggle" data-group="afterschool" data-target="nav-after">
+            <span class="bm-nav__arrow">▶</span>
+          </button>
+        </div>
+        <ul class="bm-nav__sub" id="nav-after">
+          <li><a href="./afterschool.html#overview" class="bm-nav__subitem" data-group="afterschool" data-hash="#overview">事業内容</a></li>
+          <li><a href="./afterschool.html#pricing"  class="bm-nav__subitem" data-group="afterschool" data-hash="#pricing">料金表</a></li>
+        </ul>
+      </div>
+        <ul class="bm-nav__sub" id="nav-child">
+          <li><a href="./child.html#overview" class="bm-nav__subitem" data-group="child" data-hash="#overview">事業内容</a></li>
+          <li><a href="./child.html#pricing"  class="bm-nav__subitem" data-group="child" data-hash="#pricing">料金表</a></li>
+        </ul>
+      </div>
+
+      <a href="./contact.html" class="bm-nav__item" data-page="contact">お問い合わせ</a>
+    </nav>
+  </aside>
+
+  <!-- ===== 中央：スライドスクロール ===== -->
+  <main class="bm-main" id="bm-center">
+
+    <!-- スライド 1：放課後等デイサービス -->
+    <div id="box-1">
+      <img class="slide-img" src="./1.webp" alt="放課後等デイサービス" />
+      <div class="slide-overlay">
+        <h2 class="slide-title">放課後等デイサービス</h2>
+        <p class="slide-lead">
+          小学生〜高校生のお子さまを対象に、<br>
+          IT療育・感覚統合・SSTで一人ひとりに寄り添います。
+        </p>
+        <a href="./afterschool.html" class="slide-btn">詳しく見る →</a>
+      </div>
+    </div>
+
+    <!-- スライド 2：児童発達支援事業 -->
+    <div id="box-2">
+      <img class="slide-img" src="./5.webp" alt="児童発達支援事業" />
+      <div class="slide-overlay">
+        <h2 class="slide-title">児童発達支援事業</h2>
+        <p class="slide-lead">
+          3〜5歳の就学前のお子さまを対象に、<br>
+          言語・感覚統合・集団活動などの発達支援を行います。
+        </p>
+        <a href="./child.html" class="slide-btn">詳しく見る →</a>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- ===== 右サイドバー ===== -->
+  <aside class="bm-right">
+
+    <p class="side-heading" id="side-heading">SERVICE INFO</p>
+
+    <div class="side-cards">
+      <div class="side-card">
+        <span class="side-card__badge">対象年齢</span>
+        <p class="side-card__title" id="side-age">小学生〜高校生</p>
+      </div>
+      <div class="side-card">
+        <span class="side-card__badge">定員</span>
+        <p class="side-card__title" id="side-cap">10名 / 日</p>
+      </div>
+      <div class="side-card">
+        <span class="side-card__badge">支援内容</span>
+        <p class="side-card__title" id="side-support">IT療育・PCスキル・SST</p>
+      </div>
+      <div class="side-card">
+        <span class="side-card__badge">所在地</span>
+        <p class="side-card__title" id="side-addr">岡山市中区<br>徳吉町二丁目11番地25</p>
+        <p class="side-card__sub" id="side-access">東山電停から徒歩1分</p>
+        <a class="side-card__link" id="side-map"
+           href="https://maps.google.com/?q=岡山県岡山市中区徳吉町二丁目11番地25"
+           target="_blank" rel="noopener">場所を見る</a>
+      </div>
+    </div>
+
+    <a href="./contact.html" class="side-cta">
+      見学・お問い合わせ
+      <span class="side-cta__icon">›</span>
+    </a>
+
+    <p class="bm-copy" style="text-align:center; margin-top:14px;">© BLUE MOUSE All Rights Reserved.</p>
+  </aside>
+
+</div>
+
+<!-- ドット / カウンター / ヒント -->
+<div id="bm-dots"></div>
+<div id="bm-counter">01 / 02</div>
+<div id="bm-hint">Scroll</div>
+
+<script src="./layout.js"></script>
+<script>
+(function () {
+  var container = document.getElementById('bm-center');
+
+  function getBoxes() {
+    return Array.from(document.querySelectorAll('[id^="box-"]'))
+      .sort(function (a, b) {
+        return parseInt(a.id.replace('box-', '')) - parseInt(b.id.replace('box-', ''));
+      });
+  }
+
+  function init() {
+    var boxes = getBoxes();
+    var total = boxes.length;
+    if (!total || !container) return;
+
+    /* ドット生成 */
+    var dotsWrap = document.getElementById('bm-dots');
+    dotsWrap.innerHTML = '';
+    boxes.forEach(function (_, i) {
+      var d = document.createElement('button');
+      d.className = 'bm-dot' + (i === 0 ? ' bm-active' : '');
+      d.setAttribute('aria-label', (i + 1) + 'ページ目へ');
+      d.addEventListener('click', function () {
+        boxes[i].scrollIntoView({ behavior: 'smooth', block: 'start' });
+      });
+      dotsWrap.appendChild(d);
+    });
+
+    var counter = document.getElementById('bm-counter');
+    var hint    = document.getElementById('bm-hint');
+
+    function pad(n) { return n < 10 ? '0' + n : String(n); }
+
+    function updateUI() {
+      var vh  = container.clientHeight;
+      var idx = Math.round(container.scrollTop / vh);
+      idx = Math.max(0, Math.min(idx, total - 1));
+
+      document.querySelectorAll('.bm-dot').forEach(function (d, i) {
+        d.className = 'bm-dot' + (i === idx ? ' bm-active' : '');
+      });
+      counter.textContent = pad(idx + 1) + ' / ' + pad(total);
+      hint.style.opacity  = (idx === total - 1) ? '0' : '1';
+    }
+
+    container.addEventListener('scroll', updateUI, { passive: true });
+    updateUI();
+
+    /* キーボード操作 */
+    window.addEventListener('keydown', function (e) {
+      var vh  = container.clientHeight;
+      var idx = Math.round(container.scrollTop / vh);
+      if ((e.key === 'ArrowDown' || e.key === ' ') && idx < total - 1) {
+        e.preventDefault();
+        boxes[idx + 1].scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+      if (e.key === 'ArrowUp' && idx > 0) {
+        e.preventDefault();
+        boxes[idx - 1].scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    });
+
+    /* 右サイドバーのデータ切り替え */
+    var sideData = [
+      {
+        heading: 'SERVICE INFO',
+        age:     '小学生〜高校生',
+        cap:     '10名 / 日',
+        support: 'IT療育・PCスキル・SST',
+        addr:    '岡山市中区<br>徳吉町二丁目11番地25',
+        access:  'アクセス情報 準備中',
+        mapUrl:  'https://maps.google.com/?q=岡山県岡山市中区徳吉町二丁目11番地25'
+      },
+      {
+        heading: 'SERVICE INFO',
+        age:     '2〜5歳',
+        cap:     '10名 / 日',
+        support: '言語・感覚統合・集団活動',
+        addr:    '岡山市北区<br>辰巳２６−１０２',
+        access:  'アクセス情報 準備中',
+        mapUrl:  'https://maps.google.com/?q=岡山県岡山市北区辰巳26-102'
+      },
+    ];
+
+    function updateSidebar(idx) {
+      var d = sideData[idx] || sideData[0];
+      var el = function (sel) { return document.querySelector(sel); };
+      var ageEl    = document.getElementById('side-age');
+      var capEl    = document.getElementById('side-cap');
+      var suppEl   = document.getElementById('side-support');
+      var addrEl   = document.getElementById('side-addr');
+      var accessEl = document.getElementById('side-access');
+      var mapEl    = document.getElementById('side-map');
+      if (ageEl)    ageEl.textContent   = d.age;
+      if (capEl)    capEl.textContent   = d.cap;
+      if (suppEl)   suppEl.textContent  = d.support;
+      if (addrEl)   addrEl.innerHTML    = d.addr;
+      if (accessEl) accessEl.textContent = d.access;
+      if (mapEl)    mapEl.href           = d.mapUrl;
+    }
+
+    /* updateUI を拡張 */
+    var _origUpdate = updateUI;
+    var _lastIdx = -1;
+    container.removeEventListener('scroll', updateUI);
+    function updateUIFull() {
+      var vh  = container.clientHeight;
+      var idx = Math.round(container.scrollTop / vh);
+      idx = Math.max(0, Math.min(idx, total - 1));
+      document.querySelectorAll('.bm-dot').forEach(function (d, i) {
+        d.className = 'bm-dot' + (i === idx ? ' bm-active' : '');
+      });
+      counter.textContent = pad(idx + 1) + ' / ' + pad(total);
+      hint.style.opacity  = (idx === total - 1) ? '0' : '1';
+      if (idx !== _lastIdx) { updateSidebar(idx); _lastIdx = idx; }
+    }
+    container.addEventListener('scroll', updateUIFull, { passive: true });
+    updateUIFull();
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', init);
+  } else {
+    init();
+  }
+})();
+</script>
+</body>
+</html>

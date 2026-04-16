@@ -1,0 +1,316 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ITを使った知育あそび | 児童発達支援 LITTLE BLUE MOUSE</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@400;500;700&family=Inter:wght@400;500;600&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="./layout.css" />
+  <style>
+    .tp-hero { position: relative; height: 38vh; min-height: 220px; margin: -40px -36px 0; overflow: hidden; background: #1a2535; }
+    .tp-hero img { width: 100%; height: 100%; object-fit: cover; object-position: center 40%; opacity: .55; }
+    .tp-hero__overlay { position: absolute; inset: 0; display: flex; flex-direction: column; justify-content: flex-end; padding: 32px 36px; }
+    .tp-hero__kicker { font-family: "Inter",sans-serif; font-size: 10px; letter-spacing: .22em; text-transform: uppercase; color: rgba(255,255,255,.55); margin-bottom: 8px; }
+    .tp-hero__title { font-family: "koburina-gothic-w6","A-OTF こぶりなゴシック Std W6","Hiragino Kaku Gothic ProN","M PLUS Rounded 1c","Noto Sans JP",sans-serif; font-size: clamp(1.6rem,3vw,2.4rem); font-weight: 700; color: #fff; margin: 0; line-height: 1.2; }
+    .tp-section { padding: 48px 0 0; }
+    .tp-label { font-family: "Inter",sans-serif; font-size: 10px; letter-spacing: .22em; text-transform: uppercase; color: #6aadcc; margin-bottom: 10px; font-weight: 400; }
+    .tp-title { font-family: "Noto Sans JP", sans-serif; font-size: clamp(1.15rem,2vw,1.5rem); font-weight: 500; color: #1a1a1a; margin: 0 0 18px; line-height: 1.5; }
+    .tp-text { font-size: 14px; color: #555; line-height: 2; font-weight: 400; margin: 0 0 14px; }
+    .tp-divider { height: 1px; background: rgba(0,0,0,.07); margin: 48px 0 0; }
+    .tp-lead { padding: 40px 0 0; }
+    .tp-lead__inner { background: #f3f8fb; border-left: 3px solid #6aadcc; border-radius: 0 8px 8px 0; padding: 20px 24px; }
+    .tp-lead__text { font-size: 14px; color: #444; line-height: 2.1; font-weight: 400; margin: 0; }
+    .tp-features { display: flex; flex-direction: column; gap: 14px; margin-top: 24px; }
+    .tp-feature { display: flex; background: #fff; border: 1px solid rgba(0,0,0,.07); border-radius: 10px; overflow: hidden; }
+    .tp-feature__img { flex: 6; min-height: 180px; background: #dde8ee; position: relative; overflow: hidden; }
+    .tp-feature__img img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .tp-feature__img--ph { display: flex; align-items: center; justify-content: center; }
+    .tp-feature__img--ph::after { content: 'PHOTO'; font-family: "Inter",sans-serif; font-size: 9px; letter-spacing: .12em; color: #aac5d4; }
+    .tp-feature__body { flex: 4; padding: 18px 18px 18px 20px; display: flex; flex-direction: column; justify-content: center; }
+    .tp-feature__title { font-family: "Noto Sans JP", sans-serif; font-size: 13px; font-weight: 500; color: #1a1a1a; margin: 0 0 6px; }
+    .tp-feature__text { font-size: 12px; color: #666; line-height: 1.85; margin: 0; font-weight: 400; }
+    .tp-skills { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 24px; }
+    .tp-skill { display: flex; align-items: flex-start; gap: 12px; padding: 14px 16px; background: #fff; border-radius: 8px; border: 1px solid rgba(0,0,0,.06); }
+    .tp-skill__dot { width: 8px; height: 8px; border-radius: 50%; background: #6aadcc; margin-top: 5px; flex-shrink: 0; }
+    .tp-skill__name { font-size: 12px; font-weight: 500; color: #1a1a1a; margin: 0 0 3px; }
+    .tp-skill__desc { font-size: 11px; color: #888; line-height: 1.7; margin: 0; }
+    .tp-steps { margin-top: 28px; display: flex; flex-direction: column; }
+    .tp-step { display: flex; gap: 24px; padding-bottom: 28px; border-bottom: 1px solid rgba(0,0,0,.07); }
+    .tp-step:last-child { border-bottom: none; padding-bottom: 0; }
+    .tp-step + .tp-step { padding-top: 24px; }
+    .tp-step__num { font-family: "Inter",sans-serif; font-size: 28px; font-weight: 300; color: rgba(0,0,0,.15); line-height: 1; flex-shrink: 0; width: 32px; padding-top: 2px; }
+    .tp-step__tag { display: inline-block; font-family: "Inter",sans-serif; font-size: 9px; letter-spacing: .14em; text-transform: uppercase; color: #6aadcc; margin-bottom: 6px; }
+    .tp-step__title { font-family: "Noto Sans JP", sans-serif; font-size: 15px; font-weight: 500; color: #1a1a1a; margin: 0 0 8px; line-height: 1.4; }
+    .tp-step__text { font-size: 13px; color: #666; line-height: 1.9; margin: 0; font-weight: 400; }
+    .tp-for { margin-top: 24px; display: flex; flex-direction: column; }
+    .tp-for__item { display: flex; align-items: flex-start; gap: 14px; font-size: 13px; color: #444; line-height: 1.8; padding: 14px 0; border-bottom: 1px solid rgba(0,0,0,.07); font-weight: 400; }
+    .tp-for__item:first-child { border-top: 1px solid rgba(0,0,0,.07); }
+    .tp-for__check { flex-shrink: 0; margin-top: 3px; }
+    .tp-for__check svg { width: 13px; height: 13px; stroke: #6aadcc; display: block; }
+    .tp-cta { margin-top: 52px; padding: 36px 28px; background: #1a2a3a; border-radius: 12px; text-align: center; margin-bottom: 60px; }
+    .tp-cta__text { font-size: 13px; color: rgba(255,255,255,.7); line-height: 1.9; margin: 0 0 20px; }
+    .tp-cta__btns { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; }
+    .tp-cta__back { display: inline-block; padding: 11px 22px; border: 1px solid rgba(255,255,255,.25); color: rgba(255,255,255,.75); border-radius: 8px; text-decoration: none; font-size: 13px; transition: border-color .2s, color .2s; }
+    .tp-cta__back:hover { border-color: rgba(255,255,255,.6); color: #fff; }
+    .anim-up { opacity: 0; transform: translateY(28px); transition: opacity 1.1s cubic-bezier(.22,1,.36,1), transform 1.1s cubic-bezier(.22,1,.36,1); }
+    .anim-up.is-visible { opacity: 1; transform: none; }
+    @media (max-width: 780px) { .tp-hero { margin: -72px -16px 0; } .tp-hero__overlay { padding: 24px 20px; } .tp-skills { grid-template-columns: 1fr; } }
+  </style>
+</head>
+<body>
+<div class="bm-layout">
+
+  <aside class="bm-left">
+    <a class="bm-logo" href="./index.html"><img src="./logo.webp" alt="BLUE MOUSE" /></a>
+    <nav class="bm-nav">
+      <a href="./index.html" class="bm-nav__item" data-page="index">トップページ</a>
+      <div class="bm-nav__group">
+        <div class="bm-nav__group-header">
+          <a href="./child.html" class="bm-nav__group-link">児童発達支援事業</a>
+          <button type="button" class="bm-nav__toggle" data-group="child" data-target="nav-child"><span class="bm-nav__arrow">▶</span></button>
+        </div>
+        <ul class="bm-nav__sub" id="nav-child">
+          <li>
+            <a href="./child.html#program" class="bm-nav__subitem is-active" data-group="child" data-hash="#program">事業内容</a>
+            <ul class="bm-nav__deeplist">
+              <li><a href="./child-sensory.html"  class="bm-nav__deepitem">感覚統合あそび</a></li>
+              <li><a href="./child-language.html" class="bm-nav__deepitem">言語・コミュニケーション支援</a></li>
+              <li><a href="./child-social.html"   class="bm-nav__deepitem">集団活動・社会性の育成</a></li>
+              <li><a href="./child-itplay.html"   class="bm-nav__deepitem is-active">ITを使った知育あそび</a></li>
+            </ul>
+          </li>
+          <li><a href="./child.html#pricing" class="bm-nav__subitem" data-group="child" data-hash="#pricing">料金表</a></li>
+        </ul>
+      </div>
+      <div class="bm-nav__group">
+        <div class="bm-nav__group-header">
+          <a href="./afterschool.html" class="bm-nav__group-link">放課後等デイサービス</a>
+          <button type="button" class="bm-nav__toggle" data-group="afterschool" data-target="nav-after"><span class="bm-nav__arrow">▶</span></button>
+        </div>
+        <ul class="bm-nav__sub" id="nav-after">
+          <li>
+            <a href="./afterschool.html#program" class="bm-nav__subitem" data-group="afterschool" data-hash="#program">事業内容</a>
+            <ul class="bm-nav__deeplist">
+              <li><a href="./typing.html" class="bm-nav__deepitem">タイピング練習</a></li>
+              <li><a href="./programming.html" class="bm-nav__deepitem">プログラミング学習</a></li>
+              <li><a href="./office.html" class="bm-nav__deepitem">オフィスソフト操作</a></li>
+              <li><a href="./communication.html" class="bm-nav__deepitem">コミュニケーション支援</a></li>
+            </ul>
+          </li>
+          <li><a href="./afterschool.html#pricing" class="bm-nav__subitem" data-group="afterschool" data-hash="#pricing">料金表</a></li>
+        </ul>
+      </div>
+      <a href="./philosophy.html" class="bm-nav__item" data-page="philosophy">BLUE MOUSEの想い</a>
+      <a href="./company.html" class="bm-nav__item" data-page="company">会社概要</a>
+      <a href="./contact.html" class="bm-nav__item" data-page="contact">お問い合わせ</a>
+      <a href="https://bouemouse.studio.site" class="bm-nav__item" target="_blank" rel="noopener">採用情報</a>
+    </nav>
+  </aside>
+
+  <main class="bm-main">
+
+    <div class="tp-hero">
+      <img src="./2.webp" alt="ITを使った知育あそび" />
+      <div class="tp-hero__overlay">
+        <p class="tp-hero__kicker">Program 04 — Child Development</p>
+        <h1 class="tp-hero__title">ITを使った知育あそび</h1>
+      </div>
+    </div>
+
+    <div class="tp-lead anim-up">
+      <div class="tp-lead__inner">
+        <p class="tp-lead__text">
+          楽しいから、自然と続けられる。タブレットを使った知育あそびで、色・形・数の概念をゆっくり学びながら、集中力と思考力の土台を育てていきます。放課後等デイサービス（BLUE MOUSE）でのIT療育につながる、最初の一歩です。
+        </p>
+      </div>
+    </div>
+
+    <div class="tp-section anim-up">
+      <p class="tp-label">Features</p>
+      <h2 class="tp-title">このプログラムの特徴</h2>
+      <div class="tp-features">
+        <div class="tp-feature">
+          <div class="tp-feature__img tp-feature__img--ph"></div>
+          <div class="tp-feature__body">
+            <p class="tp-feature__title">タブレット・タッチパネルで楽しく学ぶ</p>
+            <p class="tp-feature__text">直感的に操作できるタブレットや知育アプリで、デジタル機器への親しみを自然に育てます。</p>
+          </div>
+        </div>
+        <div class="tp-feature">
+          <div class="tp-feature__img tp-feature__img--ph"></div>
+          <div class="tp-feature__body">
+            <p class="tp-feature__title">色・形・数・文字の概念をゆっくり</p>
+            <p class="tp-feature__text">就学前の認知発達に合わせた内容で、無理なく知識の土台をつくります。</p>
+          </div>
+        </div>
+        <div class="tp-feature">
+          <div class="tp-feature__img tp-feature__img--ph"></div>
+          <div class="tp-feature__body">
+            <p class="tp-feature__title">集中して取り組める工夫</p>
+            <p class="tp-feature__text">ゲーム要素やアニメーションを活用し、集中が続きにくいお子さまでも夢中になれる工夫をしています。</p>
+          </div>
+        </div>
+        <div class="tp-feature">
+          <div class="tp-feature__img tp-feature__img--ph"></div>
+          <div class="tp-feature__body">
+            <p class="tp-feature__title">放課後等デイへの移行を見据えた設計</p>
+            <p class="tp-feature__text">就学後のIT療育（BLUE MOUSE）へとつながる基礎を、未就学期から丁寧に積み上げます。</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="tp-divider"></div>
+
+    <div class="tp-section anim-up">
+      <p class="tp-label">Benefits</p>
+      <h2 class="tp-title">IT知育あそびで育つ力</h2>
+      <p class="tp-text">楽しみながら続けることで、集中力・思考力・デジタル親和性が育ちます。</p>
+      <div class="tp-skills">
+        <div class="tp-skill">
+          <div class="tp-skill__dot"></div>
+          <div>
+            <p class="tp-skill__name">集中して取り組む力</p>
+            <p class="tp-skill__desc">好きな活動を通じて、集中できる時間が少しずつ伸びていきます</p>
+          </div>
+        </div>
+        <div class="tp-skill">
+          <div class="tp-skill__dot"></div>
+          <div>
+            <p class="tp-skill__name">認知・思考力の土台</p>
+            <p class="tp-skill__desc">色・形・数・因果関係などの基礎概念が身につきます</p>
+          </div>
+        </div>
+        <div class="tp-skill">
+          <div class="tp-skill__dot"></div>
+          <div>
+            <p class="tp-skill__name">デジタル機器への親しみ</p>
+            <p class="tp-skill__desc">小さいころからの自然な関わりが、IT療育への移行をスムーズにします</p>
+          </div>
+        </div>
+        <div class="tp-skill">
+          <div class="tp-skill__dot"></div>
+          <div>
+            <p class="tp-skill__name">成功体験による自己肯定感</p>
+            <p class="tp-skill__desc">「できた！」の積み重ねが、自信とやる気につながります</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="tp-divider"></div>
+
+    <div class="tp-section anim-up">
+      <p class="tp-label">Steps</p>
+      <h2 class="tp-title">支援のステップ</h2>
+      <p class="tp-text">お子さまの発達段階に合わせたアプリや課題を選び、無理のないペースで進めます。</p>
+      <div class="tp-steps">
+        <div class="tp-step">
+          <span class="tp-step__num">01</span>
+          <div>
+            <span class="tp-step__tag">入門</span>
+            <p class="tp-step__title">タッチ操作に慣れる</p>
+            <p class="tp-step__text">まずはタブレットを触ること自体に慣れます。タップ・スワイプなど基本操作を楽しみながら学びます。</p>
+          </div>
+        </div>
+        <div class="tp-step">
+          <span class="tp-step__num">02</span>
+          <div>
+            <span class="tp-step__tag">認知発達</span>
+            <p class="tp-step__title">色・形・数の概念を遊びの中で</p>
+            <p class="tp-step__text">知育アプリで色の分類、形の認識、数の概念など、就学前の認知発達を丁寧に支援します。</p>
+          </div>
+        </div>
+        <div class="tp-step">
+          <span class="tp-step__num">03</span>
+          <div>
+            <span class="tp-step__tag">思考力</span>
+            <p class="tp-step__title">簡単なパズル・論理課題へ</p>
+            <p class="tp-step__text">パズルや順番並び替えなど、考える楽しさを感じられる課題に少しずつ挑戦します。</p>
+          </div>
+        </div>
+        <div class="tp-step">
+          <span class="tp-step__num">04</span>
+          <div>
+            <span class="tp-step__tag">移行準備</span>
+            <p class="tp-step__title">就学後のIT療育へつなぐ</p>
+            <p class="tp-step__text">キーボードへの興味が出てきたら、タイピングの入口となる活動も取り入れ、小学生になってからの学びへとつなげます。</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="tp-divider"></div>
+
+    <div class="tp-section anim-up">
+      <p class="tp-label">For</p>
+      <h2 class="tp-title">こんなお子さまにおすすめ</h2>
+      <div class="tp-for">
+        <div class="tp-for__item">
+          <div class="tp-for__check"><svg fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>
+          <span>タブレットやスマートフォンが好きで、デジタル機器に興味がある</span>
+        </div>
+        <div class="tp-for__item">
+          <div class="tp-for__check"><svg fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>
+          <span>集中して取り組める活動をなかなか見つけられていない</span>
+        </div>
+        <div class="tp-for__item">
+          <div class="tp-for__check"><svg fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>
+          <span>認知発達をゆっくり丁寧に育てていきたい</span>
+        </div>
+        <div class="tp-for__item">
+          <div class="tp-for__check"><svg fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>
+          <span>将来のIT療育（放課後等デイサービス）につなげることを見据えている</span>
+        </div>
+        <div class="tp-for__item">
+          <div class="tp-for__check"><svg fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>
+          <span>成功体験を積み重ねて、自信をつけさせてあげたい</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="tp-cta anim-up">
+      <p class="tp-cta__text">見学・体験は無料です。お子さまの様子を実際に見ていただけます。<br>まずはお気軽にお問い合わせください。</p>
+      <div class="tp-cta__btns">
+        <a href="./contact.html" class="bm-btn bm-btn--primary" style="font-size:13px; padding:11px 28px;">見学・お問い合わせ</a>
+        <a href="./child.html" class="tp-cta__back">← 事業内容に戻る</a>
+      </div>
+    </div>
+
+  </main>
+
+  <aside class="bm-right">
+    <p class="side-heading">PROGRAM</p>
+    <div class="side-cards">
+      <div class="side-card"><span class="side-card__badge">対象</span><p class="side-card__title">2〜5歳（未就学児）</p></div>
+      <div class="side-card"><span class="side-card__badge">実施頻度</span><p class="side-card__title">週1〜5回</p><p class="side-card__sub">個別の支援計画に応じて</p></div>
+      <div class="side-card">
+        <span class="side-card__badge">所在地</span>
+        <p class="side-card__title">岡山市北区</p>
+        <p class="side-card__sub">辰巳２６−１０２</p>
+        <p class="side-card__sub" style="color:#999;">北長瀬駅から徒歩約18分</p>
+        <a href="https://maps.google.com/?q=岡山県岡山市北区辰巳26-102" target="_blank" rel="noopener" class="side-card__link">場所を見る</a>
+      </div>
+    </div>
+    <a href="./contact.html" class="side-cta">見学・お問い合わせ<span class="side-cta__icon">›</span></a>
+    <p class="bm-copy" style="text-align:center; margin-top:14px;">© BLUE MOUSE All Rights Reserved.</p>
+  </aside>
+
+</div>
+<script src="./layout.js"></script>
+<script>
+(function () {
+  var observer = new IntersectionObserver(function (entries) {
+    entries.forEach(function (entry) {
+      if (!entry.isIntersecting) return;
+      entry.target.classList.add('is-visible');
+      observer.unobserve(entry.target);
+    });
+  }, { threshold: 0.1 });
+  document.querySelectorAll('.anim-up').forEach(function (el) { observer.observe(el); });
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,540 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>会社概要 | BLUE MOUSE</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="./layout.css" />
+  <style>
+    /* ===== ページヘッダー ===== */
+    .co-header {
+      padding: 40px 0 32px;
+      border-bottom: 1px solid rgba(0,0,0,.07);
+      margin-bottom: 40px;
+    }
+    .co-kicker {
+      font-family: "Inter", sans-serif;
+      font-size: 11px;
+      letter-spacing: .14em;
+      text-transform: uppercase;
+      color: #6aadcc;
+      margin-bottom: 8px;
+      font-weight: 500;
+    }
+    .co-title {
+      font-family: "Noto Sans JP", sans-serif;
+      font-size: clamp(1.25rem, 1.8vw, 1.55rem);
+      font-weight: 500;
+      color: #2a2a2a;
+      margin: 0 0 10px;
+    }
+    .co-lead {
+      font-size: 14px;
+      color: #666;
+      line-height: 1.85;
+    }
+
+    /* ===== セクション見出し ===== */
+    .co-section {
+      margin-bottom: 48px;
+    }
+    .co-section-title {
+      font-family: "Noto Sans JP", sans-serif;
+      font-size: 13px;
+      font-weight: 500;
+      color: #2a2a2a;
+      margin: 0 0 16px;
+      padding-left: 12px;
+      border-left: 3px solid #6aadcc;
+    }
+
+    /* ===== 概要テーブル ===== */
+    .co-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13.5px;
+    }
+    .co-table tr {
+      border-bottom: 1px solid rgba(0,0,0,.07);
+    }
+    .co-table tr:first-child {
+      border-top: 1px solid rgba(0,0,0,.07);
+    }
+    .co-table th {
+      width: 30%;
+      padding: 14px 12px 14px 0;
+      font-weight: 500;
+      color: #888;
+      text-align: left;
+      vertical-align: top;
+      white-space: nowrap;
+    }
+    .co-table td {
+      padding: 14px 0;
+      color: #333;
+      line-height: 1.75;
+    }
+
+    /* ===== 事業所カード ===== */
+    .co-facilities {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+    .co-facility {
+      border-radius: 12px;
+      border: 1px solid rgba(0,0,0,.08);
+      background: #fff;
+      overflow: hidden;
+    }
+    .co-facility__img {
+      height: 150px;
+      overflow: hidden;
+      position: relative;
+    }
+    .co-facility__img img {
+      width: 100%; height: 100%;
+      object-fit: cover;
+      object-position: center 30%;
+      display: block;
+    }
+    .co-facility__badge {
+      position: absolute;
+      top: 10px; left: 10px;
+      background: rgba(106,173,204,.9);
+      color: #fff;
+      font-size: 10px;
+      font-weight: 600;
+      padding: 3px 8px;
+      border-radius: 4px;
+      letter-spacing: .04em;
+    }
+    .co-facility.is-orange .co-facility__badge {
+      background: rgba(248,161,26,.9);
+    }
+    .co-facility__body {
+      padding: 16px;
+    }
+    .co-facility__name {
+      font-family: "Inter", sans-serif;
+      font-size: 15px;
+      font-weight: 700;
+      color: #1a1a1a;
+      margin: 0 0 4px;
+    }
+    .co-facility__type {
+      font-size: 11px;
+      color: #6aadcc;
+      font-weight: 600;
+      margin: 0 0 12px;
+    }
+    .co-facility.is-orange .co-facility__type {
+      color: #f8a11a;
+    }
+    .co-facility__row {
+      display: flex;
+      gap: 8px;
+      font-size: 12px;
+      color: #555;
+      line-height: 1.65;
+      margin-bottom: 5px;
+    }
+    .co-facility__row-label {
+      color: #aaa;
+      flex-shrink: 0;
+      width: 4em;
+    }
+    .co-facility__tag {
+      display: inline-block;
+      margin-top: 10px;
+      font-size: 11px;
+      background: rgba(106,173,204,.1);
+      color: #3a7ca5;
+      border-radius: 4px;
+      padding: 3px 8px;
+      font-weight: 500;
+    }
+    .co-facility.is-orange .co-facility__tag {
+      background: rgba(248,161,26,.1);
+      color: #c46b3e;
+    }
+
+    /* ===== アクセスグリッド ===== */
+    .co-access-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+    .co-access-card {
+      border-radius: 12px;
+      border: 1px solid rgba(0,0,0,.08);
+      background: #fff;
+      overflow: hidden;
+    }
+    .co-access-card__map {
+      height: 160px;
+    }
+    .co-access-card__map iframe {
+      width: 100%; height: 100%;
+      border: 0; display: block;
+    }
+    .co-access-card__body {
+      padding: 14px 16px;
+    }
+    .co-access-card__name {
+      font-family: "Noto Sans JP", sans-serif;
+      font-size: 13px;
+      font-weight: 500;
+      margin: 0 0 8px;
+    }
+    .co-access-card__row {
+      display: flex;
+      gap: 8px;
+      font-size: 12px;
+      color: #555;
+      line-height: 1.6;
+      margin-bottom: 4px;
+    }
+    .co-access-card__row span:first-child {
+      color: #aaa;
+      flex-shrink: 0;
+      width: 3em;
+    }
+    .co-map-btn {
+      display: inline-block;
+      margin-top: 8px;
+      font-size: 11px;
+      color: #6aadcc;
+      text-decoration: none;
+      font-weight: 500;
+    }
+    .co-map-btn:hover { text-decoration: underline; }
+
+    /* ===== ミッション・ビジョン ===== */
+    .co-mv-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+    }
+    .co-mv-card {
+      border-radius: 10px;
+      padding: 20px;
+      background: #f8f5f2;
+    }
+    .co-mv-card__label {
+      font-family: "Inter", sans-serif;
+      font-size: 10px;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      color: #6aadcc;
+      font-weight: 600;
+      margin-bottom: 8px;
+    }
+    .co-mv-card__text {
+      font-size: 13px;
+      color: #333;
+      line-height: 1.8;
+    }
+
+    /* ===== 採用ボタン ===== */
+    .co-recruit-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      margin-top: 20px;
+      padding: 11px 22px;
+      background: #3a7ca5;
+      color: #fff;
+      font-size: 13px;
+      font-weight: 600;
+      text-decoration: none;
+      border-radius: 24px;
+      letter-spacing: .04em;
+      transition: background .18s, transform .18s, box-shadow .18s;
+      box-shadow: 0 3px 12px rgba(58,124,165,.25);
+    }
+    .co-recruit-btn:hover {
+      background: #2d6189;
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(58,124,165,.35);
+    }
+
+    @media (max-width: 780px) {
+      .co-table th { width: 36%; }
+      .co-facilities,
+      .co-access-grid,
+      .co-mv-grid { grid-template-columns: 1fr; }
+      .co-recruit-btn { width: 100%; justify-content: center; }
+    }
+  </style>
+</head>
+<body>
+<div class="bm-layout">
+
+  <!-- ===== 左サイドバー ===== -->
+  <aside class="bm-left">
+    <a class="bm-logo" href="./index.html">
+      <img src="./logo.webp" alt="BLUE MOUSE" />
+    </a>
+    <nav class="bm-nav">
+      <a href="./index.html" class="bm-nav__item" data-page="index">トップページ</a>
+
+      <div class="bm-nav__group">
+        <div class="bm-nav__group-header">
+          <a href="./child.html" class="bm-nav__group-link">児童発達支援事業</a>
+          <button type="button" class="bm-nav__toggle" data-group="child" data-target="nav-child">
+            <span class="bm-nav__arrow">▶</span>
+          </button>
+        </div>
+
+      <div class="bm-nav__group">
+        <div class="bm-nav__group-header">
+          <a href="./afterschool.html" class="bm-nav__group-link">放課後等デイサービス</a>
+          <button type="button" class="bm-nav__toggle" data-group="afterschool" data-target="nav-after">
+            <span class="bm-nav__arrow">▶</span>
+          </button>
+        </div>
+        <ul class="bm-nav__sub" id="nav-after">
+          <li><a href="./afterschool.html#program"  class="bm-nav__subitem" data-group="afterschool" data-hash="#program">事業内容</a></li>
+          <li><a href="./afterschool.html#pricing"  class="bm-nav__subitem" data-group="afterschool" data-hash="#pricing">料金表</a></li>
+        </ul>
+      </div>
+        <ul class="bm-nav__sub" id="nav-child">
+          <li><a href="./child.html#overview" class="bm-nav__subitem" data-group="child" data-hash="#overview">事業内容</a></li>
+          <li><a href="./child.html#pricing"  class="bm-nav__subitem" data-group="child" data-hash="#pricing">料金表</a></li>
+        </ul>
+      </div>
+
+      <a href="./company.html" class="bm-nav__item is-active" data-page="company">会社概要</a>
+      <a href="./contact.html" class="bm-nav__item" data-page="contact">お問い合わせ</a>
+      <a href="https://bouemouse.studio.site" class="bm-nav__item" target="_blank" rel="noopener">採用情報</a>
+    </nav>
+  </aside>
+
+  <!-- ===== メインコンテンツ ===== -->
+  <main class="bm-main">
+
+    <div class="co-header">
+      <p class="co-kicker">Company</p>
+      <h1 class="co-title">会社概要</h1>
+      <p class="co-lead">岡山市でIT療育に特化した放課後等デイサービス・<br>児童発達支援を運営しています。</p>
+    </div>
+
+    <!-- 会社情報 -->
+    <section class="co-section">
+      <h2 class="co-section-title">基本情報</h2>
+      <table class="co-table">
+        <tr>
+          <th>会社名</th>
+          <td>合同会社C EIGHTY PERCENT</td>
+        </tr>
+        <tr>
+          <th>設立</th>
+          <td>2022年12月</td>
+        </tr>
+        <tr>
+          <th>事業内容</th>
+          <td>放課後等デイサービス（IT療育特化型）<br>児童発達支援事業</td>
+        </tr>
+        <tr>
+          <th>所在地</th>
+          <td>〒700-0944<br>岡山県岡山市南区泉田371-5</td>
+        </tr>
+        <tr>
+          <th>電話番号</th>
+          <td><a href="tel:0862302390" style="color:#333; text-decoration:none;">086-230-2390</a></td>
+        </tr>
+        <tr>
+          <th>メールアドレス</th>
+          <td><a href="mailto:tokuyoshi@blue-mouse.net" style="color:#333; text-decoration:none;">tokuyoshi@blue-mouse.net</a></td>
+        </tr>
+        <tr>
+          <th>Instagram</th>
+          <td>
+            <a href="https://www.instagram.com/blue_mouse_okayama/" target="_blank" rel="noopener" style="color:#6aadcc; text-decoration:none;">
+              @blue_mouse_okayama
+            </a>
+          </td>
+        </tr>
+      </table>
+
+      <a href="https://bouemouse.studio.site" target="_blank" rel="noopener" class="co-recruit-btn">
+        採用情報はこちらから
+        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+      </a>
+    </section>
+
+    <!-- 事業所一覧 -->
+    <section class="co-section">
+      <h2 class="co-section-title">事業所一覧</h2>
+      <div class="co-facilities">
+
+        <!-- BLUE MOUSE -->
+        <div class="co-facility is-orange">
+          <div class="co-facility__img">
+            <img src="./1.webp" alt="BLUE MOUSE" />
+            <span class="co-facility__badge">放課後等デイサービス</span>
+          </div>
+          <div class="co-facility__body">
+            <h3 class="co-facility__name">BLUE MOUSE</h3>
+            <p class="co-facility__type">放課後等デイサービス</p>
+            <div class="co-facility__row">
+              <span class="co-facility__row-label">住所</span>
+              <span>岡山県岡山市中区<br>徳吉町二丁目11番地25</span>
+            </div>
+            <div class="co-facility__row">
+              <span class="co-facility__row-label">対象</span>
+              <span>小学生〜高校生（6〜18歳）</span>
+            </div>
+            <div class="co-facility__row">
+              <span class="co-facility__row-label">定員</span>
+              <span>10名 / 日</span>
+            </div>
+            <div class="co-facility__row">
+              <span class="co-facility__row-label">営業時間</span>
+              <span>放課後〜18:00（学校休暇中 10:00〜18:00）</span>
+            </div>
+            <div class="co-facility__row">
+              <span class="co-facility__row-label">アクセス</span>
+              <span>東山電停から徒歩1分</span>
+            </div>
+            <span class="co-facility__tag">運営中</span>
+          </div>
+        </div>
+
+        <!-- LITTLE BLUE MOUSE -->
+        <div class="co-facility">
+          <div class="co-facility__img">
+            <img src="./5.webp" alt="LITTLE BLUE MOUSE" />
+            <span class="co-facility__badge">児童発達支援事業</span>
+          </div>
+          <div class="co-facility__body">
+            <h3 class="co-facility__name">LITTLE BLUE MOUSE</h3>
+            <p class="co-facility__type">児童発達支援事業</p>
+            <div class="co-facility__row">
+              <span class="co-facility__row-label">住所</span>
+              <span>岡山県岡山市北区辰巳26−102</span>
+            </div>
+            <div class="co-facility__row">
+              <span class="co-facility__row-label">対象</span>
+              <span>2〜5歳（未就学児）</span>
+            </div>
+            <div class="co-facility__row">
+              <span class="co-facility__row-label">定員</span>
+              <span>10名 / 日</span>
+            </div>
+            <div class="co-facility__row">
+              <span class="co-facility__row-label">営業時間</span>
+              <span>平日 9:30〜18:30 ／ 土曜 9:00〜18:00</span>
+            </div>
+            <div class="co-facility__row">
+              <span class="co-facility__row-label">アクセス</span>
+              <span>北長瀬駅から徒歩約18分</span>
+            </div>
+            <span class="co-facility__tag">2025年12月1日 オープン予定</span>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- アクセス -->
+    <section class="co-section">
+      <h2 class="co-section-title">アクセス</h2>
+      <div class="co-access-grid">
+
+        <!-- BLUE MOUSE -->
+        <div class="co-access-card">
+          <div class="co-access-card__map">
+            <iframe
+              src="https://www.google.com/maps?q=岡山県岡山市中区徳吉町二丁目11番地25&output=embed"
+              allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade">
+            </iframe>
+          </div>
+          <div class="co-access-card__body">
+            <h3 class="co-access-card__name">BLUE MOUSE</h3>
+            <div class="co-access-card__row">
+              <span>住所</span>
+              <span>岡山県岡山市中区徳吉町二丁目11番地25</span>
+            </div>
+            <div class="co-access-card__row">
+              <span>電車</span>
+              <span>東山電停から徒歩1分</span>
+            </div>
+            <div class="co-access-card__row">
+              <span>電話</span>
+              <span><a href="tel:0862733880" style="color:#333; text-decoration:none;">086-273-3880</a></span>
+            </div>
+            <a class="co-map-btn"
+               href="https://www.google.com/maps?q=岡山県岡山市中区徳吉町二丁目11番地25"
+               target="_blank" rel="noopener">
+              Google マップで開く ↗
+            </a>
+          </div>
+        </div>
+
+        <!-- LITTLE BLUE MOUSE -->
+        <div class="co-access-card">
+          <div class="co-access-card__map">
+            <iframe
+              src="https://www.google.com/maps?q=岡山県岡山市北区辰巳26-102&output=embed"
+              allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade">
+            </iframe>
+          </div>
+          <div class="co-access-card__body">
+            <h3 class="co-access-card__name">LITTLE BLUE MOUSE</h3>
+            <div class="co-access-card__row">
+              <span>住所</span>
+              <span>岡山県岡山市北区辰巳26−102</span>
+            </div>
+            <div class="co-access-card__row">
+              <span>電車</span>
+              <span>北長瀬駅から徒歩約18分</span>
+            </div>
+            <a class="co-map-btn"
+               href="https://www.google.com/maps?q=岡山県岡山市北区辰巳26-102"
+               target="_blank" rel="noopener">
+              Google マップで開く ↗
+            </a>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ===== 右サイドバー ===== -->
+  <aside class="bm-right">
+    <div class="bm-sidebar__widget">
+      <p class="bm-sidebar__label">事業所</p>
+      <p class="bm-sidebar__name">BLUE MOUSE</p>
+      <p class="bm-sidebar__sub">放課後等デイサービス</p>
+      <ul class="bm-sidebar__list">
+        <li>岡山市中区 徳吉町</li>
+        <li>TEL 086-273-3880</li>
+        <li>小学生〜高校生</li>
+        <li>定員 10名</li>
+      </ul>
+    </div>
+    <div class="bm-sidebar__widget" style="margin-top:20px;">
+      <p class="bm-sidebar__label">事業所</p>
+      <p class="bm-sidebar__name">LITTLE BLUE MOUSE</p>
+      <p class="bm-sidebar__sub">児童発達支援事業</p>
+      <ul class="bm-sidebar__list">
+        <li>岡山市北区 辰巳</li>
+        <li>2〜5歳（未就学児）</li>
+        <li>定員 10名</li>
+        <li>2025年12月 開所予定</li>
+      </ul>
+    </div>
+    <a href="./contact.html" class="bm-sidebar__cta">見学・お問い合わせ</a>
+  </aside>
+
+</div>
+<script src="./layout.js"></script>
+</body>
+</html>
