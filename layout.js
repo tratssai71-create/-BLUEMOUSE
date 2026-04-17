@@ -355,8 +355,8 @@
 
     /* PC サイドバーとスマホヘッダーの両方を対象にする */
     var TARGETS = [
-      { selector: '.bm-left .bm-logo',       size: 54, logoW: '180px' },
-      { selector: '.bm-mobile-header__logo',  size: 40, logoW: 'auto'  },
+      { selector: '.bm-left .bm-logo',       size: 54, logoW: '180px', logoH: 'auto' },
+      { selector: '.bm-mobile-header__logo',  size: 40, logoW: 'auto',  logoH: '34px' },
     ];
 
     /* 各ターゲットに要素を生成 */
@@ -370,7 +370,7 @@
       /* 既存ロゴを非表示に（バッジ完走後に再表示） */
       logoImg.style.cssText = [
         'display:none',
-        'width:' + t.logoW, 'height:auto', 'opacity:0',
+        'width:' + t.logoW, 'height:' + t.logoH, 'opacity:0',
         'transition:opacity .55s ease, transform .55s cubic-bezier(.34,1.56,.64,1)',
         'pointer-events:none',
       ].join(';');
