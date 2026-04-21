@@ -72,7 +72,7 @@ h1, h2, h3, h4, h5, h6 {
 .bm-nav__item {
   display: block;
   padding: 9px 12px 9px 14px;
-  border-radius: 6px;
+  border-radius: 2px;
   font-size: 13px;
   font-weight: 400;
   color: #7a6355;
@@ -82,17 +82,17 @@ h1, h2, h3, h4, h5, h6 {
 }
 .bm-nav__item:hover { color: #33251a; background: rgba(0,0,0,.03); }
 .bm-nav__item.is-active {
-  border-left-color: #f5a155;
+  border-left-color: #F4D13F;
   color: #33251a;
   font-weight: 400;
-  background: rgba(245,161,85,.07);
+  background: rgba(244,209,63,.1);
 }
 
 /* グループヘッダー（リンク＋矢印ボタン） */
 .bm-nav__group-header {
   display: flex;
   align-items: center;
-  border-radius: 6px;
+  border-radius: 2px;
   border-left: 2px solid transparent;
   transition: border-color .15s, background .15s;
 }
@@ -100,8 +100,8 @@ h1, h2, h3, h4, h5, h6 {
   background: rgba(0,0,0,.03);
 }
 .bm-nav__group-header.is-parent-active {
-  border-left-color: #f5a155;
-  background: rgba(245,161,85,.07);
+  border-left-color: #F4D13F;
+  background: rgba(244,209,63,.1);
 }
 .bm-nav__group-link {
   flex: 1;
@@ -125,7 +125,7 @@ h1, h2, h3, h4, h5, h6 {
   align-items: center;
   justify-content: center;
   padding: 9px 12px 9px 4px;
-  border-radius: 0 6px 6px 0;
+  border-radius: 0 2px 2px 0;
   background: none;
   border: none;
   cursor: pointer;
@@ -142,7 +142,7 @@ h1, h2, h3, h4, h5, h6 {
 }
 .bm-nav__group.is-open .bm-nav__arrow {
   transform: rotate(90deg);
-  color: #f5a155;
+  color: #F4D13F;
 }
 
 /* サブメニュー */
@@ -158,7 +158,7 @@ h1, h2, h3, h4, h5, h6 {
 .bm-nav__subitem {
   display: block;
   padding: 7px 10px;
-  border-radius: 8px;
+  border-radius: 3px;
   font-size: 12px;
   font-weight: 400;
   color: #888;
@@ -170,13 +170,13 @@ h1, h2, h3, h4, h5, h6 {
 .bm-nav__subitem:hover {
   background: rgba(0,0,0,.04);
   color: #222;
-  border-left-color: rgba(248,161,26,.4);
+  border-left-color: rgba(94,193,198,.4);
 }
 .bm-nav__subitem.is-active {
-  background: rgba(245,161,85,.08);
-  color: #c46b3e;
+  background: rgba(94,193,198,.08);
+  color: #3a9095;
   font-weight: 400;
-  border-left-color: #f5a155;
+  border-left-color: #5EC1C6;
 }
 
 /* ===== 第3階層（詳細ページ用） ===== */
@@ -193,11 +193,11 @@ h1, h2, h3, h4, h5, h6 {
   font-weight: 400;
   color: #aaa;
   text-decoration: none;
-  border-radius: 0 6px 6px 0;
+  border-radius: 0 2px 2px 0;
   transition: background .15s, color .15s;
 }
 .bm-nav__deepitem:hover { color: #555; background: rgba(0,0,0,.03); }
-.bm-nav__deepitem.is-active { color: #c46b3e; font-weight: 400; }
+.bm-nav__deepitem.is-active { color: #b8920a; font-weight: 400; }
 
 /* ===== 入れ子トグル（第2階層） ===== */
 .bm-nav__subtoggle {
@@ -206,7 +206,7 @@ h1, h2, h3, h4, h5, h6 {
   align-items: center;
   justify-content: space-between;
   padding: 6px 10px;
-  border-radius: 8px;
+  border-radius: 3px;
   background: none;
   border: 1px solid transparent;
   cursor: pointer;
@@ -219,17 +219,17 @@ h1, h2, h3, h4, h5, h6 {
   margin-top: 2px;
 }
 .bm-nav__subtoggle:hover { background: rgba(0,0,0,.04); color: #333; }
-.bm-nav__subtoggle.is-parent-active { color: #c47d2a; }
+.bm-nav__subtoggle.is-parent-active { color: #b8920a; }
 .bm-nav__group.is-open > .bm-nav__subtoggle .bm-nav__arrow {
   transform: rotate(90deg);
-  color: #f5a155;
+  color: #5EC1C6;
 }
 
 /* 第3階層（深いリンク） */
 .bm-nav__deepitem {
   display: block;
   padding: 5px 10px 5px 18px;
-  border-radius: 6px;
+  border-radius: 2px;
   font-size: 11px;
   font-weight: 400;
   color: #888;
@@ -238,7 +238,7 @@ h1, h2, h3, h4, h5, h6 {
   margin-top: 1px;
 }
 .bm-nav__deepitem:hover { background: rgba(0,0,0,.03); color: #444; }
-.bm-nav__deepitem.is-active { color: #c47d2a; font-weight: 500; }
+.bm-nav__deepitem.is-active { color: #3a9095; font-weight: 500; }
 
 /* ===== ページ遷移アニメーション ===== */
 @keyframes bm-page-enter {
@@ -301,9 +301,9 @@ h1, h2, h3, h4, h5, h6 {
 /* 白いBoxカード */
 .side-card {
   background: #fff;
-  border-radius: 12px;
+  border-radius: 4px;
   border: 1px solid rgba(0,0,0,.06);
-  box-shadow: 0 2px 8px rgba(0,0,0,.05);
+  box-shadow: 0 2px 16px rgba(0,0,0,.09);
   padding: 14px 14px 16px;
   display: flex;
   flex-direction: column;
@@ -312,16 +312,16 @@ h1, h2, h3, h4, h5, h6 {
   gap: 6px;
 }
 
-/* オレンジpillバッジ */
+/* ピルバッジ */
 .side-card__badge {
   display: inline-block;
-  background: #f5a155;
-  color: #fff;
+  background: #F4D13F;
+  color: #33251a;
   font-family: var(--font-body);
   font-size: 10px;
-  font-weight: 400;
+  font-weight: 500;
   padding: 3px 14px;
-  border-radius: 999px;
+  border-radius: 4px;
   margin-bottom: 2px;
 }
 
@@ -348,15 +348,15 @@ h1, h2, h3, h4, h5, h6 {
   color: #33251a;
   background: #f6ebe0;
   border: 1px solid #e0cebb;
-  border-radius: 6px;
+  border-radius: 2px;
   padding: 5px 12px;
   text-decoration: none;
   transition: background .18s, border-color .18s, color .18s;
   margin-top: 2px;
 }
 .side-card__link:hover {
-  background: #c46b3e;
-  border-color: #c46b3e;
+  background: #3a9095;
+  border-color: #3a9095;
   color: #fff;
 }
 
@@ -371,7 +371,7 @@ h1, h2, h3, h4, h5, h6 {
   font-family: var(--font-body);
   font-size: 12px;
   font-weight: 400;
-  border-radius: 8px;
+  border-radius: 6px;
   text-decoration: none;
   border: 1.5px solid #3a6b5e;
   transition: background .2s, color .2s, transform .15s;
@@ -404,7 +404,7 @@ h1, h2, h3, h4, h5, h6 {
   height: 56px;
   border-radius: 50%;
   background: radial-gradient(circle at 30% 30%, #fff8dd, #ffd87f 55%, #ffb547);
-  box-shadow: 0 0 0 8px rgba(255,255,255,.3), 0 0 40px rgba(255,174,70,.3);
+  box-shadow: 0 0 0 8px rgba(255,255,255,.3), 0 0 40px rgba(94,193,198,.3);
   align-self: flex-end;
   animation: floatMoon 5s ease-in-out infinite;
   flex-shrink: 0;
@@ -418,7 +418,7 @@ h1, h2, h3, h4, h5, h6 {
 .bm-stat {
   background: #fff;
   border: 1px solid rgba(0,0,0,.08);
-  border-radius: 12px;
+  border-radius: 4px;
   padding: 12px 14px;
 }
 .bm-stat__label {
@@ -430,7 +430,7 @@ h1, h2, h3, h4, h5, h6 {
 .bm-stat__value { font-size: 13px; color: #2a2a2a; line-height: 1.55; font-weight: 500; }
 .bm-stat__access {
   font-size: 11px;
-  color: #f5a155;
+  color: #5EC1C6;
   font-weight: 500;
   margin-top: 4px;
 }
@@ -439,22 +439,22 @@ h1, h2, h3, h4, h5, h6 {
   margin-top: 7px;
   padding: 5px 12px;
   background: transparent;
-  color: #c46b3e;
+  color: #3a9095;
   font-family: var(--font-body);
   font-size: 11px;
   font-weight: 500;
   border-radius: 5px;
-  border: 1px solid #c46b3e;
+  border: 1px solid #3a9095;
   text-decoration: none;
   transition: background .2s, color .2s;
 }
-.bm-map-btn:hover { background: #c46b3e; color: #fff; }
+.bm-map-btn:hover { background: #3a9095; color: #fff; }
 
 /* 見学ボタン */
 .bm-callout {
   background: #fff;
   border: 1px solid rgba(0,0,0,.08);
-  border-radius: 12px;
+  border-radius: 4px;
   padding: 12px 14px;
 }
 .bm-callout__title { font-family: var(--font-heading); font-size: 13px; font-weight: normal; margin-bottom: 5px; }
@@ -463,19 +463,19 @@ h1, h2, h3, h4, h5, h6 {
   display: block;
   text-align: center;
   padding: 9px;
-  background: #c46b3e;
+  background: #3a9095;
   color: #fff;
   font-family: var(--font-body);
   font-size: 12px;
   font-weight: 500;
-  border-radius: 6px;
+  border-radius: 2px;
   text-decoration: none;
-  border: 1.5px solid #c46b3e;
+  border: 1.5px solid #3a9095;
   cursor: pointer;
   width: 100%;
   transition: background .2s, color .2s;
 }
-.bm-callout__btn:hover { background: transparent; color: #c46b3e; }
+.bm-callout__btn:hover { background: transparent; color: #3a9095; }
 
 .bm-copy {
   font-size: 10px;
@@ -491,7 +491,7 @@ h1, h2, h3, h4, h5, h6 {
   gap: 8px;
   margin-top: auto;
   padding: 10px 14px;
-  border-radius: 8px;
+  border-radius: 3px;
   border: 1px solid #eddccc;
   color: #9a7f6a;
   text-decoration: none;
@@ -500,8 +500,8 @@ h1, h2, h3, h4, h5, h6 {
   transition: color .18s, border-color .18s, background .18s;
 }
 .bm-sidebar__insta:hover {
-  color: #c46b3e;
-  border-color: #c46b3e;
+  color: #3a9095;
+  border-color: #3a9095;
   background: rgba(196,107,62,.04);
 }
 
@@ -510,7 +510,7 @@ h1, h2, h3, h4, h5, h6 {
   font-size: 11px;
   letter-spacing: .16em;
   text-transform: uppercase;
-  color: #f5a155;
+  color: #5EC1C6;
   font-weight: 700;
   margin-bottom: 6px;
 }
@@ -574,7 +574,7 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .bm-hero-img {
-  border-radius: 16px;
+  border-radius: 4px;
   overflow: hidden;
   height: 260px;
   margin-bottom: 32px;
@@ -606,11 +606,11 @@ h1, h2, h3, h4, h5, h6 {
 .bm-card {
   background: #fff;
   border: 1px solid rgba(0,0,0,.08);
-  border-radius: 14px;
+  border-radius: 4px;
   padding: 16px;
   transition: transform .2s, box-shadow .2s;
 }
-.bm-card:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(248,161,26,.12); }
+.bm-card:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(94,193,198,.12); }
 .bm-card__icon { font-size: 1.5rem; margin-bottom: 8px; }
 .bm-card__title { font-size: 13px; font-weight: 600; margin-bottom: 5px; }
 .bm-card__text { font-size: 12px; color: #666; line-height: 1.7; }
@@ -620,7 +620,7 @@ h1, h2, h3, h4, h5, h6 {
   width: 100%;
   border-collapse: collapse;
   background: #fff;
-  border-radius: 12px;
+  border-radius: 4px;
   overflow: hidden;
   border: 1px solid rgba(0,0,0,.08);
   font-size: 13px;
@@ -646,7 +646,7 @@ h1, h2, h3, h4, h5, h6 {
 .bm-form {
   background: #fff;
   border: 1px solid rgba(0,0,0,.08);
-  border-radius: 16px;
+  border-radius: 4px;
   padding: 24px;
 }
 .bm-form__row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 14px; }
@@ -656,7 +656,7 @@ h1, h2, h3, h4, h5, h6 {
 .bm-form__req { color: #ef4444; margin-left: 2px; }
 .bm-form__input, .bm-form__select, .bm-form__textarea {
   border: 1.5px solid rgba(0,0,0,.12);
-  border-radius: 8px;
+  border-radius: 3px;
   padding: 9px 12px;
   font-size: 13px;
   font-family: inherit;
@@ -666,7 +666,7 @@ h1, h2, h3, h4, h5, h6 {
   transition: border-color .2s;
 }
 .bm-form__input:focus, .bm-form__select:focus, .bm-form__textarea:focus {
-  border-color: #f5a155;
+  border-color: #5EC1C6;
   background: #fff;
 }
 .bm-form__textarea { resize: vertical; min-height: 110px; }
@@ -695,36 +695,39 @@ h1, h2, h3, h4, h5, h6 {
 /* ボタン */
 .bm-btn {
   display: inline-block;
-  padding: 12px 28px;
-  border-radius: 8px;
+  padding: 13px 34px;
+  border-radius: 6px;
   font-size: 13px;
-  font-weight: 400;
+  font-weight: 500;
+  letter-spacing: .04em;
   text-decoration: none;
   cursor: pointer;
-  transition: background .2s, color .2s, transform .15s;
+  transition: background .22s, color .22s, transform .18s, box-shadow .22s;
 }
-.bm-btn:hover { transform: translateY(-1px); }
+.bm-btn:hover { transform: translateY(-2px); }
 .bm-btn--primary {
-  background: #c46b3e;
+  background: #3a9095;
   color: #fff;
-  border: 1.5px solid #c46b3e;
+  border: 1.5px solid #3a9095;
+  box-shadow: 0 4px 18px rgba(58,144,149,.32);
 }
 .bm-btn--primary:hover {
   background: transparent;
-  color: #c46b3e;
+  color: #3a9095;
+  box-shadow: none;
 }
 .bm-btn--ghost {
   background: transparent;
   color: #7a6355;
   border: 1.5px solid #d4c4b4;
 }
-.bm-btn--ghost:hover { border-color: #c46b3e; color: #c46b3e; }
+.bm-btn--ghost:hover { border-color: #3a9095; color: #3a9095; }
 
 /* アクセス */
 .bm-access-box {
   background: #fff;
   border: 1px solid rgba(0,0,0,.08);
-  border-radius: 12px;
+  border-radius: 4px;
   padding: 14px 16px;
   display: flex;
   flex-direction: column;
@@ -814,7 +817,7 @@ h1, h2, h3, h4, h5, h6 {
     color: #5a4035;
     text-decoration: none;
     padding: 5px 3px;
-    border-radius: 6px;
+    border-radius: 2px;
     white-space: nowrap;
     letter-spacing: .02em;
     transition: background .15s, color .15s;
@@ -823,7 +826,7 @@ h1, h2, h3, h4, h5, h6 {
   .bm-mobile-nav__link:hover,
   .bm-mobile-nav__link.is-active {
     background: rgba(196,107,62,.1);
-    color: #c46b3e;
+    color: #3a9095;
   }
 
   /* ハンバーガーボタン */
@@ -838,7 +841,7 @@ h1, h2, h3, h4, h5, h6 {
     padding: 8px;
     background: none;
     border: none;
-    border-radius: 8px;
+    border-radius: 3px;
     cursor: pointer;
     transition: background .15s;
   }
@@ -942,7 +945,7 @@ h1, h2, h3, h4, h5, h6 {
   text-decoration: none;
   transition: color .18s;
 }
-.bm-footer__insta:hover { color: #f5a155; }
+.bm-footer__insta:hover { color: #5EC1C6; }
 
 .bm-footer__col-title {
   font-family: var(--font-en);
@@ -966,7 +969,7 @@ h1, h2, h3, h4, h5, h6 {
   text-decoration: none;
   transition: color .15s;
 }
-.bm-footer__navlist a:hover { color: #f5a155; }
+.bm-footer__navlist a:hover { color: #5EC1C6; }
 
 .bm-footer__fac + .bm-footer__fac {
   margin-top: 20px;
@@ -984,7 +987,7 @@ h1, h2, h3, h4, h5, h6 {
 
 .bm-footer__fac-type {
   font-size: 10px;
-  color: #f5a155;
+  color: #5EC1C6;
   margin-bottom: 8px;
 }
 
@@ -1036,7 +1039,7 @@ h1, h2, h3, h4, h5, h6 {
     position: fixed;
     top: 0; left: 0;
     width: 8px; height: 8px;
-    background: #f5a155;
+    background: #5EC1C6;
     border-radius: 50%;
     pointer-events: none;
     z-index: 99999;
@@ -1049,7 +1052,7 @@ h1, h2, h3, h4, h5, h6 {
     position: fixed;
     top: 0; left: 0;
     width: 34px; height: 34px;
-    border: 1.5px solid rgba(248,161,26,.4);
+    border: 1.5px solid rgba(94,193,198,.4);
     border-radius: 50%;
     pointer-events: none;
     z-index: 99998;
@@ -1065,7 +1068,7 @@ h1, h2, h3, h4, h5, h6 {
   }
   body.cursor-hover #bm-cursor-ring {
     width: 50px; height: 50px;
-    border-color: rgba(248,161,26,.7);
+    border-color: rgba(94,193,198,.7);
   }
 
   /* ページ外に出たとき消す */

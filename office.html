@@ -56,7 +56,7 @@
       font-size: 10px;
       letter-spacing: .22em;
       text-transform: uppercase;
-      color: #f5a155;
+      color: #FE8C68;
       margin-bottom: 10px;
       font-weight: 400;
     }
@@ -85,8 +85,8 @@
     .tp-lead { padding: 40px 0 0; }
     .tp-lead__inner {
       background: #fef9f3;
-      border-left: 3px solid #f5a155;
-      border-radius: 0 8px 8px 0;
+      border-left: 3px solid #FE8C68;
+      border-radius: 0 3px 3px 0;
       padding: 20px 24px;
     }
     .tp-lead__text {
@@ -109,7 +109,7 @@
       gap: 16px;
       background: #fff;
       border: 1px solid rgba(0,0,0,.07);
-      border-radius: 10px;
+      border-radius: 3px;
       overflow: hidden;
     }
     .tp-feature__img {
@@ -172,13 +172,13 @@
       gap: 12px;
       padding: 14px 16px;
       background: #fff;
-      border-radius: 8px;
+      border-radius: 3px;
       border: 1px solid rgba(0,0,0,.06);
     }
     .tp-skill__dot {
       width: 8px; height: 8px;
       border-radius: 50%;
-      background: #f5a155;
+      background: #FE8C68;
       margin-top: 5px;
       flex-shrink: 0;
     }
@@ -225,7 +225,7 @@
       font-size: 9px;
       letter-spacing: .14em;
       text-transform: uppercase;
-      color: #f5a155;
+      color: #FE8C68;
       margin-bottom: 6px;
     }
     .tp-step__title {
@@ -270,7 +270,7 @@
       margin-top: 52px;
       padding: 36px 28px;
       background: #1e2e30;
-      border-radius: 12px;
+      border-radius: 4px;
       text-align: center;
       margin-bottom: 60px;
     }
@@ -291,7 +291,7 @@
       padding: 11px 22px;
       border: 1px solid rgba(255,255,255,.25);
       color: rgba(255,255,255,.75);
-      border-radius: 8px;
+      border-radius: 3px;
       text-decoration: none;
       font-size: 13px;
       transition: border-color .2s, color .2s;
@@ -311,6 +311,34 @@
       .tp-hero__overlay { padding: 24px 20px; }
       .tp-skills { grid-template-columns: 1fr; }
     }
+  
+    /* ヒーロー：画像なし版 */
+    .tp-hero--noimg {
+      background: linear-gradient(135deg, #1e2e30 0%, #2a3a3c 100%);
+    }
+    .tp-hero--noimg::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse at 80% 50%, #FE8C6822 0%, transparent 65%);
+    }
+    .tp-hero__kicker { color: #FE8C68 !important; opacity: 1 !important; }
+
+    /* tp-feature: 画像なし → テキストのみ全幅 */
+    .tp-feature {
+      border-radius: 3px;
+      padding: 20px 22px;
+    }
+    .tp-feature__body {
+      padding: 0 !important;
+      flex: 1 !important;
+    }
+    .tp-feature__title { font-size: 14px !important; margin-bottom: 8px !important; }
+    .tp-feature__text { font-size: 13px !important; }
+    .tp-skill__dot { background: #FE8C68 !important; }
+    .tp-step__tag { color: #FE8C68 !important; }
+    .tp-label { color: #FE8C68 !important; }
+    .tp-for__check svg { stroke: #FE8C68 !important; }
   </style>
 </head>
 <body>
@@ -392,36 +420,24 @@
       <h2 class="tp-title">このプログラムの特徴</h2>
       <div class="tp-features">
         <div class="tp-feature">
-          <div class="tp-feature__img tp-feature__img--ph">
-            <!-- 写真: WordでA4文書を作成している子どもの様子 -->
-          </div>
           <div class="tp-feature__body">
             <p class="tp-feature__title">Word 文書作成</p>
             <p class="tp-feature__text">文字入力・書式設定・印刷まで一通りの流れを学びます。報告書やお知らせ文書を自分で作れるようになります。</p>
           </div>
         </div>
         <div class="tp-feature">
-          <div class="tp-feature__img tp-feature__img--ph">
-            <!-- 写真: Excelで表とグラフを作っている子どもの画面 -->
-          </div>
           <div class="tp-feature__body">
             <p class="tp-feature__title">Excel データ入力・集計</p>
             <p class="tp-feature__text">表の作成・数式・グラフまで学びます。数値を整理・集計する力は、事務系の仕事に欠かせないスキルです。</p>
           </div>
         </div>
         <div class="tp-feature">
-          <div class="tp-feature__img tp-feature__img--ph">
-            <!-- 写真: PowerPointのスライドを見せながら発表している様子 -->
-          </div>
           <div class="tp-feature__body">
             <p class="tp-feature__title">PowerPoint プレゼン資料</p>
             <p class="tp-feature__text">スライドのデザインと構成を学び、自分の考えを視覚的に伝える表現力を養います。</p>
           </div>
         </div>
         <div class="tp-feature">
-          <div class="tp-feature__img tp-feature__img--ph">
-            <!-- 写真: 架空の会社書類に取り組んでいる子どもの様子 -->
-          </div>
           <div class="tp-feature__body">
             <p class="tp-feature__title">実践的な課題で定着</p>
             <p class="tp-feature__text">架空の会社書類・学校新聞・発表資料など、リアルな場面を想定した課題で操作スキルを確実に定着させます。</p>

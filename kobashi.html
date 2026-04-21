@@ -1,0 +1,213 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>小橋ページ（画質テスト）| BLUE MOUSE</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="./layout.css" />
+  <style>
+    /* テキスト＋写真 横並びセクション */
+    .kb-section {
+      display: grid;
+      grid-template-columns: 1fr 1.4fr;
+      gap: 40px;
+      align-items: center;
+      padding: 48px 0;
+      border-bottom: 1px solid rgba(0,0,0,.07);
+    }
+    .kb-section:last-child { border-bottom: none; }
+
+    /* 奇数：テキスト左・写真右 / 偶数：写真左・テキスト右 */
+    .kb-section:nth-child(even) .kb-text { order: 2; }
+    .kb-section:nth-child(even) .kb-photo { order: 1; }
+
+    /* 写真：imgモード（全体が見える） */
+    .kb-photo {
+      width: 100%;
+      background: #f0ece6;
+      border-radius: 4px;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .kb-photo img {
+      width: 100%;
+      height: auto;
+      display: block;
+      border-radius: 4px;
+    }
+
+    /* テキスト */
+    .kb-text {}
+    .kb-tag {
+      display: inline-block;
+      background: #F4D13F;
+      color: #33251a;
+      font-size: 10px;
+      font-weight: 700;
+      padding: 3px 12px;
+      border-radius: 4px;
+      letter-spacing: .08em;
+      margin-bottom: 14px;
+    }
+    .kb-title {
+      font-family: "koburina-gothic-w6", "Hiragino Kaku Gothic ProN", "Noto Sans JP", sans-serif;
+      font-size: clamp(1.2rem, 2vw, 1.6rem);
+      font-weight: normal;
+      line-height: 1.45;
+      color: #33251a;
+      margin: 0 0 16px;
+    }
+    .kb-body {
+      font-family: "Noto Sans JP", sans-serif;
+      font-size: 14px;
+      font-weight: 400;
+      color: #666;
+      line-height: 1.9;
+      margin: 0;
+    }
+
+    @media (max-width: 700px) {
+      .kb-section {
+        grid-template-columns: 1fr;
+        gap: 20px;
+      }
+      .kb-section:nth-child(even) .kb-text { order: 0; }
+      .kb-section:nth-child(even) .kb-photo { order: 0; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="bm-layout">
+
+  <!-- 左サイドバー -->
+  <aside class="bm-left">
+    <a class="bm-logo" href="./index.html">
+      <img src="./logo.webp" alt="BLUE MOUSE" />
+    </a>
+    <nav class="bm-nav">
+      <a href="./index.html" class="bm-nav__item" data-page="index">トップページ</a>
+      <div class="bm-nav__group" id="nav-child">
+        <div class="bm-nav__group-header">
+          <a href="./child.html" class="bm-nav__group-link bm-nav__item" data-page="child">児童発達支援事業</a>
+          <button type="button" class="bm-nav__toggle" aria-label="開く"><span class="bm-nav__arrow">›</span></button>
+        </div>
+      </div>
+      <div class="bm-nav__group" id="nav-afterschool">
+        <div class="bm-nav__group-header">
+          <a href="./afterschool.html" class="bm-nav__group-link bm-nav__item" data-page="afterschool">放課後等デイサービス</a>
+          <button type="button" class="bm-nav__toggle" aria-label="開く"><span class="bm-nav__arrow">›</span></button>
+        </div>
+      </div>
+      <a href="./philosophy.html" class="bm-nav__item" data-page="philosophy">BLUE MOUSEの想い</a>
+      <a href="./company.html" class="bm-nav__item" data-page="company">会社概要</a>
+      <a href="./contact.html" class="bm-nav__item" data-page="contact">お問い合わせ</a>
+      <a href="https://bouemouse.studio.site" class="bm-nav__item" target="_blank" rel="noopener">採用情報</a>
+    </nav>
+  </aside>
+
+  <!-- メインコンテンツ -->
+  <main class="bm-main" style="padding: 48px 40px;">
+
+    <div style="margin-bottom: 40px;">
+      <p style="font-size:11px; letter-spacing:.12em; color:#5EC1C6; font-weight:700; margin-bottom:8px; text-transform:uppercase;">Photo Test</p>
+      <h1 style="font-family:'koburina-gothic-w6','Hiragino Kaku Gothic ProN','Noto Sans JP',sans-serif; font-size:clamp(1.5rem,3vw,2.2rem); font-weight:normal; color:#33251a; margin:0 0 12px;">小橋ページ</h1>
+      <p style="font-size:13px; color:#aaa;">画質チェック用テストページ。DNG → JPEG 95% 変換（8064×6048）</p>
+    </div>
+
+    <!-- セクション1 -->
+    <div class="kb-section">
+      <div class="kb-text">
+        <span class="kb-tag">PHOTO 01</span>
+        <h2 class="kb-title">子どもたちの笑顔が<br>集まる場所</h2>
+        <p class="kb-body">
+          BLUE MOUSEでは、一人ひとりの個性を大切にしながら、<br>
+          安心して過ごせる環境づくりを心がけています。<br>
+          スタッフ全員が笑顔でお子さまをお迎えします。
+        </p>
+      </div>
+      <div class="kb-photo">
+        <img src="./photos/IMG_6292.webp" alt="写真01" />
+      </div>
+    </div>
+
+    <!-- セクション2 -->
+    <div class="kb-section">
+      <div class="kb-text">
+        <span class="kb-tag">PHOTO 02</span>
+        <h2 class="kb-title">丁寧な関わりで<br>一歩ずつ成長を</h2>
+        <p class="kb-body">
+          専門スタッフが一人ひとりに寄り添い、<br>
+          その子のペースに合わせた支援を行います。<br>
+          できた！という体験を積み重ねることが大切です。
+        </p>
+      </div>
+      <div class="kb-photo">
+        <img src="./photos/IMG_6293.webp" alt="写真02" />
+      </div>
+    </div>
+
+    <!-- セクション3 -->
+    <div class="kb-section">
+      <div class="kb-text">
+        <span class="kb-tag">PHOTO 03</span>
+        <h2 class="kb-title">遊びの中に<br>学びがある</h2>
+        <p class="kb-body">
+          療育は特別なことではありません。<br>
+          日常の遊びや活動の中で、自然と力がつくように、<br>
+          楽しい時間をデザインしています。
+        </p>
+      </div>
+      <div class="kb-photo">
+        <img src="./photos/IMG_6294.webp" alt="写真03" />
+      </div>
+    </div>
+
+    <!-- セクション4 -->
+    <div class="kb-section">
+      <div class="kb-text">
+        <span class="kb-tag">PHOTO 04</span>
+        <h2 class="kb-title">家族と一緒に<br>歩む支援</h2>
+        <p class="kb-body">
+          お子さまだけでなく、ご家族への支援も大切にしています。<br>
+          日々の様子をこまめに共有し、<br>
+          一緒に成長を喜べる関係を目指しています。
+        </p>
+      </div>
+      <div class="kb-photo">
+        <img src="./photos/IMG_6295.webp" alt="写真04" />
+      </div>
+    </div>
+
+  </main>
+
+  <!-- 右サイドバー（空） -->
+  <aside class="bm-right">
+    <p class="side-heading">PHOTO TEST</p>
+    <div class="side-cards">
+      <div class="side-card">
+        <span class="side-card__badge">画質</span>
+        <p class="side-card__title">JPEG 95%</p>
+      </div>
+      <div class="side-card">
+        <span class="side-card__badge">解像度</span>
+        <p class="side-card__title">8064 × 6048</p>
+      </div>
+      <div class="side-card">
+        <span class="side-card__badge">枚数</span>
+        <p class="side-card__title">4枚</p>
+      </div>
+    </div>
+    <p class="bm-copy" style="text-align:center; margin-top:14px;">© BLUE MOUSE All Rights Reserved.</p>
+  </aside>
+
+</div>
+
+<script src="./layout.js"></script>
+</body>
+</html>

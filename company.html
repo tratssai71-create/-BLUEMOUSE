@@ -85,7 +85,7 @@
       gap: 16px;
     }
     .co-facility {
-      border-radius: 12px;
+      border-radius: 4px;
       border: 1px solid rgba(0,0,0,.08);
       background: #fff;
       overflow: hidden;
@@ -113,7 +113,7 @@
       letter-spacing: .04em;
     }
     .co-facility.is-orange .co-facility__badge {
-      background: rgba(248,161,26,.9);
+      background: rgba(94,193,198,.9);
     }
     .co-facility__body {
       padding: 16px;
@@ -132,7 +132,7 @@
       margin: 0 0 12px;
     }
     .co-facility.is-orange .co-facility__type {
-      color: #f8a11a;
+      color: #5EC1C6;
     }
     .co-facility__row {
       display: flex;
@@ -158,8 +158,8 @@
       font-weight: 500;
     }
     .co-facility.is-orange .co-facility__tag {
-      background: rgba(248,161,26,.1);
-      color: #c46b3e;
+      background: rgba(94,193,198,.1);
+      color: #3a9095;
     }
 
     /* ===== アクセスグリッド ===== */
@@ -169,7 +169,7 @@
       gap: 16px;
     }
     .co-access-card {
-      border-radius: 12px;
+      border-radius: 4px;
       border: 1px solid rgba(0,0,0,.08);
       background: #fff;
       overflow: hidden;
@@ -220,7 +220,7 @@
       gap: 14px;
     }
     .co-mv-card {
-      border-radius: 10px;
+      border-radius: 3px;
       padding: 20px;
       background: #f8f5f2;
     }
@@ -251,7 +251,7 @@
       font-size: 13px;
       font-weight: 600;
       text-decoration: none;
-      border-radius: 24px;
+      border-radius: 4px;
       letter-spacing: .04em;
       transition: background .18s, transform .18s, box-shadow .18s;
       box-shadow: 0 3px 12px rgba(58,124,165,.25);
@@ -509,29 +509,31 @@
 
   <!-- ===== 右サイドバー ===== -->
   <aside class="bm-right">
-    <div class="bm-sidebar__widget">
-      <p class="bm-sidebar__label">事業所</p>
-      <p class="bm-sidebar__name">BLUE MOUSE</p>
-      <p class="bm-sidebar__sub">放課後等デイサービス</p>
-      <ul class="bm-sidebar__list">
-        <li>岡山市中区 徳吉町</li>
-        <li>TEL 086-273-3880</li>
-        <li>小学生〜高校生</li>
-        <li>定員 10名</li>
-      </ul>
+    <p class="side-heading">FACILITIES</p>
+    <div class="side-cards">
+
+      <div class="side-card">
+        <span class="side-card__badge" style="background:#FE8C68; color:#fff;">BLUE MOUSE</span>
+        <p class="side-card__title">放課後等デイサービス</p>
+        <p class="side-card__sub">岡山市中区 徳吉町</p>
+        <p class="side-card__sub">TEL 086-273-3880</p>
+        <p class="side-card__sub">小学生〜高校生 / 定員10名</p>
+      </div>
+
+      <div class="side-card">
+        <span class="side-card__badge" style="background:#5EC1C6; color:#fff;">LITTLE BLUE MOUSE</span>
+        <p class="side-card__title">児童発達支援事業</p>
+        <p class="side-card__sub">岡山市北区 辰巳</p>
+        <p class="side-card__sub">2〜5歳（未就学児）/ 定員10名</p>
+        <p class="side-card__sub" style="color:#b86e00;">2025年12月 開所予定</p>
+      </div>
+
     </div>
-    <div class="bm-sidebar__widget" style="margin-top:20px;">
-      <p class="bm-sidebar__label">事業所</p>
-      <p class="bm-sidebar__name">LITTLE BLUE MOUSE</p>
-      <p class="bm-sidebar__sub">児童発達支援事業</p>
-      <ul class="bm-sidebar__list">
-        <li>岡山市北区 辰巳</li>
-        <li>2〜5歳（未就学児）</li>
-        <li>定員 10名</li>
-        <li>2025年12月 開所予定</li>
-      </ul>
-    </div>
-    <a href="./contact.html" class="bm-sidebar__cta">見学・お問い合わせ</a>
+    <a href="./contact.html" class="side-cta">
+      見学・お問い合わせ
+      <span class="side-cta__icon">›</span>
+    </a>
+    <p class="bm-copy" style="text-align:center; margin-top:14px;">© BLUE MOUSE All Rights Reserved.</p>
   </aside>
 
 </div>

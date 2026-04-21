@@ -92,13 +92,13 @@
     #box-1 .slide-btn {
       display: inline-block;
       padding: 11px 26px;
-      background: #c46b3e;
+      background: #3a9095;
       color: #fff;
       font-family: "M PLUS Rounded 1c", sans-serif;
       font-size: 13px;
       font-weight: 500;
-      border-radius: 6px;
-      border: 1.5px solid #c46b3e;
+      border-radius: 2px;
+      border: 1.5px solid #3a9095;
       text-decoration: none;
       align-self: flex-start;
       transition: background .2s, color .2s, transform .15s;
@@ -124,7 +124,7 @@
       font-family: "M PLUS Rounded 1c", sans-serif;
       font-size: 13px;
       font-weight: 500;
-      border-radius: 6px;
+      border-radius: 2px;
       border: 1.5px solid rgba(255,255,255,.6);
       text-decoration: none;
       align-self: flex-start;
@@ -141,7 +141,7 @@
       font-family: "M PLUS Rounded 1c", sans-serif;
       font-size: 13px;
       font-weight: 500;
-      border-radius: 6px;
+      border-radius: 2px;
       border: 1.5px solid rgba(255,255,255,.6);
       text-decoration: none;
       align-self: flex-end;
@@ -202,6 +202,49 @@
       pointer-events: none;
     }
 
+    /* 右パネル ナビカード */
+    .idx-nav-card {
+      display: block;
+      background: #fff;
+      border-radius: 4px;
+      border: 1px solid rgba(0,0,0,.06);
+      box-shadow: 0 2px 8px rgba(0,0,0,.05);
+      padding: 14px 16px 16px;
+      text-decoration: none;
+      color: inherit;
+      border-top: 3px solid var(--c, #ccc);
+      transition: transform .2s, box-shadow .2s;
+    }
+    .idx-nav-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(0,0,0,.1);
+    }
+    .idx-nav-card__badge {
+      display: inline-block;
+      background: var(--c, #ccc);
+      color: #33251a;
+      font-family: "Inter", sans-serif;
+      font-size: 9px;
+      font-weight: 700;
+      padding: 2px 10px;
+      border-radius: 4px;
+      letter-spacing: .08em;
+      margin-bottom: 8px;
+    }
+    .idx-nav-card__title {
+      font-size: 15px;
+      font-weight: 500;
+      color: #33251a;
+      line-height: 1.45;
+      margin: 0 0 2px;
+    }
+    .idx-nav-card__sub {
+      font-size: 10px;
+      color: #aaa;
+      font-weight: 400;
+      margin: 0;
+    }
+
     /* レスポンシブ（サイドバー非表示時） */
     @media (max-width: 780px) {
       #bm-dots    { right: 16px; }
@@ -260,7 +303,7 @@
 
     <!-- スライド 1：メインビジュアル -->
     <div id="box-1">
-      <img class="slide-img" src="./1.webp" alt="BLUE MOUSE" />
+      <img class="slide-img" src="./photos/IMG_6294.webp" alt="BLUE MOUSE" />
       <div class="slide-overlay">
         <h2 class="slide-title">主体性療育から、IT療育へ。<br>経済的自立から逆算した、<br>10年間の確かなロードマップ。</h2>
         <p class="slide-lead">
@@ -272,7 +315,7 @@
 
     <!-- スライド 2：放課後等デイサービス -->
     <div id="box-2">
-      <img class="slide-img" src="./1.webp" alt="放課後等デイサービス" />
+      <img class="slide-img" src="./photos/IMG_6293.webp" alt="放課後等デイサービス" />
       <div class="slide-overlay">
         <h2 class="slide-title">放課後等デイサービス（就学期）<br>強みとなる「見える力」は、<br>伴走者と共に育む。</h2>
         <p class="slide-lead">
@@ -285,7 +328,7 @@
 
     <!-- スライド 3：児童発達支援事業 -->
     <div id="box-3">
-      <img class="slide-img" src="./5.webp" alt="児童発達支援事業" />
+      <img class="slide-img" src="./photos/IMG_6295.webp" alt="児童発達支援事業" />
       <div class="slide-overlay">
         <h2 class="slide-title">児童発達支援事業</h2>
         <p class="slide-lead">
@@ -414,7 +457,9 @@
         support: 'IT療育・PCスキル・SST',
         addr:    '岡山市中区 / 岡山市北区',
         access:  'お気軽にお問い合わせください',
-        mapUrl:  'https://maps.google.com/?q=岡山県岡山市中区徳吉町二丁目11番地25'
+        mapUrl:  'https://maps.google.com/?q=岡山県岡山市中区徳吉町二丁目11番地25',
+        color:   '#F4D13F',
+        textColor: '#33251a'
       },
       {
         heading: 'SERVICE INFO',
@@ -423,7 +468,9 @@
         support: 'IT療育・PCスキル・SST',
         addr:    '岡山市中区<br>徳吉町二丁目11番地25',
         access:  '東山電停から徒歩1分',
-        mapUrl:  'https://maps.google.com/?q=岡山県岡山市中区徳吉町二丁目11番地25'
+        mapUrl:  'https://maps.google.com/?q=岡山県岡山市中区徳吉町二丁目11番地25',
+        color:   '#FE8C68',
+        textColor: '#fff'
       },
       {
         heading: 'SERVICE INFO',
@@ -432,25 +479,33 @@
         support: '言語・感覚統合・集団活動',
         addr:    '岡山市北区<br>辰巳２６−１０２',
         access:  'アクセス情報 準備中',
-        mapUrl:  'https://maps.google.com/?q=岡山県岡山市北区辰巳26-102'
+        mapUrl:  'https://maps.google.com/?q=岡山県岡山市北区辰巳26-102',
+        color:   '#5EC1C6',
+        textColor: '#fff'
       },
     ];
 
     function updateSidebar(idx) {
       var d = sideData[idx] || sideData[0];
-      var el = function (sel) { return document.querySelector(sel); };
       var ageEl    = document.getElementById('side-age');
       var capEl    = document.getElementById('side-cap');
       var suppEl   = document.getElementById('side-support');
       var addrEl   = document.getElementById('side-addr');
       var accessEl = document.getElementById('side-access');
       var mapEl    = document.getElementById('side-map');
-      if (ageEl)    ageEl.textContent   = d.age;
-      if (capEl)    capEl.textContent   = d.cap;
-      if (suppEl)   suppEl.textContent  = d.support;
-      if (addrEl)   addrEl.innerHTML    = d.addr;
+      if (ageEl)    ageEl.textContent    = d.age;
+      if (capEl)    capEl.textContent    = d.cap;
+      if (suppEl)   suppEl.textContent   = d.support;
+      if (addrEl)   addrEl.innerHTML     = d.addr;
       if (accessEl) accessEl.textContent = d.access;
       if (mapEl)    mapEl.href           = d.mapUrl;
+
+      /* バッジ色をスライドに合わせて切り替え */
+      document.querySelectorAll('.side-card__badge').forEach(function(el) {
+        el.style.transition = 'background .4s ease, color .4s ease';
+        el.style.background = d.color;
+        el.style.color      = d.textColor;
+      });
     }
 
     /* updateUI を拡張 */

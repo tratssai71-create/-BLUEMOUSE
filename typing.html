@@ -58,7 +58,7 @@
       font-size: 10px;
       letter-spacing: .22em;
       text-transform: uppercase;
-      color: #f5a155;
+      color: #FE8C68;
       margin-bottom: 10px;
       font-weight: 400;
     }
@@ -89,8 +89,8 @@
     }
     .tp-lead__inner {
       background: #fef9f3;
-      border-left: 3px solid #f5a155;
-      border-radius: 0 8px 8px 0;
+      border-left: 3px solid #FE8C68;
+      border-radius: 0 3px 3px 0;
       padding: 20px 24px;
     }
     .tp-lead__text {
@@ -113,7 +113,7 @@
       gap: 16px;
       background: #fff;
       border: 1px solid rgba(0,0,0,.07);
-      border-radius: 10px;
+      border-radius: 3px;
       overflow: hidden;
     }
     .tp-feature__img {
@@ -179,14 +179,14 @@
       gap: 12px;
       padding: 14px 16px;
       background: #fff;
-      border-radius: 8px;
+      border-radius: 3px;
       border: 1px solid rgba(0,0,0,.06);
     }
     .tp-skill__dot {
       width: 8px;
       height: 8px;
       border-radius: 50%;
-      background: #f5a155;
+      background: #FE8C68;
       margin-top: 5px;
       flex-shrink: 0;
     }
@@ -239,7 +239,7 @@
       font-size: 9px;
       letter-spacing: .14em;
       text-transform: uppercase;
-      color: #f5a155;
+      color: #FE8C68;
       margin-bottom: 6px;
     }
     .tp-step__title {
@@ -291,7 +291,7 @@
       margin-top: 52px;
       padding: 36px 28px;
       background: #1e2e30;
-      border-radius: 12px;
+      border-radius: 4px;
       text-align: center;
       margin-bottom: 60px;
     }
@@ -312,7 +312,7 @@
       padding: 11px 22px;
       border: 1px solid rgba(255,255,255,.25);
       color: rgba(255,255,255,.75);
-      border-radius: 8px;
+      border-radius: 3px;
       text-decoration: none;
       font-size: 13px;
       transition: border-color .2s, color .2s;
@@ -332,6 +332,34 @@
       .tp-hero__overlay { padding: 24px 20px; }
       .tp-features, .tp-skills { grid-template-columns: 1fr; }
     }
+  
+    /* ヒーロー：画像なし版 */
+    .tp-hero--noimg {
+      background: linear-gradient(135deg, #1e2e30 0%, #2a3a3c 100%);
+    }
+    .tp-hero--noimg::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse at 80% 50%, #FE8C6822 0%, transparent 65%);
+    }
+    .tp-hero__kicker { color: #FE8C68 !important; opacity: 1 !important; }
+
+    /* tp-feature: 画像なし → テキストのみ全幅 */
+    .tp-feature {
+      border-radius: 3px;
+      padding: 20px 22px;
+    }
+    .tp-feature__body {
+      padding: 0 !important;
+      flex: 1 !important;
+    }
+    .tp-feature__title { font-size: 14px !important; margin-bottom: 8px !important; }
+    .tp-feature__text { font-size: 13px !important; }
+    .tp-skill__dot { background: #FE8C68 !important; }
+    .tp-step__tag { color: #FE8C68 !important; }
+    .tp-label { color: #FE8C68 !important; }
+    .tp-for__check svg { stroke: #FE8C68 !important; }
   </style>
 </head>
 <body>
@@ -413,36 +441,24 @@
       <h2 class="tp-title">このプログラムの特徴</h2>
       <div class="tp-features">
         <div class="tp-feature">
-          <div class="tp-feature__img tp-feature__img--ph">
-            <!-- 写真: 先生が子どもにキーボードの置き方を教えている様子 -->
-          </div>
           <div class="tp-feature__body">
             <p class="tp-feature__title">基礎から丁寧に</p>
             <p class="tp-feature__text">ホームポジションの覚え方から始め、焦らずステップアップ。指の動かし方を体に自然に覚えさせます。</p>
           </div>
         </div>
         <div class="tp-feature">
-          <div class="tp-feature__img tp-feature__img--ph">
-            <!-- 写真: 子どもが楽しそうにタイピングゲームをしている様子 -->
-          </div>
           <div class="tp-feature__body">
             <p class="tp-feature__title">ゲーム感覚で継続</p>
             <p class="tp-feature__text">タイピングゲームや記録への挑戦など、飽きずに続けられる工夫で楽しく上達します。</p>
           </div>
         </div>
         <div class="tp-feature">
-          <div class="tp-feature__img tp-feature__img--ph">
-            <!-- 写真: 子ども一人でPCに向き合っている様子 -->
-          </div>
           <div class="tp-feature__body">
             <p class="tp-feature__title">個別進度に合わせる</p>
             <p class="tp-feature__text">速い子も、ゆっくりな子も、それぞれのペースで進められる個別対応プログラムです。</p>
           </div>
         </div>
         <div class="tp-feature">
-          <div class="tp-feature__img tp-feature__img--ph">
-            <!-- 写真: 文章を入力している手元のアップ -->
-          </div>
           <div class="tp-feature__body">
             <p class="tp-feature__title">就労を見据えた設計</p>
             <p class="tp-feature__text">PC操作が当たり前の社会で活躍するための実用的なスキルとして、日常的に活かせる力を育てます。</p>
