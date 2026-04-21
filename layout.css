@@ -1,10 +1,10 @@
 /* ===== Google Fonts ===== */
-@import url('https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@400;500;700&family=Inter:wght@400;500;600&family=Noto+Sans+JP:wght@400;500;700&family=Nunito:ital,wght@1,800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@400;500;700&family=Inter:wght@400;500;600&family=Noto+Sans+JP:wght@400;500;700;800&family=Zen+Maru+Gothic:wght@400;500;700&family=Nunito:ital,wght@1,800&display=swap');
 
 /* ===== フォント変数 ===== */
 :root {
   --font-heading: "koburina-gothic-w6", "A-OTF こぶりなゴシック Std W6", "Hiragino Kaku Gothic ProN", "M PLUS Rounded 1c", "Yu Gothic", "Noto Sans JP", sans-serif;
-  --font-body:    "M PLUS Rounded 1c", "Noto Sans JP", "Hiragino Sans", system-ui, sans-serif;
+  --font-body:    "Zen Maru Gothic", "M PLUS Rounded 1c", "Noto Sans JP", "Hiragino Sans", system-ui, sans-serif;
   --font-en:      "Inter", system-ui, -apple-system, sans-serif;
 }
 
@@ -67,12 +67,13 @@ h1, h2, h3, h4, h5, h6 {
 
 
 /* ナビ */
-.bm-nav { display: flex; flex-direction: column; gap: 4px; }
+.bm-nav { display: flex; flex-direction: column; gap: 2px; }
 
 .bm-nav__item {
   display: block;
-  padding: 9px 12px 9px 14px;
-  border-radius: 2px;
+  padding: 11px 12px 11px 16px;
+  border-radius: 4px;
+  font-size: 15px;
   font-size: 13px;
   font-weight: 400;
   color: #7a6355;
@@ -84,7 +85,7 @@ h1, h2, h3, h4, h5, h6 {
 .bm-nav__item.is-active {
   border-left-color: #F4D13F;
   color: #33251a;
-  font-weight: 400;
+  font-weight: 700;
   background: rgba(244,209,63,.1);
 }
 
@@ -105,7 +106,8 @@ h1, h2, h3, h4, h5, h6 {
 }
 .bm-nav__group-link {
   flex: 1;
-  padding: 9px 4px 9px 12px;
+  padding: 11px 4px 11px 14px;
+  font-size: 15px;
   font-family: var(--font-body);
   font-size: 13px;
   font-weight: 400;
@@ -1031,9 +1033,9 @@ h1, h2, h3, h4, h5, h6 {
   }
 }
 
-/* ===== カスタムカーソル ===== */
+/* ===== カスタムカーソル（一時無効化） ===== */
 @media (pointer: fine) {
-  * { cursor: none !important; }
+  /* * { cursor: none !important; } */
 
   #bm-cursor {
     position: fixed;

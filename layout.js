@@ -539,7 +539,7 @@
     setupToggle();
     setupObserver();
     setupSwipe();
-    setupCursor();
+    // setupCursor(); /* 一時無効化 */
     setupSidebarInsta();
     setupFooter();
     setupMobileHeader();

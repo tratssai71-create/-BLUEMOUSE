@@ -437,123 +437,6 @@
       display: block;
     }
 
-    /* ===== 想いセクション：ダークネイビー全幅 ===== */
-    .af-philosophy {
-      background: #192d3f;
-      margin: 0 -36px;
-      padding: 72px 36px 80px;
-      border-bottom: none;
-    }
-    .af-philosophy .af-philosophy__lead {
-      background: rgba(255,255,255,.06);
-      border-left-color: #FE8C68;
-    }
-    .af-philosophy .af-philosophy__lead p { color: rgba(255,255,255,.78); }
-    .af-philosophy .af-pillar { border-bottom-color: rgba(255,255,255,.07); }
-    .af-philosophy .af-pillar__num { color: rgba(255,255,255,.08); }
-    .af-philosophy .af-pillar__title { color: rgba(255,255,255,.92); }
-    .af-philosophy .af-pillar__text { color: rgba(255,255,255,.6); }
-    .af-philosophy .af-pillar__text strong { color: rgba(255,255,255,.9); }
-    .af-philosophy .af-stat {
-      background: rgba(255,255,255,.07);
-      border-color: rgba(255,255,255,.08);
-    }
-    .af-philosophy .af-stat__num { color: #FE8C68; }
-    .af-philosophy .af-stat__text { color: rgba(255,255,255,.5); }
-    .af-philosophy .af-stat__text strong { color: rgba(255,255,255,.85); }
-    .af-philosophy .af-point {
-      color: rgba(255,255,255,.72);
-      border-bottom-color: rgba(255,255,255,.07);
-    }
-    .af-philosophy .af-point:first-child { border-top-color: rgba(255,255,255,.07); }
-    .af-philosophy .af-point__check svg { stroke: #FE8C68; }
-    .af-philosophy .af-compare__card--other {
-      background: rgba(255,255,255,.07);
-      border-color: transparent;
-    }
-    .af-philosophy .af-compare__card--other .af-compare__label { color: rgba(255,255,255,.28); }
-    .af-philosophy .af-compare__card--other .af-compare__title { color: rgba(255,255,255,.55); }
-    .af-philosophy .af-compare__card--other .af-compare__desc { color: rgba(255,255,255,.38); }
-
-    /* ===== セクション余白拡大 ===== */
-    .af-section { padding: 80px 0; }
-
-    /* ===== セクションタイトル装飾アンダーライン ===== */
-    .af-title {
-      position: relative;
-      padding-bottom: 18px;
-    }
-    .af-title::after {
-      content: '';
-      position: absolute;
-      bottom: 0; left: 0;
-      width: 38px; height: 3px;
-      background: #FE8C68;
-      border-radius: 2px 1px 3px 0;
-    }
-
-    /* ===== ヒーロー型アイテム (01 タイピング) ===== */
-    .af-item--hero {
-      display: block;
-      position: relative;
-      border-bottom: none;
-      margin-bottom: 80px;
-      grid-template-columns: none;
-      grid-template-rows: none;
-    }
-    .af-item--hero .af-item__img {
-      height: 460px;
-      width: 100%;
-      order: unset;
-    }
-    .af-item--hero .af-item__body {
-      order: unset;
-      position: relative;
-      margin-top: -80px;
-      margin-left: auto;
-      margin-right: 0;
-      width: 52%;
-      background: #fff;
-      box-shadow: 0 24px 64px rgba(0,0,0,.15);
-      border-radius: 4px;
-      padding: 44px 40px;
-      z-index: 2;
-      justify-content: flex-start;
-    }
-
-    /* ===== ワイド型アイテム (02 プログラミング) ===== */
-    .af-item--wide {
-      grid-template-columns: 3fr 2fr;
-    }
-
-    /* ===== カード型アイテム (03, 04) ===== */
-    .af-item-cards {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 20px;
-      padding-top: 40px;
-      border-top: 1px solid rgba(0,0,0,.06);
-    }
-    .af-item-card {
-      background: #fff;
-      border: 1px solid rgba(0,0,0,.06);
-      border-radius: 4px;
-      padding: 40px 36px 36px;
-      box-shadow: 0 4px 24px rgba(0,0,0,.06);
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-      position: relative;
-      overflow: hidden;
-    }
-    .af-item-card::before {
-      content: '';
-      position: absolute;
-      top: 0; left: 0;
-      width: 100%; height: 3px;
-      background: #FE8C68;
-    }
-
     /* ===== レスポンシブ ===== */
     @media (max-width: 780px) {
       .af-hero { margin: -24px -16px 0; }
@@ -567,18 +450,6 @@
       .af-row { grid-template-columns: 1fr; gap: 24px; }
       .af-section { padding: 36px 0; }
       .af-philosophy { margin: 0 -16px; padding: 48px 16px 56px; }
-      .af-item--hero { margin-bottom: 0; }
-      .af-item--hero .af-item__img { height: 280px; }
-      .af-item--hero .af-item__body {
-        position: static;
-        margin-top: 0;
-        margin-left: 0;
-        width: 100%;
-        box-shadow: none;
-        padding: 28px 20px;
-      }
-      .af-item-cards { grid-template-columns: 1fr; }
-      .af-item-card { padding: 28px 20px; }
     }
   </style>
 </head>
@@ -737,7 +608,7 @@
 
       <div class="af-items">
 
-        <div class="af-item af-item--hero">
+        <div class="af-item">
           <div class="af-item__img">
             <img src="./1.webp" alt="タイピング練習" />
           </div>
@@ -749,7 +620,7 @@
           </div>
         </div>
 
-        <div class="af-item af-item--wide">
+        <div class="af-item">
           <div class="af-item__img">
             <img src="./5.webp" alt="プログラミング学習" />
           </div>
@@ -761,22 +632,24 @@
           </div>
         </div>
 
-        <div class="af-item-cards">
-
-          <div class="af-item-card">
+        <div class="af-item">
+          <div class="af-item__img af-item__img--ph">写真</div>
+          <div class="af-item__body">
             <span class="af-item__num">03</span>
             <h3 class="af-item__title">オフィスソフト操作</h3>
             <p class="af-item__text">Word・Excel・PowerPointなどのオフィスソフトの基本操作を学びます。将来の就労に直結するスキルを、実践的な課題を通じて習得していきます。</p>
             <a href="./office.html" class="af-detail-btn">詳しく見る <span class="af-detail-btn__arrow">›</span></a>
           </div>
+        </div>
 
-          <div class="af-item-card">
+        <div class="af-item">
+          <div class="af-item__img af-item__img--ph">写真</div>
+          <div class="af-item__body">
             <span class="af-item__num">04</span>
             <h3 class="af-item__title">コミュニケーション支援</h3>
             <p class="af-item__text">ITスキルだけでなく、社会で必要なコミュニケーション能力も育てます。グループ活動やロールプレイを通じて、友人との関わり方や気持ちの伝え方を練習します。</p>
             <a href="./communication.html" class="af-detail-btn">詳しく見る <span class="af-detail-btn__arrow">›</span></a>
           </div>
-
         </div>
 
       </div>
@@ -922,13 +795,6 @@
   /* 番号アイテム → 奇数:左から / 偶数:右から */
   document.querySelectorAll('.af-item').forEach(function (el, i) {
     el.classList.add(i % 2 === 0 ? 'anim-left' : 'anim-right');
-    observer.observe(el);
-  });
-
-  /* カード型アイテム → 下から順番に */
-  document.querySelectorAll('.af-item-card').forEach(function (el, i) {
-    el.classList.add('anim-up');
-    el.style.transitionDelay = (i * 0.1) + 's';
     observer.observe(el);
   });
 
