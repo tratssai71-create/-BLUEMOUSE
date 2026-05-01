@@ -534,6 +534,60 @@
     });
   }
 
+  /* ===== モバイル INFO ドロワー ===== */
+  function setupInfoDrawer() {
+    var drawer = document.querySelector('.bm-right');
+    if (!drawer) return;
+
+    /* 閉じるボタンを追加（まだなければ） */
+    if (!drawer.querySelector('.bm-drawer-close')) {
+      var closeBtn = document.createElement('button');
+      closeBtn.className = 'bm-drawer-close';
+      closeBtn.setAttribute('aria-label', '閉じる');
+      closeBtn.innerHTML = '&times;';
+      drawer.insertBefore(closeBtn, drawer.firstChild);
+    }
+
+    /* オーバーレイを追加（まだなければ） */
+    var overlay = document.getElementById('bm-info-overlay');
+    if (!overlay) {
+      overlay = document.createElement('div');
+      overlay.id = 'bm-info-overlay';
+      overlay.className = 'bm-info-overlay';
+      document.body.appendChild(overlay);
+    }
+
+    /* FABボタンを追加（まだなければ） */
+    var fab = document.getElementById('bm-info-fab');
+    if (!fab) {
+      fab = document.createElement('button');
+      fab.id = 'bm-info-fab';
+      fab.className = 'bm-info-fab';
+      fab.setAttribute('aria-label', 'サービス情報');
+      fab.innerHTML =
+        '<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/>' +
+        '<line x1="12" y1="8" x2="12" y2="8"/>' +
+        '<line x1="12" y1="12" x2="12" y2="16"/></svg>' +
+        '<span class="bm-info-fab__label">info</span>';
+      document.body.appendChild(fab);
+    }
+
+    function openDrawer() {
+      drawer.classList.add('is-open');
+      overlay.classList.add('is-open');
+      document.body.style.overflow = 'hidden';
+    }
+    function closeDrawer() {
+      drawer.classList.remove('is-open');
+      overlay.classList.remove('is-open');
+      document.body.style.overflow = '';
+    }
+
+    fab.addEventListener('click', openDrawer);
+    overlay.addEventListener('click', closeDrawer);
+    drawer.querySelector('.bm-drawer-close').addEventListener('click', closeDrawer);
+  }
+
   function init() {
     setActive();
     setupToggle();
@@ -544,6 +598,7 @@
     setupFooter();
     setupMobileHeader();
     setupLogoAnimation();
+    setupInfoDrawer();
   }
 
   if (document.readyState === 'loading') {

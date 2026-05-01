@@ -12,8 +12,8 @@
     /* ===== ヒーロー ===== */
     .ph-hero {
       position: relative;
-      height: 38vh;
-      min-height: 220px;
+      height: 56vh;
+      min-height: 340px;
       margin: -40px -36px 0;
       overflow: hidden;
       background: #1a1f2a;
@@ -24,32 +24,40 @@
       width: 100%; height: 100%;
       object-fit: cover;
       object-position: center 35%;
-      opacity: .45;
+      opacity: 1;
       display: block;
+      filter: brightness(.72) saturate(1.05);
     }
     .ph-hero__overlay {
       position: absolute;
       inset: 0;
+      background: linear-gradient(
+        to bottom,
+        rgba(0,0,0,0)   0%,
+        rgba(0,0,0,.15) 50%,
+        rgba(0,0,0,.72) 100%
+      );
       display: flex;
       flex-direction: column;
       justify-content: flex-end;
-      padding: 32px 36px;
+      padding: 40px 40px;
     }
     .ph-hero__kicker {
       font-family: "Inter", sans-serif;
       font-size: 10px;
       letter-spacing: .22em;
       text-transform: uppercase;
-      color: rgba(255,255,255,.5);
-      margin-bottom: 8px;
+      color: rgba(94,193,198,.9);
+      margin-bottom: 10px;
     }
     .ph-hero__title {
       font-family: "koburina-gothic-w6", "A-OTF こぶりなゴシック Std W6", "Hiragino Kaku Gothic ProN", "Noto Sans JP", sans-serif;
       font-size: clamp(1.5rem, 2.8vw, 2.2rem);
-      font-weight: 700;
+      font-weight: normal;
       color: #fff;
       margin: 0;
-      line-height: 1.3;
+      line-height: 1.35;
+      text-shadow: 0 2px 12px rgba(0,0,0,.3);
     }
 
     /* ===== 共通 ===== */
@@ -83,6 +91,80 @@
       height: 1px;
       background: rgba(0,0,0,.07);
       margin: 52px 0 0;
+    }
+
+    /* ===== 2カラム split ===== */
+    .ph-section--split {
+      display: grid;
+      grid-template-columns: 1fr 280px;
+      gap: 40px;
+      align-items: start;
+    }
+    .ph-section__img {
+      border-radius: 10px;
+      overflow: hidden;
+      aspect-ratio: 3/4;
+    }
+    .ph-section__img img {
+      width: 100%; height: 100%;
+      object-fit: cover;
+      object-position: center;
+      display: block;
+    }
+
+    /* ===== 画像ブロック ===== */
+    .ph-img-strip {
+      width: 100%;
+      aspect-ratio: 16 / 7;
+      border-radius: 10px;
+      overflow: hidden;
+      margin-bottom: 32px;
+    }
+    .ph-img-strip img {
+      width: 100%; height: 100%;
+      object-fit: cover;
+      object-position: center 40%;
+      display: block;
+    }
+
+    /* ===== Approach ステップリスト ===== */
+    .ph-steps {
+      margin: 32px 0 0;
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+    .ph-step {
+      display: grid;
+      grid-template-columns: 72px 1fr;
+      gap: 0;
+      padding: 28px 0;
+      border-bottom: 1px solid rgba(0,0,0,.07);
+      align-items: start;
+    }
+    .ph-step:first-child { border-top: 1px solid rgba(0,0,0,.07); }
+    .ph-step__num {
+      font-family: "Inter", sans-serif;
+      font-size: 42px;
+      font-weight: 700;
+      color: #5EC1C6;
+      line-height: 1;
+      padding-top: 2px;
+      opacity: .9;
+    }
+    .ph-step__body {}
+    .ph-step__title {
+      font-size: 14px;
+      font-weight: 600;
+      color: #1a1a1a;
+      margin: 0 0 6px;
+      line-height: 1.5;
+    }
+    .ph-step__text {
+      font-size: 13px;
+      color: #666;
+      line-height: 1.85;
+      margin: 0;
     }
 
     /* ===== リードブロック ===== */
@@ -251,10 +333,14 @@
     .anim-up.is-visible { opacity: 1; transform: none; }
 
     @media (max-width: 780px) {
-      .ph-hero { margin: -72px -16px 0; }
-      .ph-hero__overlay { padding: 24px 20px; }
+      .ph-hero { margin: -72px -16px 0; min-height: 280px; }
+      .ph-hero__overlay { padding: 28px 20px; }
       .ph-compare { grid-template-columns: 1fr; }
       .ph-stat { flex-direction: column; gap: 12px; }
+      .ph-section--split { grid-template-columns: 1fr; }
+      .ph-section__img { aspect-ratio: 16/9; border-radius: 8px; }
+      .ph-step { grid-template-columns: 52px 1fr; padding: 22px 0; }
+      .ph-step__num { font-size: 32px; }
     }
   </style>
 </head>
@@ -332,18 +418,22 @@
     </div>
 
     <!-- Section 1：「自立」という現実 -->
-    <div class="ph-section anim-up">
-      <p class="ph-label">Reality</p>
-      <h2 class="ph-title">「自立」という、シビアな現実。</h2>
-      <p class="ph-text">特性を持つこどもたちが大人になった時、直面する社会は決して甘くありません。強い特性を持つ成人は、そうでない成人と比べ収入に大きな格差が生じるというデータがあります。</p>
-      <p class="ph-text">「この子は将来、自分の力で生きていけるのか」——既存の療育では、その根本的な不安を拭い去ることが難しいのが現実です。BLUE MOUSEは、その問いと正面から向き合うところから始まりました。</p>
+    <div class="ph-section ph-section--split anim-up">
+      <div class="ph-section__content">
+        <p class="ph-label">Reality</p>
+        <h2 class="ph-title">「自立」という、シビアな現実。</h2>
+        <p class="ph-text">特性を持つこどもたちが大人になった時、直面する社会は決して甘くありません。「この子は将来、自分の力で生きていけるのか」——BLUE MOUSEは、その問いと正面から向き合うところから始まりました。</p>
 
-      <div class="ph-stat">
-        <div class="ph-stat__num">50<span style="font-size:24px; font-weight:400;">%</span></div>
-        <div class="ph-stat__body">
-          <p class="ph-stat__title">強い特性を持つ成人の収入格差</p>
-          <p class="ph-stat__desc">特性のある成人とそうでない成人の間には、統計上およそ50%もの収入差が生じるとされています。この現実と向き合うことが、BLUE MOUSEの出発点です。</p>
+        <div class="ph-stat">
+          <div class="ph-stat__num">50<span style="font-size:24px; font-weight:400;">%</span></div>
+          <div class="ph-stat__body">
+            <p class="ph-stat__title">強い特性を持つ成人の収入格差</p>
+            <p class="ph-stat__desc">特性のある成人とそうでない成人の間には、統計上およそ50%もの収入差が生じるとされています。この現実と向き合うことが、BLUE MOUSEの出発点です。</p>
+          </div>
         </div>
+      </div>
+      <div class="ph-section__img">
+        <img src="./photos/IMG_6294_opt.jpg" alt="" />
       </div>
     </div>
 
@@ -353,25 +443,36 @@
     <div class="ph-section anim-up">
       <p class="ph-label">Approach</p>
       <h2 class="ph-title">凸凹と向き合いながら、「武器」を手にする。</h2>
-      <p class="ph-text">こどもたちは日々、コミュニケーションや落ち着きのなさなど、自分の「苦手」と向き合っています。しかし、苦手をカバーして「みんなと同じ」に近づけたとしても、学習面の遅れという別の壁が立ちはだかることが少なくありません。</p>
-      <p class="ph-text">苦手をゼロにするための努力だけで、貴重な時間を費やすのではなく——その子が持つ「強み（特性）」を、社会で生き抜くための「武器」へと育てていく。AIが社会を激変させていく現代において、私たちが「経済的自立」から逆算して辿り着いた最も確かな道。それが<strong style="color:#1a1a1a;">小学生からのITスキルの獲得</strong>です。</p>
+      <p class="ph-text">その子が持つ「強み（特性）」を、社会で生き抜くための「武器」へと育てていく。私たちが「経済的自立」から逆算して辿り着いた最も確かな道。それが<strong style="color:#1a1a1a;">小学生からのITスキルの獲得</strong>です。</p>
 
-      <div class="ph-points">
-        <div class="ph-point">
-          <div class="ph-point__check"><svg fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>
-          <span>苦手を補う支援と、強みを伸ばす支援を同時に行う</span>
+      <div class="ph-steps">
+        <div class="ph-step">
+          <span class="ph-step__num">01</span>
+          <div class="ph-step__body">
+            <p class="ph-step__title">強みと苦手、両方に寄り添う支援</p>
+            <p class="ph-step__text">苦手を補う支援と、その子が持つ強みを伸ばす支援を同時に行います。どちらか一方ではなく、両輪で進めることが大切です。</p>
+          </div>
         </div>
-        <div class="ph-point">
-          <div class="ph-point__check"><svg fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>
-          <span>「経済的自立」から逆算したITスキルの習得プログラム</span>
+        <div class="ph-step">
+          <span class="ph-step__num">02</span>
+          <div class="ph-step__body">
+            <p class="ph-step__title">「経済的自立」から逆算したプログラム</p>
+            <p class="ph-step__text">将来の自立を見据え、ITスキルの習得を軸に据えた独自のプログラムを提供します。社会に出た時に本当に使えるスキルを育てます。</p>
+          </div>
         </div>
-        <div class="ph-point">
-          <div class="ph-point__check"><svg fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>
-          <span>小学生から始める、10年間を見据えたロードマップ</span>
+        <div class="ph-step">
+          <span class="ph-step__num">03</span>
+          <div class="ph-step__body">
+            <p class="ph-step__title">小学生から始める10年間のロードマップ</p>
+            <p class="ph-step__text">小学生の早い段階からITに親しみ、10年間をかけて着実にスキルを積み上げていきます。焦らず、でも確かな歩みで。</p>
+          </div>
         </div>
-        <div class="ph-point">
-          <div class="ph-point__check"><svg fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>
-          <span>AI時代に求められるデジタルスキルを実践的に育てる</span>
+        <div class="ph-step">
+          <span class="ph-step__num">04</span>
+          <div class="ph-step__body">
+            <p class="ph-step__title">AI時代に必要なデジタルスキルを実践で</p>
+            <p class="ph-step__text">タイピング・プログラミング・オフィスソフトなど、AI時代に求められるデジタルスキルを実際に使いながら学びます。</p>
+          </div>
         </div>
       </div>
     </div>
@@ -380,9 +481,11 @@
 
     <!-- Section 3：伴走者の存在 -->
     <div class="ph-section anim-up">
+      <div class="ph-img-strip">
+        <img src="./photos/IMG_6293_opt.jpg" alt="" />
+      </div>
       <p class="ph-label">Difference</p>
       <h2 class="ph-title">専門的な「伴走者」の存在。</h2>
-      <p class="ph-text">分からない時に、周囲が応じてくれるHELPを出せるか。自分のペースではなく、決められた時間に行動を切り替えられるか。強いこだわりを一旦横に置いて、求められたルールで課題に取り組めるか。</p>
       <p class="ph-text">専門的な知識を持ったスタッフの伴走のもとで、こどもたちはIT課題を通して、特性への対処法や社会性を学びます。この「伴走者」の存在こそが、一般的なパソコン教室との明確な違いです。</p>
 
       <div class="ph-compare">

@@ -54,9 +54,9 @@
     .af-section:last-of-type { border-bottom: none; }
     .af-title {
       font-family: "Noto Sans JP", sans-serif;
-      font-size: clamp(1.25rem, 1.8vw, 1.55rem);
+      font-size: clamp(1.5rem, 2.2vw, 1.9rem);
       font-weight: 500;
-      color: #2a2a2a;
+      color: #6aadcc;
       line-height: 1.35;
       margin: 0 0 24px;
     }
@@ -67,14 +67,74 @@
       font-weight: 400;
     }
 
+    /* ===== プログラム見出し ===== */
+    .prog-head {
+      position: relative;
+      text-align: center;
+      padding: 56px 0 36px;
+      overflow: hidden;
+    }
+    .prog-head__watermark {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -48%);
+      font-family: "Inter", sans-serif;
+      font-size: clamp(72px, 11vw, 120px);
+      font-weight: 900;
+      letter-spacing: .06em;
+      color: rgba(94,193,198,.07);
+      white-space: nowrap;
+      pointer-events: none;
+      user-select: none;
+      line-height: 1;
+    }
+    .prog-head__en {
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 14px;
+      font-family: "Inter", sans-serif;
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: .32em;
+      color: #6aadcc;
+      text-transform: uppercase;
+      margin-bottom: 14px;
+    }
+    .prog-head__en::before,
+    .prog-head__en::after {
+      content: '';
+      width: 40px;
+      height: 1px;
+      background: rgba(106,173,204,.45);
+    }
+    .prog-head__ja {
+      position: relative;
+      font-family: "Noto Sans JP", sans-serif;
+      font-size: clamp(1.7rem, 2.6vw, 2.2rem);
+      font-weight: 700;
+      color: #2e2418;
+      margin: 0 0 14px;
+      line-height: 1.3;
+    }
+    .prog-head__sub {
+      position: relative;
+      font-size: 13px;
+      color: #aaa;
+      letter-spacing: .04em;
+      margin: 0;
+    }
+
     /* ===== 番号付きプログラムアイテム ===== */
-    .af-items { margin-top: 8px; }
+    .af-items { margin-top: 0; }
 
     .af-item {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      min-height: 340px;
       border-bottom: 1px solid rgba(0,0,0,.06);
+      align-items: center;
     }
     .af-item:last-child { border-bottom: none; }
 
@@ -86,11 +146,13 @@
     .af-item__img {
       overflow: hidden;
       background: #dde8ee;
+      border-radius: 8px;
+      aspect-ratio: 4 / 3;
     }
     .af-item__img img {
       width: 100%; height: 100%;
       object-fit: cover;
-      object-position: center top;
+      object-position: center;
       display: block;
     }
     /* 縦画像：元の縦横比を維持 */
@@ -114,32 +176,33 @@
     }
 
     .af-item__body {
-      padding: 44px 36px;
+      padding: 48px 40px;
       display: flex;
       flex-direction: column;
       justify-content: center;
-      gap: 12px;
+      gap: 14px;
     }
     .af-item__num {
       font-family: "Inter", sans-serif;
-      font-size: 48px;
-      font-weight: 400;
-      color: #6aadcc;
+      font-size: 56px;
+      font-weight: 700;
+      color: rgba(106,173,204,.25);
       line-height: 1;
       display: block;
     }
+    .af-item__label { display: none; }
     .af-item__title {
-      font-family: "Noto Sans JP", sans-serif;
-      font-size: 18px;
-      font-weight: 500;
-      color: #2a2a2a;
+      font-family: "koburina-gothic-w6", "A-OTF こぶりなゴシック Std W6", "Hiragino Kaku Gothic ProN", "Noto Sans JP", sans-serif;
+      font-size: clamp(1.15rem, 1.6vw, 1.4rem);
+      font-weight: normal;
+      color: #1a1a1a;
       margin: 0;
       line-height: 1.4;
     }
     .af-item__text {
       font-size: 13px;
-      color: #555;
-      line-height: 1.95;
+      color: #666;
+      line-height: 2;
       font-weight: 400;
       margin: 0;
     }
@@ -162,40 +225,71 @@
       display: block;
     }
 
-    /* ===== タイムライン ===== */
+    /* ===== タイムライン リデザイン ===== */
     .af-timeline {
       margin-top: 24px;
-      border: 1px solid rgba(0,0,0,.08);
-      border-radius: 3px;
-      overflow: hidden;
-      background: #fff;
+      background: transparent;
+      border: none;
+      border-radius: 0;
+      overflow: visible;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      position: relative;
+    }
+    .af-timeline::before {
+      content: '';
+      position: absolute;
+      left: 46px;
+      top: 40px;
+      bottom: 40px;
+      width: 2px;
+      background: linear-gradient(to bottom, rgba(106,173,204,.3), rgba(106,173,204,.06));
+      border-radius: 1px;
+      z-index: 0;
     }
     .af-tl {
       display: grid;
-      grid-template-columns: 68px 1fr;
-      border-bottom: 1px solid rgba(0,0,0,.06);
+      grid-template-columns: 72px 1fr;
+      align-items: stretch;
+      background: #fefaf6;
+      border: 1px solid rgba(190,150,90,.18);
+      border-radius: 14px;
+      overflow: hidden;
+      position: relative;
+      z-index: 1;
+      transition: box-shadow .2s, transform .18s;
     }
-    .af-tl:last-child { border-bottom: none; }
+    .af-tl:last-child { border-bottom: 1px solid rgba(190,150,90,.18); }
+    .af-tl:hover { box-shadow: 0 4px 16px rgba(0,0,0,.06); transform: translateY(-2px); }
     .af-tl__time {
       font-family: "Inter", sans-serif;
-      font-size: 12px;
-      font-weight: 400;
-      color: #6aadcc;
-      padding: 14px 0 14px 14px;
-      border-right: 1px solid rgba(0,0,0,.06);
-    }
-    .af-tl__body { padding: 14px 16px; }
-    .af-tl__title {
-      font-family: "koburina-gothic-w6", "A-OTF こぶりなゴシック Std W6", "Hiragino Kaku Gothic ProN", "M PLUS Rounded 1c", "Noto Sans JP", sans-serif;
       font-size: 13px;
-      font-weight: normal;
-      color: #1a1a1a;
+      font-weight: 700;
+      color: #6aadcc;
+      padding: 0;
+      text-align: center;
+      border-right: 1px solid rgba(190,150,90,.13);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(255,255,255,.5);
+      line-height: 1;
+      letter-spacing: .02em;
+    }
+    .af-tl__body { padding: 16px 18px; }
+    .af-tl__title {
+      font-family: "Noto Sans JP", sans-serif;
+      font-size: 13.5px;
+      font-weight: 600;
+      color: #2e2418;
+      margin: 0 0 4px;
     }
     .af-tl__desc {
       font-size: 12px;
-      color: #777;
-      margin-top: 3px;
-      line-height: 1.7;
+      color: #9a8878;
+      margin-top: 0;
+      line-height: 1.75;
     }
     /* ===== CTA ===== */
     .af-cta {
@@ -432,6 +526,8 @@
     /* ===== レスポンシブ ===== */
     @media (max-width: 780px) {
       .af-hero { margin: -24px -16px 0; }
+      .prog-head { padding: 36px 0 24px; }
+      .prog-head__en::before, .prog-head__en::after { width: 24px; }
       .af-item {
         grid-template-columns: 1fr;
         min-height: auto;
@@ -445,6 +541,159 @@
       .af-row { grid-template-columns: 1fr; gap: 24px; }
       .af-section { padding: 36px 0; }
     }
+
+    /* ===== 料金チャート ===== */
+    .cost-visual {
+      display: grid;
+      grid-template-columns: 150px 1fr;
+      gap: 36px;
+      align-items: center;
+      margin-bottom: 28px;
+    }
+    .cost-donut-wrap { text-align: center; }
+    .cost-donut {
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      background: conic-gradient(from -90deg, var(--accent, #6aadcc) 0% 10%, #e4eff3 10% 100%);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      margin-bottom: 10px;
+    }
+    .cost-donut::before {
+      content: '';
+      position: absolute;
+      inset: 22px;
+      background: #fff;
+      border-radius: 50%;
+    }
+    .cost-donut__text {
+      position: relative;
+      z-index: 1;
+      text-align: center;
+      line-height: 1.25;
+    }
+    .cost-donut__pct {
+      font-family: "Inter", sans-serif;
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--accent, #6aadcc);
+      display: block;
+    }
+    .cost-donut__sub { font-size: 9px; color: #999; display: block; }
+    .cost-donut__caption { font-size: 11px; color: #666; line-height: 1.65; }
+    .cost-tier-chart__label {
+      font-size: 10px;
+      color: #aaa;
+      letter-spacing: .08em;
+      display: block;
+      margin-bottom: 12px;
+    }
+    .cost-tiers { display: flex; flex-direction: column; gap: 12px; }
+    .cost-tier {
+      display: grid;
+      grid-template-columns: 90px 1fr 74px;
+      align-items: center;
+      gap: 10px;
+    }
+    .cost-tier__label { font-size: 11px; color: #666; }
+    .cost-tier__track {
+      height: 7px;
+      background: #e4eff3;
+      border-radius: 4px;
+      overflow: hidden;
+    }
+    .cost-tier__bar {
+      height: 100%;
+      width: 0;
+      background: var(--accent, #6aadcc);
+      border-radius: 4px;
+      transition: width .9s cubic-bezier(.22,1,.36,1);
+    }
+    .cost-tiers.is-visible .cost-tier__bar { width: var(--w); }
+    .cost-tier__amount {
+      font-family: "Inter", sans-serif;
+      font-size: 12px;
+      font-weight: 500;
+      color: #2a2a2a;
+      text-align: right;
+    }
+    .cost-info-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+      margin-top: 24px;
+    }
+    .cost-info {
+      background: #f4f8fb;
+      border-radius: 8px;
+      padding: 16px 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+    }
+    .cost-info__icon {
+      width: 30px;
+      height: 30px;
+      background: var(--accent, #6aadcc);
+      border-radius: 7px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 4px;
+    }
+    .cost-info__icon svg {
+      width: 14px; height: 14px;
+      stroke: #fff; fill: none;
+      stroke-width: 2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+    .cost-info__label { font-size: 10px; color: #aaa; }
+    .cost-info__val { font-size: 12px; font-weight: 500; color: #2a2a2a; line-height: 1.4; }
+    @media (max-width: 780px) {
+      .cost-visual { grid-template-columns: 1fr; gap: 20px; }
+      .cost-tier { grid-template-columns: 78px 1fr 60px; }
+      .cost-info-grid { grid-template-columns: 1fr 1fr; }
+    }
+
+    /* ===== 料金フレーム ===== */
+    .cost-frame {
+      position: relative;
+      background: #fefaf5;
+      border: 1px solid rgba(190,150,90,.22);
+      border-radius: 8px;
+      padding: 44px 40px 38px;
+    }
+    .cost-frame__corner {
+      position: absolute;
+      width: 38px; height: 38px;
+      pointer-events: none;
+    }
+    .cost-frame__corner--tl { top: -1px; left: -1px; }
+    .cost-frame__corner--tr { top: -1px; right: -1px; }
+    .cost-frame__corner--bl { bottom: -1px; left: -1px; }
+    .cost-frame__corner--br { bottom: -1px; right: -1px; }
+    .cost-frame__head {
+      text-align: center;
+      margin-bottom: 36px;
+      padding-bottom: 28px;
+      border-bottom: 1px solid rgba(190,150,90,.14);
+    }
+    .cost-frame__title {
+      font-family: "Noto Sans JP", sans-serif;
+      font-size: clamp(1.25rem, 1.9vw, 1.6rem);
+      font-weight: 500;
+      color: #2e2418;
+      margin: 0 0 6px;
+      line-height: 1.3;
+    }
+    .cost-frame__sub { font-size: 12px; color: #b09060; letter-spacing: .07em; margin: 0; }
+    .cost-frame .cost-donut::before { background: #fefaf5; }
+    .cost-frame .cost-info { background: rgba(255,255,255,.8); border: 1px solid rgba(190,150,90,.1); }
+    @media (max-width: 780px) { .cost-frame { padding: 36px 20px 28px; } }
   </style>
 </head>
 <body>
@@ -516,6 +765,7 @@
       </div>
 
       <a href="./philosophy.html" class="bm-nav__item" data-page="philosophy">BLUE MOUSEの想い</a>
+      <a href="./voice.html" class="bm-nav__item" data-page="voice">お客様の声</a>
       <a href="./company.html" class="bm-nav__item" data-page="company">会社概要</a>
       <a href="./contact.html" class="bm-nav__item" data-page="contact">お問い合わせ</a>
       <a href="https://bouemouse.studio.site" class="bm-nav__item" target="_blank" rel="noopener">採用情報</a>
@@ -608,53 +858,63 @@
     </div>
 
     <!-- ① プログラム内容 -->
-    <div class="af-section" id="program" data-section="program">
-      <h2 class="af-title">プログラム内容</h2>
+    <div class="af-section" id="program" data-section="program" style="padding-top:0; border-bottom:none;">
+
+      <div class="prog-head">
+        <span class="prog-head__watermark">PROGRAMS</span>
+        <p class="prog-head__en">Our Programs</p>
+        <h2 class="prog-head__ja">プログラム内容</h2>
+        <p class="prog-head__sub">お子さまの特性に寄り添った、4つの専門プログラム</p>
+      </div>
 
       <div class="af-items">
 
-        <div class="af-item">
+        <div class="af-item anim-left">
           <div class="af-item__img">
             <img src="./1.webp" alt="感覚統合あそび" />
           </div>
           <div class="af-item__body">
             <span class="af-item__num">01</span>
+
             <h3 class="af-item__title">感覚統合あそび</h3>
             <p class="af-item__text">ブランコ・トランポリン・バランスボードなどを使い、体の感覚を育てます。遊びを通じて自然に感覚の統合を促し、日常生活の動作が安定するよう支援します。</p>
             <a href="./child-sensory.html" class="af-detail-btn">詳しく見る <span class="af-detail-btn__arrow">›</span></a>
           </div>
         </div>
 
-        <div class="af-item">
+        <div class="af-item anim-right">
           <div class="af-item__img">
             <img src="./5.webp" alt="言語・コミュニケーション支援" />
           </div>
           <div class="af-item__body">
             <span class="af-item__num">02</span>
+
             <h3 class="af-item__title">言語・コミュニケーション支援</h3>
             <p class="af-item__text">言葉の発達に合わせた個別プログラムを提供します。絵カードや模倣あそびを取り入れながら、自分の気持ちを伝える力と相手の話を聞く力を育てます。</p>
             <a href="./child-language.html" class="af-detail-btn">詳しく見る <span class="af-detail-btn__arrow">›</span></a>
           </div>
         </div>
 
-        <div class="af-item">
+        <div class="af-item anim-left">
           <div class="af-item__img af-item__img--natural">
             <img src="./IMG_4103.HEIC" alt="集団活動・社会性の育成" />
           </div>
           <div class="af-item__body">
             <span class="af-item__num">03</span>
+
             <h3 class="af-item__title">集団活動・社会性の育成</h3>
             <p class="af-item__text">小グループでの活動を通じて、順番を守る・友達と関わるといった社会性の基礎を育みます。就学に向けた集団生活への適応力をやさしく支援します。</p>
             <a href="./child-social.html" class="af-detail-btn">詳しく見る <span class="af-detail-btn__arrow">›</span></a>
           </div>
         </div>
 
-        <div class="af-item">
+        <div class="af-item anim-right">
           <div class="af-item__img af-item__img--natural">
             <img src="./IMG_4103.HEIC" alt="ITを使った知育あそび" />
           </div>
           <div class="af-item__body">
             <span class="af-item__num">04</span>
+
             <h3 class="af-item__title">ITを使った知育あそび</h3>
             <p class="af-item__text">タブレットやタッチパネルを活用した知育アプリで、色・形・数の概念を楽しく学びます。デジタル機器への親しみを育てながら、集中力と思考力を伸ばします。</p>
             <a href="./child-itplay.html" class="af-detail-btn">詳しく見る <span class="af-detail-btn__arrow">›</span></a>
@@ -684,60 +944,139 @@
       <div class="af-timeline">
         <div class="af-tl">
           <div class="af-tl__time">9:30</div>
-          <div class="af-tl__body"><p class="af-tl__title">送迎・来所</p><p class="af-tl__desc">ご自宅または園へお迎えし、施設へ向かいます</p></div>
+          <div class="af-tl__body">
+            <p class="af-tl__title">送迎・来所</p>
+            <p class="af-tl__desc">ご自宅または園へお迎えし、施設へ向かいます</p>
+          </div>
         </div>
         <div class="af-tl">
           <div class="af-tl__time">10:00</div>
-          <div class="af-tl__body"><p class="af-tl__title">朝の会・自由あそび</p><p class="af-tl__desc">今日の活動を紹介し、気持ちを整えます</p></div>
+          <div class="af-tl__body">
+            <p class="af-tl__title">朝の会・自由あそび</p>
+            <p class="af-tl__desc">今日の活動を紹介し、気持ちを整えます</p>
+          </div>
         </div>
         <div class="af-tl">
           <div class="af-tl__time">10:30</div>
-          <div class="af-tl__body"><p class="af-tl__title">個別プログラム</p><p class="af-tl__desc">言語・感覚統合など、お子さまに合わせた支援を行います</p></div>
+          <div class="af-tl__body">
+            <p class="af-tl__title">個別プログラム</p>
+            <p class="af-tl__desc">言語・感覚統合など、お子さまに合わせた支援を行います</p>
+          </div>
         </div>
         <div class="af-tl">
           <div class="af-tl__time">11:15</div>
-          <div class="af-tl__body"><p class="af-tl__title">集団活動・制作あそび</p><p class="af-tl__desc">お友達と一緒に楽しみながら社会性を育てます</p></div>
+          <div class="af-tl__body">
+            <p class="af-tl__title">集団活動・制作あそび</p>
+            <p class="af-tl__desc">お友達と一緒に楽しみながら社会性を育てます</p>
+          </div>
         </div>
         <div class="af-tl">
           <div class="af-tl__time">12:00</div>
-          <div class="af-tl__body"><p class="af-tl__title">昼食・自由時間</p><p class="af-tl__desc">お弁当を食べた後、ゆったり過ごします</p></div>
+          <div class="af-tl__body">
+            <p class="af-tl__title">昼食・自由時間</p>
+            <p class="af-tl__desc">お弁当を食べた後、ゆったり過ごします</p>
+          </div>
         </div>
         <div class="af-tl">
           <div class="af-tl__time">13:00</div>
-          <div class="af-tl__body"><p class="af-tl__title">帰りの会・送迎</p><p class="af-tl__desc">今日の振り返りをしてご自宅・園へお送りします</p></div>
+          <div class="af-tl__body">
+            <p class="af-tl__title">帰りの会・送迎</p>
+            <p class="af-tl__desc">今日の振り返りをしてご自宅・園へお送りします</p>
+          </div>
         </div>
       </div>
     </div>
 
     <!-- ④ 料金 -->
     <div class="af-section" id="pricing" data-section="pricing">
-      <h2 class="af-title">ご利用料金</h2>
-      <p class="af-text" style="margin-bottom:20px;">受給者証をお持ちの方は、国の定める基準に基づき1割負担（上限あり）でご利用いただけます。</p>
-      <table class="bm-table">
-        <tbody>
-          <tr>
-            <th>基本利用料</th>
-            <td>国の定める報酬基準に基づきます<br><small style="color:#aaa;">受給者証をお持ちの方は1割負担（上限あり）</small></td>
-          </tr>
-          <tr>
-            <th>負担上限額</th>
-            <td>月額 0円・4,600円・37,200円<br><small style="color:#aaa;">世帯収入に応じて異なります</small></td>
-          </tr>
-          <tr>
-            <th>送迎加算</th>
-            <td>あり（片道・往復、要相談）</td>
-          </tr>
-          <tr>
-            <th>おやつ代</th>
-            <td>実費をいただく場合があります</td>
-          </tr>
-          <tr>
-            <th>受給者証</th>
-            <td>お持ちでない方も取得のサポートをいたします</td>
-          </tr>
-        </tbody>
-      </table>
-      <p style="margin-top:10px; font-size:12px; color:#aaa;">※実際の金額はお住まいの市区町村・世帯収入・利用日数によって異なります。</p>
+      <div class="cost-frame">
+
+        <!-- 角の飾り枠 -->
+        <!-- 左上 -->
+        <svg class="cost-frame__corner cost-frame__corner--tl" viewBox="0 0 38 38" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M36 2.5 H14 Q2.5 2.5 2.5 14 V36" stroke="#c49660" stroke-width="1.5" stroke-linecap="round" opacity="0.5"/>
+          <circle cx="2.5" cy="2.5" r="2.5" fill="#c49660" opacity="0.35"/>
+        </svg>
+        <!-- 右上 -->
+        <svg class="cost-frame__corner cost-frame__corner--tr" viewBox="0 0 38 38" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M2 2.5 H24 Q35.5 2.5 35.5 14 V36" stroke="#c49660" stroke-width="1.5" stroke-linecap="round" opacity="0.5"/>
+          <circle cx="35.5" cy="2.5" r="2.5" fill="#c49660" opacity="0.35"/>
+        </svg>
+        <!-- 左下 -->
+        <svg class="cost-frame__corner cost-frame__corner--bl" viewBox="0 0 38 38" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M36 35.5 H14 Q2.5 35.5 2.5 24 V2" stroke="#c49660" stroke-width="1.5" stroke-linecap="round" opacity="0.5"/>
+          <circle cx="2.5" cy="35.5" r="2.5" fill="#c49660" opacity="0.35"/>
+        </svg>
+        <!-- 右下 -->
+        <svg class="cost-frame__corner cost-frame__corner--br" viewBox="0 0 38 38" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M2 35.5 H24 Q35.5 35.5 35.5 24 V2" stroke="#c49660" stroke-width="1.5" stroke-linecap="round" opacity="0.5"/>
+          <circle cx="35.5" cy="35.5" r="2.5" fill="#c49660" opacity="0.35"/>
+        </svg>
+
+        <!-- タイトル -->
+        <div class="cost-frame__head">
+          <h2 class="cost-frame__title">ご利用料金</h2>
+          <p class="cost-frame__sub">安心してご利用いただける明瞭な料金体系</p>
+        </div>
+
+        <div class="cost-visual">
+          <div class="cost-donut-wrap">
+            <div class="cost-donut">
+              <div class="cost-donut__text">
+                <strong class="cost-donut__pct">10%</strong>
+                <span class="cost-donut__sub">自己負担</span>
+              </div>
+            </div>
+            <p class="cost-donut__caption">受給者証があれば<br>国が<b>9割</b>を負担</p>
+          </div>
+          <div>
+            <span class="cost-tier-chart__label">月額負担上限額（世帯収入別）</span>
+            <div class="cost-tiers">
+              <div class="cost-tier">
+                <span class="cost-tier__label">非課税世帯</span>
+                <div class="cost-tier__track"><div class="cost-tier__bar" style="--w:4px"></div></div>
+                <span class="cost-tier__amount">0円</span>
+              </div>
+              <div class="cost-tier">
+                <span class="cost-tier__label">〜890万円</span>
+                <div class="cost-tier__track"><div class="cost-tier__bar" style="--w:12%"></div></div>
+                <span class="cost-tier__amount">4,600円</span>
+              </div>
+              <div class="cost-tier">
+                <span class="cost-tier__label">890万円以上</span>
+                <div class="cost-tier__track"><div class="cost-tier__bar" style="--w:100%"></div></div>
+                <span class="cost-tier__amount">37,200円</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="cost-info-grid">
+          <div class="cost-info">
+            <div class="cost-info__icon">
+              <svg viewBox="0 0 24 24"><rect x="1" y="3" width="15" height="13"/><path d="M16 8h4l3 3v5h-7V8z"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
+            </div>
+            <span class="cost-info__label">送迎加算</span>
+            <span class="cost-info__val">片道・往復対応</span>
+          </div>
+          <div class="cost-info">
+            <div class="cost-info__icon">
+              <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 3c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm0 14.2c-2.5 0-4.71-1.28-6-3.22.03-1.99 4-3.08 6-3.08 1.99 0 5.97 1.09 6 3.08-1.29 1.94-3.5 3.22-6 3.22z"/></svg>
+            </div>
+            <span class="cost-info__label">おやつ代</span>
+            <span class="cost-info__val">実費（別途）</span>
+          </div>
+          <div class="cost-info">
+            <div class="cost-info__icon">
+              <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+            </div>
+            <span class="cost-info__label">受給者証</span>
+            <span class="cost-info__val">取得サポートあり</span>
+          </div>
+        </div>
+
+        <p style="margin-top:18px; font-size:12px; color:#bbb; text-align:center;">※実際の金額はお住まいの市区町村・世帯収入・利用日数によって異なります。</p>
+      </div>
     </div>
 
     <!-- CTA -->
@@ -771,6 +1110,16 @@
         <a class="side-card__link" href="https://maps.google.com/?q=岡山県岡山市北区辰巳26-102" target="_blank" rel="noopener">場所を見る</a>
       </div>
     </div>
+
+    <!-- Google Map: 辰巳 -->
+    <div class="side-map-wrap">
+      <iframe
+        src="https://maps.google.com/maps?q=〒700-0976+岡山県岡山市北区辰巳26-102&output=embed&z=17&hl=ja"
+        title="LITTLE BLUE MOUSE 児童発達支援 辰巳"
+        loading="lazy"
+        allowfullscreen></iframe>
+    </div>
+
     <a href="./contact.html" class="side-cta">
       見学・お問い合わせ
       <span class="side-cta__icon">›</span>
@@ -790,8 +1139,17 @@
     });
   }, { threshold: 0.12 });
 
-  document.querySelectorAll('.af-title, .af-text, .af-cta, .bm-table, .af-timeline').forEach(function (el) {
+  document.querySelectorAll('.af-title, .af-text, .af-cta, .af-timeline').forEach(function (el) {
     el.classList.add('anim-up');
+    observer.observe(el);
+  });
+
+  /* 料金バーグラフ */
+  var costTiers = document.querySelector('.cost-tiers');
+  if (costTiers) observer.observe(costTiers);
+  document.querySelectorAll('.cost-info').forEach(function (el, i) {
+    el.classList.add('anim-up');
+    el.style.transitionDelay = (i * 0.1) + 's';
     observer.observe(el);
   });
 

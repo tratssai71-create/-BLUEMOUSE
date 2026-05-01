@@ -36,14 +36,14 @@
     .tp-skill__dot { width: 8px; height: 8px; border-radius: 50%; background: #6aadcc; margin-top: 5px; flex-shrink: 0; }
     .tp-skill__name { font-size: 12px; font-weight: 500; color: #1a1a1a; margin: 0 0 3px; }
     .tp-skill__desc { font-size: 11px; color: #888; line-height: 1.7; margin: 0; }
-    .tp-steps { margin-top: 28px; display: flex; flex-direction: column; }
-    .tp-step { display: flex; gap: 24px; padding-bottom: 28px; border-bottom: 1px solid rgba(0,0,0,.07); }
-    .tp-step:last-child { border-bottom: none; padding-bottom: 0; }
-    .tp-step + .tp-step { padding-top: 24px; }
-    .tp-step__num { font-family: "Inter",sans-serif; font-size: 28px; font-weight: 300; color: rgba(0,0,0,.15); line-height: 1; flex-shrink: 0; width: 32px; padding-top: 2px; }
-    .tp-step__tag { display: inline-block; font-family: "Inter",sans-serif; font-size: 9px; letter-spacing: .14em; text-transform: uppercase; color: #6aadcc; margin-bottom: 6px; }
-    .tp-step__title { font-family: "Noto Sans JP", sans-serif; font-size: 15px; font-weight: 500; color: #1a1a1a; margin: 0 0 8px; line-height: 1.4; }
-    .tp-step__text { font-size: 13px; color: #666; line-height: 1.9; margin: 0; font-weight: 400; }
+    /* ===== ステップ（丸バッジ） ===== */
+    .tp-steps { display: flex; flex-direction: column; gap: 12px; margin-top: 24px; }
+    .tp-step { background: #fef9f3; border: 1px solid rgba(196,135,74,.18); border-radius: 14px; padding: 20px; display: flex; gap: 16px; align-items: flex-start; box-shadow: 0 3px 14px rgba(0,0,0,.05); }
+    .tp-step__badge { display: flex; flex-direction: column; align-items: center; gap: 6px; flex-shrink: 0; }
+    .tp-step__num { font-family: "Inter", sans-serif; font-size: 19px; font-weight: 800; color: #fff; background: linear-gradient(135deg, #d4945a 0%, #c4874a 100%); width: 48px; height: 48px; border-radius: 50%; display: flex; align-items: center; justify-content: center; line-height: 1; flex-shrink: 0; box-shadow: 0 3px 8px rgba(196,135,74,.35); }
+    .tp-step__tag { display: inline-block; font-size: 9px; font-weight: 600; color: #a0662a; background: rgba(196,135,74,.13); padding: 2px 8px; border-radius: 10px; letter-spacing: .04em; white-space: nowrap; }
+    .tp-step__title { font-family: "Noto Sans JP", sans-serif; font-size: 15px; font-weight: 700; color: #3a2a12; margin: 0 0 8px; line-height: 1.4; }
+    .tp-step__text { font-size: 12.5px; color: #6b5540; line-height: 1.9; margin: 0; font-weight: 400; }
     .tp-for { margin-top: 24px; display: flex; flex-direction: column; }
     .tp-for__item { display: flex; align-items: flex-start; gap: 14px; font-size: 13px; color: #444; line-height: 1.8; padding: 14px 0; border-bottom: 1px solid rgba(0,0,0,.07); font-weight: 400; }
     .tp-for__item:first-child { border-top: 1px solid rgba(0,0,0,.07); }
@@ -82,9 +82,78 @@
     .tp-feature__title { font-size: 14px !important; margin-bottom: 8px !important; }
     .tp-feature__text { font-size: 13px !important; }
     .tp-skill__dot { background: #5EC1C6 !important; }
-    .tp-step__tag { color: #5EC1C6 !important; }
     .tp-label { color: #5EC1C6 !important; }
     .tp-for__check svg { stroke: #5EC1C6 !important; }
+
+    /* ===== ビジュアル強化 ===== */
+    .tp-title { color: #5EC1C6 !important; font-size: clamp(1.35rem, 2.2vw, 1.75rem) !important; }
+    .prog-head { position: relative; text-align: center; padding: 44px 0 24px; overflow: hidden; }
+    .prog-head__watermark { position: absolute; top: 50%; left: 50%; transform: translate(-50%,-48%); font-family: "Inter",sans-serif; font-size: clamp(68px,10vw,110px); font-weight: 900; letter-spacing: .06em; color: rgba(90,171,114,.07); white-space: nowrap; pointer-events: none; user-select: none; line-height: 1; }
+    .prog-head__en { position: relative; display: flex; align-items: center; justify-content: center; gap: 14px; font-family: "Inter",sans-serif; font-size: 11px; font-weight: 600; letter-spacing: .32em; color: #5aab72; text-transform: uppercase; margin-bottom: 12px; }
+    .prog-head__en::before, .prog-head__en::after { content: ''; width: 36px; height: 1px; background: rgba(90,171,114,.4); }
+    .prog-head__ja { position: relative; font-family: "Noto Sans JP",sans-serif; font-size: clamp(1.4rem,2.2vw,1.9rem); font-weight: 700; color: #2e2418; margin: 0; line-height: 1.3; }
+    .tp-features { counter-reset: feature; }
+    .tp-feature {
+      counter-increment: feature;
+      border-left: 3px solid #5EC1C6 !important;
+      padding: 20px 40px 20px 20px !important;
+      position: relative;
+    }
+    .tp-feature::before {
+      content: counter(feature, decimal-leading-zero);
+      position: absolute;
+      top: 14px; right: 14px;
+      font-family: "Inter", sans-serif;
+      font-size: 11px; font-weight: 600;
+      color: rgba(94,193,198,.4);
+      letter-spacing: .06em;
+    }
+    .tp-skill {
+      flex-direction: column !important;
+      gap: 4px !important;
+      padding: 18px 16px 14px !important;
+      border-radius: 8px !important;
+      align-items: flex-start !important;
+    }
+    .tp-skill__dot {
+      width: 30px !important; height: 30px !important;
+      border-radius: 7px !important;
+      background: rgba(94,193,198,.14) !important;
+      margin-top: 0 !important; margin-bottom: 4px !important;
+      flex-shrink: 0;
+      position: relative;
+    }
+    .tp-skill__dot::after {
+      content: '';
+      position: absolute;
+      inset: 9px;
+      background: #5EC1C6;
+      border-radius: 50%;
+    }
+    .tp-skill__name { font-size: 12.5px !important; line-height: 1.45 !important; }
+    .tp-skill::after {
+      content: '';
+      display: block;
+      width: 100%;
+      height: 4px;
+      border-radius: 2px;
+      margin-top: 10px;
+      background: linear-gradient(to right, #5EC1C6 var(--bar-w, 78%), #e4eff3 var(--bar-w, 78%));
+    }
+    .tp-skill:nth-child(1) { --bar-w: 80%; }
+    .tp-skill:nth-child(2) { --bar-w: 74%; }
+    .tp-skill:nth-child(3) { --bar-w: 85%; }
+    .tp-skill:nth-child(4) { --bar-w: 70%; }
+    .tp-for__check {
+      width: 22px !important; height: 22px !important;
+      background: rgba(94,193,198,.13) !important;
+      border-radius: 50% !important;
+      display: flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+      flex-shrink: 0 !important;
+      margin-top: 0 !important;
+    }
   </style>
 </head>
 <body>
@@ -156,8 +225,11 @@
     </div>
 
     <div class="tp-section anim-up">
-      <p class="tp-label">Features</p>
-      <h2 class="tp-title">このプログラムの特徴</h2>
+      <div class="prog-head">
+        <span class="prog-head__watermark">FEATURES</span>
+        <p class="prog-head__en">Features</p>
+        <h2 class="prog-head__ja">このプログラムの特徴</h2>
+      </div>
       <div class="tp-features">
         <div class="tp-feature">
           <div class="tp-feature__body">
@@ -189,8 +261,11 @@
     <div class="tp-divider"></div>
 
     <div class="tp-section anim-up">
-      <p class="tp-label">Benefits</p>
-      <h2 class="tp-title">集団活動で育つ力</h2>
+      <div class="prog-head">
+        <span class="prog-head__watermark">BENEFITS</span>
+        <p class="prog-head__en">Benefits</p>
+        <h2 class="prog-head__ja">集団活動で育つ力</h2>
+      </div>
       <p class="tp-text">人と一緒にいる経験の積み重ねが、社会で生きる力の土台になります。</p>
       <div class="tp-skills">
         <div class="tp-skill">
@@ -227,38 +302,49 @@
     <div class="tp-divider"></div>
 
     <div class="tp-section anim-up">
-      <p class="tp-label">Steps</p>
-      <h2 class="tp-title">支援のステップ</h2>
+      <div class="prog-head">
+        <span class="prog-head__watermark">STEPS</span>
+        <p class="prog-head__en">Steps</p>
+        <h2 class="prog-head__ja">支援のステップ</h2>
+      </div>
       <p class="tp-text">まず1対1での関わりに慣れてから、少しずつグループへと移行します。</p>
       <div class="tp-steps">
         <div class="tp-step">
-          <span class="tp-step__num">01</span>
-          <div>
+          <div class="tp-step__badge">
+            <span class="tp-step__num">01</span>
             <span class="tp-step__tag">個別</span>
+          </div>
+          <div>
             <p class="tp-step__title">スタッフとの1対1から始める</p>
             <p class="tp-step__text">まずは特定の大人との安心した関係をつくり、「やりとりの楽しさ」を体験します。</p>
           </div>
         </div>
         <div class="tp-step">
-          <span class="tp-step__num">02</span>
-          <div>
+          <div class="tp-step__badge">
+            <span class="tp-step__num">02</span>
             <span class="tp-step__tag">小集団</span>
+          </div>
+          <div>
             <p class="tp-step__title">2〜3名の小グループで活動</p>
             <p class="tp-step__text">少人数のグループで遊びや制作を通じ、「一緒にいること」を楽しむ経験を積みます。</p>
           </div>
         </div>
         <div class="tp-step">
-          <span class="tp-step__num">03</span>
-          <div>
+          <div class="tp-step__badge">
+            <span class="tp-step__num">03</span>
             <span class="tp-step__tag">ルール学習</span>
+          </div>
+          <div>
             <p class="tp-step__title">順番・ルールのある活動へ</p>
             <p class="tp-step__text">ゲームや活動を通じて「待つ」「交代する」「ルールを守る」を実践的に学びます。</p>
           </div>
         </div>
         <div class="tp-step">
-          <span class="tp-step__num">04</span>
-          <div>
+          <div class="tp-step__badge">
+            <span class="tp-step__num">04</span>
             <span class="tp-step__tag">就学準備</span>
+          </div>
+          <div>
             <p class="tp-step__title">学校に近い集団場面での練習</p>
             <p class="tp-step__text">朝の会・帰りの会など、就学後の生活に近い流れを体験し、安心して入学できるよう準備します。</p>
           </div>
@@ -269,8 +355,11 @@
     <div class="tp-divider"></div>
 
     <div class="tp-section anim-up">
-      <p class="tp-label">For</p>
-      <h2 class="tp-title">こんなお子さまにおすすめ</h2>
+      <div class="prog-head">
+        <span class="prog-head__watermark">FOR YOU</span>
+        <p class="prog-head__en">For</p>
+        <h2 class="prog-head__ja">こんなお子さまにおすすめ</h2>
+      </div>
       <div class="tp-for">
         <div class="tp-for__item">
           <div class="tp-for__check"><svg fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>

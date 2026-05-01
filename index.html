@@ -7,6 +7,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Noto+Sans+JP:wght@400;500;700;800;900&family=Zen+Maru+Gothic:wght@500;700&display=swap" rel="stylesheet" />
+  <link rel="preload" href="./photos/IMG_6294_opt.jpg" as="image" />
   <link rel="stylesheet" href="./layout.css" />
   <style>
     html, body { overflow: hidden; }
@@ -32,12 +33,8 @@
       contain: paint; /* 描画範囲をこのbox内に限定。他boxの再描画を防ぐ */
     }
 
-    /* ---- ヒーロー写真：Ken Burns（ランダム方向）+ クロスフェード ---- */
-    @keyframes kb-c { from{transform:scale(1.0)}  to{transform:scale(1.06)} }
-    @keyframes kb-r { from{transform:scale(1.02) translate(-1.5%,0)} to{transform:scale(1.07) translate(1.5%,0)} }
-    @keyframes kb-l { from{transform:scale(1.02) translate(1.5%,0)}  to{transform:scale(1.07) translate(-1.5%,0)} }
-    @keyframes kb-u { from{transform:scale(1.02) translate(0,1.5%)}  to{transform:scale(1.07) translate(0,-1.5%)} }
-    @keyframes kb-d { from{transform:scale(1.02) translate(0,-1.5%)} to{transform:scale(1.07) translate(0,1.5%)} }
+    /* ---- ヒーロー写真：Ken Burns（スケールのみ・軽量）+ クロスフェード ---- */
+    @keyframes kb { from{transform:scale(1.0)} to{transform:scale(1.05)} }
 
     .hero-photos {
       position: absolute;
@@ -94,7 +91,7 @@
         0 1px 4px  rgba(0,0,0,.45);
     }
     #box-1 .slide-title { font-size: clamp(1.6rem, 2.8vw, 2.6rem); }
-    #box-2 .slide-title { font-size: clamp(1.4rem, 2.2vw, 2.1rem); }
+    #box-2 .slide-title { font-size: clamp(1.4rem, 2.2vw, 2.1rem); color: #FE8C68; text-shadow: 0 2px 16px rgba(0,0,0,.6), 0 1px 4px rgba(0,0,0,.5); }
 
     .slide-lead {
       font-family: "Zen Maru Gothic", "Noto Sans JP", sans-serif;
@@ -136,7 +133,7 @@
       justify-content: flex-end;
       padding: 48px 44px;
     }
-    #box-3 .slide-title { font-size: clamp(1.6rem, 2.6vw, 2.4rem); letter-spacing: .04em; }
+    #box-3 .slide-title { font-size: clamp(1.6rem, 2.6vw, 2.4rem); letter-spacing: .04em; color: #5EC1C6; text-shadow: 0 2px 16px rgba(0,0,0,.6), 0 1px 4px rgba(0,0,0,.5); }
     #box-3 .slide-btn {
       display: inline-block;
       padding: 10px 24px;
@@ -272,6 +269,7 @@
       #bm-counter { left: 16px; }
       #bm-hint    { right: 16px; }
     }
+
   </style>
 </head>
 <body>
@@ -325,10 +323,10 @@
     <!-- スライド 1：メインビジュアル -->
     <div id="box-1">
       <div class="hero-photos">
-        <img class="hero-photo hp-active" src="./photos/IMG_6294.webp" alt="BLUE MOUSE" />
-        <img class="hero-photo" src="./photos/IMG_6292.webp" alt="BLUE MOUSE" loading="lazy" />
-        <img class="hero-photo" src="./photos/IMG_6293.webp" alt="BLUE MOUSE" loading="lazy" />
-        <img class="hero-photo" src="./photos/IMG_6295.webp" alt="BLUE MOUSE" loading="lazy" />
+        <img class="hero-photo hp-active" src="./photos/IMG_6294_opt.jpg" alt="BLUE MOUSE" />
+        <img class="hero-photo" src="./photos/IMG_6292_opt.jpg" alt="BLUE MOUSE" loading="lazy" />
+        <img class="hero-photo" src="./photos/IMG_6293_opt.jpg" alt="BLUE MOUSE" loading="lazy" />
+        <img class="hero-photo" src="./photos/IMG_6295_opt.jpg" alt="BLUE MOUSE" loading="lazy" />
       </div>
       <div class="slide-overlay">
         <h2 class="slide-title">主体性療育から、IT療育へ。<br>経済的自立から逆算した、<br>10年間の確かなロードマップ。</h2>
@@ -339,31 +337,13 @@
       </div>
     </div>
 
-    <!-- スライド 2：放課後等デイサービス -->
+    <!-- スライド 2：児童発達支援事業 -->
     <div id="box-2">
       <div class="hero-photos">
-        <img class="hero-photo hp-active" src="./photos/IMG_6293.webp" alt="放課後等デイサービス" loading="lazy" />
-        <img class="hero-photo" src="./photos/IMG_6295.webp" alt="放課後等デイサービス" loading="lazy" />
-        <img class="hero-photo" src="./photos/IMG_6294.webp" alt="放課後等デイサービス" loading="lazy" />
-        <img class="hero-photo" src="./photos/IMG_6292.webp" alt="放課後等デイサービス" loading="lazy" />
-      </div>
-      <div class="slide-overlay">
-        <h2 class="slide-title">放課後等デイサービス（就学期）<br>強みとなる「見える力」は、<br>伴走者と共に育む。</h2>
-        <p class="slide-lead">
-          小学生〜高校生のお子さまを対象に、<br>
-          IT療育・感覚統合・SSTで一人ひとりに寄り添います。
-        </p>
-        <a href="./afterschool.html" class="slide-btn">詳しく見る →</a>
-      </div>
-    </div>
-
-    <!-- スライド 3：児童発達支援事業 -->
-    <div id="box-3">
-      <div class="hero-photos">
-        <img class="hero-photo hp-active" src="./photos/IMG_6295.webp" alt="児童発達支援事業" loading="lazy" />
-        <img class="hero-photo" src="./photos/IMG_6293.webp" alt="児童発達支援事業" loading="lazy" />
-        <img class="hero-photo" src="./photos/IMG_6292.webp" alt="児童発達支援事業" loading="lazy" />
-        <img class="hero-photo" src="./photos/IMG_6294.webp" alt="児童発達支援事業" loading="lazy" />
+        <img class="hero-photo hp-active" src="./photos/IMG_6295_opt.jpg" alt="児童発達支援事業" loading="lazy" />
+        <img class="hero-photo" src="./photos/IMG_6293_opt.jpg" alt="児童発達支援事業" loading="lazy" />
+        <img class="hero-photo" src="./photos/IMG_6292_opt.jpg" alt="児童発達支援事業" loading="lazy" />
+        <img class="hero-photo" src="./photos/IMG_6294_opt.jpg" alt="児童発達支援事業" loading="lazy" />
       </div>
       <div class="slide-overlay">
         <h2 class="slide-title">児童発達支援事業</h2>
@@ -372,6 +352,24 @@
           言語・感覚統合・集団活動などの発達支援を行います。
         </p>
         <a href="./child.html" class="slide-btn">詳しく見る →</a>
+      </div>
+    </div>
+
+    <!-- スライド 3：放課後等デイサービス -->
+    <div id="box-3">
+      <div class="hero-photos">
+        <img class="hero-photo hp-active" src="./photos/IMG_6293_opt.jpg" alt="放課後等デイサービス" loading="lazy" />
+        <img class="hero-photo" src="./photos/IMG_6295_opt.jpg" alt="放課後等デイサービス" loading="lazy" />
+        <img class="hero-photo" src="./photos/IMG_6294_opt.jpg" alt="放課後等デイサービス" loading="lazy" />
+        <img class="hero-photo" src="./photos/IMG_6292_opt.jpg" alt="放課後等デイサービス" loading="lazy" />
+      </div>
+      <div class="slide-overlay">
+        <h2 class="slide-title">放課後等デイサービス（就学期）<br>強みとなる「見える力」は、<br>伴走者と共に育む。</h2>
+        <p class="slide-lead">
+          小学生〜高校生のお子さまを対象に、<br>
+          IT療育・感覚統合・SSTで一人ひとりに寄り添います。
+        </p>
+        <a href="./afterschool.html" class="slide-btn">詳しく見る →</a>
       </div>
     </div>
 
@@ -397,12 +395,37 @@
       </div>
       <div class="side-card">
         <span class="side-card__badge">所在地</span>
-        <p class="side-card__title" id="side-addr">岡山市中区<br>徳吉町二丁目11番地25</p>
-        <p class="side-card__sub" id="side-access">東山電停から徒歩1分</p>
-        <a class="side-card__link" id="side-map"
-           href="https://maps.google.com/?q=岡山県岡山市中区徳吉町二丁目11番地25"
-           target="_blank" rel="noopener">場所を見る</a>
+        <!-- タブ -->
+        <div class="side-loc-tabs">
+          <button class="side-loc-tab is-active" data-loc="houdei">放課後等デイサービス</button>
+          <button class="side-loc-tab" data-loc="jidou">児童発達支援事業</button>
+        </div>
+        <!-- 放課後等デイサービス -->
+        <div class="side-loc-content is-active" id="loc-houdei">
+          <p class="side-card__title">岡山市中区<br>徳吉町二丁目11番地25</p>
+          <p class="side-card__sub">東山電停から徒歩1分</p>
+          <a class="side-card__link"
+             href="https://maps.google.com/?q=岡山県岡山市中区徳吉町二丁目11番地25"
+             target="_blank" rel="noopener">場所を見る</a>
+        </div>
+        <!-- 児童発達支援事業 -->
+        <div class="side-loc-content" id="loc-jidou">
+          <p class="side-card__title">岡山市北区<br>辰巳２６−１０２</p>
+          <p class="side-card__sub">北長瀬駅から徒歩約18分</p>
+          <a class="side-card__link"
+             href="https://maps.google.com/?q=岡山県岡山市北区辰巳26-102"
+             target="_blank" rel="noopener">場所を見る</a>
+        </div>
       </div>
+    </div>
+
+    <!-- Google Maps (スライドに連動して切り替わる) -->
+    <div class="side-map-wrap">
+      <iframe id="side-map-iframe"
+        src="https://maps.google.com/maps?q=ブルーマウス徳吉町+放課後等デイサービス&output=embed&z=17&hl=ja"
+        title="BLUE MOUSE 所在地"
+        loading="lazy"
+        allowfullscreen></iframe>
     </div>
 
     <a href="./contact.html" class="side-cta">
@@ -421,6 +444,25 @@
 <div id="bm-hint">Scroll</div>
 
 <script src="./layout.js"></script>
+<script>
+/* ===== 所在地タブ切り替え（地図も連動） ===== */
+var _mapEmbedUrls = {
+  houdei: 'https://maps.google.com/maps?q=ブルーマウス徳吉町+放課後等デイサービス&output=embed&z=17&hl=ja',
+  jidou:  'https://maps.google.com/maps?q=〒700-0976+岡山県岡山市北区辰巳26-102&output=embed&z=17&hl=ja'
+};
+document.querySelectorAll('.side-loc-tab').forEach(function(btn) {
+  btn.addEventListener('click', function() {
+    var loc = btn.getAttribute('data-loc');
+    document.querySelectorAll('.side-loc-tab').forEach(function(b) { b.classList.remove('is-active'); });
+    btn.classList.add('is-active');
+    document.querySelectorAll('.side-loc-content').forEach(function(c) { c.classList.remove('is-active'); });
+    document.getElementById('loc-' + loc).classList.add('is-active');
+    /* 地図を切り替え */
+    var iframe = document.getElementById('side-map-iframe');
+    if (iframe && _mapEmbedUrls[loc]) iframe.src = _mapEmbedUrls[loc];
+  });
+});
+</script>
 <script>
 (function () {
   var container = document.getElementById('bm-center');
@@ -499,27 +541,47 @@
       },
       {
         heading: 'SERVICE INFO',
-        age:     '小学生〜高校生',
-        cap:     '10名 / 日',
-        support: 'IT療育・PCスキル・SST',
-        addr:    '岡山市中区<br>徳吉町二丁目11番地25',
-        access:  '東山電停から徒歩1分',
-        mapUrl:  'https://maps.google.com/?q=岡山県岡山市中区徳吉町二丁目11番地25',
-        color:   '#FE8C68',
-        textColor: '#fff'
-      },
-      {
-        heading: 'SERVICE INFO',
         age:     '2〜5歳',
         cap:     '10名 / 日',
         support: '言語・感覚統合・集団活動',
         addr:    '岡山市北区<br>辰巳２６−１０２',
         access:  'アクセス情報 準備中',
         mapUrl:  'https://maps.google.com/?q=岡山県岡山市北区辰巳26-102',
+        color:   '#FE8C68',
+        textColor: '#fff'
+      },
+      {
+        heading: 'SERVICE INFO',
+        age:     '小学生〜高校生',
+        cap:     '10名 / 日',
+        support: 'IT療育・PCスキル・SST',
+        addr:    '岡山市中区<br>徳吉町二丁目11番地25',
+        access:  '東山電停から徒歩1分',
+        mapUrl:  'https://maps.google.com/?q=岡山県岡山市中区徳吉町二丁目11番地25',
         color:   '#5EC1C6',
         textColor: '#fff'
       },
     ];
+
+    /* 地図の埋め込みURL */
+    var mapEmbedUrls = {
+      houdei: 'https://maps.google.com/maps?q=ブルーマウス徳吉町+放課後等デイサービス&output=embed&z=17&hl=ja',
+      jidou:  'https://maps.google.com/maps?q=〒700-0976+岡山県岡山市北区辰巳26-102&output=embed&z=17&hl=ja'
+    };
+
+    function switchMapTo(locKey) {
+      var iframe = document.getElementById('side-map-iframe');
+      if (!iframe) return;
+      var newSrc = mapEmbedUrls[locKey];
+      if (iframe.src !== newSrc) iframe.src = newSrc;
+      /* タブの見た目も連動 */
+      document.querySelectorAll('.side-loc-tab').forEach(function(b) {
+        b.classList.toggle('is-active', b.getAttribute('data-loc') === locKey);
+      });
+      document.querySelectorAll('.side-loc-content').forEach(function(c) {
+        c.classList.toggle('is-active', c.id === 'loc-' + locKey);
+      });
+    }
 
     function updateSidebar(idx) {
       var d = sideData[idx] || sideData[0];
@@ -536,11 +598,20 @@
       if (accessEl) accessEl.textContent = d.access;
       if (mapEl)    mapEl.href           = d.mapUrl;
 
+      /* スライドに応じてマップを切り替え */
+      if (idx === 1) {
+        switchMapTo('jidou');   /* 児童発達支援 → 辰巳 */
+      } else if (idx === 2) {
+        switchMapTo('houdei');  /* 放課後等デイ → 徳吉 */
+      }
+      /* idx=0 (TOP) はタブ操作に任せる */
+
       /* バッジ色をスライドに合わせて切り替え */
       document.querySelectorAll('.side-card__badge').forEach(function(el) {
-        el.style.transition = 'background .4s ease, color .4s ease';
-        el.style.background = d.color;
-        el.style.color      = d.textColor;
+        el.style.transition = 'color .4s ease, border-color .4s ease';
+        el.style.background  = 'transparent';
+        el.style.color       = d.color;
+        el.style.borderColor = d.color;
       });
     }
 
@@ -573,92 +644,89 @@
 </script>
 
 <script>
-/* ---- ヒーロー写真：Ken Burns（ランダム方向）+ クロスフェード ---- */
+/* ---- ヒーロー写真：Ken Burns（スケールのみ）+ クロスフェード ---- */
 (function () {
-  var ANIMS          = ['kb-c','kb-r','kb-l','kb-u','kb-d'];
-  var ANIM_DUR       = '7s ease-out forwards';  /* 少し速く */
-  var SLIDE_INTERVAL = 5000;                    /* 5秒ごとに切替 */
-  var OFFSET_MS      = 1800;
+  var ANIM_DUR      = '9s ease-out forwards';
+  var SLIDE_INTERVAL = 6000;
 
-  function randAnim() {
-    return ANIMS[Math.floor(Math.random() * ANIMS.length)] + ' ' + ANIM_DUR;
+  function makeState() { return { timer: null, current: 0, active: false }; }
+
+  function stopSlide(photos, state) {
+    state.active = false;
+    if (state.timer) { clearTimeout(state.timer); state.timer = null; }
+    photos.forEach(function (p) {
+      p.style.animation  = 'none';
+      p.style.willChange = 'auto';
+    });
+    photos.forEach(function (p, i) { p.classList.toggle('hp-active', i === 0); });
+    state.current = 0;
   }
 
-  function startCycle(photos, startDelay) {
-    var current = 0;
+  function startSlide(photos, state) {
+    if (state.active) return;
+    state.active = true;
+    photos[state.current].style.willChange = 'transform';
+    photos[state.current].style.animation  = 'kb ' + ANIM_DUR;
 
-    /* 最初の写真だけGPU層確保＋Ken Burns開始 */
-    photos[0].style.willChange = 'transform, opacity';
-    photos[0].style.animation  = randAnim();
+    function tick() {
+      if (!state.active) return;
+      var next = (state.current + 1) % photos.length;
+      var prev = state.current;
 
-    setTimeout(function tick() {
-      var next = (current + 1) % photos.length;
-      var prev = current;
-
-      /* 次の写真：GPU層確保→アニメリセット（まだ非表示なので安全） */
-      photos[next].style.willChange = 'transform, opacity';
+      photos[next].style.willChange = 'transform';
       photos[next].classList.remove('hp-active');
       photos[next].style.animation = 'none';
 
       requestAnimationFrame(function () {
         requestAnimationFrame(function () {
-          photos[next].style.animation = randAnim();
+          if (!state.active) return;
+          photos[next].style.animation = 'kb ' + ANIM_DUR;
           photos[prev].classList.remove('hp-active');
           photos[next].classList.add('hp-active');
-          current = next;
+          state.current = next;
 
-          /* フェード完了(1.8s)後にGPU層解放 */
           setTimeout(function () {
             photos[prev].style.animation  = 'none';
             photos[prev].style.willChange = 'auto';
-          }, 2500);
+          }, 2200);
 
-          setTimeout(tick, SLIDE_INTERVAL);
+          if (state.active) state.timer = setTimeout(tick, SLIDE_INTERVAL);
         });
       });
-    }, startDelay);
+    }
+    state.timer = setTimeout(tick, SLIDE_INTERVAL);
   }
 
   function init() {
-    var sets = Array.from(document.querySelectorAll('.hero-photos'));
-    /* photo配列を初期化時にキャッシュ */
-    var allCaches = sets.map(function (set) {
+    var container = document.getElementById('bm-center');
+    if (!container) return;
+
+    var allCaches = Array.from(document.querySelectorAll('.hero-photos')).map(function (set) {
       return Array.from(set.querySelectorAll('.hero-photo'));
     });
-
-    allCaches.forEach(function (photos, i) {
-      startCycle(photos, OFFSET_MS * i + OFFSET_MS);
-    });
-
-    /* ---- スクロール最適化 ----
-       スクロール開始時に1回だけ全停止。
-       停止後350msで現在セクションだけ再開。
-       毎フレーム処理しないようフラグ管理。 */
-    var container   = document.getElementById('bm-center');
+    var states    = allCaches.map(makeState);
+    var curIdx    = 0;
+    var scrolling = false;
     var scrollTimer = null;
-    var scrolling   = false;
 
-    if (container) {
-      container.addEventListener('scroll', function () {
-        if (!scrolling) {
-          scrolling = true;
-          /* 開始時に1回だけ全アニメ停止 */
-          allCaches.forEach(function (photos) {
-            photos.forEach(function (p) { p.style.animationPlayState = 'paused'; });
-          });
-        }
-        clearTimeout(scrollTimer);
-        scrollTimer = setTimeout(function () {
-          scrolling = false;
-          var idx = Math.round(container.scrollTop / container.clientHeight);
-          /* 停止後は現在セクションだけ再開、他は停止維持 */
-          allCaches.forEach(function (photos, i) {
-            var s = (i === idx) ? 'running' : 'paused';
-            photos.forEach(function (p) { p.style.animationPlayState = s; });
-          });
-        }, 350);
-      }, { passive: true });
-    }
+    startSlide(allCaches[0], states[0]);
+
+    container.addEventListener('scroll', function () {
+      /* スクロール開始：全スライドを即座に完全停止 */
+      if (!scrolling) {
+        scrolling = true;
+        states.forEach(function (st, i) { stopSlide(allCaches[i], st); });
+      }
+      clearTimeout(scrollTimer);
+      /* スクロール最終イベントから1秒待ってスナップ完了を確認してから起動 */
+      scrollTimer = setTimeout(function () {
+        scrolling = false;
+        var idx = Math.round(container.scrollTop / container.clientHeight);
+        idx = Math.max(0, Math.min(idx, allCaches.length - 1));
+        curIdx = idx;
+        startSlide(allCaches[curIdx], states[curIdx]);
+      }, 1000);
+    }, { passive: true });
   }
 
   if (document.readyState === 'loading') {

@@ -1,0 +1,316 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>アニメーション プレビュー | BLUE MOUSE</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body { height: 100%; overflow-x: hidden; }
+    body {
+      font-family: "Inter", sans-serif;
+      background: #f6ebe0;
+      color: #33251a;
+    }
+
+    /* ===== モバイルヘッダー風バー ===== */
+    .mock-header {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      height: 52px;
+      background: rgba(254,249,243,.95);
+      border-bottom: 1px solid rgba(0,0,0,.07);
+      display: flex;
+      align-items: center;
+      padding: 0 16px;
+      z-index: 100;
+    }
+    .mock-header img {
+      height: 30px;
+      width: auto;
+      display: block;
+    }
+
+    /* ===== サイドバー風パネル（② 確認用） ===== */
+    .mock-sidebar {
+      position: fixed;
+      top: 52px; left: 0;
+      width: 200px;
+      height: calc(100vh - 52px);
+      background: #fef9f3;
+      border-right: 2px solid #f0e4d6;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      padding: 28px 16px;
+      gap: 12px;
+    }
+    .mock-sidebar__label {
+      font-size: 9px;
+      letter-spacing: .14em;
+      text-transform: uppercase;
+      color: rgba(0,0,0,.3);
+      margin-bottom: 4px;
+    }
+    .mock-sidebar-logo {
+      display: block;
+    }
+    .mock-sidebar-logo img {
+      width: 160px;
+      height: auto;
+      display: block;
+    }
+
+    /* ===== ページ本文 ===== */
+    .page {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 32px;
+      padding: 80px 24px 40px 224px;
+    }
+    .page__logo {
+      width: clamp(120px, 20vw, 180px);
+      opacity: .2;
+    }
+    .page__text {
+      font-size: 11px;
+      color: rgba(0,0,0,.25);
+      letter-spacing: .12em;
+      text-transform: uppercase;
+    }
+    @media (max-width: 600px) {
+      .mock-sidebar { display: none; }
+      .page { padding: 80px 24px 40px; }
+    }
+
+    /* ===== リプレイボタン ===== */
+    .replay-btn {
+      position: fixed;
+      bottom: 28px;
+      right: 24px;
+      background: #3a9095;
+      color: #fff;
+      border: none;
+      border-radius: 28px;
+      padding: 12px 22px;
+      font-size: 13px;
+      font-family: "Inter", sans-serif;
+      letter-spacing: .06em;
+      cursor: pointer;
+      box-shadow: 0 4px 16px rgba(58,144,149,.4);
+      transition: background .2s, transform .18s;
+      z-index: 200;
+    }
+    .replay-btn:hover { background: #2d7a7e; transform: translateY(-2px); }
+
+    /* =====================================================
+       ① スプラッシュ画面
+    ===================================================== */
+    #bm-splash {
+      position: fixed;
+      inset: 0;
+      z-index: 999999;
+      background: #fef9f3;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 20px;
+      transition: transform .7s cubic-bezier(.76,0,.24,1), opacity .45s ease;
+      will-change: transform, opacity;
+    }
+    #bm-splash.is-exit {
+      transform: translateY(-100%);
+      opacity: 0;
+      pointer-events: none;
+    }
+    #bm-splash-logo {
+      width: clamp(160px, 38vw, 260px);
+      height: auto;
+      display: block;
+      animation: splash-logo-in .9s cubic-bezier(.22,1,.36,1) both .25s;
+    }
+    @keyframes splash-logo-in {
+      from { opacity: 0; transform: scale(.82) translateY(22px); }
+      to   { opacity: 1; transform: scale(1)   translateY(0); }
+    }
+    #bm-splash-bar {
+      height: 2px;
+      background: linear-gradient(90deg, #5EC1C6, #3a9095);
+      border-radius: 2px;
+      animation: splash-bar-grow 1.4s cubic-bezier(.4,0,.2,1) both .5s;
+    }
+    @keyframes splash-bar-grow {
+      from { width: 0; opacity: 0; }
+      to   { width: clamp(160px, 38vw, 260px); opacity: 1; }
+    }
+    #bm-splash-tag {
+      font-size: 10px;
+      letter-spacing: .22em;
+      text-transform: uppercase;
+      color: rgba(58,144,149,.55);
+      animation: splash-tag-in .6s ease both 1s;
+    }
+    @keyframes splash-tag-in {
+      from { opacity: 0; transform: translateY(6px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* =====================================================
+       ② サイドバーロゴ シマーエフェクト
+    ===================================================== */
+    .bm-logo-shimmer {
+      position: relative;
+      overflow: hidden;
+      display: inline-block;
+      border-radius: 4px;
+    }
+    .bm-logo-shimmer::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -80%;
+      width: 55%;
+      height: 100%;
+      background: linear-gradient(
+        120deg,
+        transparent   0%,
+        rgba(255,255,255,0)    20%,
+        rgba(255,255,255,.68)  50%,
+        rgba(255,255,255,0)    80%,
+        transparent   100%
+      );
+      transform: skewX(-12deg);
+      animation: shimmer-sweep 4s ease-in-out infinite;
+    }
+    @keyframes shimmer-sweep {
+      0%   { left: -80%; opacity: 0; }
+      8%   { opacity: 1; }
+      40%  { left: 160%; opacity: 1; }
+      41%  { opacity: 0; }
+      100% { left: 160%; opacity: 0; }
+    }
+
+    /* =====================================================
+       ③ モバイルヘッダー ロゴ ポップイン
+    ===================================================== */
+    @keyframes logo-pop {
+      0%   { opacity: 0; transform: scale(.65) translateX(-14px); }
+      65%  { transform: scale(1.08) translateX(2px); }
+      100% { opacity: 1; transform: scale(1) translateX(0); }
+    }
+    .logo-pop {
+      display: inline-block;
+      animation: logo-pop .6s cubic-bezier(.34,1.56,.64,1) both .15s;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ③ モバイルヘッダー -->
+  <header class="mock-header">
+    <span id="header-logo-wrap" style="opacity:0;">
+      <img src="./logo.webp" alt="BLUE MOUSE" id="header-logo" />
+    </span>
+    <span class="mock-badge" id="badge-3" style="
+      margin-left:12px; font-size:9px; letter-spacing:.1em;
+      color:rgba(58,144,149,.6); text-transform:uppercase; opacity:0;
+    ">③ logo pop-in</span>
+  </header>
+
+  <!-- ② サイドバー -->
+  <aside class="mock-sidebar">
+    <p class="mock-sidebar__label">② shimmer</p>
+    <a href="#" class="mock-sidebar-logo bm-logo-shimmer" id="sidebar-logo-link">
+      <img src="./logo.webp" alt="BLUE MOUSE" />
+    </a>
+  </aside>
+
+  <!-- ダミーページ本文 -->
+  <div class="page">
+    <img class="page__logo" src="./logo.webp" alt="" />
+    <p class="page__text">Page content appears here</p>
+  </div>
+
+  <!-- ① スプラッシュ -->
+  <div id="bm-splash">
+    <img src="./logo.webp" alt="BLUE MOUSE" id="bm-splash-logo" />
+    <div id="bm-splash-bar"></div>
+    <span id="bm-splash-tag">After-School Day Service</span>
+  </div>
+
+  <!-- リプレイボタン -->
+  <button class="replay-btn" id="replay-btn">↺ もう一度再生</button>
+
+  <script>
+    var SPLASH_DURATION = 2200;  // スプラッシュ表示時間
+    var SPLASH_EXIT     = 750;   // スライドアウト時間
+
+    /* ① スプラッシュ */
+    function startSplash(cb) {
+      var splash = document.getElementById('bm-splash');
+      splash.classList.remove('is-exit');
+      splash.style.display = '';
+
+      ['bm-splash-logo','bm-splash-bar','bm-splash-tag'].forEach(function(id) {
+        var el = document.getElementById(id);
+        el.style.animation = 'none';
+        void el.offsetHeight;
+        el.style.animation = '';
+      });
+
+      document.body.style.overflow = 'hidden';
+
+      setTimeout(function () {
+        splash.classList.add('is-exit');
+        setTimeout(function () {
+          document.body.style.overflow = '';
+          if (cb) cb();
+        }, SPLASH_EXIT);
+      }, SPLASH_DURATION);
+    }
+
+    /* ③ ロゴポップイン（スプラッシュが消えた後に呼ぶ） */
+    function startLogoPop() {
+      var wrap  = document.getElementById('header-logo-wrap');
+      var badge = document.getElementById('badge-3');
+
+      // 一度非表示にリセット
+      wrap.style.opacity = '0';
+      badge.style.opacity = '0';
+      wrap.classList.remove('logo-pop');
+      void wrap.offsetHeight;
+
+      // 表示してアニメーション
+      wrap.style.opacity = '';
+      badge.style.opacity = '1';
+      wrap.classList.add('logo-pop');
+    }
+
+    /* ② シマーは CSS animation で自動ループ（リセットのみ） */
+    function resetShimmer() {
+      var el = document.getElementById('sidebar-logo-link');
+      el.classList.remove('bm-logo-shimmer');
+      void el.offsetHeight;
+      el.classList.add('bm-logo-shimmer');
+    }
+
+    /* 初回：①終了後に③を再生 */
+    startSplash(function() {
+      startLogoPop();
+    });
+
+    /* リプレイ */
+    document.getElementById('replay-btn').addEventListener('click', function () {
+      startSplash(function() {
+        startLogoPop();
+      });
+      resetShimmer();
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,705 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>お客様の声 | BLUE MOUSE</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="./layout.css" />
+  <style>
+    /* ===== ページヘッダー ===== */
+    .vc-header {
+      padding: 48px 0 36px;
+      border-bottom: 1px solid rgba(0,0,0,.07);
+      margin-bottom: 48px;
+    }
+    .vc-kicker {
+      font-family: "Inter", sans-serif;
+      font-size: 10px;
+      letter-spacing: .22em;
+      text-transform: uppercase;
+      color: #5EC1C6;
+      margin-bottom: 10px;
+      font-weight: 500;
+      display: block;
+    }
+    .vc-title {
+      font-family: "Noto Sans JP", sans-serif;
+      font-size: clamp(1.5rem, 2.2vw, 1.9rem);
+      font-weight: 500;
+      color: #6aadcc;
+      margin: 0 0 12px;
+      line-height: 1.35;
+    }
+    .vc-lead {
+      font-size: 14px;
+      color: #666;
+      line-height: 1.9;
+      margin: 0;
+    }
+
+    /* ===== 満足度バー ===== */
+    .vc-stats {
+      display: flex;
+      gap: 32px;
+      padding: 28px 32px;
+      background: #f4f9fb;
+      border-radius: 10px;
+      margin-bottom: 52px;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+    .vc-stat {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+      flex: 1;
+      min-width: 100px;
+    }
+    .vc-stat__num {
+      font-family: "Inter", sans-serif;
+      font-size: 32px;
+      font-weight: 700;
+      color: #6aadcc;
+      line-height: 1;
+    }
+    .vc-stat__unit {
+      font-family: "Inter", sans-serif;
+      font-size: 13px;
+      color: #6aadcc;
+      font-weight: 500;
+    }
+    .vc-stat__label {
+      font-size: 11px;
+      color: #999;
+      text-align: center;
+      line-height: 1.5;
+    }
+    .vc-stat__stars {
+      display: flex;
+      gap: 3px;
+      margin-top: 2px;
+    }
+    .vc-stat__stars svg {
+      width: 14px; height: 14px;
+      fill: #6aadcc;
+    }
+    .vc-stat-divider {
+      width: 1px;
+      height: 48px;
+      background: rgba(0,0,0,.08);
+      flex-shrink: 0;
+    }
+    @media (max-width: 600px) {
+      .vc-stat-divider { display: none; }
+      .vc-stats { gap: 20px; padding: 20px; }
+    }
+
+    /* ===== セクション見出し ===== */
+    .vc-section {
+      margin-bottom: 52px;
+    }
+    .vc-section__header {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 28px;
+      padding-bottom: 16px;
+      border-bottom: 2px solid rgba(94,193,198,.2);
+    }
+    .vc-section__badge {
+      display: inline-block;
+      font-family: "Noto Sans JP", sans-serif;
+      font-size: 11px;
+      font-weight: 500;
+      padding: 4px 12px;
+      border-radius: 20px;
+      white-space: nowrap;
+    }
+    .vc-section__badge--blue {
+      background: #5EC1C6;
+      color: #fff;
+    }
+    .vc-section__badge--little {
+      background: #6aadcc;
+      color: #fff;
+    }
+    .vc-section__name {
+      font-family: "Noto Sans JP", sans-serif;
+      font-size: clamp(1.1rem, 1.8vw, 1.35rem);
+      font-weight: 500;
+      color: #6aadcc;
+      margin: 0;
+    }
+
+    /* ===== カルーセル ===== */
+    .vc-carousel-wrap {
+      overflow: hidden;
+      position: relative;
+      margin: 0 -4px;
+    }
+    /* 両端フェード */
+    .vc-carousel-wrap::before,
+    .vc-carousel-wrap::after {
+      content: '';
+      position: absolute;
+      top: 0; bottom: 0;
+      width: 64px;
+      z-index: 2;
+      pointer-events: none;
+    }
+    .vc-carousel-wrap::before {
+      left: 0;
+      background: linear-gradient(to right, #fff 20%, transparent);
+    }
+    .vc-carousel-wrap::after {
+      right: 0;
+      background: linear-gradient(to left, #fff 20%, transparent);
+    }
+    .vc-carousel-track {
+      display: flex;
+      gap: 16px;
+      width: max-content;
+      animation: vc-scroll 32s linear infinite;
+      padding: 8px 4px 12px;
+    }
+    .vc-carousel-wrap:hover .vc-carousel-track {
+      animation-play-state: paused;
+    }
+    @keyframes vc-scroll {
+      0%   { transform: translateX(0); }
+      100% { transform: translateX(-50%); }
+    }
+
+    /* ===== 声カード ===== */
+    .vc-card {
+      flex-shrink: 0;
+      width: 300px;
+      background: #fff;
+      border: 1px solid rgba(0,0,0,.07);
+      border-radius: 10px;
+      padding: 28px 26px 22px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      position: relative;
+      overflow: hidden;
+      transition: box-shadow .2s, transform .18s;
+    }
+    .vc-card:hover {
+      box-shadow: 0 8px 28px rgba(0,0,0,.08);
+      transform: translateY(-2px);
+    }
+    .vc-card::before {
+      content: '\201C';
+      position: absolute;
+      top: 10px;
+      right: 18px;
+      font-size: 72px;
+      font-family: Georgia, serif;
+      color: rgba(94,193,198,.1);
+      line-height: 1;
+      font-weight: 700;
+      pointer-events: none;
+    }
+    .vc-card__program {
+      display: inline-block;
+      font-size: 10px;
+      font-weight: 500;
+      padding: 3px 10px;
+      border-radius: 4px;
+      align-self: flex-start;
+    }
+    .vc-card__program--blue {
+      background: rgba(94,193,198,.12);
+      color: #3a9095;
+    }
+    .vc-card__program--little {
+      background: rgba(106,173,204,.12);
+      color: #3a7ca5;
+    }
+    .vc-card__text {
+      font-size: 13.5px;
+      color: #444;
+      line-height: 2;
+      font-weight: 400;
+      margin: 0;
+      flex: 1;
+    }
+    .vc-card__footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding-top: 14px;
+      border-top: 1px solid rgba(0,0,0,.06);
+    }
+    .vc-card__who {
+      font-size: 11px;
+      color: #aaa;
+      line-height: 1.6;
+    }
+    .vc-card__stars {
+      display: flex;
+      gap: 2px;
+    }
+    .vc-card__stars svg {
+      width: 12px; height: 12px;
+      fill: #f5a623;
+    }
+
+    /* ===== 注釈 ===== */
+    .vc-note {
+      font-size: 12px;
+      color: #bbb;
+      line-height: 1.7;
+      margin-top: -32px;
+      margin-bottom: 40px;
+    }
+
+    /* ===== CTA ===== */
+    .vc-cta {
+      text-align: center;
+      padding: 44px 28px;
+      background: #1a2a3a;
+      border-radius: 10px;
+      margin-bottom: 60px;
+    }
+    .vc-cta__text {
+      font-size: 14px;
+      color: rgba(255,255,255,.7);
+      line-height: 1.9;
+      margin: 0 0 20px;
+    }
+
+    /* ===== アニメーション ===== */
+    .anim-up {
+      opacity: 0;
+      transform: translateY(28px);
+      transition: opacity 1s cubic-bezier(.22,1,.36,1), transform 1s cubic-bezier(.22,1,.36,1);
+    }
+    .anim-up.is-visible { opacity: 1; transform: none; }
+
+    /* ===== レスポンシブ ===== */
+    @media (max-width: 780px) {
+      .vc-cards { grid-template-columns: 1fr; }
+      .vc-stats { flex-direction: column; gap: 16px; }
+      .vc-stat-divider { display: none; }
+    }
+  </style>
+</head>
+<body>
+<div class="bm-layout">
+
+  <!-- ===== 左サイドバー ===== -->
+  <aside class="bm-left">
+    <a class="bm-logo" href="./index.html">
+      <img src="./logo.webp" alt="BLUE MOUSE" />
+    </a>
+    <nav class="bm-nav">
+      <a href="./index.html" class="bm-nav__item" data-page="index">トップページ</a>
+
+      <div class="bm-nav__group">
+        <div class="bm-nav__group-header">
+          <a href="./child.html" class="bm-nav__group-link">児童発達支援事業</a>
+          <button type="button" class="bm-nav__toggle" data-group="child" data-target="nav-child">
+            <span class="bm-nav__arrow">▶</span>
+          </button>
+        </div>
+
+      <div class="bm-nav__group">
+        <div class="bm-nav__group-header">
+          <a href="./afterschool.html" class="bm-nav__group-link">放課後等デイサービス</a>
+          <button type="button" class="bm-nav__toggle" data-group="afterschool" data-target="nav-after">
+            <span class="bm-nav__arrow">▶</span>
+          </button>
+        </div>
+        <ul class="bm-nav__sub" id="nav-after">
+          <li><a href="./afterschool.html#program"  class="bm-nav__subitem" data-group="afterschool" data-hash="#program">事業内容</a></li>
+          <li><a href="./afterschool.html#pricing"  class="bm-nav__subitem" data-group="afterschool" data-hash="#pricing">料金表</a></li>
+        </ul>
+      </div>
+        <ul class="bm-nav__sub" id="nav-child">
+          <li><a href="./child.html#overview" class="bm-nav__subitem" data-group="child" data-hash="#overview">事業内容</a></li>
+          <li><a href="./child.html#pricing"  class="bm-nav__subitem" data-group="child" data-hash="#pricing">料金表</a></li>
+        </ul>
+      </div>
+
+      <a href="./philosophy.html" class="bm-nav__item" data-page="philosophy">BLUE MOUSEの想い</a>
+      <a href="./voice.html" class="bm-nav__item is-active" data-page="voice">お客様の声</a>
+      <a href="./company.html" class="bm-nav__item" data-page="company">会社概要</a>
+      <a href="./contact.html" class="bm-nav__item" data-page="contact">お問い合わせ</a>
+      <a href="./privacy.html" class="bm-nav__item" data-page="privacy">プライバシーポリシー</a>
+      <a href="https://bouemouse.studio.site" class="bm-nav__item" target="_blank" rel="noopener">採用情報</a>
+    </nav>
+  </aside>
+
+  <!-- ===== メインコンテンツ ===== -->
+  <main class="bm-main">
+
+    <div class="vc-header anim-up">
+      <span class="vc-kicker">Customer Voice</span>
+      <h1 class="vc-title">お客様の声</h1>
+      <p class="vc-lead">実際にご利用いただいている保護者の方々からいただいた声をご紹介します。<br>お子さまや保護者さまのプライバシーに配慮し、一部内容を編集・匿名化して掲載しています。</p>
+    </div>
+
+    <!-- 満足度 -->
+    <div class="vc-stats anim-up">
+      <div class="vc-stat">
+        <div style="display:flex; align-items:baseline; gap:4px;">
+          <span class="vc-stat__num">4.8</span>
+          <span class="vc-stat__unit">/ 5.0</span>
+        </div>
+        <div class="vc-stat__stars">
+          <svg viewBox="0 0 24 24"><path d="M12 2l2.4 7.4H22l-6.2 4.5 2.4 7.4L12 17l-6.2 4.3 2.4-7.4L2 9.4h7.6z"/></svg>
+          <svg viewBox="0 0 24 24"><path d="M12 2l2.4 7.4H22l-6.2 4.5 2.4 7.4L12 17l-6.2 4.3 2.4-7.4L2 9.4h7.6z"/></svg>
+          <svg viewBox="0 0 24 24"><path d="M12 2l2.4 7.4H22l-6.2 4.5 2.4 7.4L12 17l-6.2 4.3 2.4-7.4L2 9.4h7.6z"/></svg>
+          <svg viewBox="0 0 24 24"><path d="M12 2l2.4 7.4H22l-6.2 4.5 2.4 7.4L12 17l-6.2 4.3 2.4-7.4L2 9.4h7.6z"/></svg>
+          <svg viewBox="0 0 24 24"><path d="M12 2l2.4 7.4H22l-6.2 4.5 2.4 7.4L12 17l-6.2 4.3 2.4-7.4L2 9.4h7.6z"/></svg>
+        </div>
+        <span class="vc-stat__label">総合満足度</span>
+      </div>
+      <div class="vc-stat-divider"></div>
+      <div class="vc-stat">
+        <span class="vc-stat__num">96<span style="font-size:18px;">%</span></span>
+        <span class="vc-stat__label">「また利用したい」と<br>回答された保護者様</span>
+      </div>
+      <div class="vc-stat-divider"></div>
+      <div class="vc-stat">
+        <span class="vc-stat__num">94<span style="font-size:18px;">%</span></span>
+        <span class="vc-stat__label">「周囲に勧めたい」と<br>回答された保護者様</span>
+      </div>
+      <div class="vc-stat-divider"></div>
+      <div class="vc-stat">
+        <span class="vc-stat__num">98<span style="font-size:18px;">%</span></span>
+        <span class="vc-stat__label">「スタッフの対応に<br>満足」と回答された方</span>
+      </div>
+    </div>
+
+    <!-- BLUE MOUSE（放課後等デイサービス） -->
+    <div class="vc-section anim-up">
+      <div class="vc-section__header">
+        <span class="vc-section__badge vc-section__badge--blue">放課後等デイサービス</span>
+        <h2 class="vc-section__name">BLUE MOUSE</h2>
+      </div>
+
+      <div class="vc-carousel-wrap">
+        <div class="vc-carousel-track">
+
+          <!-- オリジナル -->
+          <div class="vc-card">
+            <span class="vc-card__program vc-card__program--blue">プログラミング学習</span>
+            <p class="vc-card__text">最初は「難しそう」と乗り気じゃなかった息子が、今では「早く行きたい」と言うようになりました。スタッフの方が本人のペースに合わせてくださるので、無理なく続けられています。作ったプログラムを家で自慢げに見せてくれるのがうれしいです。</p>
+            <div class="vc-card__footer">
+              <span class="vc-card__who">小学4年生の保護者様</span>
+              <div class="vc-card__stars">
+                <svg viewBox="0 0 24 24"><path d="M12 2l2.4 7.4H22l-6.2 4.5 2.4 7.4L12 17l-6.2 4.3 2.4-7.4L2 9.4h7.6z"/></svg>
+                <svg viewBox="0 0 24 24"><path d="M12 2l2.4 7.4H22l-6.2 4.5 2.4 7.4L12 17l-6.2 4.3 2.4-7.4L2 9.4h7.6z"/></svg>
+                <svg viewBox="0 0 24 24"><path d="M12 2l2.4 7.4H22l-6.2 4.5 2.4 7.4L12 17l-6.2 4.3 2.4-7.4L2 9.4h7.6z"/></svg>
+                <svg viewBox="0 0 24 24"><path d="M12 2l2.4 7.4H22l-6.2 4.5 2.4 7.4L12 17l-6.2 4.3 2.4-7.4L2 9.4h7.6z"/></svg>
+                <svg viewBox="0 0 24 24"><path d="M12 2l2.4 7.4H22l-6.2 4.5 2.4 7.4L12 17l-6.2 4.3 2.4-7.4L2 9.4h7.6z"/></svg>
+              </div>
+            </div>
+          </div>
+
+          <div class="vc-card">
+            <span class="vc-card__program vc-card__program--blue">タイピング練習</span>
+            <p class="vc-card__text">以前は学校の授業でパソコンを使うのが苦手で自信をなくしていましたが、通い始めてから「できた！」という経験が増えて、表情が明るくなりました。タイピングの速さが上がったことをすごく誇りに思っているようで、毎回楽しそうに通っています。</p>
+            <div class="vc-card__footer">
+              <span class="vc-card__who">中学1年生の保護者様</span>
+              <div class="vc-card__stars">
+                <svg viewBox="0 0 24 24"><path d="M12 2l2.4 7.4H22l-6.2 4.5 2.4 7.4L12 17l-6.2 4.3 2.4-7.4L2 9.4h7.6z"/></svg>
+                <svg viewBox="0 0 24 24"><path d="M12 2l2.4 7.4H22l-6.2 4.5 2.4 7.4L12 17l-6.2 4.3 2.4-7.4L2 9.4h7.6z"/></svg>
+                <svg viewBox="0 0 24 24"><path d="M12 2l2.4 7.4H22l-6.2 4.5 2.4 7.4L12 17l-6.2 4.3 2.4-7.4L2 9.4h7.6z"/></svg>
+                <svg viewBox="0 0 24 24"><path d="M12 2l2.4 7.4H22l-6.2 4.5 2.4 7.4L12 17l-6.2 4.3 2.4-7.4L2 9.4h7.6z"/></svg>
+                <svg viewBox="0 0 24 24"><path d="M12 2l2.4 7.4H22l-6.2 4.5 2.4 7.4L12 17l-6.2 4.3 2.4-7.4L2 9.4h7.6z"/></svg>
+              </div>
+            </div>
+          </div>
+
+          <div class="vc-card">
+            <span class="vc-card__program vc-card__program--blue">コミュニケーション支援</span>
+            <p class="vc-card__text">娘はもともと気持ちをうまく言葉にできず、家でも学校でも困ることが多かったです。ここに通うようになってから、「嫌だ」「助けて」が言えるようになってきて、親としてほっとしています。スタッフの方の関わり方がとても丁寧で、安心して任せられます。</p>
+            <div class="vc-card__footer">
+              <span class="vc-card__who">小学6年生の保護者様</span>
+              <div class="vc-card__stars">
+                <svg viewBox="0 0 24 24"><path d="M12 2l2.4 7.4H22l-6.2 4.5 2.4 7.4L12 17l-6.2 4.3 2.4-7.4L2 9.4h7.6z"/></svg>
+                <svg viewBox="0 0 24 24"><path d="M12 2l2.4 7.4H22l-6.2 4.5 2.4 7.4L12 17l-6.2 4.3 2.4-7.4L2 9.4h7.6z"/></svg>
+                <svg viewBox="0 0 24 24"><path d="M12 2l2.4 7.4H22l-6.2 4.5 2.4 7.4L12 17l-6.2 4.3 2.4-7.4L2 9.4h7.6z"/></svg>
+                <svg viewBox="0 0 24 24"><path d="M12 2l2.4 7.4H22l-6.2 4.5 2.4 7.4L12 17l-6.2 4.3 2.4-7.4L2 9.4h7.6z"/></svg>
+                <svg viewBox="0 0 24 24"><path d="M12 2l2.4 7.4H22l-6.2 4.5 2.4 7.4L12 17l-6.2 4.3 2.4-7.4L2 9.4h7.6z"/></svg>
+              </div>
+            </div>
+          </div>
+
+          <div class="vc-card">
+            <span class="vc-card__program vc-card__program--blue">オフィスソフト操作</span>
+            <p class="vc-card__text">将来のことを考えて利用し始めましたが、こんなに楽しんでくれるとは思っていませんでした。スタッフの方が「この子は何に興味を持つか」をよく見ていてくださって、本人のやる気を引き出してくれています。自分でExcelで表を作ったと誇らしそうに話してくれます。</p>
+            <div class="vc-card__footer">
+              <span class="vc-card__who">高校1年生の保護者様</span>
+              <div class="vc-card__stars">
+                <svg viewBox="0 0 24 24"><path d="M12 2l2.4 7.4H22l-6.2 4.5 2.4 7.4L12 17l-6.2 4.3 2.4-7.4L2 9.4h7.6z"/></svg>
+                <svg viewBox="0 0 24 24"><path d="M12 2l2.4 7.4H22l-6.2 4.5 2.4 7.4L12 17l-6.2 4.3 2.4-7.4L2 9.4h7.6z"/></svg>
+                <svg viewBox="0 0 24 24"><path d="M12 2l2.4 7.4H22l-6.2 4.5 2.4 7.4L12 17l-6.2 4.3 2.4-7.4L2 9.4h7.6z"/></svg>
+                <svg viewBox="0 0 24 24"><path d="M12 2l2.4 7.4H22l-6.2 4.5 2.4 7.4L12 17l-6.2 4.3 2.4-7.4L2 9.4h7.6z"/></svg>
+                <svg viewBox="0 0 24 24"><path d="M12 2l2.4 7.4H22l-6.2 4.5 2.4 7.4L12 17l-6.2 4.3 2.4-7.4L2 9.4h7.6z"/></svg>
+              </div>
+            </div>
+          </div>
+
+          <!-- ループ用コピー -->
+          <div class="vc-card">
+            <span class="vc-card__program vc-card__program--blue">プログラミング学習</span>
+            <p class="vc-card__text">最初は「難しそう」と乗り気じゃなかった息子が、今では「早く行きたい」と言うようになりました。スタッフの方が本人のペースに合わせてくださるので、無理なく続けられています。作ったプログラムを家で自慢げに見せてくれるのがうれしいです。</p>
+            <div class="vc-card__footer">
+              <span class="vc-card__who">小学4年生の保護者様</span>
+              <div class="vc-card__stars">
+                <svg viewBox="0 0 24 24"><path d="M12 2l2.4 7.4H22l-6.2 4.5 2.4 7.4L12 17l-6.2 4.3 2.4-7.4L2 9.4h7.6z"/></svg>
+                <svg viewBox="0 0 24 24"><path d="M12 2l2.4 7.4H22l-6.2 4.5 2.4 7.4L12 17l-6.2 4.3 2.4-7.4L2 9.4h7.6z"/></svg>
+                <svg viewBox="0 0 24 24"><path d="M12 2l2.4 7.4H22l-6.2 4.5 2.4 7.4L12 17l-6.2 4.3 2.4-7.4L2 9.4h7.6z"/></svg>
+                <svg viewBox="0 0 24 24"><path d="M12 2l2.4 7.4H22l-6.2 4.5 2.4 7.4L12 17l-6.2 4.3 2.4-7.4L2 9.4h7.6z"/></svg>
+                <svg viewBox="0 0 24 24"><path d="M12 2l2.4 7.4H22l-6.2 4.5 2.4 7.4L12 17l-6.2 4.3 2.4-7.4L2 9.4h7.6z"/></svg>
+              </div>
+            </div>
+          </div>
+
+          <div class="vc-card">
+            <span class="vc-card__program vc-card__program--blue">タイピング練習</span>
+            <p class="vc-card__text">以前は学校の授業でパソコンを使うのが苦手で自信をなくしていましたが、通い始めてから「できた！」という経験が増えて、表情が明るくなりました。タイピングの速さが上がったことをすごく誇りに思っているようで、毎回楽しそうに通っています。</p>
+            <div class="vc-card__footer">
+              <span class="vc-card__who">中学1年生の保護者様</span>
+              <div class="vc-card__stars">
+                <svg viewBox="0 0 24 24"><path d="M12 2l2.4 7.4H22l-6.2 4.5 2.4 7.4L12 17l-6.2 4.3 2.4-7.4L2 9.4h7.6z"/></svg>
+                <svg viewBox="0 0 24 24"><path d="M12 2l2.4 7.4H22l-6.2 4.5 2.4 7.4L12 17l-6.2 4.3 2.4-7.4L2 9.4h7.6z"/></svg>
+                <svg viewBox="0 0 24 24"><path d="M12 2l2.4 7.4H22l-6.2 4.5 2.4 7.4L12 17l-6.2 4.3 2.4-7.4L2 9.4h7.6z"/></svg>
+                <svg viewBox="0 0 24 24"><path d="M12 2l2.4 7.4H22l-6.2 4.5 2.4 7.4L12 17l-6.2 4.3 2.4-7.4L2 9.4h7.6z"/></svg>
+                <svg viewBox="0 0 24 24"><path d="M12 2l2.4 7.4H22l-6.2 4.5 2.4 7.4L12 17l-6.2 4.3 2.4-7.4L2 9.4h7.6z"/></svg>
+              </div>
+            </div>
+          </div>
+
+          <div class="vc-card">
+            <span class="vc-card__program vc-card__program--blue">コミュニケーション支援</span>
+            <p class="vc-card__text">娘はもともと気持ちをうまく言葉にできず、家でも学校でも困ることが多かったです。ここに通うようになってから、「嫌だ」「助けて」が言えるようになってきて、親としてほっとしています。スタッフの方の関わり方がとても丁寧で、安心して任せられます。</p>
+            <div class="vc-card__footer">
+              <span class="vc-card__who">小学6年生の保護者様</span>
+              <div class="vc-card__stars">
+                <svg viewBox="0 0 24 24"><path d="M12 2l2.4 7.4H22l-6.2 4.5 2.4 7.4L12 17l-6.2 4.3 2.4-7.4L2 9.4h7.6z"/></svg>
+                <svg viewBox="0 0 24 24"><path d="M12 2l2.4 7.4H22l-6.2 4.5 2.4 7.4L12 17l-6.2 4.3 2.4-7.4L2 9.4h7.6z"/></svg>
+                <svg viewBox="0 0 24 24"><path d="M12 2l2.4 7.4H22l-6.2 4.5 2.4 7.4L12 17l-6.2 4.3 2.4-7.4L2 9.4h7.6z"/></svg>
+                <svg viewBox="0 0 24 24"><path d="M12 2l2.4 7.4H22l-6.2 4.5 2.4 7.4L12 17l-6.2 4.3 2.4-7.4L2 9.4h7.6z"/></svg>
+                <svg viewBox="0 0 24 24"><path d="M12 2l2.4 7.4H22l-6.2 4.5 2.4 7.4L12 17l-6.2 4.3 2.4-7.4L2 9.4h7.6z"/></svg>
+              </div>
+            </div>
+          </div>
+
+          <div class="vc-card">
+            <span class="vc-card__program vc-card__program--blue">オフィスソフト操作</span>
+            <p class="vc-card__text">将来のことを考えて利用し始めましたが、こんなに楽しんでくれるとは思っていませんでした。スタッフの方が「この子は何に興味を持つか」をよく見ていてくださって、本人のやる気を引き出してくれています。自分でExcelで表を作ったと誇らしそうに話してくれます。</p>
+            <div class="vc-card__footer">
+              <span class="vc-card__who">高校1年生の保護者様</span>
+              <div class="vc-card__stars">
+                <svg viewBox="0 0 24 24"><path d="M12 2l2.4 7.4H22l-6.2 4.5 2.4 7.4L12 17l-6.2 4.3 2.4-7.4L2 9.4h7.6z"/></svg>
+                <svg viewBox="0 0 24 24"><path d="M12 2l2.4 7.4H22l-6.2 4.5 2.4 7.4L12 17l-6.2 4.3 2.4-7.4L2 9.4h7.6z"/></svg>
+                <svg viewBox="0 0 24 24"><path d="M12 2l2.4 7.4H22l-6.2 4.5 2.4 7.4L12 17l-6.2 4.3 2.4-7.4L2 9.4h7.6z"/></svg>
+                <svg viewBox="0 0 24 24"><path d="M12 2l2.4 7.4H22l-6.2 4.5 2.4 7.4L12 17l-6.2 4.3 2.4-7.4L2 9.4h7.6z"/></svg>
+                <svg viewBox="0 0 24 24"><path d="M12 2l2.4 7.4H22l-6.2 4.5 2.4 7.4L12 17l-6.2 4.3 2.4-7.4L2 9.4h7.6z"/></svg>
+              </div>
+            </div>
+          </div>
+
+        </div><!-- /.vc-carousel-track -->
+      </div><!-- /.vc-carousel-wrap -->
+    </div>
+
+    <!-- LITTLE BLUE MOUSE（児童発達支援事業） -->
+    <div class="vc-section anim-up">
+      <div class="vc-section__header">
+        <span class="vc-section__badge vc-section__badge--little">児童発達支援事業</span>
+        <h2 class="vc-section__name">LITTLE BLUE MOUSE</h2>
+      </div>
+
+      <div class="vc-carousel-wrap">
+        <div class="vc-carousel-track">
+
+          <!-- オリジナル -->
+          <div class="vc-card">
+            <span class="vc-card__program vc-card__program--little">感覚統合あそび</span>
+            <p class="vc-card__text">入園当初は音に敏感で、集団の場が苦手でした。通い始めてから少しずつ落ち着いて過ごせる時間が増えてきて、幼稚園の先生にも「最近穏やかになりましたね」と言ってもらえました。スタッフの方が毎回丁寧に様子を教えてくださるのもありがたいです。</p>
+            <div class="vc-card__footer">
+              <span class="vc-card__who">4歳・男の子の保護者様</span>
+              <div class="vc-card__stars">
+                <svg viewBox="0 0 24 24"><path d="M12 2l2.4 7.4H22l-6.2 4.5 2.4 7.4L12 17l-6.2 4.3 2.4-7.4L2 9.4h7.6z"/></svg>
+                <svg viewBox="0 0 24 24"><path d="M12 2l2.4 7.4H22l-6.2 4.5 2.4 7.4L12 17l-6.2 4.3 2.4-7.4L2 9.4h7.6z"/></svg>
+                <svg viewBox="0 0 24 24"><path d="M12 2l2.4 7.4H22l-6.2 4.5 2.4 7.4L12 17l-6.2 4.3 2.4-7.4L2 9.4h7.6z"/></svg>
+                <svg viewBox="0 0 24 24"><path d="M12 2l2.4 7.4H22l-6.2 4.5 2.4 7.4L12 17l-6.2 4.3 2.4-7.4L2 9.4h7.6z"/></svg>
+                <svg viewBox="0 0 24 24"><path d="M12 2l2.4 7.4H22l-6.2 4.5 2.4 7.4L12 17l-6.2 4.3 2.4-7.4L2 9.4h7.6z"/></svg>
+              </div>
+            </div>
+          </div>
+
+          <div class="vc-card">
+            <span class="vc-card__program vc-card__program--little">言語・コミュニケーション支援</span>
+            <p class="vc-card__text">2歳のときに言葉の遅れを指摘されて、どこに相談すればいいかわからないまま困っていました。ここのスタッフの方が受給者証の取得から一緒にサポートしてくださって、本当に助かりました。息子も今ではよく話すようになり、毎日の変化に感動しています。</p>
+            <div class="vc-card__footer">
+              <span class="vc-card__who">3歳・男の子の保護者様</span>
+              <div class="vc-card__stars">
+                <svg viewBox="0 0 24 24"><path d="M12 2l2.4 7.4H22l-6.2 4.5 2.4 7.4L12 17l-6.2 4.3 2.4-7.4L2 9.4h7.6z"/></svg>
+                <svg viewBox="0 0 24 24"><path d="M12 2l2.4 7.4H22l-6.2 4.5 2.4 7.4L12 17l-6.2 4.3 2.4-7.4L2 9.4h7.6z"/></svg>
+                <svg viewBox="0 0 24 24"><path d="M12 2l2.4 7.4H22l-6.2 4.5 2.4 7.4L12 17l-6.2 4.3 2.4-7.4L2 9.4h7.6z"/></svg>
+                <svg viewBox="0 0 24 24"><path d="M12 2l2.4 7.4H22l-6.2 4.5 2.4 7.4L12 17l-6.2 4.3 2.4-7.4L2 9.4h7.6z"/></svg>
+                <svg viewBox="0 0 24 24"><path d="M12 2l2.4 7.4H22l-6.2 4.5 2.4 7.4L12 17l-6.2 4.3 2.4-7.4L2 9.4h7.6z"/></svg>
+              </div>
+            </div>
+          </div>
+
+          <div class="vc-card">
+            <span class="vc-card__program vc-card__program--little">集団活動・社会性の育成</span>
+            <p class="vc-card__text">娘は人見知りが強く、集団になじめるか心配でした。小グループから始めてもらったおかげで、無理なく慣れることができました。来年の就学が少し不安でしたが、「小学校も行ってみたい」と本人が言い始めて、親のほうが驚いています。</p>
+            <div class="vc-card__footer">
+              <span class="vc-card__who">5歳・女の子の保護者様</span>
+              <div class="vc-card__stars">
+                <svg viewBox="0 0 24 24"><path d="M12 2l2.4 7.4H22l-6.2 4.5 2.4 7.4L12 17l-6.2 4.3 2.4-7.4L2 9.4h7.6z"/></svg>
+                <svg viewBox="0 0 24 24"><path d="M12 2l2.4 7.4H22l-6.2 4.5 2.4 7.4L12 17l-6.2 4.3 2.4-7.4L2 9.4h7.6z"/></svg>
+                <svg viewBox="0 0 24 24"><path d="M12 2l2.4 7.4H22l-6.2 4.5 2.4 7.4L12 17l-6.2 4.3 2.4-7.4L2 9.4h7.6z"/></svg>
+                <svg viewBox="0 0 24 24"><path d="M12 2l2.4 7.4H22l-6.2 4.5 2.4 7.4L12 17l-6.2 4.3 2.4-7.4L2 9.4h7.6z"/></svg>
+                <svg viewBox="0 0 24 24"><path d="M12 2l2.4 7.4H22l-6.2 4.5 2.4 7.4L12 17l-6.2 4.3 2.4-7.4L2 9.4h7.6z"/></svg>
+              </div>
+            </div>
+          </div>
+
+          <div class="vc-card">
+            <span class="vc-card__program vc-card__program--little">ITを使った知育あそび</span>
+            <p class="vc-card__text">タブレットが大好きな息子なので、最初から楽しんで取り組んでくれました。遊びながら色や数を学んでいるようで、家でも「これ青色！」「3つある！」と言うようになり、認知面の成長を感じています。将来は放課後等デイのBLUE MOUSEにも通いたいと話しています。</p>
+            <div class="vc-card__footer">
+              <span class="vc-card__who">4歳・男の子の保護者様</span>
+              <div class="vc-card__stars">
+                <svg viewBox="0 0 24 24"><path d="M12 2l2.4 7.4H22l-6.2 4.5 2.4 7.4L12 17l-6.2 4.3 2.4-7.4L2 9.4h7.6z"/></svg>
+                <svg viewBox="0 0 24 24"><path d="M12 2l2.4 7.4H22l-6.2 4.5 2.4 7.4L12 17l-6.2 4.3 2.4-7.4L2 9.4h7.6z"/></svg>
+                <svg viewBox="0 0 24 24"><path d="M12 2l2.4 7.4H22l-6.2 4.5 2.4 7.4L12 17l-6.2 4.3 2.4-7.4L2 9.4h7.6z"/></svg>
+                <svg viewBox="0 0 24 24"><path d="M12 2l2.4 7.4H22l-6.2 4.5 2.4 7.4L12 17l-6.2 4.3 2.4-7.4L2 9.4h7.6z"/></svg>
+                <svg viewBox="0 0 24 24"><path d="M12 2l2.4 7.4H22l-6.2 4.5 2.4 7.4L12 17l-6.2 4.3 2.4-7.4L2 9.4h7.6z"/></svg>
+              </div>
+            </div>
+          </div>
+
+          <!-- ループ用コピー -->
+          <div class="vc-card">
+            <span class="vc-card__program vc-card__program--little">感覚統合あそび</span>
+            <p class="vc-card__text">入園当初は音に敏感で、集団の場が苦手でした。通い始めてから少しずつ落ち着いて過ごせる時間が増えてきて、幼稚園の先生にも「最近穏やかになりましたね」と言ってもらえました。スタッフの方が毎回丁寧に様子を教えてくださるのもありがたいです。</p>
+            <div class="vc-card__footer">
+              <span class="vc-card__who">4歳・男の子の保護者様</span>
+              <div class="vc-card__stars">
+                <svg viewBox="0 0 24 24"><path d="M12 2l2.4 7.4H22l-6.2 4.5 2.4 7.4L12 17l-6.2 4.3 2.4-7.4L2 9.4h7.6z"/></svg>
+                <svg viewBox="0 0 24 24"><path d="M12 2l2.4 7.4H22l-6.2 4.5 2.4 7.4L12 17l-6.2 4.3 2.4-7.4L2 9.4h7.6z"/></svg>
+                <svg viewBox="0 0 24 24"><path d="M12 2l2.4 7.4H22l-6.2 4.5 2.4 7.4L12 17l-6.2 4.3 2.4-7.4L2 9.4h7.6z"/></svg>
+                <svg viewBox="0 0 24 24"><path d="M12 2l2.4 7.4H22l-6.2 4.5 2.4 7.4L12 17l-6.2 4.3 2.4-7.4L2 9.4h7.6z"/></svg>
+                <svg viewBox="0 0 24 24"><path d="M12 2l2.4 7.4H22l-6.2 4.5 2.4 7.4L12 17l-6.2 4.3 2.4-7.4L2 9.4h7.6z"/></svg>
+              </div>
+            </div>
+          </div>
+
+          <div class="vc-card">
+            <span class="vc-card__program vc-card__program--little">言語・コミュニケーション支援</span>
+            <p class="vc-card__text">2歳のときに言葉の遅れを指摘されて、どこに相談すればいいかわからないまま困っていました。ここのスタッフの方が受給者証の取得から一緒にサポートしてくださって、本当に助かりました。息子も今ではよく話すようになり、毎日の変化に感動しています。</p>
+            <div class="vc-card__footer">
+              <span class="vc-card__who">3歳・男の子の保護者様</span>
+              <div class="vc-card__stars">
+                <svg viewBox="0 0 24 24"><path d="M12 2l2.4 7.4H22l-6.2 4.5 2.4 7.4L12 17l-6.2 4.3 2.4-7.4L2 9.4h7.6z"/></svg>
+                <svg viewBox="0 0 24 24"><path d="M12 2l2.4 7.4H22l-6.2 4.5 2.4 7.4L12 17l-6.2 4.3 2.4-7.4L2 9.4h7.6z"/></svg>
+                <svg viewBox="0 0 24 24"><path d="M12 2l2.4 7.4H22l-6.2 4.5 2.4 7.4L12 17l-6.2 4.3 2.4-7.4L2 9.4h7.6z"/></svg>
+                <svg viewBox="0 0 24 24"><path d="M12 2l2.4 7.4H22l-6.2 4.5 2.4 7.4L12 17l-6.2 4.3 2.4-7.4L2 9.4h7.6z"/></svg>
+                <svg viewBox="0 0 24 24"><path d="M12 2l2.4 7.4H22l-6.2 4.5 2.4 7.4L12 17l-6.2 4.3 2.4-7.4L2 9.4h7.6z"/></svg>
+              </div>
+            </div>
+          </div>
+
+          <div class="vc-card">
+            <span class="vc-card__program vc-card__program--little">集団活動・社会性の育成</span>
+            <p class="vc-card__text">娘は人見知りが強く、集団になじめるか心配でした。小グループから始めてもらったおかげで、無理なく慣れることができました。来年の就学が少し不安でしたが、「小学校も行ってみたい」と本人が言い始めて、親のほうが驚いています。</p>
+            <div class="vc-card__footer">
+              <span class="vc-card__who">5歳・女の子の保護者様</span>
+              <div class="vc-card__stars">
+                <svg viewBox="0 0 24 24"><path d="M12 2l2.4 7.4H22l-6.2 4.5 2.4 7.4L12 17l-6.2 4.3 2.4-7.4L2 9.4h7.6z"/></svg>
+                <svg viewBox="0 0 24 24"><path d="M12 2l2.4 7.4H22l-6.2 4.5 2.4 7.4L12 17l-6.2 4.3 2.4-7.4L2 9.4h7.6z"/></svg>
+                <svg viewBox="0 0 24 24"><path d="M12 2l2.4 7.4H22l-6.2 4.5 2.4 7.4L12 17l-6.2 4.3 2.4-7.4L2 9.4h7.6z"/></svg>
+                <svg viewBox="0 0 24 24"><path d="M12 2l2.4 7.4H22l-6.2 4.5 2.4 7.4L12 17l-6.2 4.3 2.4-7.4L2 9.4h7.6z"/></svg>
+                <svg viewBox="0 0 24 24"><path d="M12 2l2.4 7.4H22l-6.2 4.5 2.4 7.4L12 17l-6.2 4.3 2.4-7.4L2 9.4h7.6z"/></svg>
+              </div>
+            </div>
+          </div>
+
+          <div class="vc-card">
+            <span class="vc-card__program vc-card__program--little">ITを使った知育あそび</span>
+            <p class="vc-card__text">タブレットが大好きな息子なので、最初から楽しんで取り組んでくれました。遊びながら色や数を学んでいるようで、家でも「これ青色！」「3つある！」と言うようになり、認知面の成長を感じています。将来は放課後等デイのBLUE MOUSEにも通いたいと話しています。</p>
+            <div class="vc-card__footer">
+              <span class="vc-card__who">4歳・男の子の保護者様</span>
+              <div class="vc-card__stars">
+                <svg viewBox="0 0 24 24"><path d="M12 2l2.4 7.4H22l-6.2 4.5 2.4 7.4L12 17l-6.2 4.3 2.4-7.4L2 9.4h7.6z"/></svg>
+                <svg viewBox="0 0 24 24"><path d="M12 2l2.4 7.4H22l-6.2 4.5 2.4 7.4L12 17l-6.2 4.3 2.4-7.4L2 9.4h7.6z"/></svg>
+                <svg viewBox="0 0 24 24"><path d="M12 2l2.4 7.4H22l-6.2 4.5 2.4 7.4L12 17l-6.2 4.3 2.4-7.4L2 9.4h7.6z"/></svg>
+                <svg viewBox="0 0 24 24"><path d="M12 2l2.4 7.4H22l-6.2 4.5 2.4 7.4L12 17l-6.2 4.3 2.4-7.4L2 9.4h7.6z"/></svg>
+                <svg viewBox="0 0 24 24"><path d="M12 2l2.4 7.4H22l-6.2 4.5 2.4 7.4L12 17l-6.2 4.3 2.4-7.4L2 9.4h7.6z"/></svg>
+              </div>
+            </div>
+          </div>
+
+        </div><!-- /.vc-carousel-track -->
+      </div><!-- /.vc-carousel-wrap -->
+    </div>
+
+    <p class="vc-note">※掲載している声は保護者さまの許可を得た上で、プライバシーに配慮し一部編集して掲載しています。</p>
+
+    <!-- CTA -->
+    <div class="vc-cta anim-up">
+      <p class="vc-cta__text">見学・体験は無料です。まずはお気軽にご相談ください。<br>受給者証の取得からサポートいたします。</p>
+      <a href="./contact.html" class="bm-btn bm-btn--primary">見学・お問い合わせ</a>
+    </div>
+
+  </main>
+
+  <!-- ===== 右サイドバー ===== -->
+  <aside class="bm-right">
+    <p class="side-heading">VOICE</p>
+    <div class="side-cards">
+      <div class="side-card">
+        <span class="side-card__badge">総合満足度</span>
+        <p class="side-card__title">4.8 / 5.0</p>
+        <p class="side-card__sub">保護者アンケート結果</p>
+      </div>
+      <div class="side-card">
+        <span class="side-card__badge">BLUE MOUSE</span>
+        <p class="side-card__title">放課後等デイサービス</p>
+        <p class="side-card__sub">小学生〜高校生対象</p>
+      </div>
+      <div class="side-card">
+        <span class="side-card__badge">LITTLE BLUE MOUSE</span>
+        <p class="side-card__title">児童発達支援事業</p>
+        <p class="side-card__sub">2〜5歳（未就学児）対象</p>
+      </div>
+    </div>
+    <a href="./contact.html" class="side-cta">
+      見学・お問い合わせ
+      <span class="side-cta__icon">›</span>
+    </a>
+    <p class="bm-copy" style="text-align:center; margin-top:14px;">© BLUE MOUSE All Rights Reserved.</p>
+  </aside>
+
+</div>
+<script src="./layout.js"></script>
+<script>
+(function () {
+  var observer = new IntersectionObserver(function (entries) {
+    entries.forEach(function (entry) {
+      if (!entry.isIntersecting) return;
+      entry.target.classList.add('is-visible');
+      observer.unobserve(entry.target);
+    });
+  }, { threshold: 0.1 });
+  document.querySelectorAll('.anim-up').forEach(function (el) { observer.observe(el); });
+})();
+</script>
+</body>
+</html>

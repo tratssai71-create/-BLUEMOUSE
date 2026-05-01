@@ -214,12 +214,19 @@
     }
     .af-title {
       font-family: "Noto Sans JP", sans-serif;
-      font-size: clamp(1.25rem, 1.8vw, 1.55rem);
+      font-size: clamp(1.5rem, 2.2vw, 1.9rem);
       font-weight: 500;
-      color: #2a2a2a;
+      color: #6aadcc;
       line-height: 1.35;
       margin: 0 0 24px;
     }
+    /* ===== セクション見出し（prog-head）===== */
+    .prog-head { position: relative; text-align: center; padding: 56px 0 36px; overflow: hidden; }
+    .prog-head__watermark { position: absolute; top: 50%; left: 50%; transform: translate(-50%,-48%); font-family: "Inter",sans-serif; font-size: clamp(68px,10vw,110px); font-weight: 900; letter-spacing: .06em; color: rgba(94,193,198,.07); white-space: nowrap; pointer-events: none; user-select: none; line-height: 1; }
+    .prog-head__en { position: relative; display: flex; align-items: center; justify-content: center; gap: 14px; font-family: "Inter",sans-serif; font-size: 11px; font-weight: 600; letter-spacing: .32em; color: #5EC1C6; text-transform: uppercase; margin-bottom: 14px; }
+    .prog-head__en::before, .prog-head__en::after { content: ''; width: 40px; height: 1px; background: rgba(94,193,198,.45); }
+    .prog-head__ja { position: relative; font-family: "Noto Sans JP",sans-serif; font-size: clamp(1.7rem,2.6vw,2.2rem); font-weight: 700; color: #2e2418; margin: 0 0 14px; line-height: 1.3; }
+    .prog-head__sub { position: relative; font-size: 13px; color: #aaa; letter-spacing: .04em; margin: 0; }
     .af-text {
       font-size: 14px;
       color: #555;
@@ -233,8 +240,8 @@
     .af-item {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      grid-template-rows: 340px;
       border-bottom: 1px solid rgba(0,0,0,.06);
+      align-items: center;
     }
     .af-item:last-child { border-bottom: none; }
 
@@ -248,6 +255,8 @@
     .af-item__img {
       overflow: hidden;
       background: #e0d8ce;
+      border-radius: 8px;
+      aspect-ratio: 4 / 3;
     }
     .af-item__img img {
       width: 100%;
@@ -309,14 +318,24 @@
       border-radius: 4px;
       padding: 6px 14px 6px 16px;
       letter-spacing: .04em;
-      transition: background .2s, border-color .2s, color .2s;
+      background: linear-gradient(110deg, #e8672a 0%, #f0954a 45%, transparent 45%);
+      background-size: 230% 100%;
+      background-position: right center;
+      transition: background-position .32s cubic-bezier(.4,0,.2,1), border-color .28s, color .28s;
     }
     .af-detail-btn:hover {
-      background: #c75a35;
-      border-color: #c75a35;
+      background-position: left center;
+      border-color: #e8672a;
       color: #fff;
     }
-    .af-detail-btn__arrow { font-size: 13px; line-height: 1; }
+    .af-detail-btn__arrow {
+      font-size: 13px;
+      line-height: 1;
+      transition: transform .25s ease;
+    }
+    .af-detail-btn:hover .af-detail-btn__arrow {
+      transform: translateX(4px);
+    }
 
     /* ===== 対象年齢セクション（写真＋テキスト） ===== */
     .af-row {
@@ -451,6 +470,123 @@
       .af-section { padding: 36px 0; }
       .af-philosophy { margin: 0 -16px; padding: 48px 16px 56px; }
     }
+
+    /* ===== 料金チャート ===== */
+    .cost-visual {
+      display: grid;
+      grid-template-columns: 150px 1fr;
+      gap: 36px;
+      align-items: center;
+      margin-bottom: 28px;
+    }
+    .cost-donut-wrap { text-align: center; }
+    .cost-donut {
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      background: conic-gradient(from -90deg, var(--accent, #6aadcc) 0% 10%, #f0ece8 10% 100%);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      margin-bottom: 10px;
+    }
+    .cost-donut::before {
+      content: '';
+      position: absolute;
+      inset: 22px;
+      background: #fff;
+      border-radius: 50%;
+    }
+    .cost-donut__text {
+      position: relative;
+      z-index: 1;
+      text-align: center;
+      line-height: 1.25;
+    }
+    .cost-donut__pct {
+      font-family: "Inter", sans-serif;
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--accent, #6aadcc);
+      display: block;
+    }
+    .cost-donut__sub { font-size: 9px; color: #999; display: block; }
+    .cost-donut__caption { font-size: 11px; color: #666; line-height: 1.65; }
+    .cost-tier-chart__label {
+      font-size: 10px;
+      color: #aaa;
+      letter-spacing: .08em;
+      display: block;
+      margin-bottom: 12px;
+    }
+    .cost-tiers { display: flex; flex-direction: column; gap: 12px; }
+    .cost-tier {
+      display: grid;
+      grid-template-columns: 90px 1fr 74px;
+      align-items: center;
+      gap: 10px;
+    }
+    .cost-tier__label { font-size: 11px; color: #666; }
+    .cost-tier__track {
+      height: 7px;
+      background: #ede8e3;
+      border-radius: 4px;
+      overflow: hidden;
+    }
+    .cost-tier__bar {
+      height: 100%;
+      width: 0;
+      background: var(--accent, #6aadcc);
+      border-radius: 4px;
+      transition: width .9s cubic-bezier(.22,1,.36,1);
+    }
+    .cost-tiers.is-visible .cost-tier__bar { width: var(--w); }
+    .cost-tier__amount {
+      font-family: "Inter", sans-serif;
+      font-size: 12px;
+      font-weight: 500;
+      color: #2a2a2a;
+      text-align: right;
+    }
+    .cost-info-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+      margin-top: 24px;
+    }
+    .cost-info {
+      background: #faf7f4;
+      border-radius: 8px;
+      padding: 16px 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+    }
+    .cost-info__icon {
+      width: 30px;
+      height: 30px;
+      background: var(--accent, #6aadcc);
+      border-radius: 7px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 4px;
+    }
+    .cost-info__icon svg {
+      width: 14px; height: 14px;
+      stroke: #fff; fill: none;
+      stroke-width: 2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+    .cost-info__label { font-size: 10px; color: #aaa; }
+    .cost-info__val { font-size: 12px; font-weight: 500; color: #2a2a2a; line-height: 1.4; }
+    @media (max-width: 780px) {
+      .cost-visual { grid-template-columns: 1fr; gap: 20px; }
+      .cost-tier { grid-template-columns: 78px 1fr 60px; }
+      .cost-info-grid { grid-template-columns: 1fr 1fr; }
+    }
   </style>
 </head>
 <body>
@@ -507,6 +643,7 @@
       </div>
 
       <a href="./philosophy.html" class="bm-nav__item" data-page="philosophy">BLUE MOUSEの想い</a>
+      <a href="./voice.html" class="bm-nav__item" data-page="voice">お客様の声</a>
       <a href="./company.html" class="bm-nav__item" data-page="company">会社概要</a>
       <a href="./contact.html" class="bm-nav__item" data-page="contact">お問い合わせ</a>
       <a href="https://bouemouse.studio.site" class="bm-nav__item" target="_blank" rel="noopener">採用情報</a>
@@ -604,7 +741,12 @@
 
     <!-- ① プログラム内容 -->
     <div class="af-section" id="program" data-section="program">
-      <h2 class="af-title">プログラム内容</h2>
+      <div class="prog-head">
+        <span class="prog-head__watermark">PROGRAMS</span>
+        <p class="prog-head__en">Our Programs</p>
+        <h2 class="prog-head__ja">プログラム内容</h2>
+        <p class="prog-head__sub">お子さまの可能性を広げる、4つの専門プログラム</p>
+      </div>
 
       <div class="af-items">
 
@@ -701,34 +843,66 @@
     </div>
 
     <!-- ④ 料金 -->
-    <div class="af-section" id="pricing" data-section="pricing">
+    <div class="af-section" id="pricing" data-section="pricing" style="--accent:#FE8C68">
       <h2 class="af-title">ご利用料金</h2>
-      <p class="af-text" style="margin-bottom:20px;">受給者証をお持ちの方は、国の定める基準に基づき1割負担（上限あり）でご利用いただけます。</p>
-      <table class="bm-table">
-        <tbody>
-          <tr>
-            <th>基本利用料</th>
-            <td>国の定める報酬基準に基づきます<br><small style="color:#aaa;">受給者証をお持ちの方は1割負担（上限あり）</small></td>
-          </tr>
-          <tr>
-            <th>負担上限額</th>
-            <td>月額 0円・4,600円・37,200円<br><small style="color:#aaa;">世帯収入に応じて異なります</small></td>
-          </tr>
-          <tr>
-            <th>送迎加算</th>
-            <td>あり（片道・往復、要相談）</td>
-          </tr>
-          <tr>
-            <th>おやつ代</th>
-            <td>実費をいただく場合があります</td>
-          </tr>
-          <tr>
-            <th>受給者証</th>
-            <td>お持ちでない方も取得のサポートをいたします</td>
-          </tr>
-        </tbody>
-      </table>
-      <p style="margin-top:10px; font-size:12px; color:#aaa;">※実際の金額はお住まいの市区町村・世帯収入・利用日数によって異なります。</p>
+
+      <div class="cost-visual">
+        <div class="cost-donut-wrap">
+          <div class="cost-donut">
+            <div class="cost-donut__text">
+              <strong class="cost-donut__pct">10%</strong>
+              <span class="cost-donut__sub">自己負担</span>
+            </div>
+          </div>
+          <p class="cost-donut__caption">受給者証があれば<br>国が<b>9割</b>を負担</p>
+        </div>
+        <div>
+          <span class="cost-tier-chart__label">月額負担上限額（世帯収入別）</span>
+          <div class="cost-tiers">
+            <div class="cost-tier">
+              <span class="cost-tier__label">非課税世帯</span>
+              <div class="cost-tier__track"><div class="cost-tier__bar" style="--w:4px"></div></div>
+              <span class="cost-tier__amount">0円</span>
+            </div>
+            <div class="cost-tier">
+              <span class="cost-tier__label">〜890万円</span>
+              <div class="cost-tier__track"><div class="cost-tier__bar" style="--w:12%"></div></div>
+              <span class="cost-tier__amount">4,600円</span>
+            </div>
+            <div class="cost-tier">
+              <span class="cost-tier__label">890万円以上</span>
+              <div class="cost-tier__track"><div class="cost-tier__bar" style="--w:100%"></div></div>
+              <span class="cost-tier__amount">37,200円</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="cost-info-grid">
+        <div class="cost-info">
+          <div class="cost-info__icon">
+            <svg viewBox="0 0 24 24"><rect x="1" y="3" width="15" height="13"/><path d="M16 8h4l3 3v5h-7V8z"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
+          </div>
+          <span class="cost-info__label">送迎加算</span>
+          <span class="cost-info__val">片道・往復対応</span>
+        </div>
+        <div class="cost-info">
+          <div class="cost-info__icon">
+            <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 3c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm0 14.2c-2.5 0-4.71-1.28-6-3.22.03-1.99 4-3.08 6-3.08 1.99 0 5.97 1.09 6 3.08-1.29 1.94-3.5 3.22-6 3.22z"/></svg>
+          </div>
+          <span class="cost-info__label">おやつ代</span>
+          <span class="cost-info__val">実費（別途）</span>
+        </div>
+        <div class="cost-info">
+          <div class="cost-info__icon">
+            <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+          </div>
+          <span class="cost-info__label">受給者証</span>
+          <span class="cost-info__val">取得サポートあり</span>
+        </div>
+      </div>
+
+      <p style="margin-top:16px; font-size:12px; color:#aaa;">※実際の金額はお住まいの市区町村・世帯収入・利用日数によって異なります。</p>
     </div>
 
     <!-- CTA -->
@@ -762,6 +936,16 @@
         <a class="side-card__link" href="https://maps.google.com/?q=岡山県岡山市中区徳吉町二丁目11番地25" target="_blank" rel="noopener">場所を見る</a>
       </div>
     </div>
+
+    <!-- Google Map: 徳吉 -->
+    <div class="side-map-wrap">
+      <iframe
+        src="https://maps.google.com/maps?q=ブルーマウス徳吉町+放課後等デイサービス&output=embed&z=17&hl=ja"
+        title="BLUE MOUSE 放課後等デイサービス 徳吉"
+        loading="lazy"
+        allowfullscreen></iframe>
+    </div>
+
     <a href="./contact.html" class="side-cta">
       見学・お問い合わせ
       <span class="side-cta__icon">›</span>
@@ -782,8 +966,17 @@
   }, { threshold: 0.12 });
 
   /* セクションラベル・見出し・テキスト → 下から */
-  document.querySelectorAll('.af-label, .af-title, .af-text, .af-cta, .bm-table, .af-timeline').forEach(function (el) {
+  document.querySelectorAll('.af-label, .af-title, .af-text, .af-cta, .af-timeline').forEach(function (el) {
     el.classList.add('anim-up');
+    observer.observe(el);
+  });
+
+  /* 料金バーグラフ */
+  var costTiers = document.querySelector('.cost-tiers');
+  if (costTiers) observer.observe(costTiers);
+  document.querySelectorAll('.cost-info').forEach(function (el, i) {
+    el.classList.add('anim-up');
+    el.style.transitionDelay = (i * 0.1) + 's';
     observer.observe(el);
   });
 
