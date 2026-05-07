@@ -41,61 +41,45 @@
     }
 
     /* ===== 満足度バー ===== */
-    .vc-stats {
-      display: flex;
-      gap: 32px;
-      padding: 28px 32px;
-      background: #f4f9fb;
-      border-radius: 10px;
+    /* ===== 声のキーワードカード ===== */
+    .vc-keywords {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
       margin-bottom: 52px;
-      align-items: center;
-      flex-wrap: wrap;
     }
-    .vc-stat {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 4px;
-      flex: 1;
-      min-width: 100px;
+    .vc-keyword {
+      background: #fff;
+      border: 1px solid rgba(106,173,204,.18);
+      border-radius: 14px;
+      padding: 24px 20px;
+      text-align: center;
+      box-shadow: 0 2px 12px rgba(106,173,204,.08);
+      transition: transform .2s, box-shadow .2s;
     }
-    .vc-stat__num {
-      font-family: "Inter", sans-serif;
+    .vc-keyword:hover { transform: translateY(-3px); box-shadow: 0 6px 20px rgba(106,173,204,.14); }
+    .vc-keyword__icon {
       font-size: 32px;
-      font-weight: 700;
-      color: #6aadcc;
+      display: block;
+      margin-bottom: 12px;
       line-height: 1;
     }
-    .vc-stat__unit {
-      font-family: "Inter", sans-serif;
-      font-size: 13px;
+    .vc-keyword__word {
+      font-family: "Noto Sans JP", sans-serif;
+      font-size: 15px;
+      font-weight: 700;
       color: #6aadcc;
-      font-weight: 500;
+      display: block;
+      margin-bottom: 8px;
     }
-    .vc-stat__label {
-      font-size: 11px;
+    .vc-keyword__text {
+      font-size: 12px;
       color: #999;
-      text-align: center;
-      line-height: 1.5;
-    }
-    .vc-stat__stars {
-      display: flex;
-      gap: 3px;
-      margin-top: 2px;
-    }
-    .vc-stat__stars svg {
-      width: 14px; height: 14px;
-      fill: #6aadcc;
-    }
-    .vc-stat-divider {
-      width: 1px;
-      height: 48px;
-      background: rgba(0,0,0,.08);
-      flex-shrink: 0;
+      line-height: 1.7;
+      margin: 0;
     }
     @media (max-width: 600px) {
-      .vc-stat-divider { display: none; }
-      .vc-stats { gap: 20px; padding: 20px; }
+      .vc-keywords { grid-template-columns: 1fr; }
     }
 
     /* ===== セクション見出し ===== */
@@ -285,8 +269,7 @@
     /* ===== レスポンシブ ===== */
     @media (max-width: 780px) {
       .vc-cards { grid-template-columns: 1fr; }
-      .vc-stats { flex-direction: column; gap: 16px; }
-      .vc-stat-divider { display: none; }
+      .vc-keywords { grid-template-columns: 1fr; }
     }
   </style>
 </head>
@@ -346,35 +329,21 @@
     </div>
 
     <!-- 満足度 -->
-    <div class="vc-stats anim-up">
-      <div class="vc-stat">
-        <div style="display:flex; align-items:baseline; gap:4px;">
-          <span class="vc-stat__num">4.8</span>
-          <span class="vc-stat__unit">/ 5.0</span>
-        </div>
-        <div class="vc-stat__stars">
-          <svg viewBox="0 0 24 24"><path d="M12 2l2.4 7.4H22l-6.2 4.5 2.4 7.4L12 17l-6.2 4.3 2.4-7.4L2 9.4h7.6z"/></svg>
-          <svg viewBox="0 0 24 24"><path d="M12 2l2.4 7.4H22l-6.2 4.5 2.4 7.4L12 17l-6.2 4.3 2.4-7.4L2 9.4h7.6z"/></svg>
-          <svg viewBox="0 0 24 24"><path d="M12 2l2.4 7.4H22l-6.2 4.5 2.4 7.4L12 17l-6.2 4.3 2.4-7.4L2 9.4h7.6z"/></svg>
-          <svg viewBox="0 0 24 24"><path d="M12 2l2.4 7.4H22l-6.2 4.5 2.4 7.4L12 17l-6.2 4.3 2.4-7.4L2 9.4h7.6z"/></svg>
-          <svg viewBox="0 0 24 24"><path d="M12 2l2.4 7.4H22l-6.2 4.5 2.4 7.4L12 17l-6.2 4.3 2.4-7.4L2 9.4h7.6z"/></svg>
-        </div>
-        <span class="vc-stat__label">総合満足度</span>
+    <div class="vc-keywords anim-up">
+      <div class="vc-keyword">
+        <span class="vc-keyword__icon">🌱</span>
+        <span class="vc-keyword__word">子どもの変化を実感</span>
+        <p class="vc-keyword__text">通い始めてから、できることが増えた・表情が明るくなったという声を多くいただいています。</p>
       </div>
-      <div class="vc-stat-divider"></div>
-      <div class="vc-stat">
-        <span class="vc-stat__num">96<span style="font-size:18px;">%</span></span>
-        <span class="vc-stat__label">「また利用したい」と<br>回答された保護者様</span>
+      <div class="vc-keyword">
+        <span class="vc-keyword__icon">🤝</span>
+        <span class="vc-keyword__word">スタッフへの安心感</span>
+        <p class="vc-keyword__text">一人ひとりの特性に寄り添った丁寧な関わりを、保護者の方からご評価いただいています。</p>
       </div>
-      <div class="vc-stat-divider"></div>
-      <div class="vc-stat">
-        <span class="vc-stat__num">94<span style="font-size:18px;">%</span></span>
-        <span class="vc-stat__label">「周囲に勧めたい」と<br>回答された保護者様</span>
-      </div>
-      <div class="vc-stat-divider"></div>
-      <div class="vc-stat">
-        <span class="vc-stat__num">98<span style="font-size:18px;">%</span></span>
-        <span class="vc-stat__label">「スタッフの対応に<br>満足」と回答された方</span>
+      <div class="vc-keyword">
+        <span class="vc-keyword__icon">💬</span>
+        <span class="vc-keyword__word">親も一緒に相談できる</span>
+        <p class="vc-keyword__text">家での様子や困りごとも気軽に話せる環境づくりを大切にしています。</p>
       </div>
     </div>
 
