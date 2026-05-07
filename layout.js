@@ -213,7 +213,7 @@
 
       '</div>',
       '<p class="bm-footer__bottom">',
-        '© ' + new Date().getFullYear() + ' 合同会社BLUE MOUSE All Rights Reserved.',
+        '© ' + new Date().getFullYear() + ' 合同会社C EIGHTY PERCENT All Rights Reserved.',
       '</p>',
     ].join('');
 
