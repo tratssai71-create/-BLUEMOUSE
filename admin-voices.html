@@ -203,61 +203,28 @@
     .btn-download:hover  { background: #254d52; }
     .btn-download:active { transform: scale(.98); }
 
-    /* ========== 完了モーダル ========== */
-    #complete-screen {
-      display: none;
+    /* ========== トースト通知 ========== */
+    #toast {
       position: fixed;
-      inset: 0;
-      background: rgba(0,0,0,.45);
-      z-index: 9999;
-      align-items: center;
-      justify-content: center;
-    }
-    #complete-screen.show { display: flex; }
-
-    .complete-box {
-      background: #fff;
-      border-radius: 20px;
-      padding: 40px 36px;
-      max-width: 480px;
-      width: 90%;
-      text-align: center;
-      box-shadow: 0 20px 60px rgba(0,0,0,.18);
-    }
-    .complete-icon { font-size: 56px; margin-bottom: 12px; }
-    .complete-box h2 { font-size: 22px; color: #1a3c40; margin-bottom: 16px; }
-    .complete-instruction {
-      background: #f0fbfc;
-      border: 2px dashed #5EC1C6;
-      border-radius: 12px;
-      padding: 18px 20px;
-      margin: 20px 0;
-    }
-    .complete-instruction p { font-size: 13px; color: #666; margin-bottom: 10px; }
-    .complete-instruction .cmd {
-      font-size: 20px;
-      font-weight: 700;
-      color: #2a9da4;
-      letter-spacing: .02em;
-    }
-    .complete-note {
-      font-size: 13px;
-      color: #999;
-      line-height: 1.7;
-      margin-bottom: 24px;
-    }
-    .btn-close {
-      background: #5EC1C6;
+      bottom: 32px;
+      left: 50%;
+      transform: translateX(-50%) translateY(20px);
+      background: #1a3c40;
       color: #fff;
-      border: none;
-      border-radius: 10px;
-      padding: 14px 40px;
-      font-size: 16px;
+      padding: 14px 28px;
+      border-radius: 99px;
+      font-size: 15px;
       font-weight: 700;
-      cursor: pointer;
-      transition: background .2s;
+      opacity: 0;
+      transition: opacity .3s, transform .3s;
+      pointer-events: none;
+      z-index: 9999;
+      white-space: nowrap;
     }
-    .btn-close:hover { background: #4aafb4; }
+    #toast.show {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
+    }
 
     /* ========== 空状態 ========== */
     .empty { text-align: center; padding: 32px 0; color: #aaa; font-size: 14px; }
@@ -343,22 +310,8 @@
 
 </div>
 
-<!-- 完了モーダル -->
-<div id="complete-screen">
-  <div class="complete-box">
-    <div class="complete-icon">📋</div>
-    <h2>クリップボードにコピーしました！</h2>
-    <div class="complete-instruction">
-      <p><strong>Claude Code</strong> を開いて、<br>コピーした内容をそのまま貼り付けてください：</p>
-      <div class="cmd">⌘V（貼り付け）→ Enter</div>
-    </div>
-    <p class="complete-note">
-      Claude Code がホームページへの反映と<br>
-      GitHub への保存を自動で行います。
-    </p>
-    <button class="btn-close" onclick="closeComplete()">わかりました</button>
-  </div>
-</div>
+<!-- トースト -->
+<div id="toast"></div>
 
 <script>
 var voicesData = [];
@@ -470,31 +423,89 @@ function escHtml(s) {
   return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
 }
 
-function copyAndComplete() {
+// IndexedDB でファイルハンドルを保存
+function openDB() {
+  return new Promise(function(resolve, reject) {
+    var req = indexedDB.open('voices-admin', 1);
+    req.onupgradeneeded = function(e) { e.target.result.createObjectStore('handles'); };
+    req.onsuccess = function(e) { resolve(e.target.result); };
+    req.onerror = reject;
+  });
+}
+function getHandle() {
+  return openDB().then(function(db) {
+    return new Promise(function(resolve, reject) {
+      var req = db.transaction('handles','readonly').objectStore('handles').get('voices');
+      req.onsuccess = function(e) { resolve(e.target.result || null); };
+      req.onerror = reject;
+    });
+  });
+}
+function saveHandle(handle) {
+  return openDB().then(function(db) {
+    return new Promise(function(resolve, reject) {
+      var req = db.transaction('handles','readwrite').objectStore('handles').put(handle,'voices');
+      req.onsuccess = resolve; req.onerror = reject;
+    });
+  });
+}
+
+function showToast(msg) {
+  var t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(function() { t.classList.remove('show'); }, 3000);
+}
+
+async function copyAndComplete() {
   if (voicesData.length === 0) {
     alert('声が1件もありません。追加してからお試しください。');
     return;
   }
-  // Claude Code にそのまま貼り付けられるメッセージを生成
-  var message = 'お客様の声を更新して\n' + JSON.stringify(voicesData, null, 2);
-  navigator.clipboard.writeText(message).then(function() {
-    document.getElementById('complete-screen').classList.add('show');
-  }).catch(function() {
-    // クリップボードAPIが使えない場合のフォールバック
-    var ta = document.createElement('textarea');
-    ta.value = message;
-    ta.style.position = 'fixed';
-    ta.style.opacity = '0';
-    document.body.appendChild(ta);
-    ta.select();
-    document.execCommand('copy');
-    document.body.removeChild(ta);
-    document.getElementById('complete-screen').classList.add('show');
-  });
-}
+  var json = JSON.stringify(voicesData, null, 2);
 
-function closeComplete() {
-  document.getElementById('complete-screen').classList.remove('show');
+  // File System Access API が使えるか確認
+  if (typeof window.showSaveFilePicker === 'function') {
+    try {
+      var handle = await getHandle();
+
+      // ハンドルがなければファイル選択ダイアログを開く
+      if (!handle) {
+        handle = await window.showSaveFilePicker({
+          suggestedName: 'voices.json',
+          types: [{ description: 'JSON ファイル', accept: { 'application/json': ['.json'] } }]
+        });
+        await saveHandle(handle);
+      }
+
+      // 書き込み権限を確認
+      var perm = await handle.queryPermission({ mode: 'readwrite' });
+      if (perm !== 'granted') perm = await handle.requestPermission({ mode: 'readwrite' });
+      if (perm !== 'granted') throw new Error('権限がありません');
+
+      var writable = await handle.createWritable();
+      await writable.write(json);
+      await writable.close();
+
+      showToast('✅ 更新しました');
+      return;
+    } catch(e) {
+      if (e.name === 'AbortError') return; // キャンセル
+      console.warn('File System API error:', e);
+    }
+  }
+
+  // フォールバック：クリップボードにコピー
+  var message = 'お客様の声を更新して\n' + json;
+  try {
+    await navigator.clipboard.writeText(message);
+  } catch(_) {
+    var ta = document.createElement('textarea');
+    ta.value = message; ta.style.cssText = 'position:fixed;opacity:0';
+    document.body.appendChild(ta); ta.select(); document.execCommand('copy');
+    document.body.removeChild(ta);
+  }
+  showToast('📋 コピーしました。Claude Codeに貼り付けてください');
 }
 </script>
 </body>

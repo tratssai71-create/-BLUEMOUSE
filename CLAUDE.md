@@ -2,22 +2,21 @@
 
 ## 「お客様の声を更新して」と言われたとき
 
-メッセージにJSONデータが含まれている場合は、そのデータを直接使って更新してください。
+### パターン1：メッセージにJSONデータが含まれている場合
+メッセージ内の `[...]` のJSON配列を取り出して、そのまま使う。
 
-### 手順
+### パターン2：JSONがない場合
+`/Users/otokoushigaeru/Desktop/合同会社BLUEMOUSE/site/data/voices.json` を読む。
+（管理ツールで「更新する」を押すとこのファイルが直接更新される）
 
-1. **メッセージにJSONデータが含まれている場合（通常パターン）**
-   - メッセージ内の `[...]` のJSON配列を取り出す
-   - そのデータを `/Users/otokoushigaeru/Desktop/合同会社BLUEMOUSE/site/data/voices.json` に書き込む
+### 共通手順
 
-2. **メッセージにJSONがない場合（フォールバック）**
-   - ダウンロードフォルダの最新の voices*.json を探す
-   - 見つかればそのファイルを使う
+1. 新しいvoicesデータを `site/data/voices.json` に書き込む
 
-3. `admin-voices.html` 内の `EMBEDDED_VOICES` を最新データで更新する
-   - ファイル内の `var EMBEDDED_VOICES = [` から `];` の部分を新しいデータに置き換える
+2. `admin-voices.html` 内の `EMBEDDED_VOICES` を最新データで更新する
+   - `var EMBEDDED_VOICES = [` から `];` の部分を丸ごと新しいデータに置き換える
 
-4. Git でコミット＆プッシュする
+3. Git でコミット＆プッシュ
    ```bash
    cd /Users/otokoushigaeru/Desktop/合同会社BLUEMOUSE
    git add site/data/voices.json site/admin-voices.html
@@ -25,4 +24,4 @@
    git push origin main
    ```
 
-5. 完了したら「✅ 更新完了しました！ホームページに反映されました。」と返答する
+4. 「✅ 更新完了しました！」と返答する
