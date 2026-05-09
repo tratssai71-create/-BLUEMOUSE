@@ -1,685 +1,484 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="ja">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>お客様の声 管理 | BLUE MOUSE Admin</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>お客様の声 管理ツール | BLUE MOUSE</title>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    :root {
-      --teal: #5EC1C6;
-      --teal-dark: #3a9095;
-      --orange: #FE8C68;
-      --bg: #f4f6f8;
-      --card: #fff;
-      --border: rgba(0,0,0,.09);
-      --text: #1a1a1a;
-      --muted: #888;
-      --afterschool: #5EC1C6;
-      --child: #6aadcc;
-    }
+
     body {
-      font-family: "Noto Sans JP", "Inter", sans-serif;
-      background: var(--bg);
-      color: var(--text);
+      font-family: 'Hiragino Kaku Gothic ProN', 'Hiragino Sans', Meiryo, sans-serif;
+      background: #f4f7f9;
+      color: #333;
       min-height: 100vh;
     }
 
-    /* ===== ヘッダー ===== */
-    .adm-header {
-      background: #1a2628;
-      padding: 0 32px;
-      height: 56px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      position: sticky;
-      top: 0;
-      z-index: 100;
-    }
-    .adm-header__brand {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-    }
-    .adm-header__logo {
-      font-family: "Inter", sans-serif;
-      font-size: 15px;
-      font-weight: 700;
-      color: var(--teal);
-      letter-spacing: .04em;
-    }
-    .adm-header__sep { color: rgba(255,255,255,.2); }
-    .adm-header__page {
-      font-size: 12px;
-      color: rgba(255,255,255,.55);
-    }
-    .adm-header__links { display: flex; gap: 16px; align-items: center; }
-    .adm-header__link {
-      font-size: 12px;
-      color: rgba(255,255,255,.45);
-      text-decoration: none;
-      transition: color .15s;
-    }
-    .adm-header__link:hover { color: var(--teal); }
-
-    /* ===== レイアウト ===== */
-    .adm-body {
-      max-width: 960px;
-      margin: 0 auto;
-      padding: 32px 24px 80px;
-    }
-
-    /* ===== ツールバー ===== */
-    .adm-toolbar {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      margin-bottom: 20px;
-      gap: 12px;
-      flex-wrap: wrap;
-    }
-    .adm-tabs {
-      display: flex;
-      gap: 4px;
-      background: #e8eaec;
-      border-radius: 8px;
-      padding: 3px;
-    }
-    .adm-tab {
-      padding: 6px 16px;
-      border-radius: 6px;
-      font-size: 12px;
-      font-weight: 500;
-      border: none;
-      background: none;
-      cursor: pointer;
-      color: var(--muted);
-      transition: background .15s, color .15s;
-      white-space: nowrap;
-    }
-    .adm-tab.is-active {
+    /* ========== ヘッダー ========== */
+    .header {
       background: #fff;
-      color: var(--text);
-      box-shadow: 0 1px 3px rgba(0,0,0,.1);
-    }
-    .adm-btn {
-      display: inline-flex;
+      border-bottom: 3px solid #5EC1C6;
+      padding: 20px 32px;
+      display: flex;
       align-items: center;
-      gap: 6px;
-      padding: 8px 18px;
-      border-radius: 6px;
-      font-size: 13px;
-      font-weight: 500;
-      border: none;
-      cursor: pointer;
-      transition: opacity .15s, transform .1s;
+      gap: 16px;
+      box-shadow: 0 2px 8px rgba(0,0,0,.06);
     }
-    .adm-btn:active { transform: scale(.97); }
-    .adm-btn--primary { background: var(--teal); color: #fff; }
-    .adm-btn--primary:hover { opacity: .88; }
-    .adm-btn--ghost { background: #fff; color: var(--text); border: 1px solid var(--border); }
-    .adm-btn--ghost:hover { background: #f8f8f8; }
-    .adm-btn--danger { background: #fee; color: #c0392b; border: 1px solid #fcc; }
-    .adm-btn--danger:hover { background: #fdd; }
-
-    /* ===== カウンター ===== */
-    .adm-count {
-      font-size: 12px;
-      color: var(--muted);
-      margin-bottom: 12px;
-    }
-
-    /* ===== フォームカード（追加・編集） ===== */
-    .adm-form-card {
-      background: #fff;
-      border: 2px solid var(--teal);
+    .header-icon {
+      width: 40px; height: 40px;
+      background: #5EC1C6;
       border-radius: 10px;
-      padding: 24px;
-      margin-bottom: 16px;
-      display: none;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 22px;
     }
-    .adm-form-card.is-open { display: block; }
-    .adm-form-card__title {
-      font-size: 14px;
+    .header h1 { font-size: 20px; color: #1a3c40; font-weight: 700; }
+    .header p  { font-size: 13px; color: #888; margin-top: 2px; }
+
+    /* ========== メインレイアウト ========== */
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 32px 20px 80px;
+    }
+
+    /* ========== ステップカード ========== */
+    .card {
+      background: #fff;
+      border-radius: 16px;
+      box-shadow: 0 2px 12px rgba(0,0,0,.07);
+      padding: 28px 32px;
+      margin-bottom: 24px;
+    }
+    .card-title {
+      font-size: 16px;
       font-weight: 700;
-      color: var(--teal-dark);
-      margin-bottom: 18px;
+      color: #1a3c40;
+      margin-bottom: 20px;
       display: flex;
       align-items: center;
-      gap: 8px;
+      gap: 10px;
     }
-    .adm-form-grid {
+    .step-badge {
+      background: #5EC1C6;
+      color: #fff;
+      font-size: 12px;
+      font-weight: 700;
+      padding: 3px 10px;
+      border-radius: 99px;
+    }
+
+    /* ========== カテゴリ選択ボタン ========== */
+    .cat-grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
       gap: 14px;
-      margin-bottom: 14px;
     }
-    .adm-form-group { display: flex; flex-direction: column; gap: 5px; }
-    .adm-form-group--full { grid-column: 1 / -1; }
-    .adm-label {
-      font-size: 11px;
-      font-weight: 600;
-      color: var(--muted);
-      letter-spacing: .06em;
-      text-transform: uppercase;
-    }
-    .adm-input, .adm-select, .adm-textarea {
-      padding: 9px 12px;
-      border: 1px solid var(--border);
-      border-radius: 6px;
-      font-size: 13px;
-      font-family: inherit;
-      color: var(--text);
+    .cat-btn {
+      border: 2px solid #d0e8e9;
+      border-radius: 12px;
+      padding: 20px 16px;
       background: #fff;
-      transition: border-color .15s;
-      width: 100%;
+      cursor: pointer;
+      text-align: center;
+      transition: all .2s;
     }
-    .adm-input:focus, .adm-select:focus, .adm-textarea:focus {
-      outline: none;
-      border-color: var(--teal);
-      box-shadow: 0 0 0 3px rgba(94,193,198,.12);
+    .cat-btn:hover { border-color: #5EC1C6; background: #f0fbfc; }
+    .cat-btn.active {
+      border-color: #5EC1C6;
+      background: #e6f8f9;
+      box-shadow: 0 0 0 3px rgba(94,193,198,.15);
     }
-    .adm-textarea { resize: vertical; min-height: 90px; line-height: 1.75; }
-    .adm-form-actions {
-      display: flex;
-      gap: 8px;
-      justify-content: flex-end;
-      padding-top: 14px;
-      border-top: 1px solid var(--border);
-    }
+    .cat-btn .cat-emoji { font-size: 32px; display: block; margin-bottom: 8px; }
+    .cat-btn .cat-name  { font-size: 16px; font-weight: 700; color: #1a3c40; }
+    .cat-btn .cat-sub   { font-size: 12px; color: #888; margin-top: 4px; }
 
-    /* ===== 声カード ===== */
-    .adm-voice-list {
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
+    /* ========== フォーム要素 ========== */
+    label {
+      display: block;
+      font-size: 13px;
+      font-weight: 700;
+      color: #555;
+      margin-bottom: 6px;
     }
-    .adm-voice-card {
-      background: var(--card);
-      border: 1px solid var(--border);
+    select, input[type="text"], textarea {
+      width: 100%;
+      padding: 12px 14px;
+      border: 1.5px solid #d8e5e6;
       border-radius: 10px;
-      padding: 18px 20px;
-      display: grid;
-      grid-template-columns: 1fr auto;
-      gap: 12px;
-      align-items: start;
-      transition: box-shadow .15s;
+      font-size: 15px;
+      font-family: inherit;
+      background: #fff;
+      transition: border-color .2s;
+      outline: none;
     }
-    .adm-voice-card:hover { box-shadow: 0 2px 12px rgba(0,0,0,.07); }
-    .adm-voice-card--editing {
-      border-color: var(--teal);
+    select:focus, input[type="text"]:focus, textarea:focus {
+      border-color: #5EC1C6;
       box-shadow: 0 0 0 3px rgba(94,193,198,.12);
     }
-    .adm-voice-card__meta {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      margin-bottom: 8px;
-      flex-wrap: wrap;
+    textarea { min-height: 130px; resize: vertical; line-height: 1.7; }
+    .form-row { margin-bottom: 18px; }
+
+    /* ========== 追加ボタン ========== */
+    .btn-add {
+      display: flex; align-items: center; justify-content: center; gap: 8px;
+      width: 100%;
+      padding: 16px;
+      background: #5EC1C6;
+      color: #fff;
+      border: none;
+      border-radius: 12px;
+      font-size: 17px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: background .2s, transform .1s;
     }
-    .adm-badge {
-      font-size: 10px;
-      font-weight: 600;
-      padding: 2px 9px;
-      border-radius: 4px;
+    .btn-add:hover   { background: #4aafb4; }
+    .btn-add:active  { transform: scale(.98); }
+
+    /* ========== 登録済み一覧 ========== */
+    .list-title {
+      font-size: 16px;
+      font-weight: 700;
+      color: #1a3c40;
+      margin-bottom: 16px;
+    }
+    #voices-list { display: flex; flex-direction: column; gap: 12px; }
+
+    .voice-item {
+      background: #fff;
+      border: 1.5px solid #e0edef;
+      border-radius: 12px;
+      padding: 16px 18px;
+      display: flex;
+      align-items: flex-start;
+      gap: 14px;
+    }
+    .voice-item-badge {
+      flex-shrink: 0;
+      background: #e6f8f9;
+      color: #2a9da4;
+      font-size: 11px;
+      font-weight: 700;
+      padding: 4px 10px;
+      border-radius: 99px;
+      white-space: nowrap;
+      margin-top: 2px;
+    }
+    .voice-item-body { flex: 1; min-width: 0; }
+    .voice-item-program { font-size: 12px; color: #888; margin-bottom: 4px; }
+    .voice-item-text {
+      font-size: 14px; line-height: 1.6; color: #333;
+      display: -webkit-box; -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical; overflow: hidden;
+    }
+    .voice-item-who { font-size: 12px; color: #aaa; margin-top: 6px; }
+    .btn-delete {
+      flex-shrink: 0;
+      background: none;
+      border: 1.5px solid #e2bebe;
+      border-radius: 8px;
+      color: #c0767a;
+      font-size: 13px;
+      padding: 6px 12px;
+      cursor: pointer;
+      transition: all .2s;
       white-space: nowrap;
     }
-    .adm-badge--afterschool { background: rgba(94,193,198,.15); color: var(--teal-dark); }
-    .adm-badge--child { background: rgba(106,173,204,.15); color: #3a7ca5; }
-    .adm-program {
-      font-size: 11px;
-      font-weight: 600;
-      color: var(--muted);
+    .btn-delete:hover { background: #fdf0f0; border-color: #c0767a; }
+
+    /* ========== 更新ボタン ========== */
+    .btn-download {
+      display: flex; align-items: center; justify-content: center; gap: 8px;
+      width: 100%;
+      padding: 18px;
+      background: #1a3c40;
+      color: #fff;
+      border: none;
+      border-radius: 12px;
+      font-size: 18px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: background .2s, transform .1s;
     }
-    .adm-id {
-      font-family: "Inter", sans-serif;
-      font-size: 10px;
-      color: #ccc;
-      margin-left: auto;
-    }
-    .adm-voice-card__text {
-      font-size: 13px;
-      color: #444;
-      line-height: 1.8;
-      margin-bottom: 8px;
-      display: -webkit-box;
-      -webkit-line-clamp: 2;
-      -webkit-box-orient: vertical;
-      overflow: hidden;
-    }
-    .adm-voice-card__who {
-      font-size: 11px;
-      color: var(--muted);
-    }
-    .adm-voice-card__actions {
-      display: flex;
-      flex-direction: column;
-      gap: 6px;
-      flex-shrink: 0;
-    }
-    .adm-icon-btn {
-      width: 32px;
-      height: 32px;
-      border-radius: 6px;
-      border: 1px solid var(--border);
-      background: #fff;
-      display: flex;
+    .btn-download:hover  { background: #254d52; }
+    .btn-download:active { transform: scale(.98); }
+
+    /* ========== 完了モーダル ========== */
+    #complete-screen {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,.45);
+      z-index: 9999;
       align-items: center;
       justify-content: center;
-      cursor: pointer;
-      transition: background .15s, border-color .15s;
-      font-size: 14px;
     }
-    .adm-icon-btn:hover { background: #f5f5f5; }
-    .adm-icon-btn--delete:hover { background: #fee; border-color: #fcc; }
+    #complete-screen.show { display: flex; }
 
-    /* 編集フォーム（カード内） */
-    .adm-inline-form { display: none; grid-column: 1 / -1; }
-    .adm-voice-card--editing .adm-inline-form { display: block; }
-    .adm-voice-card--editing .adm-voice-card__main { display: none; }
-
-    /* ===== 空状態 ===== */
-    .adm-empty {
+    .complete-box {
+      background: #fff;
+      border-radius: 20px;
+      padding: 40px 36px;
+      max-width: 480px;
+      width: 90%;
       text-align: center;
-      padding: 48px 24px;
-      color: var(--muted);
-      font-size: 13px;
-      background: var(--card);
-      border-radius: 10px;
-      border: 1px dashed var(--border);
+      box-shadow: 0 20px 60px rgba(0,0,0,.18);
     }
-
-    /* ===== JSON出力 ===== */
-    .adm-json-section {
-      margin-top: 40px;
-      background: var(--card);
-      border: 1px solid var(--border);
-      border-radius: 10px;
-      overflow: hidden;
+    .complete-icon { font-size: 56px; margin-bottom: 12px; }
+    .complete-box h2 { font-size: 22px; color: #1a3c40; margin-bottom: 16px; }
+    .complete-instruction {
+      background: #f0fbfc;
+      border: 2px dashed #5EC1C6;
+      border-radius: 12px;
+      padding: 18px 20px;
+      margin: 20px 0;
     }
-    .adm-json-header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 14px 20px;
-      border-bottom: 1px solid var(--border);
-      background: #f8f9fa;
-    }
-    .adm-json-title {
-      font-size: 12px;
+    .complete-instruction p { font-size: 13px; color: #666; margin-bottom: 10px; }
+    .complete-instruction .cmd {
+      font-size: 20px;
       font-weight: 700;
-      color: var(--muted);
-      letter-spacing: .08em;
-      text-transform: uppercase;
+      color: #2a9da4;
+      letter-spacing: .02em;
     }
-    .adm-json-actions { display: flex; gap: 8px; }
-    .adm-json-body { padding: 16px 20px; }
-    .adm-json-note {
-      font-size: 11px;
-      color: var(--muted);
-      line-height: 1.7;
-      margin-bottom: 12px;
-    }
-    .adm-json-note strong { color: var(--teal-dark); }
-    .adm-json-out {
-      width: 100%;
-      font-family: "Menlo", "Monaco", "Consolas", monospace;
-      font-size: 11px;
-      background: #1a1a2e;
-      color: #a8d8a8;
-      border: none;
-      border-radius: 6px;
-      padding: 14px;
-      min-height: 120px;
-      resize: vertical;
-      line-height: 1.6;
-    }
-
-    /* ===== トースト通知 ===== */
-    .adm-toast {
-      position: fixed;
-      bottom: 28px;
-      right: 28px;
-      background: #1a2628;
-      color: #fff;
-      padding: 12px 20px;
-      border-radius: 8px;
+    .complete-note {
       font-size: 13px;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      box-shadow: 0 4px 20px rgba(0,0,0,.2);
-      transform: translateY(20px);
-      opacity: 0;
-      transition: opacity .25s, transform .25s;
-      pointer-events: none;
-      z-index: 200;
+      color: #999;
+      line-height: 1.7;
+      margin-bottom: 24px;
     }
-    .adm-toast.is-show { opacity: 1; transform: translateY(0); }
+    .btn-close {
+      background: #5EC1C6;
+      color: #fff;
+      border: none;
+      border-radius: 10px;
+      padding: 14px 40px;
+      font-size: 16px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: background .2s;
+    }
+    .btn-close:hover { background: #4aafb4; }
 
-    @media (max-width: 600px) {
-      .adm-form-grid { grid-template-columns: 1fr; }
-      .adm-body { padding: 20px 16px 60px; }
+    /* ========== 空状態 ========== */
+    .empty { text-align: center; padding: 32px 0; color: #aaa; font-size: 14px; }
+
+    @media (max-width: 540px) {
+      .cat-btn .cat-name { font-size: 14px; }
+      .card { padding: 20px 18px; }
     }
   </style>
 </head>
 <body>
 
 <!-- ヘッダー -->
-<header class="adm-header">
-  <div class="adm-header__brand">
-    <span class="adm-header__logo">BLUE MOUSE</span>
-    <span class="adm-header__sep">/</span>
-    <span class="adm-header__page">お客様の声 管理</span>
+<div class="header">
+  <div class="header-icon">✏️</div>
+  <div>
+    <h1>お客様の声 管理ツール</h1>
+    <p>BLUE MOUSE | コンテンツ管理</p>
   </div>
-  <div class="adm-header__links">
-    <a href="./voice.html" class="adm-header__link" target="_blank">← voice.html を確認</a>
-  </div>
-</header>
+</div>
 
-<div class="adm-body">
+<div class="container">
 
-  <!-- ツールバー -->
-  <div class="adm-toolbar">
-    <div class="adm-tabs">
-      <button class="adm-tab is-active" data-filter="all">すべて</button>
-      <button class="adm-tab" data-filter="afterschool">放課後等デイサービス</button>
-      <button class="adm-tab" data-filter="child">児童発達支援</button>
+  <!-- STEP 1: カテゴリ選択 -->
+  <div class="card">
+    <div class="card-title">
+      <span class="step-badge">STEP 1</span>
+      カテゴリを選んでください
     </div>
-    <button class="adm-btn adm-btn--primary" id="btn-add">＋ 新しい声を追加</button>
-  </div>
-
-  <!-- 追加フォーム -->
-  <div class="adm-form-card" id="add-form">
-    <p class="adm-form-card__title">✦ 新しい声を追加</p>
-    <div class="adm-form-grid">
-      <div class="adm-form-group">
-        <label class="adm-label">種別</label>
-        <select class="adm-select" id="add-category">
-          <option value="afterschool">放課後等デイサービス</option>
-          <option value="child">児童発達支援</option>
-        </select>
-      </div>
-      <div class="adm-form-group">
-        <label class="adm-label">プログラム・活動名</label>
-        <input type="text" class="adm-input" id="add-program" placeholder="例：プログラミング学習" />
-      </div>
-      <div class="adm-form-group adm-form-group--full">
-        <label class="adm-label">お客様の声（本文）</label>
-        <textarea class="adm-textarea" id="add-text" placeholder="保護者様からいただいたコメントを入力してください…"></textarea>
-      </div>
-      <div class="adm-form-group">
-        <label class="adm-label">投稿者</label>
-        <input type="text" class="adm-input" id="add-who" placeholder="例：小学4年生の保護者様" />
-      </div>
-    </div>
-    <div class="adm-form-actions">
-      <button class="adm-btn adm-btn--ghost" id="btn-add-cancel">キャンセル</button>
-      <button class="adm-btn adm-btn--primary" id="btn-add-save">追加する</button>
+    <div class="cat-grid">
+      <button class="cat-btn" id="btn-child" onclick="selectCategory('child')">
+        <span class="cat-emoji">🌱</span>
+        <span class="cat-name">自発</span>
+        <span class="cat-sub">児童発達支援</span>
+      </button>
+      <button class="cat-btn" id="btn-afterschool" onclick="selectCategory('afterschool')">
+        <span class="cat-emoji">💻</span>
+        <span class="cat-name">放デイ</span>
+        <span class="cat-sub">放課後等デイサービス</span>
+      </button>
     </div>
   </div>
 
-  <!-- 件数 -->
-  <p class="adm-count" id="count-label"></p>
-
-  <!-- 声リスト -->
-  <div class="adm-voice-list" id="voice-list"></div>
-
-  <!-- JSON出力 -->
-  <div class="adm-json-section">
-    <div class="adm-json-header">
-      <span class="adm-json-title">📄 voices.json 出力</span>
-      <div class="adm-json-actions">
-        <button class="adm-btn adm-btn--ghost" id="btn-copy" style="font-size:12px; padding:6px 14px;">コピー</button>
-        <button class="adm-btn adm-btn--primary" id="btn-download" style="font-size:12px; padding:6px 14px;">ダウンロード</button>
-      </div>
+  <!-- STEP 2: プログラム・内容入力 -->
+  <div class="card" id="step2" style="display:none">
+    <div class="card-title">
+      <span class="step-badge">STEP 2</span>
+      プログラムと声の内容を入力
     </div>
-    <div class="adm-json-body">
-      <p class="adm-json-note">
-        変更後、<strong>「ダウンロード」</strong>ボタンで <code>voices.json</code> を保存し、<code>site/data/</code> フォルダに上書きしてください。<br>
-        または <strong>「コピー」</strong>してClaude Codeに「voices.jsonを更新してpushして」と伝えてください。
-      </p>
-      <textarea class="adm-json-out" id="json-out" readonly></textarea>
+
+    <div class="form-row">
+      <label>プログラム</label>
+      <select id="program-select">
+        <option value="">選択してください</option>
+      </select>
     </div>
+
+    <div class="form-row">
+      <label>お客様の声（本文）</label>
+      <textarea id="voice-text" placeholder="保護者様からいただいたお声をご入力ください..."></textarea>
+    </div>
+
+    <div class="form-row">
+      <label>投稿者（例：小学3年生の保護者様）</label>
+      <input type="text" id="voice-who" placeholder="〇年生の保護者様">
+    </div>
+
+    <button class="btn-add" onclick="addVoice()">
+      ＋ この声を追加する
+    </button>
   </div>
+
+  <!-- 登録済み一覧 -->
+  <div class="card" id="list-card">
+    <div class="list-title">📋 現在登録されているお客様の声（<span id="count">0</span>件）</div>
+    <div id="voices-list"><div class="empty">読み込み中...</div></div>
+  </div>
+
+  <!-- 更新ボタン -->
+  <button class="btn-download" onclick="downloadAndComplete()">
+    ✅ 更新する（ファイルを保存）
+  </button>
 
 </div>
 
-<!-- トースト -->
-<div class="adm-toast" id="toast"></div>
+<!-- 完了モーダル -->
+<div id="complete-screen">
+  <div class="complete-box">
+    <div class="complete-icon">🎉</div>
+    <h2>ファイルの保存が完了しました！</h2>
+    <div class="complete-instruction">
+      <p>次に <strong>Claude Code</strong> を開いて<br>以下のメッセージを入力してください：</p>
+      <div class="cmd">お客様の声を更新して</div>
+    </div>
+    <p class="complete-note">
+      Claude Code がホームページへの反映と<br>
+      GitHub への保存を自動で行います。
+    </p>
+    <button class="btn-close" onclick="closeComplete()">わかりました</button>
+  </div>
+</div>
 
 <script>
-(function () {
-  var voicesData = [];
-  var currentFilter = 'all';
-  var editingId = null;
+var voicesData = [];
+var currentCategory = null;
 
-  // ===== 初期化 =====
-  function init() {
-    fetch('./data/voices.json?t=' + Date.now())
-      .then(function (r) { return r.json(); })
-      .then(function (data) {
-        voicesData = data;
-        render();
-        updateJSON();
-      })
-      .catch(function () {
-        voicesData = [];
-        render();
-        updateJSON();
-        showToast('⚠ voices.json の読み込みに失敗しました。ローカルサーバーで開いてください。');
-      });
-  }
+var programs = {
+  child: [
+    '感覚統合あそび',
+    '言語・コミュニケーション支援',
+    '集団活動・社会性の育成',
+    'ITを使った知育あそび'
+  ],
+  afterschool: [
+    'プログラミング学習',
+    'タイピング練習',
+    'オフィスソフト操作',
+    'コミュニケーション支援'
+  ]
+};
 
-  // ===== 描画 =====
-  function render() {
-    var filtered = currentFilter === 'all'
-      ? voicesData
-      : voicesData.filter(function (v) { return v.category === currentFilter; });
+// 初期ロード
+fetch('./data/voices.json?t=' + Date.now())
+  .then(function(r){ return r.json(); })
+  .then(function(data){ voicesData = data; renderList(); })
+  .catch(function(){ voicesData = []; renderList(); });
 
-    var label = document.getElementById('count-label');
-    label.textContent = filtered.length + ' 件';
+function selectCategory(cat) {
+  currentCategory = cat;
+  document.getElementById('btn-child').classList.toggle('active', cat === 'child');
+  document.getElementById('btn-afterschool').classList.toggle('active', cat === 'afterschool');
 
-    var list = document.getElementById('voice-list');
-    list.innerHTML = '';
-
-    if (filtered.length === 0) {
-      list.innerHTML = '<div class="adm-empty">声がまだありません。「＋ 新しい声を追加」から登録してください。</div>';
-      return;
-    }
-
-    filtered.forEach(function (v) {
-      var card = buildCard(v);
-      list.appendChild(card);
-    });
-  }
-
-  function buildCard(v) {
-    var isAfter = v.category === 'afterschool';
-    var catLabel = isAfter ? '放課後等デイサービス' : '児童発達支援';
-    var badgeClass = isAfter ? 'adm-badge--afterschool' : 'adm-badge--child';
-
-    var card = document.createElement('div');
-    card.className = 'adm-voice-card';
-    card.id = 'card-' + v.id;
-    card.innerHTML =
-      '<div class="adm-voice-card__main">' +
-        '<div class="adm-voice-card__meta">' +
-          '<span class="adm-badge ' + badgeClass + '">' + catLabel + '</span>' +
-          '<span class="adm-program">' + esc(v.program) + '</span>' +
-          '<span class="adm-id">ID:' + v.id + '</span>' +
-        '</div>' +
-        '<p class="adm-voice-card__text">' + esc(v.text) + '</p>' +
-        '<p class="adm-voice-card__who">' + esc(v.who) + '</p>' +
-      '</div>' +
-      '<div class="adm-voice-card__actions">' +
-        '<button class="adm-icon-btn" title="編集" onclick="window._adm.startEdit(' + v.id + ')">✏</button>' +
-        '<button class="adm-icon-btn adm-icon-btn--delete" title="削除" onclick="window._adm.deleteVoice(' + v.id + ')">🗑</button>' +
-      '</div>' +
-      '<div class="adm-inline-form" id="edit-form-' + v.id + '">' +
-        '<div class="adm-form-grid">' +
-          '<div class="adm-form-group">' +
-            '<label class="adm-label">種別</label>' +
-            '<select class="adm-select" id="edit-cat-' + v.id + '">' +
-              '<option value="afterschool"' + (v.category === 'afterschool' ? ' selected' : '') + '>放課後等デイサービス</option>' +
-              '<option value="child"' + (v.category === 'child' ? ' selected' : '') + '>児童発達支援</option>' +
-            '</select>' +
-          '</div>' +
-          '<div class="adm-form-group">' +
-            '<label class="adm-label">プログラム・活動名</label>' +
-            '<input type="text" class="adm-input" id="edit-prog-' + v.id + '" value="' + esc(v.program) + '" />' +
-          '</div>' +
-          '<div class="adm-form-group adm-form-group--full">' +
-            '<label class="adm-label">お客様の声</label>' +
-            '<textarea class="adm-textarea" id="edit-text-' + v.id + '">' + esc(v.text) + '</textarea>' +
-          '</div>' +
-          '<div class="adm-form-group">' +
-            '<label class="adm-label">投稿者</label>' +
-            '<input type="text" class="adm-input" id="edit-who-' + v.id + '" value="' + esc(v.who) + '" />' +
-          '</div>' +
-        '</div>' +
-        '<div class="adm-form-actions">' +
-          '<button class="adm-btn adm-btn--ghost" onclick="window._adm.cancelEdit(' + v.id + ')">キャンセル</button>' +
-          '<button class="adm-btn adm-btn--primary" onclick="window._adm.saveEdit(' + v.id + ')">保存</button>' +
-        '</div>' +
-      '</div>';
-
-    return card;
-  }
-
-  // ===== 追加 =====
-  document.getElementById('btn-add').addEventListener('click', function () {
-    var form = document.getElementById('add-form');
-    form.classList.toggle('is-open');
-    if (form.classList.contains('is-open')) {
-      document.getElementById('add-program').focus();
-    }
-  });
-  document.getElementById('btn-add-cancel').addEventListener('click', function () {
-    document.getElementById('add-form').classList.remove('is-open');
-    clearAddForm();
-  });
-  document.getElementById('btn-add-save').addEventListener('click', function () {
-    var cat  = document.getElementById('add-category').value;
-    var prog = document.getElementById('add-program').value.trim();
-    var text = document.getElementById('add-text').value.trim();
-    var who  = document.getElementById('add-who').value.trim();
-    if (!prog || !text || !who) { showToast('⚠ すべての項目を入力してください'); return; }
-    var newId = voicesData.length > 0 ? Math.max.apply(null, voicesData.map(function(v){return v.id;})) + 1 : 1;
-    voicesData.push({ id: newId, category: cat, program: prog, text: text, who: who });
-    clearAddForm();
-    document.getElementById('add-form').classList.remove('is-open');
-    render();
-    updateJSON();
-    showToast('✓ 追加しました（ID:' + newId + '）');
+  var sel = document.getElementById('program-select');
+  sel.innerHTML = '<option value="">選択してください</option>';
+  programs[cat].forEach(function(p){
+    var opt = document.createElement('option');
+    opt.value = p; opt.textContent = p;
+    sel.appendChild(opt);
   });
 
-  function clearAddForm() {
-    document.getElementById('add-program').value = '';
-    document.getElementById('add-text').value = '';
-    document.getElementById('add-who').value = '';
-    document.getElementById('add-category').selectedIndex = 0;
+  document.getElementById('step2').style.display = 'block';
+  document.getElementById('step2').scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+function addVoice() {
+  var program = document.getElementById('program-select').value;
+  var text    = document.getElementById('voice-text').value.trim();
+  var who     = document.getElementById('voice-who').value.trim();
+
+  if (!currentCategory) { alert('STEP 1 でカテゴリを選択してください。'); return; }
+  if (!program)          { alert('プログラムを選択してください。'); return; }
+  if (!text)             { alert('お客様の声を入力してください。'); return; }
+  if (!who)              { alert('投稿者を入力してください。'); return; }
+
+  var maxId = voicesData.reduce(function(m, v){ return Math.max(m, v.id); }, 0);
+  voicesData.push({ id: maxId + 1, category: currentCategory, program: program, text: text, who: who });
+
+  document.getElementById('voice-text').value = '';
+  document.getElementById('voice-who').value  = '';
+  document.getElementById('program-select').value = '';
+
+  renderList();
+  document.getElementById('list-card').scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+function deleteVoice(id) {
+  if (!confirm('この声を削除してもよいですか？')) return;
+  voicesData = voicesData.filter(function(v){ return v.id !== id; });
+  renderList();
+}
+
+function renderList() {
+  var container = document.getElementById('voices-list');
+  document.getElementById('count').textContent = voicesData.length;
+
+  if (voicesData.length === 0) {
+    container.innerHTML = '<div class="empty">まだ登録されていません</div>';
+    return;
   }
 
-  // ===== 編集 =====
-  function startEdit(id) {
-    if (editingId !== null) cancelEdit(editingId);
-    editingId = id;
-    var card = document.getElementById('card-' + id);
-    if (card) card.classList.add('adm-voice-card--editing');
-  }
-  function cancelEdit(id) {
-    var card = document.getElementById('card-' + id);
-    if (card) card.classList.remove('adm-voice-card--editing');
-    editingId = null;
-  }
-  function saveEdit(id) {
-    var idx = voicesData.findIndex(function(v){return v.id === id;});
-    if (idx === -1) return;
-    var cat  = document.getElementById('edit-cat-'  + id).value;
-    var prog = document.getElementById('edit-prog-' + id).value.trim();
-    var text = document.getElementById('edit-text-' + id).value.trim();
-    var who  = document.getElementById('edit-who-'  + id).value.trim();
-    if (!prog || !text || !who) { showToast('⚠ すべての項目を入力してください'); return; }
-    voicesData[idx] = { id: id, category: cat, program: prog, text: text, who: who };
-    editingId = null;
-    render();
-    updateJSON();
-    showToast('✓ 保存しました（ID:' + id + '）');
-  }
-
-  // ===== 削除 =====
-  function deleteVoice(id) {
-    if (!confirm('ID:' + id + ' の声を削除しますか？')) return;
-    voicesData = voicesData.filter(function(v){return v.id !== id;});
-    render();
-    updateJSON();
-    showToast('🗑 削除しました（ID:' + id + '）');
-  }
-
-  // ===== タブフィルター =====
-  document.querySelectorAll('.adm-tab').forEach(function (btn) {
-    btn.addEventListener('click', function () {
-      document.querySelectorAll('.adm-tab').forEach(function(b){b.classList.remove('is-active');});
-      btn.classList.add('is-active');
-      currentFilter = btn.dataset.filter;
-      render();
-    });
+  var html = '';
+  voicesData.forEach(function(v){
+    html += '<div class="voice-item">'
+      + '<span class="voice-item-badge">' + (v.category === 'child' ? '自発' : '放デイ') + '</span>'
+      + '<div class="voice-item-body">'
+      +   '<div class="voice-item-program">' + escHtml(v.program) + '</div>'
+      +   '<div class="voice-item-text">' + escHtml(v.text) + '</div>'
+      +   '<div class="voice-item-who">' + escHtml(v.who) + '</div>'
+      + '</div>'
+      + '<button class="btn-delete" onclick="deleteVoice(' + v.id + ')">削除</button>'
+      + '</div>';
   });
+  container.innerHTML = html;
+}
 
-  // ===== JSON更新 =====
-  function updateJSON() {
-    var out = JSON.stringify(voicesData, null, 2);
-    document.getElementById('json-out').value = out;
+function escHtml(s) {
+  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+function downloadAndComplete() {
+  if (voicesData.length === 0) {
+    alert('声が1件もありません。追加してからお試しください。');
+    return;
   }
+  var json   = JSON.stringify(voicesData, null, 2);
+  var blob   = new Blob([json], { type: 'application/json' });
+  var url    = URL.createObjectURL(blob);
+  var a      = document.createElement('a');
+  a.href     = url;
+  a.download = 'voices.json';
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
 
-  // ===== コピー =====
-  document.getElementById('btn-copy').addEventListener('click', function () {
-    var ta = document.getElementById('json-out');
-    navigator.clipboard.writeText(ta.value).then(function () {
-      showToast('✓ JSONをクリップボードにコピーしました');
-    }).catch(function () {
-      ta.select();
-      document.execCommand('copy');
-      showToast('✓ コピーしました');
-    });
-  });
+  document.getElementById('complete-screen').classList.add('show');
+}
 
-  // ===== ダウンロード =====
-  document.getElementById('btn-download').addEventListener('click', function () {
-    var content = document.getElementById('json-out').value;
-    var blob = new Blob([content], { type: 'application/json' });
-    var a = document.createElement('a');
-    a.href = URL.createObjectURL(blob);
-    a.download = 'voices.json';
-    a.click();
-    showToast('✓ voices.json をダウンロードしました');
-  });
-
-  // ===== トースト =====
-  function showToast(msg) {
-    var t = document.getElementById('toast');
-    t.textContent = msg;
-    t.classList.add('is-show');
-    setTimeout(function () { t.classList.remove('is-show'); }, 2800);
-  }
-
-  // ===== エスケープ =====
-  function esc(str) {
-    return String(str)
-      .replace(/&/g, '&amp;')
-      .replace(/</g, '&lt;')
-      .replace(/>/g, '&gt;')
-      .replace(/"/g, '&quot;');
-  }
-
-  // グローバルに公開（インラインonclickから呼ぶため）
-  window._adm = { startEdit: startEdit, cancelEdit: cancelEdit, saveEdit: saveEdit, deleteVoice: deleteVoice };
-
-  init();
-})();
+function closeComplete() {
+  document.getElementById('complete-screen').classList.remove('show');
+}
 </script>
 </body>
 </html>
