@@ -337,8 +337,8 @@
   </div>
 
   <!-- 更新ボタン -->
-  <button class="btn-download" onclick="downloadAndComplete()">
-    ✅ 更新する（ファイルを保存）
+  <button class="btn-download" onclick="copyAndComplete()">
+    ✅ 更新する
   </button>
 
 </div>
@@ -346,11 +346,11 @@
 <!-- 完了モーダル -->
 <div id="complete-screen">
   <div class="complete-box">
-    <div class="complete-icon">🎉</div>
-    <h2>ファイルの保存が完了しました！</h2>
+    <div class="complete-icon">📋</div>
+    <h2>クリップボードにコピーしました！</h2>
     <div class="complete-instruction">
-      <p>次に <strong>Claude Code</strong> を開いて<br>以下のメッセージを入力してください：</p>
-      <div class="cmd">お客様の声を更新して</div>
+      <p><strong>Claude Code</strong> を開いて、<br>コピーした内容をそのまま貼り付けてください：</p>
+      <div class="cmd">⌘V（貼り付け）→ Enter</div>
     </div>
     <p class="complete-note">
       Claude Code がホームページへの反映と<br>
@@ -470,23 +470,27 @@ function escHtml(s) {
   return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
 }
 
-function downloadAndComplete() {
+function copyAndComplete() {
   if (voicesData.length === 0) {
     alert('声が1件もありません。追加してからお試しください。');
     return;
   }
-  var json   = JSON.stringify(voicesData, null, 2);
-  var blob   = new Blob([json], { type: 'application/json' });
-  var url    = URL.createObjectURL(blob);
-  var a      = document.createElement('a');
-  a.href     = url;
-  a.download = 'voices.json';
-  document.body.appendChild(a);
-  a.click();
-  document.body.removeChild(a);
-  URL.revokeObjectURL(url);
-
-  document.getElementById('complete-screen').classList.add('show');
+  // Claude Code にそのまま貼り付けられるメッセージを生成
+  var message = 'お客様の声を更新して\n' + JSON.stringify(voicesData, null, 2);
+  navigator.clipboard.writeText(message).then(function() {
+    document.getElementById('complete-screen').classList.add('show');
+  }).catch(function() {
+    // クリップボードAPIが使えない場合のフォールバック
+    var ta = document.createElement('textarea');
+    ta.value = message;
+    ta.style.position = 'fixed';
+    ta.style.opacity = '0';
+    document.body.appendChild(ta);
+    ta.select();
+    document.execCommand('copy');
+    document.body.removeChild(ta);
+    document.getElementById('complete-screen').classList.add('show');
+  });
 }
 
 function closeComplete() {
