@@ -79,7 +79,7 @@ h1, h2, h3, h4, h5, h6 {
   border-radius: 4px;
   font-size: 15px;
   font-size: 13px;
-  font-weight: 400;
+  font-weight: 500;
   color: #7a6355;
   text-decoration: none;
   border-left: 2px solid transparent;
@@ -114,7 +114,7 @@ h1, h2, h3, h4, h5, h6 {
   font-size: 15px;
   font-family: var(--font-body);
   font-size: 13px;
-  font-weight: 400;
+  font-weight: 500;
   color: #7a6355;
   text-decoration: none;
   transition: color .15s;
