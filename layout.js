@@ -218,7 +218,14 @@
     ].join('');
 
     var layout = document.querySelector('.bm-layout');
-    if (layout) layout.parentNode.insertBefore(footer, layout.nextSibling);
+    // トップページは body が overflow:hidden で .bm-main が独自スクロールのため
+    // フッターを .bm-main の末尾に入れてスクロールで届くようにする
+    if (isIndex) {
+      var main = document.querySelector('.bm-main');
+      if (main) main.appendChild(footer);
+    } else {
+      if (layout) layout.parentNode.insertBefore(footer, layout.nextSibling);
+    }
   }
 
   /* ---- 左サイドバーにInstagramリンク追加 ---- */

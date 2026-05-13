@@ -43,6 +43,15 @@ h1, h2, h3, h4, h5, h6 {
   min-height: 100vh;
 }
 
+/* サイドバーをフッター領域までずっと固定させるためのトリック */
+/* padding-bottom でグリッド含有ブロックを伸ばし、sticky が解除されなくする */
+@media (min-width: 781px) {
+  .bm-layout {
+    padding-bottom: 1200px;
+    margin-bottom: -1200px;
+  }
+}
+
 /* ===== 左サイドバー ===== */
 .bm-left {
   position: sticky;
