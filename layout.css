@@ -38,25 +38,18 @@ h1, h2, h3, h4, h5, h6 {
 /* ===== 3カラム レイアウト ===== */
 .bm-layout {
   display: grid;
-  grid-template-columns: 1fr 2fr 1fr;
+  grid-template-columns: 25vw 1fr 25vw;
   align-items: start;
   min-height: 100vh;
 }
 
-/* サイドバーをフッター領域までずっと固定させるためのトリック */
-/* padding-bottom でグリッド含有ブロックを伸ばし、sticky が解除されなくする */
-@media (min-width: 781px) {
-  .bm-layout {
-    padding-bottom: 1200px;
-    margin-bottom: -1200px;
-  }
-}
-
 /* ===== 左サイドバー ===== */
 .bm-left {
-  position: sticky;
+  position: fixed;
   top: 0;
-  height: 100vh;
+  left: 0;
+  bottom: 0;
+  width: 25vw;
   overflow-y: auto;
   scrollbar-width: none;
   background: #fef9f3;
@@ -65,6 +58,7 @@ h1, h2, h3, h4, h5, h6 {
   display: flex;
   flex-direction: column;
   gap: 24px;
+  z-index: 100;
 }
 .bm-left::-webkit-scrollbar { display: none; }
 
@@ -283,6 +277,7 @@ h1, h2, h3, h4, h5, h6 {
 
 /* ===== メインコンテンツ ===== */
 .bm-main {
+  grid-column: 2;
   padding: 40px 36px 80px;
   min-height: 100vh;
   overflow-x: hidden;
@@ -299,9 +294,11 @@ h1, h2, h3, h4, h5, h6 {
 
 /* ===== 右サイドバー ===== */
 .bm-right {
-  position: sticky;
+  position: fixed;
   top: 0;
-  height: 100vh;
+  right: 0;
+  bottom: 0;
+  width: 25vw;
   overflow-y: auto;
   scrollbar-width: none;
   background: #fef9f3;
@@ -310,6 +307,7 @@ h1, h2, h3, h4, h5, h6 {
   display: flex;
   flex-direction: column;
   gap: 0;
+  z-index: 100;
 }
 .bm-right::-webkit-scrollbar { display: none; }
 
@@ -943,13 +941,13 @@ h1, h2, h3, h4, h5, h6 {
   .bm-left {
     position: fixed;
     top: 56px; left: 0;
+    bottom: auto;
     width: 80%; max-width: 300px;
     height: calc(100vh - 56px);
     z-index: 999;
     transform: translateX(-100%);
     transition: transform .3s cubic-bezier(.4,0,.2,1);
     box-shadow: 4px 0 24px rgba(0,0,0,.12);
-    /* sticky を上書き */
     overflow-y: auto;
   }
   .bm-left.is-open {
@@ -1082,6 +1080,8 @@ h1, h2, h3, h4, h5, h6 {
   background: #1a2628;
   color: #ccc;
   padding: 72px 64px 40px;
+  padding-left: calc(25vw + 40px);
+  padding-right: calc(25vw + 40px);
   border-top: 3px solid #5EC1C6;
   position: relative;
 }
