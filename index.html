@@ -271,14 +271,6 @@
     }
 
     /* ===== 入場アニメーション ===== */
-    @keyframes bm-slide-left {
-      from { transform: translateX(-100%); }
-      to   { transform: translateX(0); }
-    }
-    @keyframes bm-slide-right {
-      from { transform: translateX(100%); }
-      to   { transform: translateX(0); }
-    }
     @keyframes bm-fade-up {
       from { opacity: 0; transform: translateY(32px); }
       to   { opacity: 1; transform: translateY(0); }
@@ -288,9 +280,9 @@
       to   { opacity: 1; }
     }
 
-    /* サイドバー */
-    .bm-left  { animation: bm-slide-left  0.65s cubic-bezier(0.22,0.61,0.36,1) both; }
-    .bm-right { animation: bm-slide-right 0.65s cubic-bezier(0.22,0.61,0.36,1) 0.1s both; }
+    /* サイドバー：position:fixed にtransformをかけるとスクロールに干渉するのでopacityのみ */
+    .bm-left  { animation: bm-fade-in 0.6s ease both; }
+    .bm-right { animation: bm-fade-in 0.6s ease 0.15s both; }
 
     /* box-1 テキスト */
     #box-1 .slide-title { animation: bm-fade-up 0.75s cubic-bezier(0.22,0.61,0.36,1) 0.45s both; }
@@ -300,11 +292,6 @@
     #bm-dots    { animation: bm-fade-in 0.55s ease 0.85s both; }
     #bm-counter { animation: bm-fade-in 0.55s ease 0.95s both; }
     #bm-hint    { animation: bm-fade-in 0.55s ease 1.05s both; }
-
-    /* モバイルはアニメーションを軽くする */
-    @media (max-width: 780px) {
-      .bm-left, .bm-right { animation: none; }
-    }
 
   </style>
 </head>
