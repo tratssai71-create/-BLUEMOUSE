@@ -270,28 +270,15 @@
       #bm-hint    { right: 16px; }
     }
 
-    /* ===== 入場アニメーション ===== */
+    /* ===== 入場アニメーション（テキストのみCSS、サイドバーはJSで制御） ===== */
     @keyframes bm-fade-up {
-      from { opacity: 0; transform: translateY(32px); }
+      from { opacity: 0; transform: translateY(28px); }
       to   { opacity: 1; transform: translateY(0); }
     }
-    @keyframes bm-fade-in {
-      from { opacity: 0; }
-      to   { opacity: 1; }
-    }
 
-    /* サイドバー：position:fixed にtransformをかけるとスクロールに干渉するのでopacityのみ */
-    .bm-left  { animation: bm-fade-in 0.6s ease both; }
-    .bm-right { animation: bm-fade-in 0.6s ease 0.15s both; }
-
-    /* box-1 テキスト */
-    #box-1 .slide-title { animation: bm-fade-up 0.75s cubic-bezier(0.22,0.61,0.36,1) 0.45s both; }
-    #box-1 .slide-lead  { animation: bm-fade-up 0.75s cubic-bezier(0.22,0.61,0.36,1) 0.65s both; }
-
-    /* ドット・カウンター・ヒント */
-    #bm-dots    { animation: bm-fade-in 0.55s ease 0.85s both; }
-    #bm-counter { animation: bm-fade-in 0.55s ease 0.95s both; }
-    #bm-hint    { animation: bm-fade-in 0.55s ease 1.05s both; }
+    /* position:absolute のoverlay内なので安全にCSS animationを使える */
+    #box-1 .slide-title { animation: bm-fade-up 0.7s ease-out 0.35s both; }
+    #box-1 .slide-lead  { animation: bm-fade-up 0.7s ease-out 0.55s both; }
 
   </style>
 </head>
@@ -760,5 +747,40 @@ document.querySelectorAll('.side-loc-tab').forEach(function(btn) {
 })();
 </script>
 
+
+<script>
+/* ===== サイドバー入場アニメーション（JSトランジション方式） ===== */
+/* position:fixed 要素に CSS animation/fill-mode をかけるとスクロール干渉するため
+   JSで初期transform→transitionで移動→完了後にインラインスタイルを全消去する方式を使う */
+(function () {
+  if (window.innerWidth <= 780) return; /* モバイルはスキップ */
+
+  var left  = document.querySelector('.bm-left');
+  var right = document.querySelector('.bm-right');
+  if (!left || !right) return;
+
+  /* 初期位置：オフスクリーン */
+  left.style.transform  = 'translateX(-100%)';
+  right.style.transform = 'translateX(100%)';
+
+  /* 1フレーム後にtransitionを付けて元の位置へ */
+  requestAnimationFrame(function () {
+    left.style.transition  = 'transform 0.65s cubic-bezier(0.22,0.61,0.36,1)';
+    right.style.transition = 'transform 0.65s cubic-bezier(0.22,0.61,0.36,1) 0.1s';
+    requestAnimationFrame(function () {
+      left.style.transform  = 'translateX(0)';
+      right.style.transform = 'translateX(0)';
+    });
+  });
+
+  /* アニメーション完了後（0.9s）にインラインスタイルを完全クリア → 純粋なCSS状態に戻す */
+  setTimeout(function () {
+    left.style.transform  = '';
+    left.style.transition = '';
+    right.style.transform  = '';
+    right.style.transition = '';
+  }, 900);
+})();
+</script>
 </body>
 </html>
