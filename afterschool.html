@@ -311,27 +311,43 @@
       margin-top: 16px;
       align-self: flex-start;
       font-size: 11px;
-      font-weight: 400;
+      font-weight: 500;
       color: #c75a35;
       text-decoration: none;
-      border: 1px solid rgba(196,107,62,.35);
+      border: 1.5px solid rgba(196,107,62,.45);
       border-radius: 4px;
-      padding: 6px 14px 6px 16px;
+      padding: 7px 16px 7px 16px;
       letter-spacing: .04em;
-      background: linear-gradient(110deg, #e8672a 0%, #f0954a 45%, transparent 45%);
-      background-size: 230% 100%;
-      background-position: right center;
-      transition: background-position .32s cubic-bezier(.4,0,.2,1), border-color .28s, color .28s;
+      background: transparent;
+      position: relative;
+      overflow: hidden;
+      transition: color .28s, border-color .28s, transform .2s, box-shadow .28s;
+    }
+    .af-detail-btn::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(120deg, #e8672a 0%, #f5a623 100%);
+      opacity: 0;
+      transition: opacity .28s ease;
+    }
+    .af-detail-btn:hover::before {
+      opacity: 1;
     }
     .af-detail-btn:hover {
-      background-position: left center;
-      border-color: #e8672a;
       color: #fff;
+      border-color: transparent;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 16px rgba(232,103,42,.35);
     }
     .af-detail-btn__arrow {
-      font-size: 13px;
+      font-size: 14px;
       line-height: 1;
+      position: relative; /* グラデーション疑似要素より前面に */
       transition: transform .25s ease;
+    }
+    .af-detail-btn__text {
+      position: relative; /* グラデーション疑似要素より前面に */
     }
     .af-detail-btn:hover .af-detail-btn__arrow {
       transform: translateX(4px);
@@ -758,7 +774,7 @@
             <span class="af-item__num">01</span>
             <h3 class="af-item__title">タイピング練習</h3>
             <p class="af-item__text">正しい指使いで入力できるタッチタイピングの習得を目指します。将来のPC作業の基礎となる大切なスキルです。楽しみながら上達できるプログラムを用意しています。</p>
-            <a href="./typing.html" class="af-detail-btn">詳しく見る <span class="af-detail-btn__arrow">›</span></a>
+            <a href="./typing.html" class="af-detail-btn"><span class="af-detail-btn__text">詳しく見る</span> <span class="af-detail-btn__arrow">›</span></a>
           </div>
         </div>
 
@@ -770,7 +786,7 @@
             <span class="af-item__num">02</span>
             <h3 class="af-item__title">プログラミング学習</h3>
             <p class="af-item__text">Scratchなどのビジュアルプログラミングから始め、論理的思考力を養います。ゲーム作りなど楽しい課題を通じて、自然とプログラミングの基礎が身につきます。</p>
-            <a href="./programming.html" class="af-detail-btn">詳しく見る <span class="af-detail-btn__arrow">›</span></a>
+            <a href="./programming.html" class="af-detail-btn"><span class="af-detail-btn__text">詳しく見る</span> <span class="af-detail-btn__arrow">›</span></a>
           </div>
         </div>
 
@@ -780,7 +796,7 @@
             <span class="af-item__num">03</span>
             <h3 class="af-item__title">オフィスソフト操作</h3>
             <p class="af-item__text">Word・Excel・PowerPointなどのオフィスソフトの基本操作を学びます。将来の就労に直結するスキルを、実践的な課題を通じて習得していきます。</p>
-            <a href="./office.html" class="af-detail-btn">詳しく見る <span class="af-detail-btn__arrow">›</span></a>
+            <a href="./office.html" class="af-detail-btn"><span class="af-detail-btn__text">詳しく見る</span> <span class="af-detail-btn__arrow">›</span></a>
           </div>
         </div>
 
@@ -790,7 +806,7 @@
             <span class="af-item__num">04</span>
             <h3 class="af-item__title">コミュニケーション支援</h3>
             <p class="af-item__text">ITスキルだけでなく、社会で必要なコミュニケーション能力も育てます。グループ活動やロールプレイを通じて、友人との関わり方や気持ちの伝え方を練習します。</p>
-            <a href="./communication.html" class="af-detail-btn">詳しく見る <span class="af-detail-btn__arrow">›</span></a>
+            <a href="./communication.html" class="af-detail-btn"><span class="af-detail-btn__text">詳しく見る</span> <span class="af-detail-btn__arrow">›</span></a>
           </div>
         </div>
 
