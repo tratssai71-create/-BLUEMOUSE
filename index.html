@@ -202,7 +202,7 @@
     /* ===== ヒーローロゴ「ロゴ姉妹」（写真左上・絶対配置） ===== */
     .hero-logo {
       position: absolute;
-      top: calc(32px + 2cm);
+      top: 32px;
       left: 36px;
       z-index: 10;
       display: flex;
@@ -236,6 +236,10 @@
         top: calc(18px + 2cm);
         left: 16px;
         gap: 8px;
+      }
+      /* ワードマークだけ縦位置を少し下げる */
+      .hero-logo-wordmark {
+        margin-top: 4px;
       }
       .hero-logo-wordmark img {
         width: 200px;
