@@ -62,6 +62,17 @@
       transform: translateY(10px);
     }
 
+    /* ===== 白フェードオーバーレイ（写真エリアのみ） ===== */
+    #hero-white-overlay {
+      position: absolute;
+      inset: 0;
+      background: #fff;
+      opacity: 0;
+      z-index: 2;
+      pointer-events: none;
+      transition: opacity 0.3s ease;
+    }
+
     /* box-1：左下 */
     #box-1 .slide-overlay {
       position: absolute;
@@ -335,6 +346,7 @@
         <img class="hero-photo" src="./photos/IMG_6293_opt.jpg" alt="BLUE MOUSE" loading="lazy" data-title="サンプルテキスト③|ここにキャッチコピーが|入ります。" />
         <img class="hero-photo" src="./photos/IMG_6295_opt.jpg" alt="BLUE MOUSE" loading="lazy" data-title="サンプルテキスト④|ここにキャッチコピーが|入ります。" />
       </div>
+      <div id="hero-white-overlay"></div>
       <div class="slide-overlay">
         <h2 class="slide-title"><span style="white-space:nowrap">主体性療育から、IT療育へ。</span><br><span style="white-space:nowrap">経済的自立から逆算した、</span><br>10年間の確かなロードマップ。</h2>
       </div>
@@ -560,29 +572,40 @@ document.querySelectorAll('.side-loc-tab').forEach(function(btn) {
       var next = (current + 1) % photos.length;
       var prev = current;
 
-      /* スムーズクロスフェード */
-      photos[next].style.willChange = 'transform';
-      photos[next].classList.remove('hp-active');
-      photos[next].style.animation = 'none';
-      requestAnimationFrame(function () {
+      /* 1) 白フェードイン */
+      if (overlay) { overlay.style.transition = 'opacity 0.3s ease'; overlay.style.opacity = '1'; }
+
+      setTimeout(function () {
+        /* 2) 白で隠れた状態で写真切り替え */
+        photos[next].style.willChange = 'transform';
+        photos[next].classList.remove('hp-active');
+        photos[next].style.animation = 'none';
         requestAnimationFrame(function () {
-          photos[next].style.animation = 'kb ' + ANIM_DUR;
-          photos[prev].classList.remove('hp-active');
-          photos[next].classList.add('hp-active');
-          current = next;
-          updateTitle(photos, current);
-          setTimeout(function () {
-            photos[prev].style.animation  = 'none';
-            photos[prev].style.willChange = 'auto';
-          }, 2000);
+          requestAnimationFrame(function () {
+            photos[next].style.animation = 'kb ' + ANIM_DUR;
+            photos[prev].classList.remove('hp-active');
+            photos[next].classList.add('hp-active');
+            current = next;
+            updateTitle(photos, current);
+
+            /* 3) 白フェードアウト（ゆっくり） */
+            setTimeout(function () {
+              if (overlay) { overlay.style.transition = 'opacity 1.0s ease'; overlay.style.opacity = '0'; }
+            }, 80);
+
+            setTimeout(function () {
+              photos[prev].style.animation  = 'none';
+              photos[prev].style.willChange = 'auto';
+            }, 1800);
+          });
         });
-      });
+      }, 320);
 
     }, SLIDE_INTERVAL);
   }
 
   function init() {
-    var overlay = document.getElementById('hero-black-overlay');
+    var overlay = document.getElementById('hero-white-overlay');
     document.querySelectorAll('.hero-photos').forEach(function (set) {
       var photos = Array.from(set.querySelectorAll('.hero-photo'));
       if (photos.length) startSlide(photos, overlay);
