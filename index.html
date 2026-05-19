@@ -199,10 +199,10 @@
       margin: 0;
     }
 
-    /* ===== ヒーローロゴ（写真左上・絶対配置） ===== */
+    /* ===== ヒーローロゴ「ロゴ姉妹」（写真左上・絶対配置） ===== */
     .hero-logo {
       position: absolute;
-      top: 32px;
+      top: calc(32px + 2cm);
       left: 36px;
       z-index: 10;
       display: flex;
@@ -233,7 +233,7 @@
 
     @media (max-width: 780px) {
       .hero-logo {
-        top: 18px;
+        top: calc(18px + 2cm);
         left: 16px;
         gap: 8px;
       }
