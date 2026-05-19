@@ -210,15 +210,22 @@
       margin: 0;
     }
 
-    /* ===== 白フラッシュオーバーレイ（写真エリアのみ） ===== */
+    /* ===== 白ワイプオーバーレイ（右→左） ===== */
     #hero-black-overlay {
       position: absolute;
       inset: 0;
       background: #fff;
-      opacity: 0;
       z-index: 2;
       pointer-events: none;
-      transition: opacity 0.25s ease;
+      transform: translateX(105%);
+      transition: transform 0.35s cubic-bezier(0.77,0,0.18,1);
+    }
+    #hero-black-overlay.wipe-in {
+      transform: translateX(0%);
+    }
+    #hero-black-overlay.wipe-out {
+      transform: translateX(-105%);
+      transition: transform 0.5s cubic-bezier(0.77,0,0.18,1);
     }
 
     /* ===== ロゴ姉妹 ===== */
@@ -571,11 +578,14 @@ document.querySelectorAll('.side-loc-tab').forEach(function(btn) {
       var next = (current + 1) % photos.length;
       var prev = current;
 
-      /* 白フラッシュ イン（速く） */
-      if (overlay) { overlay.style.transition = 'opacity 0.25s ease'; overlay.style.opacity = '1'; }
+      /* 1) 右から白ワイプ イン */
+      if (overlay) {
+        overlay.classList.remove('wipe-out');
+        overlay.classList.add('wipe-in');
+      }
 
       setTimeout(function () {
-        /* 白が完全に出た状態で写真を切り替え */
+        /* 2) 白で隠れた状態で写真切り替え */
         photos[next].style.willChange = 'transform';
         photos[next].classList.remove('hp-active');
         photos[next].style.animation = 'none';
@@ -588,16 +598,27 @@ document.querySelectorAll('.side-loc-tab').forEach(function(btn) {
             updateTitle(photos, current);
           });
         });
-      }, 280);
+      }, 320);
 
       setTimeout(function () {
-        /* 白フラッシュ アウト（ゆっくり） */
-        if (overlay) { overlay.style.transition = 'opacity 1.2s ease'; overlay.style.opacity = '0'; }
+        /* 3) 左へ白ワイプ アウト */
+        if (overlay) {
+          overlay.classList.remove('wipe-in');
+          overlay.classList.add('wipe-out');
+        }
         setTimeout(function () {
+          /* リセット（次回のために右へ戻す） */
+          if (overlay) {
+            overlay.style.transition = 'none';
+            overlay.classList.remove('wipe-out');
+            setTimeout(function () {
+              overlay.style.transition = '';
+            }, 50);
+          }
           photos[prev] && (photos[prev].style.animation  = 'none');
           photos[prev] && (photos[prev].style.willChange = 'auto');
-        }, 1500);
-      }, 450);
+        }, 550);
+      }, 400);
 
     }, SLIDE_INTERVAL);
   }
