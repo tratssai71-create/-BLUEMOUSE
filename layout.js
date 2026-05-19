@@ -363,7 +363,7 @@
     /* PC サイドバー・スマホヘッダー・トップページヒーローを対象にする */
     var TARGETS = [
       { selector: '.bm-left .bm-logo',       size: 54, logoW: '180px', logoH: 'auto', noLogo: true },
-      { selector: '.bm-mobile-header__logo',  size: 40, logoW: 'auto',  logoH: '34px' },
+      { selector: '.bm-mobile-header__logo',  size: 40, logoW: 'auto',  logoH: '34px', noLogo: true },
       { selector: '.hero-logo-badge',         size: 40, logoW: '0px',   logoH: '0px',  noLogo: true },
     ];
 
