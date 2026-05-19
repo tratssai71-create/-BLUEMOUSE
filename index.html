@@ -200,24 +200,40 @@
     /* ===== ヒーローロゴ（写真左上・絶対配置） ===== */
     .hero-logo {
       position: absolute;
-      top: 36px;
-      left: 40px;
+      top: 32px;
+      left: 36px;
       z-index: 10;
-      pointer-events: none;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      pointer-events: auto;
     }
-    .hero-logo img {
-      width: 200px;
+    /* バッジアニメーション用ラッパー */
+    .hero-logo-badge {
+      display: block;
+      flex-shrink: 0;
+      text-decoration: none;
+    }
+    /* BLUEMOUSEワードマーク */
+    .hero-logo-wordmark {
+      display: block;
+      flex-shrink: 0;
+      text-decoration: none;
+    }
+    .hero-logo-wordmark img {
+      width: 150px;
       height: auto;
       display: block;
     }
 
     @media (max-width: 780px) {
       .hero-logo {
-        top: 22px;
-        left: 20px;
+        top: 18px;
+        left: 16px;
+        gap: 8px;
       }
-      .hero-logo img {
-        width: 140px;
+      .hero-logo-wordmark img {
+        width: 110px;
       }
       /* モバイルヘッダーのロゴは非表示（写真上のロゴだけ使う） */
       .bm-mobile-header__logo {
@@ -277,9 +293,14 @@
 
     <!-- スライド 1：メインビジュアル -->
     <div id="box-1">
-      <!-- ヒーローロゴ：写真左上に絶対配置 -->
+      <!-- ヒーローロゴ：写真左上に絶対配置（バッジアニメ＋ワードマーク横並び） -->
       <div class="hero-logo">
-        <img src="./logo.png" alt="BLUE MOUSE" />
+        <a class="hero-logo-badge" href="./index.html">
+          <img src="./logo.png" alt="BLUE MOUSE" />
+        </a>
+        <a class="hero-logo-wordmark" href="./index.html">
+          <img src="./logo.png" alt="BLUE MOUSE" />
+        </a>
       </div>
       <div class="hero-photos">
         <img class="hero-photo hp-active" src="./photos/IMG_6294_opt.jpg" alt="BLUE MOUSE" />

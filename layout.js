@@ -360,10 +360,11 @@
     var LETTERS = 'BLUEMOUSE';
     var N = BADGE_FILES.length;
 
-    /* PC サイドバーとスマホヘッダーの両方を対象にする */
+    /* PC サイドバー・スマホヘッダー・トップページヒーローを対象にする */
     var TARGETS = [
-      { selector: '.bm-left .bm-logo',       size: 54, logoW: '180px', logoH: 'auto' },
+      { selector: '.bm-left .bm-logo',       size: 54, logoW: '180px', logoH: 'auto', noLogo: true },
       { selector: '.bm-mobile-header__logo',  size: 40, logoW: 'auto',  logoH: '34px' },
+      { selector: '.hero-logo-badge',         size: 40, logoW: '0px',   logoH: '0px',  noLogo: true },
     ];
 
     /* 各ターゲットに要素を生成 */
@@ -408,7 +409,7 @@
         return el;
       });
 
-      instances.push({ logoImg: logoImg, badgeEls: badgeEls });
+      instances.push({ logoImg: logoImg, badgeEls: badgeEls, noLogo: !!t.noLogo });
     });
 
     if (instances.length === 0) return;
@@ -458,6 +459,7 @@
     /* ---- 全インスタンスのロゴを表示／非表示 ---- */
     function showLogo() {
       instances.forEach(function(inst) {
+        if (inst.noLogo) return; /* noLogo インスタンスはワードマーク非表示 */
         inst.logoImg.style.transition = 'none';
         inst.logoImg.style.transform  = 'scale(0.72) translateY(8px)';
         inst.logoImg.style.opacity    = '0';
@@ -473,12 +475,14 @@
     }
 
     function hideLogo(cb) {
-      instances.forEach(function(inst) {
+      var visible = instances.filter(function(inst) { return !inst.noLogo; });
+      if (visible.length === 0) { if (cb) cb(); return; }
+      visible.forEach(function(inst) {
         inst.logoImg.style.opacity   = '0';
         inst.logoImg.style.transform = 'scale(0.72) translateY(8px)';
       });
       setTimeout(function() {
-        instances.forEach(function(inst) { inst.logoImg.style.display = 'none'; });
+        visible.forEach(function(inst) { inst.logoImg.style.display = 'none'; });
         if (cb) cb();
       }, 580);
     }
@@ -507,6 +511,12 @@
     function showLogoThenRestart() {
       exitAll(currentIdx, function() {
         currentIdx = -1;
+        var hasVisible = instances.some(function(inst) { return !inst.noLogo; });
+        if (!hasVisible) {
+          /* 全インスタンスがnoLogo → ワードマーク表示スキップしてすぐ再スタート */
+          enterAll(0, function() { currentIdx = 0; busy = false; });
+          return;
+        }
         showLogo();
         setTimeout(function() {
           hideLogo(function() {
