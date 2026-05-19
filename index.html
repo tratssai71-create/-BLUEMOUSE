@@ -197,11 +197,29 @@
       margin: 0;
     }
 
-    /* レスポンシブ（サイドバー非表示時） */
+    /* ===== ヒーローロゴ（写真左上・絶対配置） ===== */
+    .hero-logo {
+      position: absolute;
+      top: 36px;
+      left: 40px;
+      z-index: 10;
+      pointer-events: none;
+    }
+    .hero-logo img {
+      width: 200px;
+      height: auto;
+      display: block;
+      filter: drop-shadow(0 2px 16px rgba(0,0,0,0.55));
+    }
+
     @media (max-width: 780px) {
-      #bm-dots    { right: 16px; }
-      #bm-counter { left: 16px; }
-      #bm-hint    { right: 16px; }
+      .hero-logo {
+        top: 22px;
+        left: 20px;
+      }
+      .hero-logo img {
+        width: 140px;
+      }
     }
 
   </style>
@@ -256,6 +274,10 @@
 
     <!-- スライド 1：メインビジュアル -->
     <div id="box-1">
+      <!-- ヒーローロゴ：写真左上に絶対配置 -->
+      <div class="hero-logo">
+        <img src="./logo.png" alt="BLUE MOUSE" />
+      </div>
       <div class="hero-photos">
         <img class="hero-photo hp-active" src="./photos/IMG_6294_opt.jpg" alt="BLUE MOUSE" />
         <img class="hero-photo" src="./photos/IMG_6292_opt.jpg" alt="BLUE MOUSE" loading="lazy" />
