@@ -54,6 +54,13 @@
     }
     .hero-photo.hp-active { opacity: 1; }
     .slide-overlay { z-index: 1; }
+    .slide-title {
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+    .slide-title.is-changing {
+      opacity: 0;
+      transform: translateY(10px);
+    }
 
     /* box-1：左下 */
     #box-1 .slide-overlay {
@@ -320,11 +327,11 @@
         <img src="./logo.png" alt="BLUE MOUSE" />
       </a>
       <div class="hero-photos">
-        <img class="hero-photo hp-active" src="./photos/ichigo.jpg" alt="BLUE MOUSE" />
-        <img class="hero-photo" src="./photos/IMG_6294_opt.jpg" alt="BLUE MOUSE" loading="lazy" />
-        <img class="hero-photo" src="./photos/IMG_6292_opt.jpg" alt="BLUE MOUSE" loading="lazy" />
-        <img class="hero-photo" src="./photos/IMG_6293_opt.jpg" alt="BLUE MOUSE" loading="lazy" />
-        <img class="hero-photo" src="./photos/IMG_6295_opt.jpg" alt="BLUE MOUSE" loading="lazy" />
+        <img class="hero-photo hp-active" src="./photos/ichigo.jpg" alt="BLUE MOUSE" data-title="主体性療育から、IT療育へ。|経済的自立から逆算した、|10年間の確かなロードマップ。" />
+        <img class="hero-photo" src="./photos/IMG_6294_opt.jpg" alt="BLUE MOUSE" loading="lazy" data-title="サンプルテキスト①|ここにキャッチコピーが|入ります。" />
+        <img class="hero-photo" src="./photos/IMG_6292_opt.jpg" alt="BLUE MOUSE" loading="lazy" data-title="サンプルテキスト②|ここにキャッチコピーが|入ります。" />
+        <img class="hero-photo" src="./photos/IMG_6293_opt.jpg" alt="BLUE MOUSE" loading="lazy" data-title="サンプルテキスト③|ここにキャッチコピーが|入ります。" />
+        <img class="hero-photo" src="./photos/IMG_6295_opt.jpg" alt="BLUE MOUSE" loading="lazy" data-title="サンプルテキスト④|ここにキャッチコピーが|入ります。" />
       </div>
       <div class="slide-overlay">
         <h2 class="slide-title"><span style="white-space:nowrap">主体性療育から、IT療育へ。</span><br><span style="white-space:nowrap">経済的自立から逆算した、</span><br>10年間の確かなロードマップ。</h2>
@@ -526,6 +533,22 @@ document.querySelectorAll('.side-loc-tab').forEach(function(btn) {
   var ANIM_DUR       = '9s ease-out forwards';
   var SLIDE_INTERVAL = 6000;
 
+  function updateTitle(photos, idx) {
+    var titleEl = photos[0].closest('.hero-photos') &&
+                  photos[0].closest('.hero-photos').parentElement.querySelector('.slide-title');
+    if (!titleEl) return;
+    var raw = photos[idx].getAttribute('data-title');
+    if (!raw) return;
+    titleEl.classList.add('is-changing');
+    setTimeout(function () {
+      var lines = raw.split('|');
+      titleEl.innerHTML = lines.map(function (l, i) {
+        return '<span style="white-space:nowrap">' + l + '</span>' + (i < lines.length - 1 ? '<br>' : '');
+      }).join('');
+      titleEl.classList.remove('is-changing');
+    }, 400);
+  }
+
   function startSlide(photos) {
     var current = 0;
     photos[current].style.willChange = 'transform';
@@ -543,6 +566,7 @@ document.querySelectorAll('.side-loc-tab').forEach(function(btn) {
           photos[prev].classList.remove('hp-active');
           photos[next].classList.add('hp-active');
           current = next;
+          updateTitle(photos, current);
           setTimeout(function () {
             photos[prev].style.animation  = 'none';
             photos[prev].style.willChange = 'auto';
