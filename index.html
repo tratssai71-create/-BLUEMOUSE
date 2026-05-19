@@ -10,27 +10,11 @@
   <link rel="preload" href="./photos/IMG_6294_opt.jpg" as="image" />
   <link rel="stylesheet" href="./layout.css" />
   <style>
-    html, body { overflow: hidden; }
-
-    /* 中央をスクロールスナップコンテナに */
-    .bm-main {
-      padding: 0 !important;
-      height: 100vh !important;
-      overflow-y: scroll !important;
-      scroll-snap-type: y proximity !important;
-      -webkit-overflow-scrolling: touch !important;
-      scrollbar-width: none !important;
-    }
-    .bm-main::-webkit-scrollbar { display: none; }
-
-    /* 各スライドパネル */
+    /* 各セクション */
     #box-1, #box-2, #box-3 {
-      scroll-snap-align: start;
-      scroll-snap-stop: always;
       height: 100vh;
       position: relative;
       overflow: hidden;
-      contain: paint; /* 描画範囲をこのbox内に限定。他boxの再描画を防ぐ */
     }
 
     /* ---- ヒーロー写真：Ken Burns（スケールのみ・軽量）+ クロスフェード ---- */
@@ -166,59 +150,6 @@
       transition: background .2s, border-color .2s, transform .15s;
     }
     #box-2 .slide-btn:hover { background: rgba(255,255,255,.12); border-color: #fff; transform: translateY(-1px); }
-
-    /* ドットナビゲーション（中央カラム右端） */
-    #bm-dots {
-      position: fixed;
-      right: calc(100vw / 4 + 14px);
-      top: 50%;
-      transform: translateY(-50%);
-      z-index: 9999;
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-      pointer-events: auto;
-    }
-    .bm-dot {
-      width: 6px;
-      height: 6px;
-      border-radius: 50%;
-      background: rgba(255,255,255,.35);
-      cursor: pointer;
-      transition: all .25s ease;
-      border: none;
-      padding: 0;
-    }
-    .bm-dot:hover { background: rgba(255,255,255,.75); transform: scale(1.3); }
-    .bm-dot.bm-active { background: #fff; transform: scale(1.6); }
-
-    /* セクションカウンター */
-    #bm-counter {
-      position: fixed;
-      left: calc(100vw / 4 + 16px);
-      bottom: 28px;
-      z-index: 9999;
-      font-size: 11px;
-      color: rgba(255,255,255,.45);
-      font-family: monospace;
-      pointer-events: none;
-    }
-
-    /* スクロールヒント */
-    #bm-hint {
-      position: fixed;
-      right: calc(100vw / 4 + 16px);
-      bottom: 28px;
-      z-index: 9999;
-      font-size: 10px;
-      letter-spacing: .12em;
-      text-transform: uppercase;
-      color: rgba(255,255,255,.35);
-      font-family: monospace;
-      writing-mode: vertical-rl;
-      transition: opacity .4s;
-      pointer-events: none;
-    }
 
     /* 右パネル ナビカード */
     .idx-nav-card {
@@ -443,11 +374,6 @@
 
 </div>
 
-<!-- ドット / カウンター / ヒント -->
-<div id="bm-dots"></div>
-<div id="bm-counter">01 / 02</div>
-<div id="bm-hint">Scroll</div>
-
 <script src="./layout.js"></script>
 <script>
 /* ===== 所在地タブ切り替え（地図も連動） ===== */
@@ -469,269 +395,42 @@ document.querySelectorAll('.side-loc-tab').forEach(function(btn) {
 });
 </script>
 <script>
+/* ---- ヒーロー写真：Ken Burns + クロスフェード ---- */
 (function () {
-  var container = document.getElementById('bm-center');
-
-  function getBoxes() {
-    return Array.from(document.querySelectorAll('[id^="box-"]'))
-      .sort(function (a, b) {
-        return parseInt(a.id.replace('box-', '')) - parseInt(b.id.replace('box-', ''));
-      });
-  }
-
-  function init() {
-    var boxes = getBoxes();
-    var total = boxes.length;
-    if (!total || !container) return;
-
-    /* ドット生成 */
-    var dotsWrap = document.getElementById('bm-dots');
-    dotsWrap.innerHTML = '';
-    boxes.forEach(function (_, i) {
-      var d = document.createElement('button');
-      d.className = 'bm-dot' + (i === 0 ? ' bm-active' : '');
-      d.setAttribute('aria-label', (i + 1) + 'ページ目へ');
-      d.addEventListener('click', function () {
-        boxes[i].scrollIntoView({ behavior: 'smooth', block: 'start' });
-      });
-      dotsWrap.appendChild(d);
-    });
-
-    var counter = document.getElementById('bm-counter');
-    var hint    = document.getElementById('bm-hint');
-
-    function pad(n) { return n < 10 ? '0' + n : String(n); }
-
-    function updateUI() {
-      var vh  = container.clientHeight;
-      var idx = Math.round(container.scrollTop / vh);
-      idx = Math.max(0, Math.min(idx, total - 1));
-
-      document.querySelectorAll('.bm-dot').forEach(function (d, i) {
-        d.className = 'bm-dot' + (i === idx ? ' bm-active' : '');
-      });
-      counter.textContent = pad(idx + 1) + ' / ' + pad(total);
-      hint.style.opacity  = (idx === total - 1) ? '0' : '1';
-    }
-
-    container.addEventListener('scroll', updateUI, { passive: true });
-    updateUI();
-
-    /* キーボード操作 */
-    window.addEventListener('keydown', function (e) {
-      var vh  = container.clientHeight;
-      var idx = Math.round(container.scrollTop / vh);
-      if ((e.key === 'ArrowDown' || e.key === ' ') && idx < total - 1) {
-        e.preventDefault();
-        boxes[idx + 1].scrollIntoView({ behavior: 'smooth', block: 'start' });
-      }
-      if (e.key === 'ArrowUp' && idx > 0) {
-        e.preventDefault();
-        boxes[idx - 1].scrollIntoView({ behavior: 'smooth', block: 'start' });
-      }
-    });
-
-    /* 右サイドバーのデータ切り替え */
-    var sideData = [
-      {
-        heading: 'BLUE MOUSE',
-        age:     '小学生〜高校生 / 2〜5歳',
-        cap:     '放課後等デイ・児童発達支援',
-        support: 'IT療育・PCスキル・SST',
-        addr:    '岡山市中区 / 岡山市北区',
-        access:  'お気軽にお問い合わせください',
-        mapUrl:  'https://maps.google.com/?q=岡山県岡山市中区徳吉町二丁目11番地25',
-        color:   '#F4D13F',
-        textColor: '#33251a'
-      },
-      {
-        heading: 'SERVICE INFO',
-        age:     '2〜5歳',
-        cap:     '10名 / 日',
-        support: '言語・感覚統合・集団活動',
-        addr:    '岡山市北区<br>辰巳２６−１０２',
-        access:  'アクセス情報 準備中',
-        mapUrl:  'https://maps.google.com/?q=岡山県岡山市北区辰巳26-102',
-        color:   '#FE8C68',
-        textColor: '#fff'
-      },
-      {
-        heading: 'SERVICE INFO',
-        age:     '小学生〜高校生',
-        cap:     '10名 / 日',
-        support: 'IT療育・PCスキル・SST',
-        addr:    '岡山市中区<br>徳吉町二丁目11番地25',
-        access:  '東山電停から徒歩1分',
-        mapUrl:  'https://maps.google.com/?q=岡山県岡山市中区徳吉町二丁目11番地25',
-        color:   '#5EC1C6',
-        textColor: '#fff'
-      },
-    ];
-
-    /* 地図の埋め込みURL */
-    var mapEmbedUrls = {
-      houdei: 'https://maps.google.com/maps?q=ブルーマウス徳吉町+放課後等デイサービス&output=embed&z=17&hl=ja',
-      jidou:  'https://maps.google.com/maps?q=〒700-0976+岡山県岡山市北区辰巳26-102&output=embed&z=17&hl=ja'
-    };
-
-    function switchMapTo(locKey) {
-      var iframe = document.getElementById('side-map-iframe');
-      if (!iframe) return;
-      var newSrc = mapEmbedUrls[locKey];
-      if (iframe.src !== newSrc) iframe.src = newSrc;
-      /* タブの見た目も連動 */
-      document.querySelectorAll('.side-loc-tab').forEach(function(b) {
-        b.classList.toggle('is-active', b.getAttribute('data-loc') === locKey);
-      });
-      document.querySelectorAll('.side-loc-content').forEach(function(c) {
-        c.classList.toggle('is-active', c.id === 'loc-' + locKey);
-      });
-    }
-
-    function updateSidebar(idx) {
-      var d = sideData[idx] || sideData[0];
-      var ageEl    = document.getElementById('side-age');
-      var capEl    = document.getElementById('side-cap');
-      var suppEl   = document.getElementById('side-support');
-      var addrEl   = document.getElementById('side-addr');
-      var accessEl = document.getElementById('side-access');
-      var mapEl    = document.getElementById('side-map');
-      if (ageEl)    ageEl.textContent    = d.age;
-      if (capEl)    capEl.textContent    = d.cap;
-      if (suppEl)   suppEl.textContent   = d.support;
-      if (addrEl)   addrEl.innerHTML     = d.addr;
-      if (accessEl) accessEl.textContent = d.access;
-      if (mapEl)    mapEl.href           = d.mapUrl;
-
-      /* スライドに応じてマップを切り替え */
-      if (idx === 1) {
-        switchMapTo('jidou');   /* 児童発達支援 → 辰巳 */
-      } else if (idx === 2) {
-        switchMapTo('houdei');  /* 放課後等デイ → 徳吉 */
-      }
-      /* idx=0 (TOP) はタブ操作に任せる */
-
-      /* バッジ色をスライドに合わせて切り替え */
-      document.querySelectorAll('.side-card__badge').forEach(function(el) {
-        el.style.transition = 'color .4s ease, border-color .4s ease';
-        el.style.background  = 'transparent';
-        el.style.color       = d.color;
-        el.style.borderColor = d.color;
-      });
-    }
-
-    /* updateUI を拡張 */
-    var _origUpdate = updateUI;
-    var _lastIdx = -1;
-    container.removeEventListener('scroll', updateUI);
-    function updateUIFull() {
-      var vh  = container.clientHeight;
-      var idx = Math.round(container.scrollTop / vh);
-      idx = Math.max(0, Math.min(idx, total - 1));
-      document.querySelectorAll('.bm-dot').forEach(function (d, i) {
-        d.className = 'bm-dot' + (i === idx ? ' bm-active' : '');
-      });
-      counter.textContent = pad(idx + 1) + ' / ' + pad(total);
-      hint.style.opacity  = (idx === total - 1) ? '0' : '1';
-      if (idx !== _lastIdx) { updateSidebar(idx); _lastIdx = idx; }
-    }
-    container.addEventListener('scroll', updateUIFull, { passive: true });
-    updateUIFull();
-
-  }
-
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', init);
-  } else {
-    init();
-  }
-})();
-</script>
-
-<script>
-/* ---- ヒーロー写真：Ken Burns（スケールのみ）+ クロスフェード ---- */
-(function () {
-  var ANIM_DUR      = '9s ease-out forwards';
+  var ANIM_DUR       = '9s ease-out forwards';
   var SLIDE_INTERVAL = 6000;
 
-  function makeState() { return { timer: null, current: 0, active: false }; }
+  function startSlide(photos) {
+    var current = 0;
+    photos[current].style.willChange = 'transform';
+    photos[current].style.animation  = 'kb ' + ANIM_DUR;
 
-  function stopSlide(photos, state) {
-    state.active = false;
-    if (state.timer) { clearTimeout(state.timer); state.timer = null; }
-    photos.forEach(function (p) {
-      p.style.animation  = 'none';
-      p.style.willChange = 'auto';
-    });
-    photos.forEach(function (p, i) { p.classList.toggle('hp-active', i === 0); });
-    state.current = 0;
-  }
-
-  function startSlide(photos, state) {
-    if (state.active) return;
-    state.active = true;
-    photos[state.current].style.willChange = 'transform';
-    photos[state.current].style.animation  = 'kb ' + ANIM_DUR;
-
-    function tick() {
-      if (!state.active) return;
-      var next = (state.current + 1) % photos.length;
-      var prev = state.current;
-
+    setInterval(function () {
+      var next = (current + 1) % photos.length;
+      var prev = current;
       photos[next].style.willChange = 'transform';
       photos[next].classList.remove('hp-active');
       photos[next].style.animation = 'none';
-
       requestAnimationFrame(function () {
         requestAnimationFrame(function () {
-          if (!state.active) return;
           photos[next].style.animation = 'kb ' + ANIM_DUR;
           photos[prev].classList.remove('hp-active');
           photos[next].classList.add('hp-active');
-          state.current = next;
-
+          current = next;
           setTimeout(function () {
             photos[prev].style.animation  = 'none';
             photos[prev].style.willChange = 'auto';
           }, 2200);
-
-          if (state.active) state.timer = setTimeout(tick, SLIDE_INTERVAL);
         });
       });
-    }
-    state.timer = setTimeout(tick, SLIDE_INTERVAL);
+    }, SLIDE_INTERVAL);
   }
 
   function init() {
-    var container = document.getElementById('bm-center');
-    if (!container) return;
-
-    var allCaches = Array.from(document.querySelectorAll('.hero-photos')).map(function (set) {
-      return Array.from(set.querySelectorAll('.hero-photo'));
+    document.querySelectorAll('.hero-photos').forEach(function (set) {
+      var photos = Array.from(set.querySelectorAll('.hero-photo'));
+      if (photos.length) startSlide(photos);
     });
-    var states    = allCaches.map(makeState);
-    var curIdx    = 0;
-    var scrolling = false;
-    var scrollTimer = null;
-
-    startSlide(allCaches[0], states[0]);
-
-    container.addEventListener('scroll', function () {
-      /* スクロール開始：全スライドを即座に完全停止 */
-      if (!scrolling) {
-        scrolling = true;
-        states.forEach(function (st, i) { stopSlide(allCaches[i], st); });
-      }
-      clearTimeout(scrollTimer);
-      /* スクロール最終イベントから1秒待ってスナップ完了を確認してから起動 */
-      scrollTimer = setTimeout(function () {
-        scrolling = false;
-        var idx = Math.round(container.scrollTop / container.clientHeight);
-        idx = Math.max(0, Math.min(idx, allCaches.length - 1));
-        curIdx = idx;
-        startSlide(allCaches[curIdx], states[curIdx]);
-      }, 1000);
-    }, { passive: true });
   }
 
   if (document.readyState === 'loading') {
