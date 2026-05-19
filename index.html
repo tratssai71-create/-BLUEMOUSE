@@ -210,13 +210,13 @@
       margin: 0;
     }
 
-    /* ===== 白フラッシュオーバーレイ（画面全体） ===== */
+    /* ===== 白フラッシュオーバーレイ（写真エリアのみ） ===== */
     #hero-black-overlay {
-      position: fixed;
+      position: absolute;
       inset: 0;
       background: #fff;
       opacity: 0;
-      z-index: 500;
+      z-index: 2;
       pointer-events: none;
       transition: opacity 0.25s ease;
     }
@@ -571,8 +571,8 @@ document.querySelectorAll('.side-loc-tab').forEach(function(btn) {
       var next = (current + 1) % photos.length;
       var prev = current;
 
-      /* 白フラッシュ イン */
-      if (overlay) overlay.style.opacity = '1';
+      /* 白フラッシュ イン（速く） */
+      if (overlay) { overlay.style.transition = 'opacity 0.25s ease'; overlay.style.opacity = '1'; }
 
       setTimeout(function () {
         /* 白が完全に出た状態で写真を切り替え */
@@ -591,8 +591,8 @@ document.querySelectorAll('.side-loc-tab').forEach(function(btn) {
       }, 280);
 
       setTimeout(function () {
-        /* 白フラッシュ アウト */
-        if (overlay) overlay.style.opacity = '0';
+        /* 白フラッシュ アウト（ゆっくり） */
+        if (overlay) { overlay.style.transition = 'opacity 1.2s ease'; overlay.style.opacity = '0'; }
         setTimeout(function () {
           photos[prev] && (photos[prev].style.animation  = 'none');
           photos[prev] && (photos[prev].style.willChange = 'auto');
