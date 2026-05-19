@@ -210,16 +210,28 @@
       margin: 0;
     }
 
+    /* ===== 黒フラッシュオーバーレイ ===== */
+    #hero-black-overlay {
+      position: fixed;
+      inset: 0;
+      background: #000;
+      opacity: 0;
+      z-index: 500;
+      pointer-events: none;
+      transition: opacity 0.35s ease;
+    }
+
     /* ===== ロゴ姉妹 ===== */
-    /* ワードマーク：写真に絶対配置（固定） */
+    /* ワードマーク：fixed（黒オーバーレイより上） */
     .hero-logo-wordmark {
-      position: absolute;
-      top: calc(18px + 40px + 8px); /* バッジの下に縦並び */
-      left: 16px;
-      z-index: 10;
+      position: fixed;
+      top: calc(18px + 40px + 8px);
+      left: calc(25vw + 16px);
+      z-index: 600;
       display: block;
       text-decoration: none;
       pointer-events: auto;
+      transition: opacity 0.4s ease;
     }
     .hero-logo-wordmark img {
       width: 250px;
@@ -227,12 +239,12 @@
       display: block;
     }
 
-    /* バッジ：画面にfixed（スクロールしてもついてくる） */
+    /* バッジ：画面にfixed（黒オーバーレイより上） */
     .hero-logo-badge {
       position: fixed;
       top: 18px;
-      left: calc(25vw + 16px); /* サイドバー幅+余白 */
-      z-index: 200;
+      left: calc(25vw + 16px);
+      z-index: 600;
       display: block;
       width: 40px;
       height: 40px;
@@ -252,6 +264,9 @@
       .hero-logo-badge {
         top: 18px;
         left: 16px;
+      }
+      #hero-black-overlay {
+        left: 0;
       }
       .hero-logo-wordmark img {
         width: 250px;
@@ -549,7 +564,7 @@ document.querySelectorAll('.side-loc-tab').forEach(function(btn) {
     }, 400);
   }
 
-  function startSlide(photos) {
+  function startSlide(photos, overlay) {
     var current = 0;
     photos[current].style.willChange = 'transform';
     photos[current].style.animation  = 'kb ' + ANIM_DUR;
@@ -557,29 +572,44 @@ document.querySelectorAll('.side-loc-tab').forEach(function(btn) {
     setInterval(function () {
       var next = (current + 1) % photos.length;
       var prev = current;
-      photos[next].style.willChange = 'transform';
-      photos[next].classList.remove('hp-active');
-      photos[next].style.animation = 'none';
-      requestAnimationFrame(function () {
+
+      /* 1) 黒フラッシュ イン */
+      if (overlay) overlay.style.opacity = '1';
+
+      setTimeout(function () {
+        /* 2) 黒の中で写真・テキストを切り替え */
+        photos[next].style.willChange = 'transform';
+        photos[next].classList.remove('hp-active');
+        photos[next].style.animation = 'none';
         requestAnimationFrame(function () {
-          photos[next].style.animation = 'kb ' + ANIM_DUR;
-          photos[prev].classList.remove('hp-active');
-          photos[next].classList.add('hp-active');
-          current = next;
-          updateTitle(photos, current);
-          setTimeout(function () {
-            photos[prev].style.animation  = 'none';
-            photos[prev].style.willChange = 'auto';
-          }, 2200);
+          requestAnimationFrame(function () {
+            photos[next].style.animation = 'kb ' + ANIM_DUR;
+            photos[prev].classList.remove('hp-active');
+            photos[next].classList.add('hp-active');
+            current = next;
+            updateTitle(photos, current);
+
+            /* 3) 黒フラッシュ アウト */
+            setTimeout(function () {
+              if (overlay) overlay.style.opacity = '0';
+            }, 80);
+
+            setTimeout(function () {
+              photos[prev].style.animation  = 'none';
+              photos[prev].style.willChange = 'auto';
+            }, 2200);
+          });
         });
-      });
+      }, 380); /* 黒が完全に覆うまで待つ */
+
     }, SLIDE_INTERVAL);
   }
 
   function init() {
+    var overlay = document.getElementById('hero-black-overlay');
     document.querySelectorAll('.hero-photos').forEach(function (set) {
       var photos = Array.from(set.querySelectorAll('.hero-photo'));
-      if (photos.length) startSlide(photos);
+      if (photos.length) startSlide(photos, overlay);
     });
   }
 
@@ -588,6 +618,28 @@ document.querySelectorAll('.side-loc-tab').forEach(function(btn) {
   } else {
     init();
   }
+})();
+</script>
+
+<!-- 黒フラッシュオーバーレイ -->
+<div id="hero-black-overlay"></div>
+
+<script>
+/* ワードマーク：スクロールしてヒーローを過ぎたら非表示 */
+(function () {
+  function updateWordmark() {
+    var box1 = document.getElementById('box-1');
+    var wm   = document.querySelector('.hero-logo-wordmark');
+    if (!box1 || !wm) return;
+    if (window.scrollY > box1.offsetHeight * 0.85) {
+      wm.style.opacity = '0';
+      wm.style.pointerEvents = 'none';
+    } else {
+      wm.style.opacity = '1';
+      wm.style.pointerEvents = 'auto';
+    }
+  }
+  window.addEventListener('scroll', updateWordmark, { passive: true });
 })();
 </script>
 
