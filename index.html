@@ -204,7 +204,7 @@
     .hero-logo-wordmark {
       position: absolute;
       top: 32px;
-      left: calc(36px + 40px + 10px); /* バッジ幅+gap分右にずらす */
+      left: calc(36px + 60px + 10px); /* バッジ幅+gap分右にずらす */
       z-index: 10;
       display: block;
       text-decoration: none;
@@ -223,8 +223,8 @@
       left: calc(25vw + 36px); /* サイドバー幅+余白 */
       z-index: 200;
       display: block;
-      width: 40px;
-      height: 40px;
+      width: 60px;
+      height: 60px;
       text-decoration: none;
     }
 
@@ -236,7 +236,7 @@
     @media (max-width: 780px) {
       .hero-logo-wordmark {
         top: calc(18px + 2cm);
-        left: calc(16px + 40px + 8px);
+        left: calc(16px + 60px + 8px);
       }
       .hero-logo-badge {
         top: 18px;
@@ -441,7 +441,7 @@
     './badges/badge-E4.png', './badges/badge-M.png',  './badges/badge-O.png',
     './badges/badge-U7.png', './badges/badge-S.png',  './badges/badge-E9.png',
   ];
-  var SIZE = 40;
+  var SIZE = 60;
 
   function run() {
     var link = document.querySelector('.hero-logo-badge');
