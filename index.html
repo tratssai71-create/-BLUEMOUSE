@@ -199,31 +199,16 @@
       margin: 0;
     }
 
-    /* ===== ヒーローロゴ「ロゴ姉妹」（写真左上・絶対配置） ===== */
-    .hero-logo {
+    /* ===== ロゴ姉妹 ===== */
+    /* ワードマーク：写真に絶対配置（固定） */
+    .hero-logo-wordmark {
       position: absolute;
       top: 32px;
-      left: 36px;
+      left: calc(36px + 40px + 10px); /* バッジ幅+gap分右にずらす */
       z-index: 10;
-      display: flex;
-      align-items: center;
-      gap: 10px;
+      display: block;
+      text-decoration: none;
       pointer-events: auto;
-    }
-    /* バッジアニメーション用ラッパー */
-    .hero-logo-badge {
-      display: block;
-      flex-shrink: 0;
-      width: 40px;
-      height: 40px;
-      text-decoration: none;
-      position: relative;
-    }
-    /* BLUEMOUSEワードマーク */
-    .hero-logo-wordmark {
-      display: block;
-      flex-shrink: 0;
-      text-decoration: none;
     }
     .hero-logo-wordmark img {
       width: 200px;
@@ -231,15 +216,31 @@
       display: block;
     }
 
+    /* バッジ：画面にfixed（スクロールしてもついてくる） */
+    .hero-logo-badge {
+      position: fixed;
+      top: 32px;
+      left: calc(25vw + 36px); /* サイドバー幅+余白 */
+      z-index: 200;
+      display: block;
+      width: 40px;
+      height: 40px;
+      text-decoration: none;
+    }
+
+    /* hero-logo本体は不要になるので非表示 */
+    .hero-logo {
+      display: none;
+    }
+
     @media (max-width: 780px) {
-      .hero-logo {
+      .hero-logo-wordmark {
+        top: calc(18px + 2cm);
+        left: calc(16px + 40px + 8px);
+      }
+      .hero-logo-badge {
         top: calc(18px + 2cm);
         left: 16px;
-        gap: 8px;
-      }
-      /* ワードマークだけ縦位置を少し下げる */
-      .hero-logo-wordmark {
-        margin-top: 4px;
       }
       .hero-logo-wordmark img {
         width: 200px;
@@ -302,15 +303,14 @@
 
     <!-- スライド 1：メインビジュアル -->
     <div id="box-1">
-      <!-- ヒーローロゴ：写真左上に絶対配置（バッジアニメ＋ワードマーク横並び） -->
-      <div class="hero-logo">
-        <a class="hero-logo-badge" href="./index.html">
-          <img src="./logo.png" alt="BLUE MOUSE" />
-        </a>
-        <a class="hero-logo-wordmark" href="./index.html">
-          <img src="./logo.png" alt="BLUE MOUSE" />
-        </a>
-      </div>
+      <!-- ワードマーク：写真に絶対配置 -->
+      <a class="hero-logo-wordmark" href="./index.html">
+        <img src="./logo.png" alt="BLUE MOUSE" />
+      </a>
+      <!-- バッジ：fixed でスクロールについてくる -->
+      <a class="hero-logo-badge" href="./index.html">
+        <img src="./logo.png" alt="BLUE MOUSE" />
+      </a>
       <div class="hero-photos">
         <img class="hero-photo hp-active" src="./photos/IMG_6294_opt.jpg" alt="BLUE MOUSE" />
         <img class="hero-photo" src="./photos/IMG_6292_opt.jpg" alt="BLUE MOUSE" loading="lazy" />
