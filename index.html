@@ -249,6 +249,8 @@
       .bm-mobile-header__logo {
         display: none !important;
       }
+      /* 最初の2行が折り返さないようフォントサイズ調整 */
+      #box-1 .slide-title { font-size: clamp(1.1rem, 4.8vw, 2.6rem); }
     }
 
   </style>
@@ -318,7 +320,7 @@
         <img class="hero-photo" src="./photos/IMG_6295_opt.jpg" alt="BLUE MOUSE" loading="lazy" />
       </div>
       <div class="slide-overlay">
-        <h2 class="slide-title">主体性療育から、IT療育へ。<br>経済的自立から逆算した、<br>10年間の確かなロードマップ。</h2>
+        <h2 class="slide-title"><span style="white-space:nowrap">主体性療育から、IT療育へ。</span><br><span style="white-space:nowrap">経済的自立から逆算した、</span><br>10年間の確かなロードマップ。</h2>
         <p class="slide-lead">
           岡山市の放課後等デイサービス・児童発達支援事業所 BLUE MOUSE。<br>
           お子さまの「できた」を積み重ね、将来を見据えた支援を届けます。
