@@ -49,7 +49,7 @@
       object-fit: cover;
       object-position: center center;
       opacity: 0;
-      transition: opacity 2.5s ease-in-out;
+      transition: opacity 1.2s ease-in-out;
       /* will-change・animation はJS側で最小限だけ動的付与 */
     }
     .hero-photo.hp-active { opacity: 1; }
@@ -543,8 +543,8 @@ document.querySelectorAll('.side-loc-tab').forEach(function(btn) {
 <script>
 /* ---- ヒーロー写真：Ken Burns + クロスフェード ---- */
 (function () {
-  var ANIM_DUR       = '12s ease-out forwards';
-  var SLIDE_INTERVAL = 9000;
+  var ANIM_DUR       = '7s ease-out forwards';
+  var SLIDE_INTERVAL = 5000;
 
   function updateTitle(photos, idx) {
     var titleEl = photos[0].closest('.hero-photos') &&
@@ -571,24 +571,33 @@ document.querySelectorAll('.side-loc-tab').forEach(function(btn) {
       var next = (current + 1) % photos.length;
       var prev = current;
 
-      /* スムーズクロスフェード */
-      photos[next].style.willChange = 'transform';
-      photos[next].classList.remove('hp-active');
-      photos[next].style.animation = 'none';
-      requestAnimationFrame(function () {
-        requestAnimationFrame(function () {
-          photos[next].style.animation = 'kb ' + ANIM_DUR;
-          photos[prev].classList.remove('hp-active');
-          photos[next].classList.add('hp-active');
-          current = next;
-          updateTitle(photos, current);
+      /* 白フラッシュ イン */
+      if (overlay) overlay.style.opacity = '1';
 
-          setTimeout(function () {
-            photos[prev].style.animation  = 'none';
-            photos[prev].style.willChange = 'auto';
-          }, 2500);
+      setTimeout(function () {
+        photos[next].style.willChange = 'transform';
+        photos[next].classList.remove('hp-active');
+        photos[next].style.animation = 'none';
+        requestAnimationFrame(function () {
+          requestAnimationFrame(function () {
+            photos[next].style.animation = 'kb ' + ANIM_DUR;
+            photos[prev].classList.remove('hp-active');
+            photos[next].classList.add('hp-active');
+            current = next;
+            updateTitle(photos, current);
+
+            /* 白フラッシュ アウト */
+            setTimeout(function () {
+              if (overlay) overlay.style.opacity = '0';
+            }, 80);
+
+            setTimeout(function () {
+              photos[prev].style.animation  = 'none';
+              photos[prev].style.willChange = 'auto';
+            }, 1800);
+          });
         });
-      });
+      }, 300);
 
     }, SLIDE_INTERVAL);
   }
