@@ -360,10 +360,9 @@
     var LETTERS = 'BLUEMOUSE';
     var N = BADGE_FILES.length;
 
-    /* トップページヒーローのみを対象にする */
+    /* モバイルヘッダーのみを対象にする（ヒーローバッジはindex.html内の独立スクリプトで制御） */
     var TARGETS = [
       { selector: '.bm-mobile-header__logo',  size: 40, logoW: 'auto',  logoH: '34px', noLogo: true },
-      { selector: '.hero-logo-badge',         size: 40, logoW: '0px',   logoH: '0px',  noLogo: true },
     ];
 
     /* 各ターゲットに要素を生成 */
