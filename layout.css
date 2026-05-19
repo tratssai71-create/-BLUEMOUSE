@@ -641,14 +641,12 @@ h1, h2, h3, h4, h5, h6 {
   color: #fff;
   line-height: 1.25;
   margin-bottom: 14px;
-  text-shadow: 0 2px 12px rgba(0,0,0,.3);
 }
 .bm-hero-full__lead {
   color: rgba(255,255,255,.88);
   font-size: 14px;
   line-height: 1.85;
   max-width: 32em;
-  text-shadow: 0 1px 6px rgba(0,0,0,.3);
 }
 
 .bm-hero-img {
