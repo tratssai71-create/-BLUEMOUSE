@@ -940,7 +940,9 @@ h1, h2, h3, h4, h5, h6 {
   /* 左サイドバー → 右から出るドロワーに変換 */
   .bm-left {
     position: fixed;
-    top: 56px; right: 0;
+    top: 56px;
+    left: auto; /* デスクトップの left:0 をリセット */
+    right: 0;
     bottom: auto;
     width: 80%; max-width: 300px;
     height: calc(100vh - 56px);
