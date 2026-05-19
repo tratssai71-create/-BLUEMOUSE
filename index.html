@@ -210,23 +210,6 @@
       margin: 0;
     }
 
-    /* ===== 白ワイプオーバーレイ（右→左） ===== */
-    #hero-black-overlay {
-      position: absolute;
-      inset: 0;
-      background: #fff;
-      z-index: 2;
-      pointer-events: none;
-      transform: translateX(105%);
-      transition: transform 0.35s cubic-bezier(0.77,0,0.18,1);
-    }
-    #hero-black-overlay.wipe-in {
-      transform: translateX(0%);
-    }
-    #hero-black-overlay.wipe-out {
-      transform: translateX(-105%);
-      transition: transform 0.5s cubic-bezier(0.77,0,0.18,1);
-    }
 
     /* ===== ロゴ姉妹 ===== */
     /* ワードマーク：fixed（黒オーバーレイより上） */
@@ -352,7 +335,6 @@
         <img class="hero-photo" src="./photos/IMG_6293_opt.jpg" alt="BLUE MOUSE" loading="lazy" data-title="サンプルテキスト③|ここにキャッチコピーが|入ります。" />
         <img class="hero-photo" src="./photos/IMG_6295_opt.jpg" alt="BLUE MOUSE" loading="lazy" data-title="サンプルテキスト④|ここにキャッチコピーが|入ります。" />
       </div>
-      <div id="hero-black-overlay"></div>
       <div class="slide-overlay">
         <h2 class="slide-title"><span style="white-space:nowrap">主体性療育から、IT療育へ。</span><br><span style="white-space:nowrap">経済的自立から逆算した、</span><br>10年間の確かなロードマップ。</h2>
       </div>
@@ -578,47 +560,23 @@ document.querySelectorAll('.side-loc-tab').forEach(function(btn) {
       var next = (current + 1) % photos.length;
       var prev = current;
 
-      /* 1) 右から白ワイプ イン */
-      if (overlay) {
-        overlay.classList.remove('wipe-out');
-        overlay.classList.add('wipe-in');
-      }
-
-      setTimeout(function () {
-        /* 2) 白で隠れた状態で写真切り替え */
-        photos[next].style.willChange = 'transform';
-        photos[next].classList.remove('hp-active');
-        photos[next].style.animation = 'none';
+      /* スムーズクロスフェード */
+      photos[next].style.willChange = 'transform';
+      photos[next].classList.remove('hp-active');
+      photos[next].style.animation = 'none';
+      requestAnimationFrame(function () {
         requestAnimationFrame(function () {
-          requestAnimationFrame(function () {
-            photos[next].style.animation = 'kb ' + ANIM_DUR;
-            photos[prev].classList.remove('hp-active');
-            photos[next].classList.add('hp-active');
-            current = next;
-            updateTitle(photos, current);
-          });
+          photos[next].style.animation = 'kb ' + ANIM_DUR;
+          photos[prev].classList.remove('hp-active');
+          photos[next].classList.add('hp-active');
+          current = next;
+          updateTitle(photos, current);
+          setTimeout(function () {
+            photos[prev].style.animation  = 'none';
+            photos[prev].style.willChange = 'auto';
+          }, 2000);
         });
-      }, 320);
-
-      setTimeout(function () {
-        /* 3) 左へ白ワイプ アウト */
-        if (overlay) {
-          overlay.classList.remove('wipe-in');
-          overlay.classList.add('wipe-out');
-        }
-        setTimeout(function () {
-          /* リセット（次回のために右へ戻す） */
-          if (overlay) {
-            overlay.style.transition = 'none';
-            overlay.classList.remove('wipe-out');
-            setTimeout(function () {
-              overlay.style.transition = '';
-            }, 50);
-          }
-          photos[prev] && (photos[prev].style.animation  = 'none');
-          photos[prev] && (photos[prev].style.willChange = 'auto');
-        }, 550);
-      }, 400);
+      });
 
     }, SLIDE_INTERVAL);
   }
