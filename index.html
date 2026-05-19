@@ -210,13 +210,13 @@
       margin: 0;
     }
 
-    /* ===== 黒フラッシュオーバーレイ ===== */
+    /* ===== 白フラッシュオーバーレイ（写真エリアのみ） ===== */
     #hero-black-overlay {
-      position: fixed;
+      position: absolute;
       inset: 0;
-      background: #000;
+      background: #fff;
       opacity: 0;
-      z-index: 500;
+      z-index: 2;
       pointer-events: none;
       transition: opacity 0.35s ease;
     }
@@ -264,9 +264,6 @@
       .hero-logo-badge {
         top: 18px;
         left: 16px;
-      }
-      #hero-black-overlay {
-        left: 0;
       }
       .hero-logo-wordmark img {
         width: 250px;
@@ -348,6 +345,7 @@
         <img class="hero-photo" src="./photos/IMG_6293_opt.jpg" alt="BLUE MOUSE" loading="lazy" data-title="サンプルテキスト③|ここにキャッチコピーが|入ります。" />
         <img class="hero-photo" src="./photos/IMG_6295_opt.jpg" alt="BLUE MOUSE" loading="lazy" data-title="サンプルテキスト④|ここにキャッチコピーが|入ります。" />
       </div>
+      <div id="hero-black-overlay"></div>
       <div class="slide-overlay">
         <h2 class="slide-title"><span style="white-space:nowrap">主体性療育から、IT療育へ。</span><br><span style="white-space:nowrap">経済的自立から逆算した、</span><br>10年間の確かなロードマップ。</h2>
       </div>
@@ -620,9 +618,6 @@ document.querySelectorAll('.side-loc-tab').forEach(function(btn) {
   }
 })();
 </script>
-
-<!-- 黒フラッシュオーバーレイ -->
-<div id="hero-black-overlay"></div>
 
 <script>
 /* ワードマーク：スクロールしてヒーローを過ぎたら非表示 */
