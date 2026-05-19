@@ -249,8 +249,10 @@
       .bm-mobile-header__logo {
         display: none !important;
       }
-      /* 最初の2行が折り返さないようフォントサイズ調整 */
-      #box-1 .slide-title { font-size: clamp(1.1rem, 4.8vw, 2.6rem); }
+      /* スマホ：元のサイズに戻す */
+      #box-1 .slide-title { font-size: clamp(1.5rem, 5.5vw, 2.6rem); }
+      /* 横パディングを狭めて文字が収まるように */
+      #box-1 .slide-overlay { padding: 48px 20px; }
     }
 
   </style>
