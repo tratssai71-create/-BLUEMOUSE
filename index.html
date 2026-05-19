@@ -210,15 +210,15 @@
       margin: 0;
     }
 
-    /* ===== 白フラッシュオーバーレイ（写真エリアのみ） ===== */
+    /* ===== 白フラッシュオーバーレイ（画面全体） ===== */
     #hero-black-overlay {
-      position: absolute;
+      position: fixed;
       inset: 0;
       background: #fff;
       opacity: 0;
-      z-index: 2;
+      z-index: 500;
       pointer-events: none;
-      transition: opacity 0.35s ease;
+      transition: opacity 0.25s ease;
     }
 
     /* ===== ロゴ姉妹 ===== */
@@ -575,6 +575,7 @@ document.querySelectorAll('.side-loc-tab').forEach(function(btn) {
       if (overlay) overlay.style.opacity = '1';
 
       setTimeout(function () {
+        /* 白が完全に出た状態で写真を切り替え */
         photos[next].style.willChange = 'transform';
         photos[next].classList.remove('hp-active');
         photos[next].style.animation = 'none';
@@ -585,19 +586,18 @@ document.querySelectorAll('.side-loc-tab').forEach(function(btn) {
             photos[next].classList.add('hp-active');
             current = next;
             updateTitle(photos, current);
-
-            /* 白フラッシュ アウト */
-            setTimeout(function () {
-              if (overlay) overlay.style.opacity = '0';
-            }, 80);
-
-            setTimeout(function () {
-              photos[prev].style.animation  = 'none';
-              photos[prev].style.willChange = 'auto';
-            }, 1800);
           });
         });
-      }, 300);
+      }, 280);
+
+      setTimeout(function () {
+        /* 白フラッシュ アウト */
+        if (overlay) overlay.style.opacity = '0';
+        setTimeout(function () {
+          photos[prev] && (photos[prev].style.animation  = 'none');
+          photos[prev] && (photos[prev].style.willChange = 'auto');
+        }, 1500);
+      }, 450);
 
     }, SLIDE_INTERVAL);
   }
