@@ -1033,6 +1033,7 @@ h1, h2, h3, h4, h5, h6 {
     gap: 5px;
     flex-shrink: 0;
     margin-left: auto;
+    margin-top: 10px;
     width: 40px; height: 40px;
     padding: 8px;
     background: none;
