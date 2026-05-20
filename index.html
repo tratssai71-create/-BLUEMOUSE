@@ -577,6 +577,7 @@ document.querySelectorAll('.side-loc-tab').forEach(function(btn) {
           photos[prev].style.animation   = 'none';
           photos[prev].style.willChange  = 'auto';
           photos[prev].style.transition  = '';
+          photos[prev].style.opacity     = ''; /* インラインopacityをリセット */
         }, 800);
       }, 200);
 
