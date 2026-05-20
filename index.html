@@ -227,28 +227,28 @@
 
     /* ===== ロゴ姉妹 ===== */
     /* ワードマーク：fixed（黒オーバーレイより上） */
+    /* ロゴ：写真エリア(box-1)左上に絶対配置 */
     .hero-logo-wordmark {
-      position: fixed;
-      top: calc(18px + 40px + 8px);
-      left: calc(25vw + 16px);
-      z-index: 600;
+      position: absolute;
+      top: calc(16px + 40px + 8px);
+      left: 16px;
+      z-index: 10;
       display: block;
       text-decoration: none;
       pointer-events: auto;
       transition: opacity 0.4s ease;
     }
     .hero-logo-wordmark img {
-      width: 250px;
+      width: 200px;
       height: auto;
       display: block;
     }
 
-    /* バッジ：画面にfixed（黒オーバーレイより上） */
     .hero-logo-badge {
-      position: fixed;
-      top: 18px;
-      left: calc(25vw + 16px);
-      z-index: 600;
+      position: absolute;
+      top: 16px;
+      left: 16px;
+      z-index: 10;
       display: block;
       width: 40px;
       height: 40px;
@@ -261,16 +261,8 @@
     }
 
     @media (max-width: 780px) {
-      .hero-logo-wordmark {
-        top: calc(18px + 40px + 8px);
-        left: 16px;
-      }
-      .hero-logo-badge {
-        top: 18px;
-        left: 16px;
-      }
       .hero-logo-wordmark img {
-        width: 250px;
+        width: 160px;
       }
       /* モバイルヘッダーのロゴは非表示（写真上のロゴだけ使う） */
       .bm-mobile-header__logo {
@@ -278,8 +270,8 @@
       }
       /* スマホ：元のサイズに戻す */
       #box-1 .slide-title { font-size: clamp(1.5rem, 5.5vw, 2.6rem); }
-      /* 横パディングを狭めて文字が収まるように */
-      #box-1 .slide-overlay { padding: 48px 20px 80px; justify-content: flex-end; }
+      /* 横パディングを狭めて文字が収まるように／テキストを上に */
+      #box-1 .slide-overlay { padding: 48px 20px 40px; justify-content: flex-end; }
     }
 
   </style>
@@ -626,58 +618,6 @@ document.querySelectorAll('.side-loc-tab').forEach(function(btn) {
 })();
 </script>
 
-<script>
-/* ===== 円バッジ：跳ね返りバウンスアニメーション ===== */
-(function () {
-  var badge = document.querySelector('.hero-logo-badge');
-  if (!badge) return;
-
-  var SIZE  = 40;
-  var SPEED = 1.8; /* px/frame */
-
-  /* 初期位置：左上付近からスタート */
-  var x = 60, y = 60;
-
-  /* ランダムな初期方向 */
-  var angle = Math.PI / 4 + (Math.random() - 0.5) * 0.5;
-  var vx = Math.cos(angle) * SPEED;
-  var vy = Math.sin(angle) * SPEED;
-
-  /* CSSの静的なtop/leftを上書き */
-  badge.style.transition = 'none';
-  badge.style.top  = y + 'px';
-  badge.style.left = x + 'px';
-
-  function bounce() {
-    var maxX = window.innerWidth  - SIZE;
-    var maxY = window.innerHeight - SIZE;
-
-    x += vx;
-    y += vy;
-
-    /* 壁に当たったら跳ね返り＋少しランダム */
-    if (x <= 0)    { x = 0;    vx =  Math.abs(vx); nudge(); }
-    if (x >= maxX) { x = maxX; vx = -Math.abs(vx); nudge(); }
-    if (y <= 0)    { y = 0;    vy =  Math.abs(vy); nudge(); }
-    if (y >= maxY) { y = maxY; vy = -Math.abs(vy); nudge(); }
-
-    badge.style.left = x + 'px';
-    badge.style.top  = y + 'px';
-
-    requestAnimationFrame(bounce);
-  }
-
-  /* 跳ね返り時に少し角度をずらす */
-  function nudge() {
-    var spd = Math.sqrt(vx * vx + vy * vy);
-    var a   = Math.atan2(vy, vx) + (Math.random() - 0.5) * 0.4;
-    vx = Math.cos(a) * spd;
-    vy = Math.sin(a) * spd;
-  }
-
-  requestAnimationFrame(bounce);
-})();
-</script>
 
 </body>
 </html>
