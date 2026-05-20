@@ -556,11 +556,13 @@ document.querySelectorAll('.side-loc-tab').forEach(function(btn) {
       if (overlay) { overlay.style.transition = 'opacity 0.18s ease'; overlay.style.opacity = '1'; }
 
       setTimeout(function () {
-        /* 2) 白で完全に覆った状態で写真を即座に切り替え */
+        /* 2) 白で完全に覆った状態で写真を即座に切り替え（残像防止） */
+        photos[prev].style.transition = 'none';
+        photos[prev].style.opacity    = '0';
+        photos[prev].classList.remove('hp-active');
         photos[next].style.willChange = 'transform';
         photos[next].classList.remove('hp-active');
         photos[next].style.animation = 'none';
-        photos[prev].classList.remove('hp-active');
         photos[next].classList.add('hp-active');
         photos[next].style.animation = 'kb ' + ANIM_DUR;
         current = next;
@@ -572,8 +574,9 @@ document.querySelectorAll('.side-loc-tab').forEach(function(btn) {
         }, 30);
 
         setTimeout(function () {
-          photos[prev].style.animation  = 'none';
-          photos[prev].style.willChange = 'auto';
+          photos[prev].style.animation   = 'none';
+          photos[prev].style.willChange  = 'auto';
+          photos[prev].style.transition  = '';
         }, 800);
       }, 200);
 
