@@ -340,41 +340,20 @@
         <img src="./logo.png" alt="BLUE MOUSE" />
       </a>
       <div class="hero-photos">
-        <img class="hero-photo hp-active" src="./photos/ichigo2.jpg" alt="BLUE MOUSE" />
+        <img class="hero-photo hp-active" src="./photos/ichigo2.jpg" alt="BLUE MOUSE"
+          data-title="主体性療育から、IT療育へ。|経済的自立から逆算した、|10年間の確かなロードマップ。"
+          data-btn-text="" data-btn-href="" />
+        <img class="hero-photo" src="./photos/jidou_opt.jpg" alt="児童発達支援事業" loading="lazy"
+          data-title="児童発達支援事業"
+          data-btn-text="詳しく見る →" data-btn-href="./child.html" />
+        <img class="hero-photo" src="./photos/hokago_opt.jpg" alt="放課後等デイサービス" loading="lazy"
+          data-title="放課後等デイサービス（就学期）|強みとなる「見える力」は、|伴走者と共に育む。"
+          data-btn-text="詳しく見る →" data-btn-href="./afterschool.html" />
       </div>
       <div id="hero-white-overlay"></div>
       <div class="slide-overlay">
         <h2 class="slide-title"><span style="white-space:nowrap">主体性療育から、IT療育へ。</span><br><span style="white-space:nowrap">経済的自立から逆算した、</span><br>10年間の確かなロードマップ。</h2>
-      </div>
-    </div>
-
-    <!-- スライド 2：児童発達支援事業 -->
-    <div id="box-2">
-      <div class="hero-photos">
-        <img class="hero-photo hp-active" src="./photos/jidou_opt.jpg" alt="児童発達支援事業" loading="lazy" />
-      </div>
-      <div class="slide-overlay">
-        <h2 class="slide-title">児童発達支援事業</h2>
-        <p class="slide-lead">
-          3〜5歳の就学前のお子さまを対象に、<br>
-          言語・感覚統合・集団活動などの発達支援を行います。
-        </p>
-        <a href="./child.html" class="slide-btn">詳しく見る →</a>
-      </div>
-    </div>
-
-    <!-- スライド 3：放課後等デイサービス -->
-    <div id="box-3">
-      <div class="hero-photos">
-        <img class="hero-photo hp-active" src="./photos/hokago_opt.jpg" alt="放課後等デイサービス" loading="lazy" />
-      </div>
-      <div class="slide-overlay">
-        <h2 class="slide-title">放課後等デイサービス（就学期）<br>強みとなる「見える力」は、<br>伴走者と共に育む。</h2>
-        <p class="slide-lead">
-          小学生〜高校生のお子さまを対象に、<br>
-          IT療育・感覚統合・SSTで一人ひとりに寄り添います。
-        </p>
-        <a href="./afterschool.html" class="slide-btn">詳しく見る →</a>
+        <a class="slide-btn js-slide-btn" href="" style="display:none">詳しく見る →</a>
       </div>
     </div>
 
@@ -538,11 +517,13 @@ document.querySelectorAll('.side-loc-tab').forEach(function(btn) {
   var SLIDE_INTERVAL = 5000;
 
   function updateTitle(photos, idx) {
-    var titleEl = photos[0].closest('.hero-photos') &&
-                  photos[0].closest('.hero-photos').parentElement.querySelector('.slide-title');
+    var parent   = photos[0].closest('.hero-photos').parentElement;
+    var titleEl  = parent.querySelector('.slide-title');
+    var btnEl    = parent.querySelector('.js-slide-btn');
     if (!titleEl) return;
-    var raw = photos[idx].getAttribute('data-title');
-    if (!raw) return;
+    var raw      = photos[idx].getAttribute('data-title') || '';
+    var btnText  = photos[idx].getAttribute('data-btn-text') || '';
+    var btnHref  = photos[idx].getAttribute('data-btn-href') || '';
     titleEl.classList.add('is-changing');
     setTimeout(function () {
       var lines = raw.split('|');
@@ -550,7 +531,16 @@ document.querySelectorAll('.side-loc-tab').forEach(function(btn) {
         return '<span style="white-space:nowrap">' + l + '</span>' + (i < lines.length - 1 ? '<br>' : '');
       }).join('');
       titleEl.classList.remove('is-changing');
-    }, 600);
+      if (btnEl) {
+        if (btnText) {
+          btnEl.textContent = btnText;
+          btnEl.href = btnHref;
+          btnEl.style.display = '';
+        } else {
+          btnEl.style.display = 'none';
+        }
+      }
+    }, 300);
   }
 
   function startSlide(photos, overlay) {
