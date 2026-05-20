@@ -8,7 +8,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Hachi+Maru+Pop&family=Noto+Sans+JP:wght@400;500;600;700;800;900&family=Zen+Kaku+Gothic+New:wght@400;500;700&family=Zen+Maru+Gothic:wght@500;700&display=swap" rel="stylesheet" />
   <link rel="preload" href="./photos/ichigo2.jpg" as="image" />
-  <link rel="stylesheet" href="./layout.css?v=6" />
+  <link rel="stylesheet" href="./layout.css?v=7" />
   <style>
     /* ページ全体にごく薄いダークトーン */
     body::after {
@@ -120,22 +120,27 @@
       letter-spacing: .03em;
     }
 
-    /* box-1 のボタン：テラコッタ */
+    /* box-1 のボタン */
     #box-1 .slide-btn {
       display: inline-block;
-      padding: 11px 26px;
-      background: #3a9095;
+      padding: 11px 28px;
+      background: #E6CC5E;
       color: #fff;
       font-family: "Zen Maru Gothic", "M PLUS Rounded 1c", sans-serif;
       font-size: 13px;
       font-weight: 500;
-      border-radius: 2px;
-      border: 1.5px solid #3a9095;
+      border-radius: 999px;
+      border: none;
       text-decoration: none;
       align-self: flex-start;
-      transition: background .2s, color .2s, transform .15s;
+      letter-spacing: .06em;
+      transition: background .2s, transform .2s, box-shadow .2s;
     }
-    #box-1 .slide-btn:hover { background: transparent; color: #fff; transform: translateY(-1px); }
+    #box-1 .slide-btn:hover {
+      background: #d4b84a;
+      transform: translateY(-3px);
+      box-shadow: 0 6px 18px rgba(230,204,94,.45);
+    }
 
     /* box-3 */
     #box-3 .slide-overlay {
