@@ -898,7 +898,7 @@ h1, h2, h3, h4, h5, h6 {
   z-index: 9999;
   width: 56px; height: 56px;
   border-radius: 50%;
-  background: #3a9095;
+  background: #F2B464;
   color: #fff;
   border: none;
   cursor: pointer;
@@ -906,7 +906,7 @@ h1, h2, h3, h4, h5, h6 {
   justify-content: center;
   flex-direction: column;
   gap: 2px;
-  box-shadow: 0 4px 18px rgba(58,144,149,.55);
+  box-shadow: 0 4px 18px rgba(242,180,100,.55);
   animation: bm-fab-pulse 2.5s ease-in-out infinite;
 }
 @media (max-width: 780px) {
@@ -927,8 +927,8 @@ h1, h2, h3, h4, h5, h6 {
   color: rgba(255,255,255,.9);
 }
 @keyframes bm-fab-pulse {
-  0%, 100% { box-shadow: 0 4px 18px rgba(58,144,149,.55); transform: scale(1); }
-  50%       { box-shadow: 0 6px 28px rgba(58,144,149,.75); transform: scale(1.06); }
+  0%, 100% { box-shadow: 0 4px 18px rgba(242,180,100,.55); transform: scale(1); }
+  50%       { box-shadow: 0 6px 28px rgba(242,180,100,.75); transform: scale(1.06); }
 }
 
 /* ===== レスポンシブ ===== */
@@ -1046,7 +1046,7 @@ h1, h2, h3, h4, h5, h6 {
   .bm-hamburger span {
     display: block;
     width: 20px; height: 2px;
-    background: #4a3428;
+    background: #c09060;
     border-radius: 2px;
     transition: transform .28s ease, opacity .2s ease;
   }
