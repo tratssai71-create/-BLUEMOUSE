@@ -552,34 +552,30 @@ document.querySelectorAll('.side-loc-tab').forEach(function(btn) {
       var next = (current + 1) % photos.length;
       var prev = current;
 
-      /* 1) 白フェードイン */
-      if (overlay) { overlay.style.transition = 'opacity 0.3s ease'; overlay.style.opacity = '1'; }
+      /* 1) 白フェードイン（素早く） */
+      if (overlay) { overlay.style.transition = 'opacity 0.18s ease'; overlay.style.opacity = '1'; }
 
       setTimeout(function () {
-        /* 2) 白で隠れた状態で写真切り替え */
+        /* 2) 白で完全に覆った状態で写真を即座に切り替え */
         photos[next].style.willChange = 'transform';
         photos[next].classList.remove('hp-active');
         photos[next].style.animation = 'none';
-        requestAnimationFrame(function () {
-          requestAnimationFrame(function () {
-            photos[next].style.animation = 'kb ' + ANIM_DUR;
-            photos[prev].classList.remove('hp-active');
-            photos[next].classList.add('hp-active');
-            current = next;
-            updateTitle(photos, current);
+        photos[prev].classList.remove('hp-active');
+        photos[next].classList.add('hp-active');
+        photos[next].style.animation = 'kb ' + ANIM_DUR;
+        current = next;
+        updateTitle(photos, current);
 
-            /* 3) 白フェードアウト（ゆっくり） */
-            setTimeout(function () {
-              if (overlay) { overlay.style.transition = 'opacity 1.0s ease'; overlay.style.opacity = '0'; }
-            }, 80);
+        /* 3) 白フェードアウト（スッと消える） */
+        setTimeout(function () {
+          if (overlay) { overlay.style.transition = 'opacity 0.45s ease'; overlay.style.opacity = '0'; }
+        }, 30);
 
-            setTimeout(function () {
-              photos[prev].style.animation  = 'none';
-              photos[prev].style.willChange = 'auto';
-            }, 1800);
-          });
-        });
-      }, 320);
+        setTimeout(function () {
+          photos[prev].style.animation  = 'none';
+          photos[prev].style.willChange = 'auto';
+        }, 800);
+      }, 200);
 
     }, SLIDE_INTERVAL);
   }
