@@ -32,8 +32,11 @@
       overflow: hidden;
     }
 
-    /* ---- ヒーロー写真：Ken Burns（スケールのみ・軽量）+ クロスフェード ---- */
-    @keyframes kb { from{transform:scale(1.0)} to{transform:scale(1.05)} }
+    /* ---- ヒーロー写真：Ken Burns ---- */
+    @keyframes kb       { from{transform:scale(1.0)}                          to{transform:scale(1.06)} }
+    @keyframes kb-down  { from{transform:scale(1.06) translateY(-4%)}         to{transform:scale(1.0)  translateY(4%)} }
+    @keyframes kb-right { from{transform:scale(1.06) translateX(-4%)}         to{transform:scale(1.0)  translateX(4%)} }
+    @keyframes kb-up    { from{transform:scale(1.06) translateY(4%)}          to{transform:scale(1.0)  translateY(-4%)} }
 
     .hero-photos {
       position: absolute;
@@ -342,13 +345,13 @@
       <div class="hero-photos">
         <img class="hero-photo hp-active" src="./photos/ichigo2.jpg" alt="BLUE MOUSE"
           data-title="主体性療育から、IT療育へ。|経済的自立から逆算した、|10年間の確かなロードマップ。"
-          data-btn-text="" data-btn-href="" />
+          data-btn-text="" data-btn-href="" data-anim="kb-down" />
         <img class="hero-photo" src="./photos/jidou_opt.jpg" alt="児童発達支援事業" loading="lazy"
           data-title="児童発達支援事業"
-          data-btn-text="詳しく見る →" data-btn-href="./child.html" />
+          data-btn-text="詳しく見る →" data-btn-href="./child.html" data-anim="kb-right" />
         <img class="hero-photo" src="./photos/hokago_opt.jpg" alt="放課後等デイサービス" loading="lazy"
           data-title="放課後等デイサービス（就学期）|強みとなる「見える力」は、|伴走者と共に育む。"
-          data-btn-text="詳しく見る →" data-btn-href="./afterschool.html" />
+          data-btn-text="詳しく見る →" data-btn-href="./afterschool.html" data-anim="kb-up" />
       </div>
       <div id="hero-white-overlay"></div>
       <div class="slide-overlay">
@@ -513,7 +516,7 @@ document.querySelectorAll('.side-loc-tab').forEach(function(btn) {
 <script>
 /* ---- ヒーロー写真：Ken Burns + クロスフェード ---- */
 (function () {
-  var ANIM_DUR       = '7s ease-out forwards';
+  var ANIM_DUR       = '8s ease-out forwards';
   var SLIDE_INTERVAL = 5000;
 
   function updateTitle(photos, idx) {
@@ -543,10 +546,14 @@ document.querySelectorAll('.side-loc-tab').forEach(function(btn) {
     }, 300);
   }
 
+  function animOf(photo) {
+    return (photo.getAttribute('data-anim') || 'kb') + ' ' + ANIM_DUR;
+  }
+
   function startSlide(photos, overlay) {
     var current = 0;
     photos[current].style.willChange = 'transform';
-    photos[current].style.animation  = 'kb ' + ANIM_DUR;
+    photos[current].style.animation  = animOf(photos[current]);
 
     setInterval(function () {
       var next = (current + 1) % photos.length;
@@ -564,7 +571,7 @@ document.querySelectorAll('.side-loc-tab').forEach(function(btn) {
         photos[next].classList.remove('hp-active');
         photos[next].style.animation = 'none';
         photos[next].classList.add('hp-active');
-        photos[next].style.animation = 'kb ' + ANIM_DUR;
+        photos[next].style.animation = animOf(photos[next]);
         current = next;
         updateTitle(photos, current);
 
