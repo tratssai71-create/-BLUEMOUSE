@@ -635,47 +635,31 @@ document.querySelectorAll('.side-loc-tab').forEach(function(btn) {
   var SIZE  = 40;
   var SPEED = 1.8; /* px/frame */
 
+  /* 初期位置：左上付近からスタート */
+  var x = 60, y = 60;
+
   /* ランダムな初期方向 */
   var angle = Math.PI / 4 + (Math.random() - 0.5) * 0.5;
   var vx = Math.cos(angle) * SPEED;
   var vy = Math.sin(angle) * SPEED;
-
-  /* 初期位置：bounds内に収める */
-  var initB = (function() {
-    if (window.innerWidth > 780) {
-      var r = document.getElementById('box-1').getBoundingClientRect();
-      return { minX: r.left, minY: r.top, maxX: r.right - SIZE, maxY: r.bottom - SIZE };
-    }
-    return { minX: 0, minY: 0, maxX: window.innerWidth - SIZE, maxY: window.innerHeight - SIZE };
-  })();
-  var x = initB.minX + 60;
-  var y = initB.minY + 60;
 
   /* CSSの静的なtop/leftを上書き */
   badge.style.transition = 'none';
   badge.style.top  = y + 'px';
   badge.style.left = x + 'px';
 
-  /* パソコン(>780px)はbox-1内、モバイルはビューポート全体 */
-  function getBounds() {
-    if (window.innerWidth > 780) {
-      var r = document.getElementById('box-1').getBoundingClientRect();
-      return { minX: r.left, minY: r.top, maxX: r.right - SIZE, maxY: r.bottom - SIZE };
-    }
-    return { minX: 0, minY: 0, maxX: window.innerWidth - SIZE, maxY: window.innerHeight - SIZE };
-  }
-
   function bounce() {
-    var b = getBounds();
+    var maxX = window.innerWidth  - SIZE;
+    var maxY = window.innerHeight - SIZE;
 
     x += vx;
     y += vy;
 
     /* 壁に当たったら跳ね返り＋少しランダム */
-    if (x <= b.minX) { x = b.minX; vx =  Math.abs(vx); nudge(); }
-    if (x >= b.maxX) { x = b.maxX; vx = -Math.abs(vx); nudge(); }
-    if (y <= b.minY) { y = b.minY; vy =  Math.abs(vy); nudge(); }
-    if (y >= b.maxY) { y = b.maxY; vy = -Math.abs(vy); nudge(); }
+    if (x <= 0)    { x = 0;    vx =  Math.abs(vx); nudge(); }
+    if (x >= maxX) { x = maxX; vx = -Math.abs(vx); nudge(); }
+    if (y <= 0)    { y = 0;    vy =  Math.abs(vy); nudge(); }
+    if (y >= maxY) { y = maxY; vy = -Math.abs(vy); nudge(); }
 
     badge.style.left = x + 'px';
     badge.style.top  = y + 'px';
