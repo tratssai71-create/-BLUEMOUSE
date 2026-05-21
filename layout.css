@@ -68,7 +68,7 @@ h1, h2, h3, h4, h5, h6 {
   height: auto;
   display: block;
 }
-.bm-logo { display: none; }
+.bm-logo { display: block; padding: 24px 16px 16px; }
 
 
 /* ナビ */
