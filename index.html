@@ -282,6 +282,69 @@
       #box-1 .slide-overlay { padding: 48px 20px 200px; justify-content: flex-end; }
     }
 
+    /* ===== マニフェストセクション（Appleスタイル） ===== */
+    #box-manifesto {
+      background: #1d1d1f;
+      color: #f5f5f7;
+      padding: 140px 48px 120px;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+    }
+    .manifesto-inner {
+      max-width: 780px;
+      margin: 0 auto;
+    }
+    .manifesto-lead {
+      font-family: "Zen Kaku Gothic New", "Noto Sans JP", sans-serif;
+      font-size: clamp(2.2rem, 4.5vw, 4.4rem);
+      font-weight: 700;
+      line-height: 1.2;
+      letter-spacing: -.01em;
+      color: #f5f5f7;
+      margin: 0 0 56px;
+    }
+    .manifesto-h3 {
+      font-family: "Zen Kaku Gothic New", "Noto Sans JP", sans-serif;
+      font-size: clamp(1.3rem, 2.4vw, 2rem);
+      font-weight: 700;
+      color: #f5f5f7;
+      margin: 64px 0 20px;
+      line-height: 1.4;
+    }
+    .manifesto-body {
+      font-family: "Zen Kaku Gothic New", "Noto Sans JP", sans-serif;
+      font-size: clamp(1rem, 1.6vw, 1.2rem);
+      font-weight: 400;
+      line-height: 2;
+      color: rgba(245,245,247,.72);
+      margin: 0 0 24px;
+    }
+    .manifesto-btns {
+      display: flex;
+      gap: 20px;
+      flex-wrap: wrap;
+      margin-top: 88px;
+    }
+    .manifesto-btn {
+      display: inline-block;
+      padding: 18px 40px;
+      border-radius: 999px;
+      font-family: "Zen Maru Gothic", "Noto Sans JP", sans-serif;
+      font-size: 15px;
+      font-weight: 600;
+      text-decoration: none;
+      letter-spacing: .04em;
+      transition: transform .2s, opacity .2s;
+    }
+    .manifesto-btn:hover { transform: translateY(-3px); opacity: .88; }
+    .manifesto-btn--primary  { background: #E6CC5E; color: #1d1d1f; }
+    .manifesto-btn--secondary { background: #3a9095; color: #fff; }
+    @media (max-width: 780px) {
+      #box-manifesto { padding: 80px 28px 100px; }
+      .manifesto-btns { flex-direction: column; gap: 14px; }
+      .manifesto-btn { text-align: center; }
+    }
   </style>
 </head>
 <body>
@@ -359,6 +422,21 @@
         <a class="slide-btn js-slide-btn" href="" style="display:none">詳しく見る →</a>
       </div>
     </div>
+
+    <!-- ===== マニフェストセクション ===== -->
+    <section id="box-manifesto">
+      <div class="manifesto-inner">
+        <h2 class="manifesto-lead">この子の10年後を、<br>本気で考えています。</h2>
+        <p class="manifesto-body">厚生労働省の調査によれば、発達障害者の平均月収は13万円・一般労働者の約4割にとどまり、5年間でほぼ改善されていない。「この子たちは将来、自分の力で生きていけるのか。」その問いに、正面から向き合うことが私たちの出発点です。</p>
+        <h3 class="manifesto-h3">主体性療育から、IT療育へ。<br>経済的自立から逆算した、10年後のロードマップ。</h3>
+        <p class="manifesto-body">まず、主体性という土台を育てる。そして、ITという武器を手にする。</p>
+        <p class="manifesto-body">現場にいる人間なら、分かるはずです。「支援している」と「本当に変えている」は、違う。今いる場所との違いも、ここにあるかもしれません。</p>
+        <div class="manifesto-btns">
+          <a href="./contact.html" class="manifesto-btn manifesto-btn--primary">体験のお申し込みはこちら</a>
+          <a href="https://bouemouse.studio.site" class="manifesto-btn manifesto-btn--secondary" target="_blank" rel="noopener">採用についてはこちら</a>
+        </div>
+      </div>
+    </section>
 
   </main>
 
