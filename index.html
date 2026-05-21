@@ -282,6 +282,32 @@
       #box-1 .slide-overlay { padding: 48px 20px 200px; justify-content: flex-end; }
     }
 
+    /* ===== スクロール誘導矢印 ===== */
+    .scroll-hint {
+      position: absolute;
+      bottom: 32px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 10;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+      cursor: pointer;
+      animation: scroll-hint-pulse 2s ease-in-out infinite;
+    }
+    .scroll-hint span {
+      display: block;
+      width: 10px; height: 10px;
+      border-right: 2px solid rgba(255,255,255,.8);
+      border-bottom: 2px solid rgba(255,255,255,.8);
+      transform: rotate(45deg);
+    }
+    @keyframes scroll-hint-pulse {
+      0%, 100% { opacity: .5; transform: translateX(-50%) translateY(0); }
+      50%       { opacity: 1;  transform: translateX(-50%) translateY(6px); }
+    }
+
     /* ===== マニフェストセクション（Appleスタイル） ===== */
     #box-manifesto {
       background: #1d1d1f;
@@ -417,6 +443,10 @@
           data-btn-text="詳しく見る →" data-btn-href="./afterschool.html" data-anim="kb-up" />
       </div>
       <div id="hero-white-overlay"></div>
+      <!-- スクロール誘導 -->
+      <button class="scroll-hint" onclick="document.getElementById('box-manifesto').scrollIntoView({behavior:'smooth'})" aria-label="下へスクロール">
+        <span></span><span></span>
+      </button>
       <div class="slide-overlay">
         <h2 class="slide-title"><span style="display:block;font-weight:700;margin-bottom:8px">主体性療育から、IT療育へ。</span><span style="display:block;font-size:0.95em;font-weight:500;line-height:1.8">経済的自立から逆算した、</span><span style="display:block;font-size:0.95em;font-weight:500;line-height:1.8">10年間の確かなロードマップ。</span></h2>
         <a class="slide-btn js-slide-btn" href="" style="display:none">詳しく見る →</a>
