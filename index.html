@@ -259,7 +259,7 @@
     .hero-logo-wordmark {
       position: fixed;
       top: 16px;
-      left: 16px;
+      left: calc(25vw + 16px);
       z-index: 500;
       display: block;
       text-decoration: none;
@@ -289,6 +289,9 @@
     }
 
     @media (max-width: 780px) {
+      .hero-logo-wordmark {
+        left: 16px;
+      }
       .hero-logo-wordmark img {
         width: 250px;
       }
