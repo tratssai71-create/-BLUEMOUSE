@@ -737,28 +737,36 @@ document.querySelectorAll('.side-loc-tab').forEach(function(btn) {
   var vx = Math.cos(angle) * SPEED;
   var vy = Math.sin(angle) * SPEED;
 
-  /* ランダムスケール：targetに向かってlerpで滑らかに追従 */
-  var targetScale  = 1;
+  /* ランダムスケール：止まる→急変→止まる のメリハリ型 */
   var displayScale = 1;
-  var lerpSpeed    = 0.04;
+  var targetScale  = 1;
+  var snapSpeed    = 0;   /* 0=固定、大きいほどキレが出る */
+  var idle         = true;
 
-  function scheduleNext() {
-    /* 次の変化まで 100ms〜3000ms のランダム待機 */
-    setTimeout(function () {
-      /* 60%の確率でサイズ変化、40%は何もしない */
-      if (Math.random() < 0.6) {
-        targetScale = 0.3 + Math.random() * 1.8; /* 0.3〜2.1 */
-        lerpSpeed   = 0.01 + Math.random() * 0.09; /* 追従速度もランダム */
-      }
-      scheduleNext();
-    }, 100 + Math.random() * 2900);
+  function nextAction() {
+    if (idle) {
+      /* 静止：400ms〜3500ms 何もしない */
+      setTimeout(function () {
+        idle = false;
+        targetScale = 0.25 + Math.random() * 2.1; /* 0.25〜2.35 */
+        /* キレ感：70%は高速スナップ、30%は即座に */
+        snapSpeed = Math.random() < 0.3 ? 1.0 : 0.25 + Math.random() * 0.35;
+        nextAction();
+      }, 400 + Math.random() * 3100);
+    } else {
+      /* 変化後すぐまた静止へ（50〜300ms後） */
+      setTimeout(function () {
+        idle = true;
+        nextAction();
+      }, 50 + Math.random() * 250);
+    }
   }
 
   badge.style.transition = 'none';
   badge.style.top  = y + 'px';
   badge.style.left = x + 'px';
 
-  scheduleNext();
+  nextAction();
 
   function bounce() {
     var maxX = window.innerWidth  - SIZE;
@@ -771,9 +779,12 @@ document.querySelectorAll('.side-loc-tab').forEach(function(btn) {
     badge.style.left = x + 'px';
     badge.style.top  = y + 'px';
 
-    /* displayScaleをtargetScaleにlerpで近づける */
-    displayScale += (targetScale - displayScale) * lerpSpeed;
-    badge.style.transform = 'scale(' + displayScale.toFixed(4) + ')';
+    /* 静止中は固定、変化中はsnapSpeedで一気に近づく */
+    if (!idle) {
+      displayScale += (targetScale - displayScale) * snapSpeed;
+      if (Math.abs(displayScale - targetScale) < 0.005) displayScale = targetScale;
+    }
+    badge.style.transform = 'scale(' + displayScale.toFixed(3) + ')';
 
     requestAnimationFrame(bounce);
   }
