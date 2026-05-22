@@ -6,7 +6,7 @@
   <title>BLUE MOUSE | 放課後等デイサービス・児童発達支援</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Hachi+Maru+Pop&family=Noto+Sans+JP:wght@400;500;600;700;800;900&family=Zen+Kaku+Gothic+New:wght@400;500;700&family=Zen+Kurenaido&family=Zen+Maru+Gothic:wght@500;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Hachi+Maru+Pop&family=Noto+Sans+JP:wght@400;500;600;700;800;900&family=Shippori+Mincho:wght@400;500;600;700&family=Zen+Kaku+Gothic+New:wght@400;500;700&family=Zen+Kurenaido&family=Zen+Maru+Gothic:wght@500;700&display=swap" rel="stylesheet" />
   <link rel="preload" href="./photos/ichigo2.jpg" as="image" />
   <link rel="stylesheet" href="./layout.css?v=9" />
   <style>
@@ -68,6 +68,11 @@
     .slide-title.is-changing {
       opacity: 0;
       transform: translateY(10px);
+    }
+    .slide-title-sub {
+      font-family: "Shippori Mincho", serif;
+      font-weight: 500;
+      display: block;
     }
 
     /* ===== 白フェードオーバーレイ（写真エリアのみ） ===== */
@@ -456,20 +461,20 @@
       </span>
       <div class="hero-photos">
         <img class="hero-photo hp-active" src="./photos/ichigo2.jpg" alt="BLUE MOUSE"
-          data-title="主体性療育から、IT療育へ<br>経済的自立から逆算した、10年後のロードマップ"
+          data-title="主体性療育から、IT療育へ<br><span class='slide-title-sub'>経済的自立から逆算した、10年後のロードマップ</span>"
           data-btn-text="" data-btn-href="" data-anim="kb-down" />
         <img class="hero-photo" src="./photos/jidou_opt.jpg" alt="児童発達支援事業" loading="lazy"
-          data-title="児童発達支援<br>土台となる「見えない力」は、こどもが自ら育む"
+          data-title="児童発達支援<br><span class='slide-title-sub'>土台となる「見えない力」は、こどもが自ら育む</span>"
           data-btn-text="詳しく見る →" data-btn-href="./child.html" data-anim="kb-right" />
         <img class="hero-photo" src="./photos/hokago_opt.jpg" alt="放課後等デイサービス" loading="lazy"
-          data-title="放課後等デイサービス<br>強みとなる「見える力」は、伴走者と共に育む"
+          data-title="放課後等デイサービス<br><span class='slide-title-sub'>強みとなる「見える力」は、伴走者と共に育む</span>"
           data-btn-text="詳しく見る →" data-btn-href="./afterschool.html" data-anim="kb-up" />
       </div>
       <div id="hero-white-overlay"></div>
       <!-- スクロール誘導 -->
 
       <div class="slide-overlay">
-        <h2 class="slide-title">主体性療育から、IT療育へ<br>経済的自立から逆算した、10年後のロードマップ</h2>
+        <h2 class="slide-title">主体性療育から、IT療育へ<br><span class="slide-title-sub">経済的自立から逆算した、10年後のロードマップ</span></h2>
         <a class="slide-btn js-slide-btn" href="" style="display:none">詳しく見る →</a>
       </div>
     </div>
