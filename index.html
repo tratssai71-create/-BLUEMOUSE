@@ -754,11 +754,15 @@ document.querySelectorAll('.side-loc-tab').forEach(function(btn) {
         nextAction();
       }, 400 + Math.random() * 3100);
     } else {
-      /* 変化後すぐまた静止へ（50〜300ms後） */
+      /* 変化後すぐ基本サイズ(1)に戻して静止 */
       setTimeout(function () {
-        idle = true;
-        nextAction();
-      }, 50 + Math.random() * 250);
+        targetScale = 1;
+        snapSpeed   = 0.18 + Math.random() * 0.15;
+        setTimeout(function () {
+          idle = true;
+          nextAction();
+        }, 150 + Math.random() * 200);
+      }, 60 + Math.random() * 200);
     }
   }
 
