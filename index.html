@@ -755,7 +755,7 @@ document.querySelectorAll('.side-loc-tab').forEach(function(btn) {
   var snapSpeed    = 0;
   var blinking     = false;
 
-  function doBlink() {
+  function doBlink(isDouble) {
     blinking = true;
     /* ① 素早く閉じる（縮む） */
     targetScale = 0.04;
@@ -770,19 +770,20 @@ document.querySelectorAll('.side-loc-tab').forEach(function(btn) {
         snapSpeed   = 0.1;
         setTimeout(function () {
           blinking = false;
-          scheduleNext();
+          /* 二重目の瞬きはscheduleNextを呼ばない（ループが増殖するのを防ぐ） */
+          if (!isDouble) scheduleNext();
         }, 250);
       }, 110 + Math.random() * 60);
     }, 90 + Math.random() * 40);
   }
 
   function scheduleNext() {
-    /* 次の瞬きまで 1400ms〜9000ms 待機 */
+    /* 次の瞬きまで 1400ms〜9000ms 待機（常に1本のループのみ） */
     setTimeout(function () {
-      doBlink();
+      doBlink(false);
       /* 25%の確率で二重瞬き */
       if (Math.random() < 0.25) {
-        setTimeout(doBlink, 280 + Math.random() * 150);
+        setTimeout(function () { doBlink(true); }, 280 + Math.random() * 150);
       }
     }, 1400 + Math.random() * 7600);
   }
