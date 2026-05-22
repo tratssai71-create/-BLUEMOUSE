@@ -433,7 +433,7 @@
     #page-transition {
       position: fixed;
       inset: 0;
-      background: #fef9f3;
+      background: #f5e6d3;
       z-index: 10000;
       display: flex;
       align-items: center;
@@ -896,6 +896,12 @@ document.querySelectorAll('.side-loc-tab').forEach(function(btn) {
 <script>
 (function () {
   var overlay = document.getElementById('page-transition');
+  /* 戻る/進むキャッシュからの復元時にオーバーレイをリセット */
+  window.addEventListener('pageshow', function (e) {
+    if (e.persisted || performance.getEntriesByType('navigation')[0]?.type === 'back_forward') {
+      overlay.classList.remove('is-enter');
+    }
+  });
   document.addEventListener('click', function (e) {
     var btn = e.target.closest('.js-slide-btn');
     if (!btn || !btn.href || btn.href === window.location.href + '#') return;
