@@ -62,6 +62,8 @@
     .slide-overlay { z-index: 1; }
     .slide-title {
       transition: opacity 0.6s ease, transform 0.6s ease;
+      word-break: keep-all;
+      overflow-wrap: break-word;
     }
     .slide-title.is-changing {
       opacity: 0;
@@ -295,7 +297,7 @@
         display: none !important;
       }
       /* スマホ：元のサイズに戻す */
-      #box-1 .slide-title { font-size: clamp(1.575rem, 5.775vw, 2.73rem); }
+      #box-1 .slide-title { font-size: clamp(1.1rem, 5.2vw, 2.73rem); }
       /* 横パディングを狭めて文字が収まるように／テキストを上に */
       #box-1 .slide-overlay { padding: 48px 20px 200px; justify-content: flex-end; }
     }
