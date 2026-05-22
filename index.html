@@ -25,6 +25,8 @@
 
     /* トップページはパディング・min-heightなし */
     .bm-main { padding: 0 !important; min-height: 0 !important; }
+    /* トップページは右サイドバーをモバイルで非表示 */
+    @media (max-width: 780px) { .bm-right { display: none !important; } }
     /* サイドバーロゴ非表示 */
     .bm-left .bm-logo { display: none !important; }
 
