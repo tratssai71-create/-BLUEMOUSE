@@ -766,14 +766,14 @@ document.querySelectorAll('.side-loc-tab').forEach(function(btn) {
   }
 
   function scheduleNext() {
-    /* 次の瞬きまで 700ms〜4500ms 待機（自然な瞬きのリズム） */
+    /* 次の瞬きまで 1400ms〜9000ms 待機 */
     setTimeout(function () {
       doBlink();
       /* 25%の確率で二重瞬き */
       if (Math.random() < 0.25) {
         setTimeout(doBlink, 280 + Math.random() * 150);
       }
-    }, 700 + Math.random() * 3800);
+    }, 1400 + Math.random() * 7600);
   }
 
   badge.style.transition = 'none';
