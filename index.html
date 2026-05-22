@@ -437,10 +437,10 @@
           data-title="主体性療育から、IT療育へ。経済的自立から逆算した、10年後のロードマップ。"
           data-btn-text="" data-btn-href="" data-anim="kb-down" />
         <img class="hero-photo" src="./photos/jidou_opt.jpg" alt="児童発達支援事業" loading="lazy"
-          data-title="児童発達支援|土台となる「見えない力」は、|こどもが自ら育む。"
+          data-title="児童発達支援 土台となる「見えない力」は、こどもが自ら育む。"
           data-btn-text="詳しく見る →" data-btn-href="./child.html" data-anim="kb-right" />
         <img class="hero-photo" src="./photos/hokago_opt.jpg" alt="放課後等デイサービス" loading="lazy"
-          data-title="放課後等デイサービス|強みとなる「見える力」は、|伴走者と共に育む。"
+          data-title="放課後等デイサービス 強みとなる「見える力」は、伴走者と共に育む。"
           data-btn-text="詳しく見る →" data-btn-href="./afterschool.html" data-anim="kb-up" />
       </div>
       <div id="hero-white-overlay"></div>
@@ -623,13 +623,7 @@ document.querySelectorAll('.side-loc-tab').forEach(function(btn) {
     var btnHref  = photos[idx].getAttribute('data-btn-href') || '';
     titleEl.classList.add('is-changing');
     setTimeout(function () {
-      var lines = raw.split('|');
-      titleEl.innerHTML = lines.map(function (l, i) {
-        if (i === 0) {
-          return '<span style="display:block;font-weight:400;margin-bottom:8px">' + l + '</span>';
-        }
-        return '<span style="display:block;font-size:0.95em;font-weight:400;line-height:1.8">' + l + '</span>';
-      }).join('');
+      titleEl.textContent = raw;
       titleEl.classList.remove('is-changing');
       if (btnEl) {
         if (btnText) {
