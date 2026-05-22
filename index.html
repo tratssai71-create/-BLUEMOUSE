@@ -126,24 +126,27 @@
 
     /* box-1 のボタン */
     #box-1 .slide-btn {
-      display: inline-block;
-      padding: 11px 28px;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 14px 36px;
       background: #E6CC5E;
-      color: #fff;
+      color: #1d1d1f;
       font-family: "Zen Maru Gothic", "M PLUS Rounded 1c", sans-serif;
-      font-size: 13px;
-      font-weight: 500;
-      border-radius: 999px;
+      font-size: 15px;
+      font-weight: 700;
+      border-radius: 12px;
       border: none;
       text-decoration: none;
       align-self: flex-start;
       letter-spacing: .06em;
-      transition: background .2s, transform .2s, box-shadow .2s;
+      transition: background .18s, color .18s, transform .18s, box-shadow .18s;
     }
     #box-1 .slide-btn:hover {
-      background: #d4b84a;
-      transform: translateY(-3px);
-      box-shadow: 0 6px 18px rgba(230,204,94,.45);
+      background: #1d1d1f;
+      color: #E6CC5E;
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(0,0,0,.35);
     }
 
     /* box-3 */
