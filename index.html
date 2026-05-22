@@ -724,7 +724,7 @@ document.querySelectorAll('.side-loc-tab').forEach(function(btn) {
 
 
 <script>
-/* ===== 円バッジ：跳ね返りバウンスアニメーション ===== */
+/* ===== 円バッジ：跳ね返りバウンス＋生き物風スケール ===== */
 (function () {
   var badge = document.querySelector('.hero-logo-badge');
   if (!badge) return;
@@ -737,11 +737,18 @@ document.querySelectorAll('.side-loc-tab').forEach(function(btn) {
   var vx = Math.cos(angle) * SPEED;
   var vy = Math.sin(angle) * SPEED;
 
+  /* 不規則スケール用：周期の違う波を3つ重ねる */
+  var waves = [
+    { freq: 1 / 2300, amp: 0.12, phase: Math.random() * Math.PI * 2 },
+    { freq: 1 / 3700, amp: 0.08, phase: Math.random() * Math.PI * 2 },
+    { freq: 1 / 1100, amp: 0.05, phase: Math.random() * Math.PI * 2 }
+  ];
+
   badge.style.transition = 'none';
   badge.style.top  = y + 'px';
   badge.style.left = x + 'px';
 
-  function bounce() {
+  function bounce(ts) {
     var maxX = window.innerWidth  - SIZE;
     var maxY = window.innerHeight - SIZE;
     x += vx; y += vy;
@@ -751,6 +758,13 @@ document.querySelectorAll('.side-loc-tab').forEach(function(btn) {
     if (y >= maxY) { y = maxY; vy = -Math.abs(vy); nudge(); }
     badge.style.left = x + 'px';
     badge.style.top  = y + 'px';
+
+    /* スケールを3波の合成で不規則に変化させる */
+    var s = 1 + waves.reduce(function (sum, w) {
+      return sum + w.amp * Math.sin(2 * Math.PI * w.freq * ts + w.phase);
+    }, 0);
+    badge.style.transform = 'scale(' + s.toFixed(4) + ')';
+
     requestAnimationFrame(bounce);
   }
 
