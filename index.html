@@ -737,11 +737,11 @@ document.querySelectorAll('.side-loc-tab').forEach(function(btn) {
   var vx = Math.cos(angle) * SPEED;
   var vy = Math.sin(angle) * SPEED;
 
-  /* 不規則スケール用：周期の違う波を3つ重ねる */
+  /* 不規則スケール用：周期の違う波を3つ重ねる（大きめ＆速め） */
   var waves = [
-    { freq: 1 / 2300, amp: 0.12, phase: Math.random() * Math.PI * 2 },
-    { freq: 1 / 3700, amp: 0.08, phase: Math.random() * Math.PI * 2 },
-    { freq: 1 / 1100, amp: 0.05, phase: Math.random() * Math.PI * 2 }
+    { freq: 1 / 900,  amp: 0.22, phase: Math.random() * Math.PI * 2 },
+    { freq: 1 / 1700, amp: 0.16, phase: Math.random() * Math.PI * 2 },
+    { freq: 1 / 500,  amp: 0.10, phase: Math.random() * Math.PI * 2 }
   ];
 
   badge.style.transition = 'none';
