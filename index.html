@@ -443,6 +443,32 @@
       .manifesto-btns { flex-direction: column; gap: 14px; }
       .manifesto-btn { text-align: center; }
     }
+    /* ===== ページ遷移オーバーレイ ===== */
+    #page-transition {
+      position: fixed;
+      inset: 0;
+      background: #fef9f3;
+      z-index: 10000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transform: scaleX(0);
+      transform-origin: left center;
+      transition: transform 0.38s cubic-bezier(0.65, 0, 0.35, 1);
+      pointer-events: none;
+    }
+    #page-transition.is-enter {
+      transform: scaleX(1);
+      pointer-events: all;
+    }
+    #page-transition img {
+      width: 220px;
+      opacity: 0;
+      transition: opacity 0.28s ease 0.3s;
+    }
+    #page-transition.is-enter img {
+      opacity: 1;
+    }
   </style>
 </head>
 <body>
@@ -874,6 +900,26 @@ document.querySelectorAll('.side-loc-tab').forEach(function(btn) {
   }
 
   requestAnimationFrame(bounce);
+})();
+</script>
+
+<div id="page-transition">
+  <img src="./logo.png" alt="BLUE MOUSE" />
+</div>
+
+<script>
+(function () {
+  var overlay = document.getElementById('page-transition');
+  document.addEventListener('click', function (e) {
+    var btn = e.target.closest('.js-slide-btn');
+    if (!btn || !btn.href || btn.href === window.location.href + '#') return;
+    e.preventDefault();
+    var href = btn.href;
+    overlay.classList.add('is-enter');
+    setTimeout(function () {
+      window.location.href = href;
+    }, 700);
+  });
 })();
 </script>
 
