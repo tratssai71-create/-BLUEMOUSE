@@ -31,6 +31,7 @@
     /* 各セクション */
     #box-1, #box-2, #box-3 {
       height: 100vh;
+      height: 100dvh;
       position: relative;
       overflow: hidden;
     }
@@ -235,11 +236,11 @@
 
     /* ===== ロゴ姉妹 ===== */
     /* ワードマーク：fixed（黒オーバーレイより上） */
-    /* ロゴ：写真エリア(box-1)左上に絶対配置 */
+    /* ロゴ：画面左上に固定 */
     .hero-logo-wordmark {
-      position: absolute;
+      position: fixed;
       top: 16px;
-      left: 16px;
+      left: calc(25vw + 16px);
       z-index: 10;
       display: block;
       text-decoration: none;
@@ -277,9 +278,10 @@
         display: none !important;
       }
       /* スマホ：元のサイズに戻す */
-      #box-1 .slide-title { font-size: clamp(1.575rem, 5.775vw, 2.73rem); }
-      /* 横パディングを狭めて文字が収まるように／テキストを上に */
-      #box-1 .slide-overlay { padding: 48px 20px 200px; justify-content: flex-end; }
+      #box-1 .slide-title { font-size: clamp(1.3rem, 5vw, 2rem); }
+      #box-1 .slide-overlay { padding: 20px 20px 48px; justify-content: flex-end; }
+      /* モバイルではロゴをサイドバーoffset不要 */
+      .hero-logo-wordmark { left: 16px; top: 12px; }
     }
 
     /* ===== スクロール誘導矢印 ===== */
