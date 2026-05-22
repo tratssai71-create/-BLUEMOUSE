@@ -195,6 +195,7 @@
     #box-1 .slide-btn:hover::after {
       transform: translateX(100%);
     }
+    .btn-arrow { margin-left: 10px; }
     #box-1 .slide-btn:hover {
       background: #1d1d1f;
       color: #E6CC5E;
@@ -508,17 +509,17 @@
           data-btn-text="" data-btn-href="" data-anim="kb-down" />
         <img class="hero-photo" src="./photos/jidou_opt.jpg" alt="児童発達支援事業" loading="lazy"
           data-title="児童発達支援<br><span class='slide-title-sub'>土台となる「見えない力」は、<br>こどもが自ら育む</span>"
-          data-btn-text="詳しく見る →" data-btn-href="./child.html" data-anim="kb-right" />
+          data-btn-text="CLICK <span class='btn-arrow'>→</span>" data-btn-href="./child.html" data-anim="kb-right" />
         <img class="hero-photo" src="./photos/hokago_opt.jpg" alt="放課後等デイサービス" loading="lazy"
           data-title="放課後等<br>デイサービス<br><span class='slide-title-sub'>強みとなる「見える力」は、<br>伴走者と共に育む</span>"
-          data-btn-text="詳しく見る →" data-btn-href="./afterschool.html" data-anim="kb-up" />
+          data-btn-text="CLICK <span class='btn-arrow'>→</span>" data-btn-href="./afterschool.html" data-anim="kb-up" />
       </div>
       <div id="hero-white-overlay"></div>
       <!-- スクロール誘導 -->
 
       <div class="slide-overlay">
         <h2 class="slide-title">主体性療育から<br>IT療育へ<br><span class="slide-title-sub">経済的自立から逆算した、<br>10年後のロードマップ</span></h2>
-        <a class="slide-btn js-slide-btn" href="" style="display:none">詳しく見る →</a>
+        <a class="slide-btn js-slide-btn" href="" style="display:none">CLICK <span class="btn-arrow">→</span></a>
       </div>
     </div>
 
@@ -697,7 +698,7 @@ document.querySelectorAll('.side-loc-tab').forEach(function(btn) {
       titleEl.classList.remove('is-changing');
       if (btnEl) {
         if (btnText) {
-          btnEl.textContent = btnText;
+          btnEl.innerHTML = btnText;
           btnEl.href = btnHref;
           btnEl.style.display = '';
         } else {
