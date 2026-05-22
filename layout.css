@@ -52,7 +52,7 @@ h1, h2, h3, h4, h5, h6 {
   width: 25vw;
   overflow-y: auto;
   scrollbar-width: none;
-  background: #fef9f3;
+  background: #FFFEFB;
   border-right: 2px solid #f0e4d6;
   padding: 28px 16px 40px;
   display: flex;
@@ -302,7 +302,7 @@ h1, h2, h3, h4, h5, h6 {
   width: 25vw;
   overflow-y: auto;
   scrollbar-width: none;
-  background: #fef9f3;
+  background: #FFFEFB;
   border-left: 2px solid #f0e4d6;
   padding: 28px 16px 24px;
   display: flex;
@@ -1046,7 +1046,7 @@ h1, h2, h3, h4, h5, h6 {
   .bm-hamburger span {
     display: block;
     width: 20px; height: 2px;
-    background: #fef9f3;
+    background: #FFFEFB;
     border-radius: 2px;
     transition: transform .28s ease, opacity .2s ease;
   }
