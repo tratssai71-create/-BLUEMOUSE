@@ -6,7 +6,7 @@
   <title>BLUE MOUSE | 放課後等デイサービス・児童発達支援</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Hachi+Maru+Pop&family=Noto+Sans+JP:wght@400;500;600;700;800;900&family=Zen+Kaku+Gothic+New:wght@400;500;700&family=Zen+Maru+Gothic:wght@500;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Hachi+Maru+Pop&family=Noto+Sans+JP:wght@400;500;600;700;800;900&family=Zen+Kaku+Gothic+New:wght@400;500;700&family=Zen+Kurenaido&family=Zen+Maru+Gothic:wght@500;700&display=swap" rel="stylesheet" />
   <link rel="preload" href="./photos/ichigo2.jpg" as="image" />
   <link rel="stylesheet" href="./layout.css?v=9" />
   <style>
@@ -103,8 +103,8 @@
     }
 
     .slide-title {
-      font-family: "Zen Kaku Gothic New", "Noto Sans JP", sans-serif;
-      font-weight: 500;
+      font-family: "Zen Kurenaido", "Noto Sans JP", sans-serif;
+      font-weight: 400;
       color: #fef9f3;
       line-height: 1.25;
       margin: 0 0 16px;
@@ -446,7 +446,7 @@
       <!-- スクロール誘導 -->
 
       <div class="slide-overlay">
-        <h2 class="slide-title"><span style="display:block;font-weight:700;margin-bottom:8px">主体性療育から、IT療育へ。</span><span style="display:block;font-size:0.95em;font-weight:700;line-height:1.8">経済的自立から逆算した、</span><span style="display:block;font-size:0.95em;font-weight:700;line-height:1.8">10年後のロードマップ。</span></h2>
+        <h2 class="slide-title"><span style="display:block;font-weight:400;margin-bottom:8px">主体性療育から、IT療育へ。</span><span style="display:block;font-size:0.95em;font-weight:400;line-height:1.8">経済的自立から逆算した、</span><span style="display:block;font-size:0.95em;font-weight:400;line-height:1.8">10年後のロードマップ。</span></h2>
         <a class="slide-btn js-slide-btn" href="" style="display:none">詳しく見る →</a>
       </div>
     </div>
@@ -625,9 +625,9 @@ document.querySelectorAll('.side-loc-tab').forEach(function(btn) {
       var lines = raw.split('|');
       titleEl.innerHTML = lines.map(function (l, i) {
         if (i === 0) {
-          return '<span style="display:block;font-weight:700;margin-bottom:8px">' + l + '</span>';
+          return '<span style="display:block;font-weight:400;margin-bottom:8px">' + l + '</span>';
         }
-        return '<span style="display:block;font-size:0.95em;font-weight:700;line-height:1.8">' + l + '</span>';
+        return '<span style="display:block;font-size:0.95em;font-weight:400;line-height:1.8">' + l + '</span>';
       }).join('');
       titleEl.classList.remove('is-changing');
       if (btnEl) {
