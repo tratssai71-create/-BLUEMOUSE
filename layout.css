@@ -89,10 +89,7 @@ h1, h2, h3, h4, h5, h6 {
 }
 .bm-nav__item:hover { color: #33251a; background: rgba(0,0,0,.03); }
 .bm-nav__item.is-active {
-  border-left-color: #F4D13F;
-  color: #33251a;
   font-weight: 700;
-  background: rgba(244,209,63,.1);
 }
 
 /* グループヘッダー（リンク＋矢印ボタン） */

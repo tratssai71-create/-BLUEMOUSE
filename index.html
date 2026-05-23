@@ -741,6 +741,7 @@ document.querySelectorAll('.side-loc-tab').forEach(function(btn) {
     var current = 0;
     photos[current].style.willChange = 'transform';
     photos[current].style.animation  = animOf(photos[current]);
+    updateTitle(photos, current);
 
     setInterval(function () {
       var next = (current + 1) % photos.length;
