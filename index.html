@@ -933,7 +933,7 @@ document.querySelectorAll('.side-loc-tab').forEach(function(btn) {
 </script>
 
 <script>
-/* 白エリアで上スワイプしたらトップに戻る */
+/* 白エリアで上スワイプしたらトップに戻る（iOS rubber-band風） */
 (function () {
   var startY = 0;
   document.addEventListener('touchstart', function (e) {
@@ -942,8 +942,8 @@ document.querySelectorAll('.side-loc-tab').forEach(function(btn) {
   document.addEventListener('touchend', function (e) {
     if (window.scrollY === 0) return;
     var deltaY = e.changedTouches[0].clientY - startY;
-    if (deltaY > 20) {
-      window.scrollTo({ top: 0, behavior: 'smooth' });
+    if (deltaY > 5) {
+      window.scrollTo({ top: 0, behavior: 'instant' });
     }
   }, { passive: true });
 })();
