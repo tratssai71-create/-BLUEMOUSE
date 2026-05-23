@@ -326,8 +326,7 @@
     }
 
     @media (max-width: 780px) {
-      html { height: 100svh; overflow: hidden; }
-      body { height: 100svh; overflow-y: scroll; background: #FFFEFB; }
+      body { max-height: calc(100svh + 1px); overflow-y: auto; background: #FFFEFB; }
       .bm-main { min-height: 0 !important; }
       .bm-layout { min-height: 0 !important; }
       #box-1 { height: 100vh; height: 100svh; }
