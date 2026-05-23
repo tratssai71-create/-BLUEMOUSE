@@ -653,16 +653,23 @@
       var prev = cur;
       cur = (cur + 1) % badges.length;
       if (prev >= 0) {
-        badges[prev].style.opacity    = '0';
-        badges[prev].style.transform  = 'scale(0)';
+        /* まず前のバッジを瞬きさせて消す */
+        badges[prev].style.opacity   = '0';
+        badges[prev].style.transform = 'scale(0)';
+        /* 消え切ったあとに次の文字を出す */
+        setTimeout(function () {
+          badges[cur].style.opacity   = '1';
+          badges[cur].style.transform = 'scale(1)';
+        }, 220);
+      } else {
+        badges[cur].style.opacity   = '1';
+        badges[cur].style.transform = 'scale(1)';
       }
-      badges[cur].style.opacity   = '1';
-      badges[cur].style.transform = 'scale(1)';
     }
 
     setTimeout(function () {
       next();
-      setInterval(next, 2000);
+      setInterval(next, 2200);
     }, 300);
   }
 
