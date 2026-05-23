@@ -615,10 +615,11 @@
 <script>
 /* ===== ヒーローバッジアニメーション（独立スクリプト） ===== */
 (function () {
+  /* U・E は重複しないよう1枚ずつ使う */
   var FILES = [
-    './badges/badge-B.png',  './badges/badge-L.png',  './badges/badge-U3.png',
-    './badges/badge-E4.png', './badges/badge-M.png',  './badges/badge-O.png',
-    './badges/badge-U7.png', './badges/badge-S.png',  './badges/badge-E9.png',
+    './badges/badge-B.png', './badges/badge-L.png', './badges/badge-U3.png',
+    './badges/badge-E4.png','./badges/badge-M.png', './badges/badge-O.png',
+    './badges/badge-S.png', './badges/badge-U7.png','./badges/badge-E9.png',
   ];
   var SIZE = 40;
 
@@ -626,16 +627,13 @@
     var link = document.querySelector('.hero-logo-badge');
     if (!link) return;
 
-    /* ロゴ画像を非表示 */
     var logoImg = link.querySelector('img');
     if (logoImg) logoImg.style.display = 'none';
 
-    /* バッジ用ラッパー */
     var wrap = document.createElement('div');
     wrap.style.cssText = 'position:relative;display:block;width:' + SIZE + 'px;height:' + SIZE + 'px;flex-shrink:0;pointer-events:none;';
     link.appendChild(wrap);
 
-    /* バッジ画像を生成 */
     var badges = FILES.map(function (src) {
       var img = document.createElement('img');
       img.src = src;
@@ -649,23 +647,42 @@
       return img;
     });
 
+    /* シャッフルした順番リストを作り、同じ文字が連続しないようにする */
+    function makeQueue() {
+      var arr = badges.map(function(_, i){ return i; });
+      for (var i = arr.length - 1; i > 0; i--) {
+        var j = Math.floor(Math.random() * (i + 1));
+        var tmp = arr[i]; arr[i] = arr[j]; arr[j] = tmp;
+      }
+      return arr;
+    }
+
+    var queue = [];
     var cur = -1;
+
+    function pickNext() {
+      if (queue.length === 0) {
+        queue = makeQueue();
+        /* 先頭が現在と同じなら末尾へ回す */
+        if (queue[0] === cur) queue.push(queue.shift());
+      }
+      return queue.shift();
+    }
 
     function next() {
       var prev = cur;
-      cur = (cur + 1) % badges.length;
+      var nextIdx = pickNext();
+      cur = nextIdx;
       if (prev >= 0) {
-        /* まず前のバッジを瞬きさせて消す */
         badges[prev].style.opacity   = '0';
         badges[prev].style.transform = 'scale(0)';
-        /* 消え切ったあとに次の文字を出す */
         setTimeout(function () {
-          badges[cur].style.opacity   = '1';
-          badges[cur].style.transform = 'scale(1)';
+          badges[nextIdx].style.opacity   = '1';
+          badges[nextIdx].style.transform = 'scale(1)';
         }, 220);
       } else {
-        badges[cur].style.opacity   = '1';
-        badges[cur].style.transform = 'scale(1)';
+        badges[nextIdx].style.opacity   = '1';
+        badges[nextIdx].style.transform = 'scale(1)';
       }
     }
 
