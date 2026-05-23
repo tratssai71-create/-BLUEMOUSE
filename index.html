@@ -803,7 +803,7 @@ document.querySelectorAll('.side-loc-tab').forEach(function(btn) {
     box1.addEventListener('touchend', function (e) {
       if (!swiping) return;
       var dx = e.changedTouches[0].clientX - touchStartX;
-      if (dx < -40) {
+      if (dx > 40) {
         clearInterval(timer);
         goTo((current + 1) % photos.length);
         timer = setInterval(function () { goTo((current + 1) % photos.length); }, SLIDE_INTERVAL);
