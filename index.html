@@ -807,6 +807,12 @@ document.querySelectorAll('.side-loc-tab').forEach(function(btn) {
         clearInterval(timer);
         goTo((current + 1) % photos.length);
         timer = setInterval(function () { goTo((current + 1) % photos.length); }, SLIDE_INTERVAL);
+        /* スワイプ後のクリック誤発火を防ぐ */
+        box1.addEventListener('click', function stopClick(ev) {
+          ev.stopPropagation();
+          ev.preventDefault();
+          box1.removeEventListener('click', stopClick, true);
+        }, { capture: true, once: true });
       }
       swiping = false;
     }, { passive: true });
