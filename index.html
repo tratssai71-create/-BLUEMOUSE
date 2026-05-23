@@ -934,6 +934,19 @@ document.querySelectorAll('.side-loc-tab').forEach(function(btn) {
 })();
 </script>
 
+<script>
+/* スクロールが完全に止まったらトップへ戻す */
+(function () {
+  document.addEventListener('scrollend', function () {
+    if (window.scrollY > 0) window.scrollTo({ top: 0, behavior: 'instant' });
+  });
+  document.addEventListener('touchend', function () {
+    if (window.scrollY > 0) setTimeout(function () {
+      window.scrollTo({ top: 0, behavior: 'instant' });
+    }, 80);
+  }, { passive: true });
+})();
+</script>
 
 </body>
 </html>
