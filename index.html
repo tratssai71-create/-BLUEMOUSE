@@ -326,7 +326,7 @@
     }
 
     @media (max-width: 780px) {
-      body { max-height: calc(100svh + 16px); overflow-y: auto; background: #FFFEFB; }
+      body { max-height: calc(100svh + env(safe-area-inset-top, 16px)); overflow-y: auto; background: #FFFEFB; }
       #box-1 { height: 100vh; height: 100svh; }
       #box-1 .slide-overlay { padding-bottom: max(60px, calc(env(safe-area-inset-bottom) + 40px)); }
       .hero-logo-wordmark {
