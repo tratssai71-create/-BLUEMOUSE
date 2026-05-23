@@ -948,7 +948,7 @@ document.querySelectorAll('.side-loc-tab').forEach(function(btn) {
         snapping = true;
         window.scrollTo({ top: 0, behavior: 'smooth' });
         setTimeout(function () { snapping = false; }, 800);
-      }, 60);
+      }, 0);
     } else {
       clearTimeout(timer);
     }
