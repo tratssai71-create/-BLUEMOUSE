@@ -1064,9 +1064,9 @@ h1, h2, h3, h4, h5, h6 {
   /* オーバーレイ（ドロワー外クリックで閉じる） */
   .bm-drawer-overlay {
     position: fixed;
-    inset: 56px 0 0 0;
-    background: rgba(0,0,0,.35);
-    z-index: 998;
+    inset: 0;
+    background: rgba(0,0,0,.45);
+    z-index: 997;
     opacity: 0;
     pointer-events: none;
     transition: opacity .3s;
