@@ -72,6 +72,7 @@
     .hero-photo.hp-active { opacity: 1; }
     .hero-photo--top { object-position: center top !important; }
     .hero-photo--bottom { object-position: center bottom !important; }
+    .hero-photo--ichigo { object-position: center 20% !important; }
     .slide-overlay { z-index: 1; }
     .slide-title {
       transition: opacity 0.6s ease, transform 0.6s ease;
@@ -111,7 +112,7 @@
       display: flex;
       flex-direction: column;
       justify-content: flex-end;
-      padding: 48px 44px 100px 32px;
+      padding: 48px 44px 140px 32px;
     }
     #box-1 .slide-overlay::before {
       content: '';
@@ -347,7 +348,7 @@
       /* スマホ：元のサイズに戻す */
       #box-1 .slide-title { font-size: clamp(1.8rem, 7.0vw, 3.5rem); letter-spacing: 0; word-break: normal; }
       /* 横パディングを狭めて文字が収まるように／テキストを上に */
-      #box-1 .slide-overlay { padding: 48px 20px 52px; justify-content: flex-end; }
+      #box-1 .slide-overlay { padding: 48px 20px 80px; justify-content: flex-end; }
       /* スマホ：ボタンを少し大きく */
       #box-1 .slide-btn { font-size: 0.95rem; padding: 10px 28px; }
     }
@@ -526,7 +527,7 @@
         <img src="./logo.png" alt="BLUE MOUSE" />
       </span>
       <div class="hero-photos">
-        <img class="hero-photo hero-photo--bottom hp-active" src="./photos/ichigo2.jpg" alt="BLUE MOUSE"
+        <img class="hero-photo hp-active" src="./photos/ichigo2.jpg" alt="BLUE MOUSE"
           data-title="主体性療育から<br>IT療育へ<br><span class='slide-title-sub'>経済的自立から逆算した、<br>10年後のロードマップ</span>"
           data-btn-text="詳細はこちら <span class='btn-arrow'>›</span>" data-btn-href="./philosophy.html" data-anim="kb-down" />
         <img class="hero-photo" src="./photos/riku.jpg" alt="児童発達支援事業" loading="lazy"
@@ -535,7 +536,7 @@
         <img class="hero-photo" src="./photos/hokago_opt.jpg" alt="放課後等デイサービス" loading="lazy"
           data-title="放課後等<br>デイサービス<br><span class='slide-title-sub'>強みとなる「見える力」は、<br>伴走者と共に育む</span>"
           data-btn-text="詳細はこちら <span class='btn-arrow'>›</span>" data-btn-href="./afterschool.html" data-anim="kb-up" />
-        <img class="hero-photo hero-photo--top" src="./photos/recruit.jpg" alt="採用ページ" loading="lazy"
+        <img class="hero-photo" src="./photos/recruit.jpg" alt="採用ページ" loading="lazy"
           data-title="あなたの力が<br>ここで活きる<br><span class='slide-title-sub'>安心し、やりがいを感じて<br>働けるよう</span>"
           data-btn-text="採用ページを見る <span class='btn-arrow'>›</span>" data-btn-href="https://bouemouse.studio.site" data-anim="kb-right" />
       </div>
