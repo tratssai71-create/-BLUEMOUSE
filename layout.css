@@ -947,16 +947,17 @@ h1, h2, h3, h4, h5, h6 {
     z-index: 998;
     transform: translateX(100%);
     transition: transform .3s cubic-bezier(.4,0,.2,1);
-    background: linear-gradient(to bottom, transparent 56px, #FFFEFB 56px);
-    box-shadow: -6px 0 24px rgba(0,0,0,.13), 0 6px 24px rgba(0,0,0,.10);
+    background: #FFFEFB;
+    box-shadow: -8px 0 32px rgba(0,0,0,.18);
     overflow-y: auto;
-    padding-top: 56px;
+    padding-top: 64px;
   }
   .bm-left.is-open {
     transform: translateX(0);
   }
-  body.drawer-open .bm-mobile-header {
-    background: transparent;
+  /* ドロワーが開いた時はXボタンを暗色に */
+  body.drawer-open .bm-hamburger span {
+    background: #33251a;
   }
   /* ドロワーが開いたときにナビアイテムをスタガーで出現 */
   .bm-left.is-open .bm-nav > *:nth-child(1)  { animation: nav-item-in .32s ease both .08s; }
