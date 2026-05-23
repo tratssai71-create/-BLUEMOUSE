@@ -327,10 +327,10 @@
     }
 
     @media (max-width: 780px) {
-      body { background: #FFFEFB; }
+      body { background: #FFFEFB; overscroll-behavior-x: none; }
       .bm-main { min-height: 0 !important; }
       .bm-layout { min-height: 0 !important; }
-      #box-1 { height: 100vh; height: 100svh; }
+      #box-1 { height: 100vh; height: 100svh; touch-action: pan-y; overscroll-behavior-x: none; }
       #box-1 .slide-overlay { padding-bottom: max(60px, calc(env(safe-area-inset-bottom) + 40px)); }
       .hero-logo-wordmark {
         left: 16px;
