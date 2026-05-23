@@ -78,9 +78,10 @@ h1, h2, h3, h4, h5, h6 {
   display: block;
   padding: 11px 12px 11px 16px;
   border-radius: 4px;
-  font-size: 16.2px;
+  font-family: "Zen Kaku Gothic New", sans-serif;
   font-size: 14.2px;
-  font-weight: 500;
+  font-weight: 400;
+  letter-spacing: .18em;
   color: #7a6355;
   text-decoration: none;
   border-left: 2px solid transparent;
@@ -112,10 +113,10 @@ h1, h2, h3, h4, h5, h6 {
 .bm-nav__group-link {
   flex: 1;
   padding: 11px 4px 11px 14px;
-  font-size: 16.2px;
-  font-family: var(--font-body);
+  font-family: "Zen Kaku Gothic New", sans-serif;
   font-size: 14.2px;
-  font-weight: 500;
+  font-weight: 400;
+  letter-spacing: .18em;
   color: #7a6355;
   text-decoration: none;
   transition: color .15s;
