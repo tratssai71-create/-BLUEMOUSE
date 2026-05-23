@@ -84,8 +84,7 @@ h1, h2, h3, h4, h5, h6 {
   letter-spacing: .18em;
   color: #7a6355;
   text-decoration: none;
-  border-left: 2px solid transparent;
-  transition: color .15s, border-color .15s, background .15s;
+  transition: color .15s, background .15s;
 }
 .bm-nav__item:hover { color: #33251a; background: rgba(0,0,0,.03); }
 .bm-nav__item.is-active {
