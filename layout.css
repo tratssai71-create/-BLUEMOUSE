@@ -953,6 +953,10 @@ h1, h2, h3, h4, h5, h6 {
   .bm-left.is-open {
     transform: translateX(0);
   }
+  body.drawer-open .bm-mobile-header {
+    background: #FFFEFB;
+    box-shadow: 0 2px 12px rgba(0,0,0,.10);
+  }
   /* ドロワーが開いたときにナビアイテムをスタガーで出現 */
   .bm-left.is-open .bm-nav > *:nth-child(1)  { animation: nav-item-in .32s ease both .08s; }
   .bm-left.is-open .bm-nav > *:nth-child(2)  { animation: nav-item-in .32s ease both .14s; }
@@ -973,8 +977,9 @@ h1, h2, h3, h4, h5, h6 {
     position: fixed;
     top: 0; left: 0; right: 0;
     height: 52px;
-    background: #FFFEFB;
+    background: transparent;
     border-bottom: none;
+    transition: background .25s ease, box-shadow .25s ease;
     align-items: center;
     justify-content: space-between;
     padding: 0 8px 0 8px;

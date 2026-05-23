@@ -278,6 +278,7 @@
       btn.setAttribute('aria-label', 'メニューを閉じる');
       overlay.classList.add('is-visible');
       document.body.style.overflow = 'hidden';
+      document.body.classList.add('drawer-open');
     }
     function closeDrawer() {
       drawer.classList.remove('is-open');
@@ -285,6 +286,7 @@
       btn.setAttribute('aria-label', 'メニューを開く');
       overlay.classList.remove('is-visible');
       document.body.style.overflow = '';
+      document.body.classList.remove('drawer-open');
     }
 
     btn.addEventListener('click', function () {
