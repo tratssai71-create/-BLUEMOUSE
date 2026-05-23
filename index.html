@@ -326,7 +326,7 @@
     }
 
     @media (max-width: 780px) {
-      body { max-height: calc(100svh + 72px); overflow-y: auto; }
+      body { max-height: calc(100svh + 32px); overflow-y: auto; background: #FFFEFB; }
       #box-1 { height: 100vh; height: 100svh; }
       #box-1 .slide-overlay { padding-bottom: max(60px, calc(env(safe-area-inset-bottom) + 40px)); }
       .hero-logo-wordmark {
@@ -932,30 +932,6 @@ document.querySelectorAll('.side-loc-tab').forEach(function(btn) {
 })();
 </script>
 
-
-<script>
-/* ヒーロー下の白エリアに入ったら自動でトップにスナップバック */
-(function () {
-  var box1 = document.getElementById('box-1');
-  var snapping = false;
-  var timer = null;
-
-  window.addEventListener('scroll', function () {
-    if (snapping) return;
-    var threshold = box1 ? box1.offsetHeight * 0.12 : window.innerHeight * 0.12;
-    if (window.scrollY > threshold) {
-      clearTimeout(timer);
-      timer = setTimeout(function () {
-        snapping = true;
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-        setTimeout(function () { snapping = false; }, 800);
-      }, 0);
-    } else {
-      clearTimeout(timer);
-    }
-  }, { passive: true });
-})();
-</script>
 
 </body>
 </html>
