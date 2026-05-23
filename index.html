@@ -329,7 +329,7 @@
       /* スマホはスクロール禁止・実表示領域で固定 */
       html, body { height: 100%; overflow: hidden; }
       #box-1 { height: 100vh; height: 100svh; }
-      #box-1 .slide-overlay { padding-bottom: max(20px, env(safe-area-inset-bottom)); }
+      #box-1 .slide-overlay { padding-bottom: max(60px, calc(env(safe-area-inset-bottom) + 40px)); }
       .hero-logo-wordmark {
         left: 16px;
       }
@@ -625,32 +625,12 @@
       return img;
     });
 
-    /* シャッフルした順番リストを作り、同じ文字が連続しないようにする */
-    function makeQueue() {
-      var arr = badges.map(function(_, i){ return i; });
-      for (var i = arr.length - 1; i > 0; i--) {
-        var j = Math.floor(Math.random() * (i + 1));
-        var tmp = arr[i]; arr[i] = arr[j]; arr[j] = tmp;
-      }
-      return arr;
-    }
-
-    var queue = [];
     var cur = -1;
-
-    function pickNext() {
-      if (queue.length === 0) {
-        queue = makeQueue();
-        /* 先頭が現在と同じなら末尾へ回す */
-        if (queue[0] === cur) queue.push(queue.shift());
-      }
-      return queue.shift();
-    }
 
     function next() {
       var prev = cur;
-      var nextIdx = pickNext();
-      cur = nextIdx;
+      cur = (cur + 1) % badges.length;
+      var nextIdx = cur;
       if (prev >= 0) {
         badges[prev].style.opacity   = '0';
         badges[prev].style.transform = 'scale(0)';
