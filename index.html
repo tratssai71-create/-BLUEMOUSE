@@ -326,6 +326,9 @@
     }
 
     @media (max-width: 780px) {
+      /* スマホはスクロール禁止・100vhで固定 */
+      html, body { height: 100%; overflow: hidden; }
+      #box-1 { height: 100vh; }
       .hero-logo-wordmark {
         left: 16px;
       }
