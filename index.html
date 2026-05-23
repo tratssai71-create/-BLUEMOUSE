@@ -930,5 +930,30 @@ document.querySelectorAll('.side-loc-tab').forEach(function(btn) {
 })();
 </script>
 
+
+<script>
+/* ヒーロー下の白エリアに入ったら自動でトップにスナップバック */
+(function () {
+  var box1 = document.getElementById('box-1');
+  var snapping = false;
+  var timer = null;
+
+  window.addEventListener('scroll', function () {
+    if (snapping) return;
+    var threshold = box1 ? box1.offsetHeight * 0.12 : window.innerHeight * 0.12;
+    if (window.scrollY > threshold) {
+      clearTimeout(timer);
+      timer = setTimeout(function () {
+        snapping = true;
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+        setTimeout(function () { snapping = false; }, 800);
+      }, 250);
+    } else {
+      clearTimeout(timer);
+    }
+  }, { passive: true });
+})();
+</script>
+
 </body>
 </html>
