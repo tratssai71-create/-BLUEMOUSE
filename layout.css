@@ -938,24 +938,24 @@ h1, h2, h3, h4, h5, h6 {
   /* 左サイドバー → 右から出るドロワーに変換 */
   .bm-left {
     position: fixed;
-    top: 56px;
-    left: auto; /* デスクトップの left:0 をリセット */
+    top: 0;
+    left: auto;
     right: 0;
     bottom: auto;
     width: 80%; max-width: 300px;
-    height: calc(100vh - 56px);
-    z-index: 999;
+    height: 100vh;
+    z-index: 998;
     transform: translateX(100%);
     transition: transform .3s cubic-bezier(.4,0,.2,1);
     box-shadow: -4px 0 24px rgba(0,0,0,.12);
     overflow-y: auto;
+    padding-top: 64px;
   }
   .bm-left.is-open {
     transform: translateX(0);
   }
   body.drawer-open .bm-mobile-header {
     background: #FFFEFB;
-    box-shadow: 0 2px 12px rgba(0,0,0,.10);
   }
   /* ドロワーが開いたときにナビアイテムをスタガーで出現 */
   .bm-left.is-open .bm-nav > *:nth-child(1)  { animation: nav-item-in .32s ease both .08s; }
