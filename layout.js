@@ -253,7 +253,7 @@
 
     // ヘッダー生成
     var header = document.createElement('header');
-    header.className = 'bm-mobile-header';
+    header.className = 'bm-mobile-header' + (isIndex ? ' bm-mobile-header--hero' : '');
     header.innerHTML =
       '<a class="bm-mobile-header__logo" href="' + logoHref + '">' +
         '<img src="' + logoSrc + '" alt="BLUE MOUSE" />' +

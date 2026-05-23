@@ -1050,9 +1050,12 @@ h1, h2, h3, h4, h5, h6 {
   .bm-hamburger span {
     display: block;
     width: 20px; height: 2px;
-    background: #FFFEFB;
+    background: #33251a;
     border-radius: 2px;
     transition: transform .28s ease, opacity .2s ease;
+  }
+  .bm-mobile-header--hero .bm-hamburger span {
+    background: #FFFEFB;
   }
   .bm-hamburger.is-open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
   .bm-hamburger.is-open span:nth-child(2) { opacity: 0; transform: scaleX(0); }
