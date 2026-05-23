@@ -933,12 +933,19 @@ document.querySelectorAll('.side-loc-tab').forEach(function(btn) {
 </script>
 
 <script>
-/* 白エリアに入って指を離したら即座にトップへ（iOS rubber-band風） */
+/* 白エリアに入って指を離したら完全にトップへ（iOS momentum対策） */
 (function () {
   document.addEventListener('touchend', function () {
-    if (window.scrollY > 0) {
-      window.scrollTo({ top: 0, behavior: 'instant' });
+    if (window.scrollY === 0) return;
+    var tries = 0;
+    function snap() {
+      if (window.scrollY > 0 && tries < 30) {
+        window.scrollTo({ top: 0, behavior: 'instant' });
+        tries++;
+        requestAnimationFrame(snap);
+      }
     }
+    requestAnimationFrame(snap);
   }, { passive: true });
 })();
 </script>
