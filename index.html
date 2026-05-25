@@ -72,7 +72,7 @@
     }
     .hero-photo.hp-active { opacity: 1; }
     .hero-photo--top    { object-position: center top !important; }
-    .hero-photo--center { object-position: center 35% !important; }
+    .hero-photo--center { object-position: 65% 35% !important; }
     .hero-photo--bottom { object-position: center 60% !important; }
     .hero-photo--ichigo { object-position: center 20% !important; }
     .hero-photo--contain { object-fit: contain !important; object-position: center center !important; background: #c8cfc5; }
@@ -703,12 +703,20 @@
       timer = setInterval(next, 2200);
     }, 300);
 
-    /* タップで次の文字へ（ランダムサイズ） */
+    /* タップ：一回瞬きしてから次の文字へ（ランダムサイズ） */
     document.addEventListener('click', function () {
       clearTimeout(timer);
       clearInterval(timer);
-      next(true); /* true = ランダムサイズ */
-      timer = setInterval(next, 2200);
+      /* 今の文字を瞬き（フェードアウト） */
+      if (cur >= 0) {
+        badges[cur].style.opacity   = '0';
+        badges[cur].style.transform = 'scale(0.4)';
+      }
+      /* 瞬き後に次の文字を表示 */
+      setTimeout(function () {
+        next(true);
+        timer = setInterval(next, 2200);
+      }, 220);
     });
   }
 
