@@ -1057,6 +1057,7 @@ h1, h2, h3, h4, h5, h6 {
   .bm-mobile-header--hero .bm-hamburger span {
     background: #fff;
   }
+  .bm-hamburger.is-open span { background: #fff !important; }
   .bm-hamburger.is-open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
   .bm-hamburger.is-open span:nth-child(2) { opacity: 0; transform: scaleX(0); }
   .bm-hamburger.is-open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
