@@ -83,48 +83,77 @@
     .af-pillars {
       display: flex;
       flex-direction: column;
-      gap: 0;
+      gap: 20px;
     }
     .af-pillar {
-      display: flex;
-      gap: 24px;
-      padding: 28px 0;
-      border-bottom: 1px solid rgba(0,0,0,.07);
-      align-items: flex-start;
+      position: relative;
+      overflow: hidden;
+      border-radius: 14px;
+      padding: 38px 40px 36px;
     }
-    .af-pillar:last-child { border-bottom: none; }
-    .af-pillar__num {
+    .af-pillar--01 { background: #fef5ee; }
+    .af-pillar--02 { background: #f0f6fa; }
+    .af-pillar--03 { background: #f1f4f0; }
+    .af-pillar__wm {
+      position: absolute;
+      right: 10px;
+      bottom: -22px;
       font-family: "Inter", sans-serif;
-      font-size: 32px;
-      font-weight: 300;
-      color: rgba(0,0,0,.12);
+      font-size: clamp(110px, 15vw, 170px);
+      font-weight: 900;
+      letter-spacing: -.02em;
       line-height: 1;
-      flex-shrink: 0;
-      width: 40px;
-      padding-top: 4px;
+      pointer-events: none;
+      user-select: none;
     }
-    .af-pillar__body {}
+    .af-pillar--01 .af-pillar__wm { color: rgba(254,140,104,.1); }
+    .af-pillar--02 .af-pillar__wm { color: rgba(94,193,198,.1); }
+    .af-pillar--03 .af-pillar__wm { color: rgba(80,140,80,.1); }
+    .af-pillar__inner {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 36px;
+      align-items: start;
+      position: relative;
+      z-index: 1;
+    }
+    .af-pillar__left {}
+    .af-pillar__right {}
     .af-pillar__tag {
       font-family: "Inter", sans-serif;
       font-size: 9px;
-      letter-spacing: .16em;
+      letter-spacing: .2em;
       text-transform: uppercase;
       color: #FE8C68;
+      display: inline-block;
+      margin-bottom: 10px;
+      background: rgba(254,140,104,.12);
+      padding: 4px 10px;
+      border-radius: 20px;
+    }
+    .af-pillar--02 .af-pillar__tag { color: #4796b5; background: rgba(71,150,181,.12); }
+    .af-pillar--03 .af-pillar__tag { color: #508c50; background: rgba(80,140,80,.12); }
+    .af-pillar__num {
+      font-family: "Inter", sans-serif;
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: .14em;
+      color: rgba(0,0,0,.22);
       display: block;
-      margin-bottom: 6px;
+      margin-bottom: 8px;
     }
     .af-pillar__title {
       font-family: "Noto Sans JP", sans-serif;
-      font-size: 14px;
-      font-weight: 500;
-      color: #2a2a2a;
-      margin: 0 0 8px;
+      font-size: clamp(1rem, 1.6vw, 1.2rem);
+      font-weight: 700;
+      color: #1e1e1e;
+      margin: 0 0 14px;
       line-height: 1.5;
     }
     .af-pillar__text {
       font-size: 13px;
-      color: #666;
-      line-height: 1.9;
+      color: #555;
+      line-height: 2;
       margin: 0;
     }
 
@@ -486,6 +515,9 @@
       .af-row { grid-template-columns: 1fr; gap: 24px; }
       .af-section { padding: 36px 0; }
       .af-philosophy { margin: 0 -16px; padding: 48px 16px 56px; }
+      .af-pillar { padding: 28px 22px 26px; }
+      .af-pillar__inner { grid-template-columns: 1fr; gap: 20px; }
+      .af-pillar__wm { font-size: 100px; }
     }
 
     /* ===== 料金チャート ===== */
@@ -690,64 +722,79 @@
       <div class="af-pillars">
 
         <!-- 01 自立という現実 -->
-        <div class="af-pillar anim-up">
-          <div class="af-pillar__num">01</div>
-          <div class="af-pillar__body">
-            <span class="af-pillar__tag">Reality</span>
-            <h2 class="af-pillar__title">「自立」という、シビアな現実。</h2>
-            <p class="af-pillar__text">障害のある成人とそうでない成人では、収入に大きな差が生まれやすいという現実があります。療育に通っているだけで、その差が縮まるわけではない。BLUE MOUSEは、その厳しい現実と向き合うことから始まりました。</p>
-            <div class="af-stat">
-              <div class="af-stat__num">50<span style="font-size:18px;font-weight:400">%</span></div>
-              <p class="af-stat__text"><strong style="color:#1a1a1a;display:block;margin-bottom:3px;">特性のある成人との収入格差</strong>障害のある成人は、そうでない成人と比べて統計上およそ50%の収入差が生じるとされています。この数字を知ることが、BLUE MOUSEの出発点です。</p>
+        <div class="af-pillar af-pillar--01 anim-up">
+          <span class="af-pillar__wm">01</span>
+          <div class="af-pillar__inner">
+            <div class="af-pillar__left">
+              <span class="af-pillar__num">— 01</span>
+              <span class="af-pillar__tag">Reality</span>
+              <h2 class="af-pillar__title">「自立」という、<br>シビアな現実。</h2>
+              <p class="af-pillar__text">障害のある成人とそうでない成人では、収入に大きな差が生まれやすいという現実があります。療育に通っているだけで、その差が縮まるわけではない。BLUE MOUSEは、その厳しい現実と向き合うことから始まりました。</p>
+            </div>
+            <div class="af-pillar__right">
+              <div class="af-stat">
+                <div class="af-stat__num">50<span style="font-size:18px;font-weight:400">%</span></div>
+                <p class="af-stat__text"><strong style="color:#1a1a1a;display:block;margin-bottom:3px;">特性のある成人との収入格差</strong>障害のある成人は、そうでない成人と比べて統計上およそ50%の収入差が生じるとされています。この数字を知ることが、BLUE MOUSEの出発点です。</p>
+              </div>
             </div>
           </div>
         </div>
 
         <!-- 02 凸凹を武器に -->
-        <div class="af-pillar anim-up">
-          <div class="af-pillar__num">02</div>
-          <div class="af-pillar__body">
-            <span class="af-pillar__tag">Approach</span>
-            <h2 class="af-pillar__title">凸凹と向き合いながら、「武器」を手にする。</h2>
-            <p class="af-pillar__text">苦手なことを少しずつ克服する。それも大切な支援です。でも、苦手をなくすことだけに力を注いでいたら、その子が持っているはずの「得意」がどんどん埋もれていってしまいます。<strong style="color:#1a1a1a;">小学生のうちからITスキルを身につけること</strong>が、将来の就労や自立への、もっとも確かな近道のひとつだと私たちは考えています。</p>
-            <div class="af-points">
-              <div class="af-point">
-                <div class="af-point__check"><svg fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>
-                <span>苦手を補いながら、得意を伸ばすことを同時に進める</span>
-              </div>
-              <div class="af-point">
-                <div class="af-point__check"><svg fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>
-                <span>将来の自立から逆算したITスキルのプログラム</span>
-              </div>
-              <div class="af-point">
-                <div class="af-point__check"><svg fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>
-                <span>小学生から始める、10年先を見据えたステップアップ</span>
-              </div>
-              <div class="af-point">
-                <div class="af-point__check"><svg fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>
-                <span>PC・プログラミング・オフィスソフトを段階的に習得</span>
+        <div class="af-pillar af-pillar--02 anim-up">
+          <span class="af-pillar__wm">02</span>
+          <div class="af-pillar__inner">
+            <div class="af-pillar__left">
+              <span class="af-pillar__num">— 02</span>
+              <span class="af-pillar__tag">Approach</span>
+              <h2 class="af-pillar__title">凸凹を「武器」に<br>変えていく。</h2>
+              <p class="af-pillar__text">苦手をなくすことだけに力を注いでいたら、その子が持つ「得意」が埋もれていきます。<strong style="color:#1a1a1a;">小学生のうちからITスキルを身につけること</strong>が、将来の就労・自立への確かな近道です。</p>
+            </div>
+            <div class="af-pillar__right">
+              <div class="af-points">
+                <div class="af-point">
+                  <div class="af-point__check"><svg fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>
+                  <span>苦手を補いながら、得意を同時に伸ばす</span>
+                </div>
+                <div class="af-point">
+                  <div class="af-point__check"><svg fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>
+                  <span>将来の自立から逆算したITプログラム</span>
+                </div>
+                <div class="af-point">
+                  <div class="af-point__check"><svg fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>
+                  <span>10年先を見据えたステップアップ設計</span>
+                </div>
+                <div class="af-point">
+                  <div class="af-point__check"><svg fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>
+                  <span>PC・プログラミング・Officeを段階的に</span>
+                </div>
               </div>
             </div>
           </div>
         </div>
 
         <!-- 03 伴走者の存在 -->
-        <div class="af-pillar anim-up">
-          <div class="af-pillar__num">03</div>
-          <div class="af-pillar__body">
-            <span class="af-pillar__tag">Difference</span>
-            <h2 class="af-pillar__title">専門的な「伴走者」の存在。</h2>
-            <p class="af-pillar__text">わからない時に「教えてください」と言えるか。気持ちが乗らない時でも、決められた時間は取り組めるか。こうした社会性は、IT課題の中でこそ自然に育っていきます。BLUE MOUSEのスタッフは、ただ教えるだけでなく、その子の特性を理解しながらそばで一緒に取り組みます。ここが「ただパソコンを習う場所」との一番の違いです。</p>
-            <div class="af-compare">
-              <div class="af-compare__card af-compare__card--other">
-                <span class="af-compare__label">一般的なパソコン教室</span>
-                <p class="af-compare__title">操作スキルの習得が目的</p>
-                <p class="af-compare__desc">タイピングや操作方法を教えることがメインで、その子の特性や社会性への支援は行われません。</p>
-              </div>
-              <div class="af-compare__card af-compare__card--bm">
-                <span class="af-compare__label">BLUE MOUSE</span>
-                <p class="af-compare__title">ITを通じた自立支援</p>
-                <p class="af-compare__desc">専門スタッフが伴走し、IT課題を通じて特性への対処法・社会性・自己調整力を同時に育てます。</p>
+        <div class="af-pillar af-pillar--03 anim-up">
+          <span class="af-pillar__wm">03</span>
+          <div class="af-pillar__inner">
+            <div class="af-pillar__left">
+              <span class="af-pillar__num">— 03</span>
+              <span class="af-pillar__tag">Difference</span>
+              <h2 class="af-pillar__title">専門的な<br>「伴走者」の存在。</h2>
+              <p class="af-pillar__text">BLUE MOUSEのスタッフは、ただ教えるだけでなく、その子の特性を理解しながらそばで一緒に取り組みます。IT課題を通じて、社会性・自己調整力を自然に育てていく。これが「ただパソコンを習う場所」との一番の違いです。</p>
+            </div>
+            <div class="af-pillar__right">
+              <div class="af-compare">
+                <div class="af-compare__card af-compare__card--other">
+                  <span class="af-compare__label">一般的なパソコン教室</span>
+                  <p class="af-compare__title">操作スキルの習得が目的</p>
+                  <p class="af-compare__desc">タイピングや操作方法を教えることがメインで、特性や社会性への支援は行われません。</p>
+                </div>
+                <div class="af-compare__card af-compare__card--bm">
+                  <span class="af-compare__label">BLUE MOUSE</span>
+                  <p class="af-compare__title">ITを通じた自立支援</p>
+                  <p class="af-compare__desc">専門スタッフが伴走し、IT課題を通じて特性への対処法・社会性・自己調整力を同時に育てます。</p>
+                </div>
               </div>
             </div>
           </div>
