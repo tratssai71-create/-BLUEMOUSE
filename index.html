@@ -703,20 +703,30 @@
       timer = setInterval(next, 2200);
     }, 300);
 
-    /* タップ：一回瞬きしてから次の文字へ（ランダムサイズ） */
+    /* タップ：瞬き→確実に次の文字へ */
     document.addEventListener('click', function () {
       clearTimeout(timer);
       clearInterval(timer);
-      /* 今の文字を瞬き（フェードアウト） */
-      if (cur >= 0) {
-        badges[cur].style.opacity   = '0';
-        badges[cur].style.transform = 'scale(0.4)';
+
+      var fromIdx = cur; /* 現在表示中の文字のインデックスを保存 */
+
+      /* Step1：今の文字を瞬き（消える） */
+      if (fromIdx >= 0) {
+        badges[fromIdx].style.opacity   = '0';
+        badges[fromIdx].style.transform = 'scale(0)';
+        badges[fromIdx].style.zIndex    = '0';
       }
-      /* 瞬き後に次の文字を表示 */
-      setTimeout(function () {
-        next(true);
+
+      /* Step2：瞬き後に次の文字を直接表示 */
+      timer = setTimeout(function () {
+        var toIdx = (fromIdx + 1) % badges.length;
+        cur = toIdx; /* curを確実に更新 */
+        var sc = (0.7 + Math.random() * 0.7).toFixed(2);
+        badges[toIdx].style.zIndex    = '1';
+        badges[toIdx].style.opacity   = '1';
+        badges[toIdx].style.transform = 'scale(' + sc + ')';
         timer = setInterval(next, 2200);
-      }, 220);
+      }, 250);
     });
   }
 
