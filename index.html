@@ -673,7 +673,8 @@
       return img;
     });
 
-    var cur = -1;
+    var cur       = -1;
+    var transTimer = null; /* フェードイン用タイマー（別管理で二重発火を防ぐ） */
 
     function setTransition(el, dur) {
       el.style.transition = 'opacity ' + dur + 'ms ease, transform ' + dur + 'ms ease-out';
@@ -683,11 +684,12 @@
       return (0.75 + Math.random() * 0.55).toFixed(2);
     }
 
-    /* 旧バッジを消してから新バッジを表示（重複なし） */
+    /* 旧バッジを消してから新バッジを表示（重複なし・競合なし） */
     function showNext(useRandom) {
       var prev    = cur;
       var nextIdx = (cur + 1) % badges.length;
-      var sc      = useRandom ? randScale() : '1';
+      cur = nextIdx; /* ← 即時更新：クリックとの競合を防ぐ */
+      var sc = useRandom ? randScale() : '1';
 
       /* Step1：旧バッジをフェードアウト */
       if (prev >= 0) {
@@ -696,11 +698,11 @@
         badges[prev].style.transform = 'scale(0.7)';
       }
 
-      /* Step2：旧が消えたあとに新バッジをフェードイン */
+      /* Step2：旧が消えたあとに新バッジをフェードイン（transTimerで管理） */
       var delay = (prev >= 0) ? FADE_OUT + GAP : 0;
-      setTimeout(function () {
+      clearTimeout(transTimer);
+      transTimer = setTimeout(function () {
         if (prev >= 0) badges[prev].style.zIndex = '0';
-        cur = nextIdx;
         setTransition(badges[nextIdx], FADE_IN);
         badges[nextIdx].style.zIndex    = '1';
         badges[nextIdx].style.opacity   = '1';
@@ -717,9 +719,10 @@
     /* タップ：即座に次の文字へ（ランダムサイズ） */
     document.addEventListener('click', function () {
       clearTimeout(timer);
+      clearTimeout(transTimer); /* ← 未発火のフェードインも必ずキャンセル */
       clearInterval(timer);
 
-      var fromIdx = cur;
+      var fromIdx = cur; /* curは即時更新済みなので常に正確 */
 
       /* 今の文字を素早く消す */
       if (fromIdx >= 0) {
@@ -730,7 +733,7 @@
       }
 
       /* 消えてから次の文字を表示 */
-      timer = setTimeout(function () {
+      transTimer = setTimeout(function () {
         var toIdx = (fromIdx + 1) % badges.length;
         cur = toIdx;
         var sc = randScale();
