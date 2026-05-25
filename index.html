@@ -42,13 +42,13 @@
     @keyframes kb-right { from{transform:scale(1.11) translateX(4%)}           to{transform:scale(1.06) translateX(-4%)} }
     @keyframes kb-up    { from{transform:scale(1.11) translateY(-4%)}          to{transform:scale(1.06) translateY(4%)} }
     @keyframes kb-pan   { from{transform:scale(1.0) translateY(0%)}            to{transform:scale(1.0) translateY(-2%)} }
-    @keyframes kb-pan-x { from{transform:scale(1.0) translateX(0%)}            to{transform:scale(1.0) translateX(5%)} }
+    @keyframes kb-pan-x { from{transform:scale(1.07) translateX(-3%)}          to{transform:scale(1.07) translateX(3%)} }
 
     .hero-photos {
       position: absolute;
       top: 0; left: 0; right: 0; bottom: 0;
       z-index: 0;
-      /* overflow: hidden はbox側に任せる。二重クリップ層を作らない */
+      overflow: hidden;
     }
     /* 写真にだけかかる薄いシャドウ */
     .hero-photos::after {
