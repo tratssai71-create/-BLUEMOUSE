@@ -795,24 +795,27 @@ document.querySelectorAll('.side-loc-tab').forEach(function(btn) {
       touchStartX = e.touches[0].clientX;
       touchStartY = e.touches[0].clientY;
       swiping = false;
-    }, { passive: false });
+      /* layout.js のページ遷移スワイプに座標を渡さない */
+      e.stopPropagation();
+    }, { passive: true });
     box1.addEventListener('touchmove', function (e) {
       var dx = e.touches[0].clientX - touchStartX;
       var dy = e.touches[0].clientY - touchStartY;
-      /* 水平方向の動きが少しでも縦より大きければ即座にpreventDefault */
       if (Math.abs(dx) > Math.abs(dy) && Math.abs(dx) > 3) {
         e.preventDefault();
         swiping = true;
       }
+      e.stopPropagation();
     }, { passive: false });
     box1.addEventListener('touchend', function (e) {
+      /* layout.js のdocumentレベルのページ遷移ハンドラに届かせない */
+      e.stopPropagation();
       if (!swiping) return;
       var dx = e.changedTouches[0].clientX - touchStartX;
       if (dx > 40) {
         clearInterval(timer);
         goTo((current + 1) % photos.length);
         timer = setInterval(function () { goTo((current + 1) % photos.length); }, SLIDE_INTERVAL);
-        /* スワイプ後のクリック誤発火を防ぐ */
         box1.addEventListener('click', function stopClick(ev) {
           ev.stopPropagation();
           ev.preventDefault();
