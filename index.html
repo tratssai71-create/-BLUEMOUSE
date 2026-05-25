@@ -812,7 +812,10 @@ document.querySelectorAll('.side-loc-tab').forEach(function(btn) {
       e.stopPropagation();
       if (!swiping) return;
       var dx = e.changedTouches[0].clientX - touchStartX;
+      /* 右スワイプ(dx>0)→次へ：主体性→自発→放課後→採用 */
+      /* 左スワイプ(dx<0)→前へ：採用→放課後→自発→主体性 */
       if (dx > 40) {
+        /* 右スワイプ：次の写真へ */
         clearInterval(timer);
         goTo((current + 1) % photos.length);
         timer = setInterval(function () { goTo((current + 1) % photos.length); }, SLIDE_INTERVAL);
@@ -822,6 +825,7 @@ document.querySelectorAll('.side-loc-tab').forEach(function(btn) {
           box1.removeEventListener('click', stopClick, true);
         }, { capture: true, once: true });
       } else if (dx < -40) {
+        /* 左スワイプ：前の写真へ */
         clearInterval(timer);
         goTo((current - 1 + photos.length) % photos.length);
         timer = setInterval(function () { goTo((current + 1) % photos.length); }, SLIDE_INTERVAL);
