@@ -1040,7 +1040,7 @@ h1, h2, h3, h4, h5, h6 {
     margin-top: 10px;
     width: 40px; height: 40px;
     padding: 8px;
-    background: #1a1a1a;
+    background: #000;
     border: none;
     border-radius: 50%;
     cursor: pointer;
