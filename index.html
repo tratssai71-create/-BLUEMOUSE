@@ -669,55 +669,36 @@
       return img;
     });
 
-    var cur    = -1;
-    var timer  = null;
+    var cur = -1;
 
-    function randScale() { return (0.75 + Math.random() * 0.55).toFixed(2); }
+    /* ランダム幅を大きく：0.4〜1.6 */
+    function randScale() { return (0.4 + Math.random() * 1.2).toFixed(2); }
 
-    /* バッジがスケール≈0の状態で呼ばれる想定（瞬きアニメと連動）
-       トランジションなしで即座に文字を差し替える */
-    function swapLetter(useRandom) {
+    /* トランジションなしで即座に文字差し替え（外側scale≈0の瞬き時 or タップ時） */
+    function swapLetter() {
       var from = cur;
       var to   = (from + 1) % badges.length;
       cur = to;
-
-      /* 旧バッジを即座に非表示 */
       if (from >= 0) {
         badges[from].style.transition = 'none';
         badges[from].style.opacity    = '0';
         badges[from].style.zIndex     = '0';
       }
-      /* 新バッジを即座に表示（外側のscaleが≈0なので視覚上は見えない） */
-      var sc = useRandom ? randScale() : '1';
       badges[to].style.transition = 'none';
       badges[to].style.zIndex     = '1';
       badges[to].style.opacity    = '1';
-      badges[to].style.transform  = 'scale(' + sc + ')';
+      badges[to].style.transform  = 'scale(' + randScale() + ')';
     }
 
-    /* 初回：最初の文字を設定（外側scale=1の状態なのでフェードで表示） */
-    timer = setTimeout(function () {
-      swapLetter();
-      /* 以降はdoBlink連動で切り替わるが、自動巡回も維持 */
-      timer = setInterval(function () { swapLetter(true); }, 3000);
-    }, 400);
+    /* 初回表示 */
+    setTimeout(swapLetter, 400);
 
-    /* doBlink（バウンススクリプト）からの呼び出し口 ― バッジが縮んだ瞬間に文字切替 */
-    window._badgeSwapOnBlink = function () {
-      clearTimeout(timer);
-      clearInterval(timer);
-      swapLetter(true);
-      /* 次の自動巡回を再スケジュール */
-      timer = setInterval(function () { swapLetter(true); }, 3000);
-    };
+    /* doBlink（バウンススクリプト）からの呼び出し口
+       ― バッジが縮んで見えない瞬間に文字を切り替える。自動タイマーなし */
+    window._badgeSwapOnBlink = swapLetter;
 
-    /* タップ：次の文字へ（ランダムサイズ） */
-    document.addEventListener('click', function () {
-      clearTimeout(timer);
-      clearInterval(timer);
-      swapLetter(true);
-      timer = setInterval(function () { swapLetter(true); }, 3000);
-    });
+    /* タップ：次の文字へ（自動タイマーなし・シンプル） */
+    document.addEventListener('click', swapLetter);
   }
 
   if (document.readyState === 'loading') {
