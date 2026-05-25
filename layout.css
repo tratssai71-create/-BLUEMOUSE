@@ -1040,22 +1040,22 @@ h1, h2, h3, h4, h5, h6 {
     margin-top: 10px;
     width: 40px; height: 40px;
     padding: 8px;
-    background: none;
+    background: #1a1a1a;
     border: none;
-    border-radius: 3px;
+    border-radius: 50%;
     cursor: pointer;
     transition: background .15s;
   }
-  .bm-hamburger:hover { background: rgba(0,0,0,.05); }
+  .bm-hamburger:hover { background: #333; }
   .bm-hamburger span {
     display: block;
-    width: 20px; height: 2px;
-    background: #33251a;
+    width: 18px; height: 2px;
+    background: #fff;
     border-radius: 2px;
     transition: transform .28s ease, opacity .2s ease;
   }
   .bm-mobile-header--hero .bm-hamburger span {
-    background: #FFFEFB;
+    background: #fff;
   }
   .bm-hamburger.is-open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
   .bm-hamburger.is-open span:nth-child(2) { opacity: 0; transform: scaleX(0); }
