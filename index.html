@@ -649,7 +649,10 @@
     './badges/badge-E4.png','./badges/badge-M.png', './badges/badge-O.png',
     './badges/badge-U7.png','./badges/badge-S.png', './badges/badge-E9.png',
   ];
-  var SIZE = 40;
+  var SIZE      = 40;
+  var FADE_OUT  = 180;  /* 旧バッジ消えるまでの時間(ms) */
+  var FADE_IN   = 350;  /* 新バッジ現れるまでの時間(ms) */
+  var GAP       = 20;   /* 旧消えてから新出るまでの空白(ms) — 重複ゼロ */
 
   function run() {
     var link = document.querySelector('.hero-logo-badge');
@@ -668,8 +671,8 @@
       img.style.cssText = [
         'position:absolute', 'top:0', 'left:0',
         'width:' + SIZE + 'px', 'height:' + SIZE + 'px',
-        'border-radius:50%', 'opacity:0', 'transform:scale(0)',
-        'transition:opacity .25s ease, transform .25s ease-out',
+        'border-radius:50%', 'opacity:0', 'transform:scale(0.8)',
+        'z-index:1',
       ].join(';');
       wrap.appendChild(img);
       return img;
@@ -677,64 +680,71 @@
 
     var cur = -1;
 
+    function setTransition(el, dur) {
+      el.style.transition = 'opacity ' + dur + 'ms ease, transform ' + dur + 'ms ease-out';
+    }
+
     function randScale() {
-      /* 0.7〜1.4 のランダムなスケール */
-      return (0.7 + Math.random() * 0.7).toFixed(2);
+      return (0.75 + Math.random() * 0.55).toFixed(2);
     }
 
-    function next(useRandom) {
-      var prev = cur;
-      cur = (cur + 1) % badges.length;
-      var nextIdx = cur;
-      var sc = useRandom ? randScale() : '1';
+    /* 旧バッジを消してから新バッジを表示（重複なし） */
+    function showNext(useRandom) {
+      var prev    = cur;
+      var nextIdx = (cur + 1) % badges.length;
+      var sc      = useRandom ? randScale() : '1';
+
+      /* Step1：旧バッジをフェードアウト */
       if (prev >= 0) {
-        /* 同時フェード：新旧を同時に切り替えて瞬きゼロ */
-        badges[nextIdx].style.zIndex    = '2';
-        badges[prev].style.zIndex       = '1';
-        /* 新バッジをフェードイン＆旧バッジを同時にフェードアウト */
-        badges[nextIdx].style.opacity   = '1';
-        badges[nextIdx].style.transform = 'scale(' + sc + ')';
-        badges[prev].style.opacity      = '0';
-        badges[prev].style.transform    = 'scale(0.6)';
-        setTimeout(function () {
-          badges[prev].style.zIndex     = '0';
-          badges[nextIdx].style.zIndex  = '1';
-        }, 300);
-      } else {
-        badges[nextIdx].style.opacity   = '1';
-        badges[nextIdx].style.transform = 'scale(' + sc + ')';
+        setTransition(badges[prev], FADE_OUT);
+        badges[prev].style.opacity   = '0';
+        badges[prev].style.transform = 'scale(0.7)';
       }
+
+      /* Step2：旧が消えたあとに新バッジをフェードイン */
+      var delay = (prev >= 0) ? FADE_OUT + GAP : 0;
+      setTimeout(function () {
+        if (prev >= 0) badges[prev].style.zIndex = '0';
+        cur = nextIdx;
+        setTransition(badges[nextIdx], FADE_IN);
+        badges[nextIdx].style.zIndex    = '1';
+        badges[nextIdx].style.opacity   = '1';
+        badges[nextIdx].style.transform = 'scale(' + sc + ')';
+      }, delay);
     }
 
+    /* 初回表示 */
     var timer = setTimeout(function () {
-      next();
-      timer = setInterval(next, 2200);
+      showNext();
+      timer = setInterval(showNext, 2200);
     }, 300);
 
-    /* タップ：瞬き→確実に次の文字へ */
+    /* タップ：即座に次の文字へ（ランダムサイズ） */
     document.addEventListener('click', function () {
       clearTimeout(timer);
       clearInterval(timer);
 
-      var fromIdx = cur; /* 現在表示中の文字のインデックスを保存 */
+      var fromIdx = cur;
 
-      /* Step1：今の文字を瞬き（消える） */
+      /* 今の文字を素早く消す */
       if (fromIdx >= 0) {
+        setTransition(badges[fromIdx], FADE_OUT);
         badges[fromIdx].style.opacity   = '0';
-        badges[fromIdx].style.transform = 'scale(0)';
+        badges[fromIdx].style.transform = 'scale(0.7)';
         badges[fromIdx].style.zIndex    = '0';
       }
 
-      /* Step2：瞬き後に次の文字を直接表示 */
+      /* 消えてから次の文字を表示 */
       timer = setTimeout(function () {
         var toIdx = (fromIdx + 1) % badges.length;
-        cur = toIdx; /* curを確実に更新 */
-        var sc = (0.7 + Math.random() * 0.7).toFixed(2);
+        cur = toIdx;
+        var sc = randScale();
+        setTransition(badges[toIdx], FADE_IN);
         badges[toIdx].style.zIndex    = '1';
         badges[toIdx].style.opacity   = '1';
         badges[toIdx].style.transform = 'scale(' + sc + ')';
-        timer = setInterval(next, 2200);
-      }, 250);
+        timer = setInterval(showNext, 2200);
+      }, FADE_OUT + GAP);
     });
   }
 
