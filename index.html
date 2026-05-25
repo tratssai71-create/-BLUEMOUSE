@@ -775,6 +775,7 @@ document.querySelectorAll('.side-loc-tab').forEach(function(btn) {
         photos[next].style.willChange = 'transform';
         photos[next].classList.remove('hp-active');
         photos[next].style.animation = 'none';
+        void photos[next].offsetHeight; /* 強制リフロー：blur状態を確定させてからtransition開始 */
         photos[next].classList.add('hp-active');
         photos[next].style.animation = animOf(photos[next]);
         updateTitle(photos, current);
