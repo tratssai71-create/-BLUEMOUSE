@@ -661,7 +661,7 @@
         'position:absolute', 'top:0', 'left:0',
         'width:' + SIZE + 'px', 'height:' + SIZE + 'px',
         'border-radius:50%', 'opacity:0', 'transform:scale(0)',
-        'transition:opacity .18s ease, transform .5s cubic-bezier(.34,2,.64,1)',
+        'transition:opacity .25s ease, transform .25s ease-out',
       ].join(';');
       wrap.appendChild(img);
       return img;
@@ -680,17 +680,18 @@
       var nextIdx = cur;
       var sc = useRandom ? randScale() : '1';
       if (prev >= 0) {
-        /* 次を先に前面で表示してから前を消す（クロスフェード）→ 瞬き防止 */
+        /* 同時フェード：新旧を同時に切り替えて瞬きゼロ */
         badges[nextIdx].style.zIndex    = '2';
         badges[prev].style.zIndex       = '1';
+        /* 新バッジをフェードイン＆旧バッジを同時にフェードアウト */
         badges[nextIdx].style.opacity   = '1';
         badges[nextIdx].style.transform = 'scale(' + sc + ')';
+        badges[prev].style.opacity      = '0';
+        badges[prev].style.transform    = 'scale(0.6)';
         setTimeout(function () {
-          badges[prev].style.opacity   = '0';
-          badges[prev].style.transform = 'scale(0)';
-          badges[prev].style.zIndex    = '0';
-          badges[nextIdx].style.zIndex = '1';
-        }, 200);
+          badges[prev].style.zIndex     = '0';
+          badges[nextIdx].style.zIndex  = '1';
+        }, 300);
       } else {
         badges[nextIdx].style.opacity   = '1';
         badges[nextIdx].style.transform = 'scale(' + sc + ')';
