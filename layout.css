@@ -1087,7 +1087,7 @@ h1, h2, h3, h4, h5, h6 {
 .bm-footer {
   background: #1a2628;
   color: #ccc;
-  padding: 72px 64px 40px;
+  padding: 44px 64px 28px;
   padding-left: calc(25vw + 40px);
   padding-right: calc(25vw + 40px);
   border-top: 3px solid #5EC1C6;
@@ -1097,8 +1097,8 @@ h1, h2, h3, h4, h5, h6 {
 .bm-footer__inner {
   display: grid;
   grid-template-columns: 1.6fr 1fr 1.2fr;
-  gap: 56px;
-  padding-bottom: 52px;
+  gap: 36px;
+  padding-bottom: 32px;
   border-bottom: 1px solid rgba(94,193,198,.15);
 }
 
@@ -1206,7 +1206,7 @@ h1, h2, h3, h4, h5, h6 {
 
 .bm-footer__bottom {
   text-align: center;
-  padding-top: 32px;
+  padding-top: 20px;
   font-family: var(--font-en);
   font-size: 16px;
   color: #5a7275;
@@ -1215,11 +1215,11 @@ h1, h2, h3, h4, h5, h6 {
 
 @media (max-width: 780px) {
   .bm-footer {
-    padding: 48px 24px 28px;
+    padding: 28px 24px 18px;
   }
   .bm-footer__inner {
     grid-template-columns: 1fr;
-    gap: 32px;
+    gap: 18px;
   }
   .bm-footer__logo img {
     height: auto;
