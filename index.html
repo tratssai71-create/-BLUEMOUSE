@@ -67,10 +67,15 @@
       object-fit: cover;
       object-position: center center;
       opacity: 0;
-      transition: opacity 1.2s ease-in-out;
+      filter: blur(16px);
+      transform-origin: center center;
+      transition: opacity 1.4s ease-in-out, filter 1.4s ease-in-out;
       /* will-change・animation はJS側で最小限だけ動的付与 */
     }
-    .hero-photo.hp-active { opacity: 1; }
+    .hero-photo.hp-active {
+      opacity: 1;
+      filter: blur(0px);
+    }
     .hero-photo--top    { object-position: center top !important; }
     .hero-photo--center { object-position: 65% 35% !important; }
     .hero-photo--bottom { object-position: center 60% !important; }
