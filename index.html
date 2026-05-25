@@ -795,13 +795,14 @@ document.querySelectorAll('.side-loc-tab').forEach(function(btn) {
       touchStartX = e.touches[0].clientX;
       touchStartY = e.touches[0].clientY;
       swiping = false;
-    }, { passive: true });
+    }, { passive: false });
     box1.addEventListener('touchmove', function (e) {
       var dx = e.touches[0].clientX - touchStartX;
       var dy = e.touches[0].clientY - touchStartY;
-      if (!swiping && Math.abs(dx) > Math.abs(dy) && Math.abs(dx) > 8) {
-        swiping = true;
+      /* 水平方向の動きが少しでも縦より大きければ即座にpreventDefault */
+      if (Math.abs(dx) > Math.abs(dy) && Math.abs(dx) > 3) {
         e.preventDefault();
+        swiping = true;
       }
     }, { passive: false });
     box1.addEventListener('touchend', function (e) {
@@ -817,6 +818,10 @@ document.querySelectorAll('.side-loc-tab').forEach(function(btn) {
           ev.preventDefault();
           box1.removeEventListener('click', stopClick, true);
         }, { capture: true, once: true });
+      } else if (dx < -40) {
+        clearInterval(timer);
+        goTo((current - 1 + photos.length) % photos.length);
+        timer = setInterval(function () { goTo((current + 1) % photos.length); }, SLIDE_INTERVAL);
       }
       swiping = false;
     }, { passive: true });
