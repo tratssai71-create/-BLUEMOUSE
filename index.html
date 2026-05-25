@@ -697,8 +697,11 @@
        ― バッジが縮んで見えない瞬間に文字を切り替える。自動タイマーなし */
     window._badgeSwapOnBlink = swapLetter;
 
-    /* タップ：次の文字へ（自動タイマーなし・シンプル） */
-    document.addEventListener('click', swapLetter);
+    /* タップ：瞬きアニメを起動 → 縮んだ瞬間に文字切替（_badgeSwapOnBlinkと連動） */
+    document.addEventListener('click', function () {
+      if (window._badgeBlink) window._badgeBlink();
+      else swapLetter(); /* バウンススクリプト未ロード時のフォールバック */
+    });
   }
 
   if (document.readyState === 'loading') {
@@ -939,6 +942,12 @@ document.querySelectorAll('.side-loc-tab').forEach(function(btn) {
   badge.style.left = x + 'px';
 
   scheduleNext();
+
+  /* クリックからも瞬きを起動できる口を公開（連打中は無視） */
+  window._badgeBlink = function () {
+    if (blinking) return;
+    doBlink(false);
+  };
 
   function bounce() {
     var maxX = window.innerWidth  - SIZE;
