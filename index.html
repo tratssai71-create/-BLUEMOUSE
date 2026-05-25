@@ -688,10 +688,18 @@
       }
     }
 
-    setTimeout(function () {
+    var timer = setTimeout(function () {
       next();
-      setInterval(next, 2200);
+      timer = setInterval(next, 2200);
     }, 300);
+
+    /* タップで次の文字へ */
+    document.addEventListener('click', function () {
+      clearTimeout(timer);
+      clearInterval(timer);
+      next();
+      timer = setInterval(next, 2200);
+    });
   }
 
   if (document.readyState === 'loading') {
