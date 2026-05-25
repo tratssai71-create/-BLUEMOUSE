@@ -668,16 +668,22 @@
 
     var cur = -1;
 
-    function next() {
+    function randScale() {
+      /* 0.7〜1.4 のランダムなスケール */
+      return (0.7 + Math.random() * 0.7).toFixed(2);
+    }
+
+    function next(useRandom) {
       var prev = cur;
       cur = (cur + 1) % badges.length;
       var nextIdx = cur;
+      var sc = useRandom ? randScale() : '1';
       if (prev >= 0) {
         /* 次を先に前面で表示してから前を消す（クロスフェード）→ 瞬き防止 */
-        badges[nextIdx].style.zIndex   = '2';
-        badges[prev].style.zIndex      = '1';
-        badges[nextIdx].style.opacity  = '1';
-        badges[nextIdx].style.transform = 'scale(1)';
+        badges[nextIdx].style.zIndex    = '2';
+        badges[prev].style.zIndex       = '1';
+        badges[nextIdx].style.opacity   = '1';
+        badges[nextIdx].style.transform = 'scale(' + sc + ')';
         setTimeout(function () {
           badges[prev].style.opacity   = '0';
           badges[prev].style.transform = 'scale(0)';
@@ -686,7 +692,7 @@
         }, 200);
       } else {
         badges[nextIdx].style.opacity   = '1';
-        badges[nextIdx].style.transform = 'scale(1)';
+        badges[nextIdx].style.transform = 'scale(' + sc + ')';
       }
     }
 
@@ -695,11 +701,11 @@
       timer = setInterval(next, 2200);
     }, 300);
 
-    /* タップで次の文字へ */
+    /* タップで次の文字へ（ランダムサイズ） */
     document.addEventListener('click', function () {
       clearTimeout(timer);
       clearInterval(timer);
-      next();
+      next(true); /* true = ランダムサイズ */
       timer = setInterval(next, 2200);
     });
   }
