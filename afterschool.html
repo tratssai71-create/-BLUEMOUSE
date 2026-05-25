@@ -87,10 +87,10 @@
     }
     .af-pillar {
       display: flex;
-      gap: 24px;
-      padding: 28px 0;
+      gap: 28px;
+      padding: 36px 0;
       border-bottom: 1px solid rgba(0,0,0,.07);
-      align-items: flex-start;
+      align-items: center;
     }
     .af-pillar:last-child { border-bottom: none; }
     .af-pillar__num {
@@ -103,7 +103,25 @@
       width: 40px;
       padding-top: 4px;
     }
-    .af-pillar__body {}
+    .af-pillar__body { flex: 1; min-width: 0; }
+    .af-pillar__img {
+      flex-shrink: 0;
+      width: 240px;
+      border-radius: 10px;
+      overflow: hidden;
+      aspect-ratio: 4 / 3;
+    }
+    .af-pillar__img img {
+      width: 100%; height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+    /* 偶数：画像を左に */
+    .af-pillar:nth-child(even) .af-pillar__img { order: -1; }
+    @media (max-width: 780px) {
+      .af-pillar { flex-wrap: wrap; }
+      .af-pillar__img { width: 100%; order: -1 !important; aspect-ratio: 16/9; }
+    }
     .af-pillar__tag {
       font-family: "Inter", sans-serif;
       font-size: 9px;
@@ -701,6 +719,7 @@
               <p class="af-stat__text"><strong style="color:#1a1a1a;display:block;margin-bottom:3px;">特性のある成人との収入格差</strong>障害のある成人は、そうでない成人と比べて統計上およそ50%の収入差が生じるとされています。この数字を知ることが、BLUE MOUSEの出発点です。</p>
             </div>
           </div>
+          <div class="af-pillar__img"><img src="./2.webp" alt="自立という現実" /></div>
         </div>
 
         <!-- 02 凸凹を武器に -->
@@ -729,6 +748,7 @@
               </div>
             </div>
           </div>
+          <div class="af-pillar__img"><img src="./3.webp" alt="凸凹を武器に" /></div>
         </div>
 
         <!-- 03 伴走者の存在 -->
@@ -751,6 +771,7 @@
               </div>
             </div>
           </div>
+          <div class="af-pillar__img"><img src="./photos/riku_opt.jpg" alt="伴走者の存在" /></div>
         </div>
 
       </div>
