@@ -86,13 +86,8 @@
     .hero-photo--contain { object-fit: contain !important; object-position: center center !important; background: #c8cfc5; }
     .slide-overlay { z-index: 1; }
     .slide-title {
-      transition: opacity 0.6s ease, transform 0.6s ease;
       word-break: keep-all;
       overflow-wrap: break-word;
-    }
-    .slide-title.is-changing {
-      opacity: 0;
-      transform: translateY(10px);
     }
     .slide-title-sub {
       font-family: "Zen Kaku Gothic New", sans-serif;
@@ -788,20 +783,16 @@ document.querySelectorAll('.side-loc-tab').forEach(function(btn) {
     var raw      = photos[idx].getAttribute('data-title') || '';
     var btnText  = photos[idx].getAttribute('data-btn-text') || '';
     var btnHref  = photos[idx].getAttribute('data-btn-href') || '';
-    titleEl.classList.add('is-changing');
-    setTimeout(function () {
-      titleEl.innerHTML = raw;
-      titleEl.classList.remove('is-changing');
-      if (btnEl) {
-        if (btnText) {
-          btnEl.innerHTML = btnText;
-          btnEl.href = btnHref;
-          btnEl.style.display = '';
-        } else {
-          btnEl.style.display = 'none';
-        }
+    titleEl.innerHTML = raw;
+    if (btnEl) {
+      if (btnText) {
+        btnEl.innerHTML = btnText;
+        btnEl.href = btnHref;
+        btnEl.style.display = '';
+      } else {
+        btnEl.style.display = 'none';
       }
-    }, 300);
+    }
   }
 
   function animOf(photo) {
