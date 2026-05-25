@@ -926,27 +926,49 @@ document.querySelectorAll('.side-loc-tab').forEach(function(btn) {
     }, 90 + Math.random() * 40);
   }
 
+  badge.style.transition = 'none';
+  badge.style.top  = y + 'px';
+  badge.style.left = x + 'px';
+
+  var nextTimer  = null; /* scheduleNext の setTimeout ID */
+  var clickTimer = null; /* クリック瞬きの setTimeout ID */
+
   function scheduleNext() {
-    /* 次の瞬きまで 1400ms〜9000ms 待機（常に1本のループのみ） */
-    setTimeout(function () {
+    nextTimer = setTimeout(function () {
       doBlink(false);
-      /* 25%の確率で二重瞬き */
       if (Math.random() < 0.25) {
         setTimeout(function () { doBlink(true); }, 280 + Math.random() * 150);
       }
     }, 1400 + Math.random() * 7600);
   }
 
-  badge.style.transition = 'none';
-  badge.style.top  = y + 'px';
-  badge.style.left = x + 'px';
-
   scheduleNext();
 
-  /* クリックからも瞬きを起動できる口を公開（連打中は無視） */
+  /* クリック専用瞬き：自動瞬きと競合しないよう独立管理 */
   window._badgeBlink = function () {
-    if (blinking) return;
-    doBlink(false);
+    clearTimeout(nextTimer);  /* 自動スケジュールをキャンセル */
+    clearTimeout(clickTimer); /* 連打時：前の途中アニメをリセット */
+
+    blinking    = true;
+    targetScale = 0.01;  /* ほぼゼロまで縮む */
+    snapSpeed   = 0.75;
+
+    /* 縮み切ったら文字チェンジ→膨らむ */
+    clickTimer = setTimeout(function () {
+      if (window._badgeSwapOnBlink) window._badgeSwapOnBlink();
+      targetScale = 1.45 + Math.random() * 0.3;
+      snapSpeed   = 0.45;
+
+      clickTimer = setTimeout(function () {
+        targetScale = 1;
+        snapSpeed   = 0.08;
+
+        clickTimer = setTimeout(function () {
+          blinking = false;
+          scheduleNext(); /* 自動瞬きを再開 */
+        }, 400);
+      }, 140);
+    }, 150); /* 150ms で縮み→チェンジ */
   };
 
   function bounce() {
