@@ -758,6 +758,7 @@ document.querySelectorAll('.side-loc-tab').forEach(function(btn) {
     function goTo(next) {
       var prev = current;
       if (next === prev) return;
+      current = next; /* 即時更新して連続スワイプの順番ずれを防ぐ */
       if (overlay) { overlay.style.transition = 'opacity 0.27s ease'; overlay.style.opacity = '1'; }
       setTimeout(function () {
         photos[prev].style.transition = 'none';
@@ -768,7 +769,6 @@ document.querySelectorAll('.side-loc-tab').forEach(function(btn) {
         photos[next].style.animation = 'none';
         photos[next].classList.add('hp-active');
         photos[next].style.animation = animOf(photos[next]);
-        current = next;
         updateTitle(photos, current);
         var dots = document.querySelectorAll('#hero-slide-dots .slide-dot');
         dots.forEach(function(d, i) { d.classList.toggle('active', i === current); });
