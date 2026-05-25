@@ -671,8 +671,8 @@
 
     var cur = -1;
 
-    /* ランダム幅を大きく：0.4〜1.6 */
-    function randScale() { return (0.4 + Math.random() * 1.2).toFixed(2); }
+    /* ランダム幅：0.7〜1.6（最低ライン0.7） */
+    function randScale() { return (0.7 + Math.random() * 0.9).toFixed(2); }
 
     /* トランジションなしで即座に文字差し替え（外側scale≈0の瞬き時 or タップ時） */
     function swapLetter() {
