@@ -786,14 +786,14 @@ document.querySelectorAll('.side-loc-tab').forEach(function(btn) {
         dots.forEach(function(d, i) { d.classList.toggle('active', i === current); });
         setTimeout(function () {
           if (overlay) { overlay.style.transition = 'opacity 0.9s ease'; overlay.style.opacity = '0'; }
-        }, 280);
+        }, 120);
         setTimeout(function () {
           photos[prev].style.animation   = 'none';
           photos[prev].style.willChange  = 'auto';
           photos[prev].style.transition  = '';
           photos[prev].style.opacity     = '';
-        }, 1200);
-      }, 550);
+        }, 1000);
+      }, 380);
     }
 
     var timer = setInterval(function () {
