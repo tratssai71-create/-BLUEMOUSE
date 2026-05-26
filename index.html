@@ -651,7 +651,7 @@
     if (logoImg) logoImg.style.display = 'none';
 
     var wrap = document.createElement('div');
-    wrap.style.cssText = 'position:relative;display:block;width:' + SIZE + 'px;height:' + SIZE + 'px;flex-shrink:0;pointer-events:none;';
+    wrap.style.cssText = 'position:relative;display:block;width:' + SIZE + 'px;height:' + SIZE + 'px;flex-shrink:0;pointer-events:none;overflow:hidden;border-radius:50%;';
     link.appendChild(wrap);
 
     var badges = FILES.map(function (src) {
@@ -669,8 +669,8 @@
 
     var cur = -1;
 
-    /* ランダム幅：0.7〜1.6（最低ライン0.7） */
-    function randScale() { return (0.7 + Math.random() * 0.9).toFixed(2); }
+    /* 常に1.0（サイズ固定） */
+    function randScale() { return '1'; }
 
     /* トランジションなしで即座に文字差し替え（外側scale≈0の瞬き時 or タップ時） */
     function swapLetter() {
