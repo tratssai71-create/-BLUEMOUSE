@@ -10,45 +10,58 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Noto+Sans+JP:wght@400;500;700&family=Zen+Kaku+Gothic+New:wght@300;400;500;700&family=Zen+Kurenaido&family=Zen+Maru+Gothic:wght@500;700&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="./layout.css?v=37" />
   <style>
-    /* ===== このページだけ bm-main のパディング・overflow を上書き ===== */
-    /* overflow-x: clip はスクロールコンテキストを作らないので sticky が壊れない */
-    .bm-main {
-      padding: 0 !important;
-      overflow-x: clip !important;
-    }
+    /* bm-layout の入場アニメーションを無効化（transform が fixed の containing block になるため） */
+    .bm-layout { animation: none !important; }
 
-    /* ===== スタックスクロール：各セクションが前のセクションの上に重なる ===== */
+    /* bm-main のパディングをリセット */
+    .bm-main { padding: 0 !important; }
+
+    /* ===== セクション：position: fixed で中央カラムに固定 ===== */
     .as-section {
-      position: sticky;
+      position: fixed;
       top: 0;
+      left: 25vw;
+      width: 50vw;
       height: 100vh;
       height: 100svh;
       overflow: hidden;
-      /* z-index は inline style で 1〜7 を割り当てる */
+      /* z-index は inline style で指定 */
+      /* JS が translateY を制御 */
+    }
+
+    /* ページ読み込み時：セクション2以降は画面外（下）に置く */
+    .as-section:not(:first-child) {
+      transform: translateY(100vh);
     }
 
     /* ===== 写真セクション ===== */
     .as-photo { background: #111; }
+
     .as-photo__img {
       position: absolute;
       inset: 0;
-      width: 100%; height: 100%;
+      width: 100%; height: 115%;
+      top: -7.5%;
       object-fit: cover;
       object-position: center;
       display: block;
-      will-change: transform;
     }
     .as-photo__img.pos-top    { object-position: center top; }
     .as-photo__img.pos-center { object-position: center 40%; }
 
-    .as-photo__overlay {
+    .as-photo__grad {
       position: absolute;
       inset: 0;
-      background: linear-gradient(to bottom, transparent 30%, rgba(0,0,0,.6) 100%);
+      background: linear-gradient(to bottom, transparent 30%, rgba(0,0,0,.58) 100%);
+      pointer-events: none;
+    }
+
+    .as-photo__copy {
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      padding: 56px 52px;
       display: flex;
       flex-direction: column;
-      justify-content: flex-end;
-      padding: 56px 52px;
     }
     .as-photo__eyebrow {
       font-family: "Inter", sans-serif;
@@ -56,22 +69,22 @@
       font-weight: 500;
       letter-spacing: .28em;
       text-transform: uppercase;
-      color: rgba(255,255,255,.5);
+      color: rgba(255,255,255,.48);
       margin-bottom: 14px;
     }
     .as-photo__label {
       font-family: "Zen Kaku Gothic New", "Noto Sans JP", sans-serif;
-      font-size: clamp(0.75rem, 1.1vw, 0.95rem);
+      font-size: clamp(0.72rem, 1.0vw, 0.9rem);
       font-weight: 400;
-      color: rgba(255,255,255,.62);
+      color: rgba(255,255,255,.6);
       letter-spacing: .18em;
       margin: 0 0 18px;
     }
     .as-photo__title {
       font-family: "Zen Kurenaido", "Noto Sans JP", sans-serif;
-      font-size: clamp(1.9rem, 3.4vw, 3.4rem);
+      font-size: clamp(1.9rem, 3.3vw, 3.4rem);
       font-weight: 400;
-      color: rgba(255,254,251,.9);
+      color: rgba(255,254,251,.92);
       line-height: 1.5;
       margin: 0;
       letter-spacing: .12em;
@@ -89,30 +102,28 @@
       font-family: "Inter", sans-serif;
       font-size: 11px;
       letter-spacing: .28em;
-      color: rgba(51,37,26,.28);
-      margin-bottom: 28px;
-      display: block;
+      color: rgba(51,37,26,.22);
+      margin-bottom: 30px;
     }
     .as-text__lead {
       font-family: "Zen Kaku Gothic New", "Noto Sans JP", sans-serif;
-      font-size: clamp(2.1rem, 4.0vw, 4.2rem);
+      font-size: clamp(2.0rem, 3.8vw, 4.2rem);
       font-weight: 700;
       color: #1d1d1f;
       line-height: 1.35;
       margin: 0 0 36px;
-      letter-spacing: -.01em;
+      letter-spacing: -.015em;
     }
     .as-text__body {
       font-family: "Zen Kaku Gothic New", "Noto Sans JP", sans-serif;
-      font-size: clamp(0.95rem, 1.3vw, 1.05rem);
+      font-size: clamp(0.9rem, 1.25vw, 1.05rem);
       font-weight: 400;
       line-height: 2.15;
       color: rgba(51,37,26,.52);
-      max-width: 520px;
-      margin: 0;
+      max-width: 500px;
     }
 
-    /* ===== CTAセクション ===== */
+    /* ===== CTA セクション ===== */
     .as-cta {
       background: #1a1a1a;
       display: flex;
@@ -123,19 +134,19 @@
     .as-cta__label {
       font-family: "Inter", sans-serif;
       font-size: 10px;
-      letter-spacing: .3em;
+      letter-spacing: .32em;
       text-transform: uppercase;
-      color: rgba(255,255,255,.28);
-      margin-bottom: 24px;
+      color: rgba(255,255,255,.25);
+      margin-bottom: 22px;
     }
     .as-cta__lead {
       font-family: "Zen Kaku Gothic New", "Noto Sans JP", sans-serif;
-      font-size: clamp(2rem, 3.8vw, 4rem);
+      font-size: clamp(1.9rem, 3.6vw, 3.8rem);
       font-weight: 700;
       color: rgba(255,254,251,.92);
-      line-height: 1.3;
+      line-height: 1.32;
       margin: 0 0 52px;
-      letter-spacing: -.01em;
+      letter-spacing: -.015em;
     }
     .as-cta__btn {
       display: inline-flex;
@@ -150,42 +161,47 @@
       border-radius: 999px;
       text-decoration: none;
       letter-spacing: .07em;
-      transition: transform .25s ease, opacity .25s ease;
+      align-self: flex-start;
+      transition: transform .25s, opacity .25s;
     }
-    .as-cta__btn:hover { transform: translateY(-4px); opacity: .85; }
+    .as-cta__btn:hover { transform: translateY(-4px); opacity: .82; }
 
-    /* ===== ページ進行ドット（右端） ===== */
+    /* ===== 進行ドット ===== */
     .as-dots {
       position: fixed;
-      right: calc(25vw + 18px);
+      right: calc(25vw + 20px);
       top: 50%;
       transform: translateY(-50%);
-      z-index: 99;
+      z-index: 500;
       display: flex;
       flex-direction: column;
-      gap: 12px;
+      gap: 11px;
       pointer-events: none;
     }
     .as-dot {
-      width: 5px;
-      height: 5px;
+      width: 5px; height: 5px;
       border-radius: 50%;
-      background: rgba(0,0,0,.2);
-      transition: background .4s, transform .4s;
+      background: rgba(0,0,0,.18);
+      transition: background .35s, transform .35s;
     }
     .as-dot.active {
       background: #FE8C68;
       transform: scale(1.8);
     }
-    .as-dots.dark .as-dot          { background: rgba(255,255,255,.28); }
-    .as-dots.dark .as-dot.active   { background: rgba(255,255,255,.9); transform: scale(1.8); }
+    .as-dots.dark .as-dot        { background: rgba(255,255,255,.28); }
+    .as-dots.dark .as-dot.active { background: rgba(255,255,255,.92); }
 
     /* ===== モバイル ===== */
     @media (max-width: 780px) {
-      .as-photo__overlay { padding: 36px 22px; }
-      .as-text  { padding: 0 24px; }
-      .as-cta   { padding: 0 24px; }
-      .as-dots  { display: none; }
+      .as-section {
+        left: 0 !important;
+        width: 100vw !important;
+        height: 100svh;
+      }
+      .as-photo__copy { padding: 36px 22px; }
+      .as-text { padding: 0 22px; }
+      .as-cta  { padding: 0 22px; }
+      .as-dots { display: none; }
     }
   </style>
 </head>
@@ -207,58 +223,62 @@
     </nav>
   </aside>
 
-  <!-- ===== メイン：スタックセクション ===== -->
+  <!-- ===== メイン ===== -->
   <main class="bm-main">
 
-    <!-- 1: 写真ヒーロー -->
-    <section class="as-section as-photo" style="z-index:1" data-dark="1" data-idx="0">
+    <!-- [1] 写真：ヒーロー -->
+    <section class="as-section as-photo" style="z-index:1" data-idx="0" data-dark="1">
       <img class="as-photo__img pos-center" src="./photos/hokago_opt.jpg" alt="放課後等デイサービス" />
-      <div class="as-photo__overlay">
+      <div class="as-photo__grad"></div>
+      <div class="as-photo__copy">
         <p class="as-photo__eyebrow">Afterschool Day Service</p>
         <p class="as-photo__label">放課後等デイサービス</p>
         <h1 class="as-photo__title">強みとなる<br>「見える力」は、<br>伴走者と共に育む。</h1>
       </div>
     </section>
 
-    <!-- 2: テキスト 1 -->
+    <!-- [2] テキスト 1 -->
     <section class="as-section as-text" style="z-index:2" data-idx="1">
-      <span class="as-text__num">01</span>
+      <p class="as-text__num">01</p>
       <p class="as-text__lead">放課後の時間が、<br>10年後の自分を決める。</p>
       <p class="as-text__body">学校では教えてくれないスキルがある。ITの力、社会性、自分で考える力——放課後の積み重ねが、経済的自立への確かな一歩になります。</p>
     </section>
 
-    <!-- 3: 写真 2 -->
-    <section class="as-section as-photo" style="z-index:3" data-dark="1" data-idx="2">
+    <!-- [3] 写真 2 -->
+    <section class="as-section as-photo" style="z-index:3" data-idx="2" data-dark="1">
       <img class="as-photo__img" src="./3.webp" alt="IT療育" />
-      <div class="as-photo__overlay" style="background:linear-gradient(to bottom,transparent 50%,rgba(0,0,0,.45) 100%)"></div>
+      <div class="as-photo__grad" style="background:linear-gradient(to bottom,transparent 45%,rgba(0,0,0,.42) 100%)"></div>
     </section>
 
-    <!-- 4: テキスト 2 -->
+    <!-- [4] テキスト 2 -->
     <section class="as-section as-text" style="z-index:4" data-idx="3">
-      <span class="as-text__num">02</span>
+      <p class="as-text__num">02</p>
       <p class="as-text__lead">ITスキルを、<br>実践で育てる。</p>
       <p class="as-text__body">プログラミング・PCスキル・デジタル表現——就労で求められる力を、楽しみながら本物の環境で身につけます。</p>
     </section>
 
-    <!-- 5: 写真 3 -->
-    <section class="as-section as-photo" style="z-index:5" data-dark="1" data-idx="4">
-      <img class="as-photo__img" src="./photos/riku_opt.jpg" alt="スタッフと一緒に" />
-      <div class="as-photo__overlay" style="background:linear-gradient(to bottom,transparent 50%,rgba(0,0,0,.45) 100%)"></div>
+    <!-- [5] 写真 3 -->
+    <section class="as-section as-photo" style="z-index:5" data-idx="4" data-dark="1">
+      <img class="as-photo__img" src="./photos/riku_opt.jpg" alt="スタッフ" />
+      <div class="as-photo__grad" style="background:linear-gradient(to bottom,transparent 45%,rgba(0,0,0,.42) 100%)"></div>
     </section>
 
-    <!-- 6: テキスト 3 -->
+    <!-- [6] テキスト 3 -->
     <section class="as-section as-text" style="z-index:6" data-idx="5">
-      <span class="as-text__num">03</span>
+      <p class="as-text__num">03</p>
       <p class="as-text__lead">専門スタッフが、<br>あなたの隣で<br>伴走する。</p>
       <p class="as-text__body">強みを見つけ、伸ばすのが私たちの仕事。それぞれのペースで、10年後のロードマップを一緒に描きます。</p>
     </section>
 
-    <!-- 7: CTA -->
-    <section class="as-section as-cta" style="z-index:7" data-dark="1" data-idx="6">
+    <!-- [7] CTA -->
+    <section class="as-section as-cta" style="z-index:7" data-idx="6" data-dark="1">
       <p class="as-cta__label">Contact</p>
       <p class="as-cta__lead">まずは、<br>見学に来てください。</p>
       <a href="./contact.html" class="as-cta__btn">見学・お問い合わせ ›</a>
     </section>
+
+    <!-- スクロール高さを確保するスペーサー（sections は fixed なので自分では高さを作らない） -->
+    <div id="as-spacer"></div>
 
   </main>
 
@@ -300,7 +320,7 @@
   </aside>
 </div>
 
-<!-- 進行ドット -->
+<!-- 進行ドット（bm-layout の外） -->
 <div class="as-dots" id="as-dots">
   <span class="as-dot active"></span>
   <span class="as-dot"></span>
@@ -311,89 +331,134 @@
   <span class="as-dot"></span>
 </div>
 
-<!-- GSAP -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
 <script src="./layout.js"></script>
 <script>
 (function () {
-  gsap.registerPlugin(ScrollTrigger);
+  'use strict';
 
-  var sections = Array.from(document.querySelectorAll('.as-section'));
-  var dots     = Array.from(document.querySelectorAll('.as-dot'));
-  var dotsEl   = document.getElementById('as-dots');
+  var sections  = Array.from(document.querySelectorAll('.as-section'));
+  var dotEls    = Array.from(document.querySelectorAll('.as-dot'));
+  var dotsWrap  = document.getElementById('as-dots');
+  var spacer    = document.getElementById('as-spacer');
+  var n         = sections.length;
 
-  /* ---- ① 写真パラックス（画像が少しゆっくり動く） ---- */
-  document.querySelectorAll('.as-photo__img').forEach(function (img) {
-    gsap.fromTo(img,
-      { yPercent: -8 },
-      {
-        yPercent: 8,
-        ease: 'none',
-        scrollTrigger: {
-          trigger: img.closest('.as-section'),
-          start: 'top bottom',
-          end:   'bottom top',
-          scrub: true,
+  /* アニメーション済みフラグ（最初のセクションはすぐにアニメ） */
+  var animated = sections.map(function (_, i) { return i === 0; });
+
+  /* ---- スペーサー高さを設定（sections は fixed で高さを作らないため） ----
+     スクロール距離 = (n + 1) * vh
+       - 最初の1vhは section[0] に留まる時間
+       - その後 section[1]〜section[n-1] が1つずつスライドイン
+       スペーサー高さ = スクロール距離 + vh（viewport分） = (n + 1) * vh + vh = (n + 2) * vh
+     実際は (n + 1) * windowHeight で十分 */
+  function setup() {
+    var vh = window.innerHeight;
+    spacer.style.height = ((n + 1) * vh) + 'px';
+  }
+
+  /* ---- スクロール処理 ---- */
+  function update() {
+    var scrollTop = window.pageYOffset;
+    var vh = window.innerHeight;
+
+    sections.forEach(function (section, i) {
+      var ty;
+
+      if (i === 0) {
+        /* 最初のセクションは常にトップに固定 */
+        ty = 0;
+      } else {
+        /*
+          セクション i は scroll = [i*vh, (i+1)*vh] の間にスライドイン:
+            enterStart = i * vh  → translateY = vh（まだ画面外）
+            enterEnd   = (i+1)*vh → translateY = 0（完全に入った）
+        */
+        var enterStart = i * vh;
+        var enterEnd   = (i + 1) * vh;
+
+        if (scrollTop <= enterStart) {
+          ty = vh;
+        } else if (scrollTop >= enterEnd) {
+          ty = 0;
+        } else {
+          ty = enterEnd - scrollTop;
         }
       }
-    );
-  });
 
-  /* ---- ② テキストセクション：要素が下から出てくる ---- */
-  document.querySelectorAll('.as-text, .as-cta').forEach(function (section) {
-    var els = section.querySelectorAll('.as-text__num, .as-text__lead, .as-text__body, .as-cta__label, .as-cta__lead, .as-cta__btn');
-    gsap.fromTo(els,
-      { y: 60, opacity: 0 },
-      {
-        y: 0,
-        opacity: 1,
-        duration: 1.1,
-        ease: 'power3.out',
-        stagger: 0.14,
-        scrollTrigger: {
-          trigger: section,
-          start: 'top 65%',
-          toggleActions: 'play none none reverse',
-        }
-      }
-    );
-  });
+      section.style.transform = 'translateY(' + ty + 'px)';
 
-  /* ---- ③ 写真オーバーレイテキスト：左からフェードイン ---- */
-  document.querySelectorAll('.as-photo .as-photo__overlay > *').forEach(function (el, i) {
-    gsap.fromTo(el,
-      { x: -40, opacity: 0 },
-      {
-        x: 0,
-        opacity: 1,
-        duration: 1.0,
-        delay: i * 0.16,
-        ease: 'power3.out',
-        scrollTrigger: {
-          trigger: el.closest('.as-section'),
-          start: 'top 60%',
-          toggleActions: 'play none none reverse',
-        }
-      }
-    );
-  });
-
-  /* ---- ④ ドット連動 ---- */
-  sections.forEach(function (section, i) {
-    ScrollTrigger.create({
-      trigger: section,
-      start: 'top center',
-      end:   'bottom center',
-      onToggle: function (self) {
-        if (!self.isActive) return;
-        dots.forEach(function (d, j) { d.classList.toggle('active', j === i); });
-        var isDark = section.getAttribute('data-dark') === '1';
-        dotsEl.classList.toggle('dark', isDark);
+      /* テキスト入場アニメーション：50%以上スライドインしたら発火 */
+      if (!animated[i] && ty < vh * 0.5) {
+        animated[i] = true;
+        animateIn(section);
       }
     });
-  });
 
+    /* ドット更新：最も手前（z-index高）の表示セクションをアクティブに */
+    var activeIdx = Math.min(
+      Math.floor((scrollTop + window.innerHeight * 0.5) / window.innerHeight),
+      n - 1
+    );
+    dotEls.forEach(function (d, j) {
+      d.classList.toggle('active', j === activeIdx);
+    });
+    if (dotsWrap) {
+      dotsWrap.classList.toggle('dark', !!sections[activeIdx].getAttribute('data-dark'));
+    }
+  }
+
+  /* ---- テキスト入場アニメーション ---- */
+  function animateIn(section) {
+    var els = Array.from(section.querySelectorAll(
+      '.as-text__num, .as-text__lead, .as-text__body,' +
+      '.as-cta__label, .as-cta__lead, .as-cta__btn,' +
+      '.as-photo__eyebrow, .as-photo__label, .as-photo__title'
+    ));
+    els.forEach(function (el, i) {
+      /* まず瞬時に初期状態へ */
+      el.style.transition = 'none';
+      el.style.opacity    = '0';
+      el.style.transform  = 'translateY(52px)';
+      /* 次フレームでトランジションを付けて動かす */
+      requestAnimationFrame(function () {
+        requestAnimationFrame(function () {
+          var delay = i * 0.12;
+          el.style.transition =
+            'opacity 0.9s cubic-bezier(.22,1,.36,1) ' + delay + 's,' +
+            'transform 0.9s cubic-bezier(.22,1,.36,1) ' + delay + 's';
+          el.style.opacity   = '1';
+          el.style.transform = 'translateY(0)';
+        });
+      });
+    });
+  }
+
+  /* ---- 初期化 ----
+     セクション2以降のテキストを非表示にしておく */
+  function init() {
+    sections.forEach(function (section, i) {
+      if (i === 0) return;
+      var els = section.querySelectorAll(
+        '.as-text__num, .as-text__lead, .as-text__body,' +
+        '.as-cta__label, .as-cta__lead, .as-cta__btn,' +
+        '.as-photo__eyebrow, .as-photo__label, .as-photo__title'
+      );
+      els.forEach(function (el) {
+        el.style.opacity   = '0';
+        el.style.transform = 'translateY(52px)';
+      });
+    });
+
+    /* 最初のセクションはすぐにアニメ */
+    setTimeout(function () { animateIn(sections[0]); }, 180);
+  }
+
+  /* ---- 起動 ---- */
+  setup();
+  init();
+  update();
+  window.addEventListener('scroll', update, { passive: true });
+  window.addEventListener('resize', function () { setup(); update(); });
 })();
 </script>
 </body>
