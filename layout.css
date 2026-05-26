@@ -25,6 +25,7 @@ h1, h2, h3, h4, h5, h6 {
   font-family: var(--font-heading);
   font-weight: normal; /* W6 は書体自体が太いため normal で十分 */
 }
+h2 { letter-spacing: .12em; }
 
 /* 英数字が主体の要素 → Inter */
 .bm-copy,
