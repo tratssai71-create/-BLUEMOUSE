@@ -908,19 +908,14 @@ document.querySelectorAll('.side-loc-tab').forEach(function(btn) {
     setTimeout(function () {
       /* ★ バッジがほぼ見えない状態 → 文字を強制チェンジ */
       if (window._badgeSwapOnBlink) window._badgeSwapOnBlink();
-      /* ② パチッと開く（少しオーバーシュート） */
-      targetScale = 1.15 + Math.random() * 0.15;
-      snapSpeed   = 0.5;
+      /* ② 元のサイズに戻る（オーバーシュートなし） */
+      targetScale = 1;
+      snapSpeed   = 0.45;
       setTimeout(function () {
-        /* ③ 基本サイズにすばやく戻る */
-        targetScale = 1;
-        snapSpeed   = 0.28;
-        setTimeout(function () {
-          blinking = false;
-          /* 二重目の瞬きはscheduleNextを呼ばない（ループが増殖するのを防ぐ） */
-          if (!isDouble) scheduleNext();
-        }, 180);
-      }, 110 + Math.random() * 60);
+        blinking = false;
+        /* 二重目の瞬きはscheduleNextを呼ばない（ループが増殖するのを防ぐ） */
+        if (!isDouble) scheduleNext();
+      }, 200);
     }, 90 + Math.random() * 40);
   }
 
@@ -954,18 +949,13 @@ document.querySelectorAll('.side-loc-tab').forEach(function(btn) {
     /* 縮み切ったら文字チェンジ→膨らむ */
     clickTimer = setTimeout(function () {
       if (window._badgeSwapOnBlink) window._badgeSwapOnBlink();
-      targetScale = 1.2 + Math.random() * 0.2;
-      snapSpeed   = 0.45;
+      targetScale = 1;
+      snapSpeed   = 0.45;  /* 元のサイズに戻る（オーバーシュートなし） */
 
       clickTimer = setTimeout(function () {
-        targetScale = 1;
-        snapSpeed   = 0.28;  /* すばやく1.0に戻る */
-
-        clickTimer = setTimeout(function () {
-          blinking = false;
-          scheduleNext(); /* 自動瞬きを再開 */
-        }, 220);
-      }, 140);
+        blinking = false;
+        scheduleNext(); /* 自動瞬きを再開 */
+      }, 220);
     }, 150); /* 150ms で縮み→チェンジ */
   };
 
