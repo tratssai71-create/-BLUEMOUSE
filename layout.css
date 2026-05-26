@@ -931,6 +931,8 @@ h2 { letter-spacing: .85em; }
 
 /* ===== レスポンシブ ===== */
 @media (max-width: 780px) {
+  h2 { letter-spacing: 1.1em; }
+
   .bm-layout { grid-template-columns: 1fr; }
   .bm-right { display: none; }
 
