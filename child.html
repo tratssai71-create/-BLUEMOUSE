@@ -10,158 +10,134 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Noto+Sans+JP:wght@400;500;700&family=Zen+Kaku+Gothic+New:wght@300;400;500;700&family=Zen+Kurenaido&family=Zen+Maru+Gothic:wght@500;700&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="./layout.css?v=37" />
   <style>
-    /* ===== 児童発達支援 リニューアル ===== */
+    .bm-layout { animation: none !important; }
+    .bm-main   { padding: 0 !important; overflow: visible !important; }
 
-    /* ヒーロー写真 */
-    .ch-hero {
-      margin: -40px -36px 0;
-      height: 88vh;
-      min-height: 440px;
-      position: relative;
+    /* ===== 全セクション共通 ===== */
+    .ch-section {
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      height: 100svh;
+      width: 100%;
       overflow: hidden;
     }
-    .ch-hero img {
+
+    /* ===== 写真セクション ===== */
+    .ch-photo { background: #111; }
+    .ch-photo__img {
       position: absolute;
-      inset: 0;
-      width: 100%; height: 100%;
-      object-fit: cover;
-      object-position: center 25%;
+      inset: 0; width: 100%; height: 100%;
+      object-fit: cover; object-position: center;
       display: block;
     }
-    .ch-hero__overlay {
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(to bottom, transparent 38%, rgba(0,0,0,.52) 100%);
-      display: flex;
-      flex-direction: column;
-      justify-content: flex-end;
-      padding: 52px 44px;
+    .ch-photo__img.pos-25  { object-position: center 25%; }
+    .ch-photo__img.pos-35  { object-position: center 35%; }
+    .ch-photo__grad {
+      position: absolute; inset: 0;
+      background: linear-gradient(to bottom, transparent 32%, rgba(0,0,0,.54) 100%);
+      pointer-events: none;
     }
-    .ch-hero__eyebrow {
+    .ch-photo__copy {
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      padding: 56px 52px;
+      display: flex; flex-direction: column;
+    }
+    .ch-photo__eyebrow {
       font-family: "Inter", sans-serif;
-      font-size: 10px;
-      font-weight: 500;
-      letter-spacing: .28em;
-      text-transform: uppercase;
-      color: rgba(255,255,255,.55);
-      margin-bottom: 14px;
+      font-size: 10px; font-weight: 500;
+      letter-spacing: .28em; text-transform: uppercase;
+      color: rgba(255,255,255,.48); margin-bottom: 14px;
     }
-    .ch-hero__label {
-      font-family: "Zen Kaku Gothic New", "Noto Sans JP", sans-serif;
-      font-size: clamp(0.75rem, 1.2vw, 1rem);
-      font-weight: 400;
-      color: rgba(255,255,255,.65);
-      letter-spacing: .18em;
-      margin: 0 0 20px;
+    .ch-photo__label {
+      font-family: "Zen Kaku Gothic New","Noto Sans JP",sans-serif;
+      font-size: clamp(.72rem,1.0vw,.9rem); font-weight: 400;
+      color: rgba(255,255,255,.6); letter-spacing: .18em; margin: 0 0 18px;
     }
-    .ch-hero__title {
-      font-family: "Zen Kurenaido", "Noto Sans JP", sans-serif;
-      font-size: clamp(2rem, 3.8vw, 3.8rem);
-      font-weight: 400;
-      color: rgba(255,254,251,0.88);
-      line-height: 1.4;
-      margin: 0;
-      letter-spacing: .12em;
+    .ch-photo__title {
+      font-family: "Zen Kurenaido","Noto Sans JP",sans-serif;
+      font-size: clamp(2rem,3.8vw,4rem); font-weight: 400;
+      color: rgba(255,254,251,.9);
+      line-height: 1.4; margin: 0; letter-spacing: .12em;
     }
 
-    /* フルブリード写真（2枚目以降） */
-    .ch-photo {
-      margin: 0 -36px;
-      height: 74vh;
-      min-height: 320px;
-      overflow: hidden;
-      position: relative;
+    /* ===== テキストセクション ===== */
+    .ch-text {
+      background: #FFFEFB;
+      display: flex; flex-direction: column; justify-content: center;
+      padding: 0 56px;
     }
-    .ch-photo img {
-      width: 100%; height: 100%;
-      object-fit: cover;
-      object-position: center;
-      display: block;
+    .ch-text__lead {
+      font-family: "Zen Kaku Gothic New","Noto Sans JP",sans-serif;
+      font-size: clamp(2.0rem,3.8vw,4.2rem); font-weight: 700;
+      color: #1d1d1f; line-height: 1.35;
+      margin: 0 0 36px; letter-spacing: -.015em;
     }
-    .ch-photo--top img    { object-position: center top; }
-    .ch-photo--center img { object-position: center 35%; }
-
-    /* テキストブロック */
-    .ch-copy {
-      padding: 100px 0 84px;
-    }
-    .ch-copy__lead {
-      font-family: "Zen Kaku Gothic New", "Noto Sans JP", sans-serif;
-      font-size: clamp(2.1rem, 4.2vw, 4.4rem);
-      font-weight: 700;
-      color: #1d1d1f;
-      line-height: 1.35;
-      margin: 0 0 36px;
-      letter-spacing: -.01em;
-    }
-    .ch-copy__body {
-      font-family: "Zen Kaku Gothic New", "Noto Sans JP", sans-serif;
-      font-size: clamp(0.95rem, 1.35vw, 1.1rem);
-      font-weight: 400;
-      line-height: 2.1;
-      color: rgba(51,37,26,.58);
-      max-width: 560px;
-      margin: 0;
+    .ch-text__body {
+      font-family: "Zen Kaku Gothic New","Noto Sans JP",sans-serif;
+      font-size: clamp(.9rem,1.25vw,1.05rem); font-weight: 400;
+      line-height: 2.15; color: rgba(51,37,26,.52); max-width: 500px;
     }
 
-    /* CTA */
+    /* ===== CTA セクション ===== */
     .ch-cta {
-      padding: 80px 0 72px;
-      border-top: 1px solid rgba(0,0,0,.07);
-      text-align: center;
+      background: #FFFEFB;
+      display: flex; flex-direction: column;
+      justify-content: center; align-items: center;
+      padding: 0 56px;
+      border-top: none;
     }
     .ch-cta p {
-      font-family: "Zen Kaku Gothic New", "Noto Sans JP", sans-serif;
-      font-size: 14px;
-      color: rgba(51,37,26,.48);
-      line-height: 2;
-      margin: 0 0 32px;
+      font-family: "Zen Kaku Gothic New","Noto Sans JP",sans-serif;
+      font-size: 14px; color: rgba(51,37,26,.48);
+      line-height: 2; margin: 0 0 36px; text-align: center;
     }
     .ch-cta__btn {
-      display: inline-flex;
-      align-items: center;
-      gap: 12px;
+      display: inline-flex; align-items: center; gap: 12px;
       padding: 20px 52px;
-      background: #33251a;
-      color: #fff;
-      font-family: "Zen Maru Gothic", "Noto Sans JP", sans-serif;
-      font-size: 15px;
-      font-weight: 500;
-      border-radius: 999px;
-      text-decoration: none;
+      background: #33251a; color: #fff;
+      font-family: "Zen Maru Gothic","Noto Sans JP",sans-serif;
+      font-size: 15px; font-weight: 500;
+      border-radius: 999px; text-decoration: none;
       letter-spacing: .07em;
-      transition: transform .22s ease, opacity .22s ease;
+      transition: transform .22s, opacity .22s;
     }
-    .ch-cta__btn:hover {
-      transform: translateY(-3px);
-      opacity: .82;
-    }
+    .ch-cta__btn:hover { transform: translateY(-3px); opacity: .82; }
 
-    /* スクロールフェードイン */
+    /* ===== 入場アニメーション ===== */
     .ch-anim {
       opacity: 0;
-      transform: translateY(40px);
-      transition: opacity 1.1s cubic-bezier(.22,1,.36,1),
-                  transform 1.1s cubic-bezier(.22,1,.36,1);
+      transform: translateY(32px);
+      transition: opacity .9s cubic-bezier(.22,1,.36,1),
+                  transform .9s cubic-bezier(.22,1,.36,1);
     }
-    .ch-anim.is-visible {
-      opacity: 1;
-      transform: translateY(0);
-    }
+    .ch-anim.is-visible { opacity: 1; transform: none; }
 
-    /* モバイル */
+    /* ===== 進行ドット ===== */
+    .ch-dots {
+      position: fixed;
+      right: calc(25vw + 20px); top: 50%;
+      transform: translateY(-50%);
+      z-index: 500;
+      display: flex; flex-direction: column; gap: 11px;
+      pointer-events: none;
+    }
+    .ch-dot {
+      width: 5px; height: 5px; border-radius: 50%;
+      background: rgba(0,0,0,.18);
+      transition: background .35s, transform .35s;
+    }
+    .ch-dot.active { background: #6aadcc; transform: scale(1.8); }
+    .ch-dots.dark .ch-dot        { background: rgba(255,255,255,.28); }
+    .ch-dots.dark .ch-dot.active { background: rgba(255,255,255,.9); }
+
+    /* ===== モバイル ===== */
     @media (max-width: 780px) {
-      .ch-hero {
-        margin: -24px -16px 0;
-        height: 74vh;
-      }
-      .ch-hero__overlay { padding: 36px 20px; }
-      .ch-hero__title { font-size: clamp(2.4rem, 9vw, 4rem); }
-      .ch-photo {
-        margin: 0 -16px;
-        height: 58vh;
-      }
-      .ch-copy { padding: 68px 0 56px; }
+      .ch-photo__copy { padding: 36px 22px; }
+      .ch-text { padding: 0 22px; }
+      .ch-cta  { padding: 0 22px; }
+      .ch-dots { display: none; }
     }
   </style>
 </head>
@@ -183,46 +159,49 @@
     </nav>
   </aside>
 
-  <!-- ===== メインコンテンツ ===== -->
+  <!-- ===== メイン ===== -->
   <main class="bm-main">
 
-    <!-- ① ヒーロー写真 -->
-    <div class="ch-hero">
-      <img src="./5.webp" alt="児童発達支援" />
-      <div class="ch-hero__overlay">
-        <p class="ch-hero__eyebrow">Child Development Support</p>
-        <p class="ch-hero__label">児童発達支援</p>
-        <h1 class="ch-hero__title">土台となる<br>「見えない力」は、<br>こどもが自ら育む。</h1>
+    <!-- [1] ヒーロー写真 -->
+    <section class="ch-section ch-photo" style="z-index:1" data-idx="0" data-dark="1">
+      <img class="ch-photo__img pos-25" src="./5.webp" alt="児童発達支援" />
+      <div class="ch-photo__grad"></div>
+      <div class="ch-photo__copy">
+        <p class="ch-photo__eyebrow ch-anim">Child Development Support</p>
+        <p class="ch-photo__label  ch-anim">児童発達支援</p>
+        <h1 class="ch-photo__title ch-anim">土台となる<br>「見えない力」は、<br>こどもが自ら育む。</h1>
       </div>
-    </div>
+    </section>
 
-    <!-- ③ 写真 2 -->
-    <div class="ch-photo ch-photo--center">
-      <img src="./1.webp" alt="スタッフとこども" />
-    </div>
+    <!-- [2] テキスト 1 -->
+    <section class="ch-section ch-text" style="z-index:2" data-idx="1">
+      <p class="ch-text__lead ch-anim">「こどもが主役」の、<br>秩序ある療育。</p>
+      <p class="ch-text__body ch-anim">好きなことに夢中になって取り組む時間の中で、小さな「できた」が自然と積み重なる。ルールのある環境の中で、こどもが主体的に動ける場面をつくります。</p>
+    </section>
 
-    <!-- ④ コピー 2 -->
-    <div class="ch-copy ch-anim">
-      <p class="ch-copy__lead">「こどもが主役」の、<br>秩序ある療育。</p>
-      <p class="ch-copy__body">好きなことに夢中になって取り組む時間の中で、小さな「できた」が自然と積み重なる。ルールのある環境の中で、こどもが主体的に動ける場面をつくります。</p>
-    </div>
+    <!-- [3] 写真 2 -->
+    <section class="ch-section ch-photo" style="z-index:3" data-idx="2" data-dark="1">
+      <img class="ch-photo__img pos-35" src="./1.webp" alt="スタッフとこども" loading="lazy" />
+      <div class="ch-photo__grad"></div>
+    </section>
 
-    <!-- ⑤ 写真 3 -->
-    <div class="ch-photo">
-      <img src="./3.webp" alt="PCで学ぶこども" />
-    </div>
+    <!-- [4] テキスト 2 -->
+    <section class="ch-section ch-text" style="z-index:4" data-idx="3">
+      <p class="ch-text__lead ch-anim">専門スタッフが、<br>深く観て、<br>そっとそばにいる。</p>
+      <p class="ch-text__body ch-anim">むやみに介入しすぎず、その子が自分で答えを見つける場面をつくる。それが一般的な預かり施設との一番の違いです。</p>
+    </section>
 
-    <!-- ⑥ コピー 3 -->
-    <div class="ch-copy ch-anim">
-      <p class="ch-copy__lead">専門スタッフが、<br>深く観て、<br>そっとそばにいる。</p>
-      <p class="ch-copy__body">むやみに介入しすぎず、その子が自分で答えを見つける場面をつくる。それが一般的な預かり施設との一番の違いです。</p>
-    </div>
+    <!-- [5] 写真 3 -->
+    <section class="ch-section ch-photo" style="z-index:5" data-idx="4" data-dark="1">
+      <img class="ch-photo__img" src="./3.webp" alt="PCで学ぶこども" loading="lazy" />
+      <div class="ch-photo__grad"></div>
+    </section>
 
-    <!-- ⑦ CTA -->
-    <div class="ch-cta ch-anim">
-      <p>まずはお気軽にご相談・見学のお申し込みをどうぞ。<br>受給者証の取得からサポートします。</p>
-      <a href="./contact.html" class="ch-cta__btn">見学・お問い合わせ ›</a>
-    </div>
+    <!-- [6] CTA -->
+    <section class="ch-section ch-cta" style="z-index:6" data-idx="5">
+      <p class="ch-anim">まずはお気軽にご相談・見学のお申し込みをどうぞ。<br>受給者証の取得からサポートします。</p>
+      <a href="./contact.html" class="ch-cta__btn ch-anim">見学・お問い合わせ ›</a>
+    </section>
 
   </main>
 
@@ -251,15 +230,12 @@
            target="_blank" rel="noopener">場所を見る</a>
       </div>
     </div>
-
     <div class="side-map-wrap">
       <iframe
         src="https://maps.google.com/maps?q=〒700-0976+岡山県岡山市北区辰巳26-102&output=embed&z=17&hl=ja"
         title="LITTLE BLUE MOUSE 児童発達支援 辰巳"
-        loading="lazy"
-        allowfullscreen></iframe>
+        loading="lazy" allowfullscreen></iframe>
     </div>
-
     <a href="./contact.html" class="side-cta">
       見学・お問い合わせ
       <span class="side-cta__icon">›</span>
@@ -268,19 +244,55 @@
   </aside>
 
 </div>
+
+<!-- 進行ドット -->
+<div class="ch-dots" id="ch-dots">
+  <span class="ch-dot active"></span>
+  <span class="ch-dot"></span>
+  <span class="ch-dot"></span>
+  <span class="ch-dot"></span>
+  <span class="ch-dot"></span>
+  <span class="ch-dot"></span>
+</div>
+
 <script src="./layout.js"></script>
 <script>
 (function () {
-  var observer = new IntersectionObserver(function (entries) {
+  'use strict';
+
+  var sections = Array.from(document.querySelectorAll('.ch-section'));
+  var dotEls   = Array.from(document.querySelectorAll('.ch-dot'));
+  var dotsWrap = document.getElementById('ch-dots');
+  var n        = sections.length;
+  var seen     = sections.map(function () { return false; });
+
+  /* ---- テキスト入場（IntersectionObserver） ---- */
+  var obs = new IntersectionObserver(function (entries) {
     entries.forEach(function (entry) {
       if (!entry.isIntersecting) return;
-      entry.target.classList.add('is-visible');
-      observer.unobserve(entry.target);
+      var idx = +entry.target.getAttribute('data-idx');
+      if (seen[idx]) return;
+      seen[idx] = true;
+      var els = Array.from(entry.target.querySelectorAll('.ch-anim'));
+      els.forEach(function (el, i) {
+        setTimeout(function () { el.classList.add('is-visible'); }, i * 120);
+      });
     });
-  }, { threshold: 0.1 });
-  document.querySelectorAll('.ch-anim').forEach(function (el) {
-    observer.observe(el);
-  });
+  }, { threshold: 0.3 });
+
+  sections.forEach(function (s) { obs.observe(s); });
+
+  /* ---- ドット更新 ---- */
+  function updateDots () {
+    var vh = window.innerHeight;
+    var ai = Math.min(Math.round(window.pageYOffset / vh), n - 1);
+    dotEls.forEach(function (d, j) { d.classList.toggle('active', j === ai); });
+    if (dotsWrap) {
+      dotsWrap.classList.toggle('dark', !!sections[ai].getAttribute('data-dark'));
+    }
+  }
+  window.addEventListener('scroll', updateDots, { passive: true });
+  updateDots();
 })();
 </script>
 </body>
