@@ -970,9 +970,14 @@ document.querySelectorAll('.side-loc-tab').forEach(function(btn) {
     badge.style.left = x + 'px';
     badge.style.top  = y + 'px';
 
-    displayScale += (targetScale - displayScale) * snapSpeed;
-    if (Math.abs(displayScale - targetScale) < 0.003) displayScale = targetScale;
-    badge.style.transform = 'scale(' + displayScale.toFixed(3) + ')';
+    if (blinking) {
+      displayScale += (targetScale - displayScale) * snapSpeed;
+      if (Math.abs(displayScale - targetScale) < 0.003) displayScale = targetScale;
+      badge.style.transform = 'scale(' + displayScale.toFixed(3) + ')';
+    } else {
+      displayScale = 1;
+      badge.style.transform = 'scale(1)';
+    }
 
     requestAnimationFrame(bounce);
   }
