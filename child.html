@@ -7,7 +7,7 @@
   <title>児童発達支援 | BLUE MOUSE</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Noto+Sans+JP:wght@400;500;700&family=Zen+Kaku+Gothic+New:wght@300;400;500;700&family=Zen+Maru+Gothic:wght@500;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Noto+Sans+JP:wght@400;500;700&family=Zen+Kaku+Gothic+New:wght@300;400;500;700&family=Zen+Kurenaido&family=Zen+Maru+Gothic:wght@500;700&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="./layout.css?v=37" />
   <style>
     /* ===== 児童発達支援 リニューアル ===== */
@@ -43,17 +43,25 @@
       font-weight: 500;
       letter-spacing: .28em;
       text-transform: uppercase;
-      color: rgba(255,255,255,.58);
-      margin-bottom: 16px;
+      color: rgba(255,255,255,.55);
+      margin-bottom: 14px;
+    }
+    .ch-hero__label {
+      font-family: "Zen Kaku Gothic New", "Noto Sans JP", sans-serif;
+      font-size: clamp(0.75rem, 1.2vw, 1rem);
+      font-weight: 400;
+      color: rgba(255,255,255,.65);
+      letter-spacing: .18em;
+      margin: 0 0 20px;
     }
     .ch-hero__title {
-      font-family: "Zen Kaku Gothic New", "Noto Sans JP", sans-serif;
-      font-size: clamp(3.4rem, 6.5vw, 7rem);
-      font-weight: 700;
-      color: #fff;
-      line-height: 1.05;
+      font-family: "Zen Kurenaido", "Noto Sans JP", sans-serif;
+      font-size: clamp(2rem, 3.8vw, 3.8rem);
+      font-weight: 400;
+      color: rgba(255,254,251,0.88);
+      line-height: 1.4;
       margin: 0;
-      letter-spacing: -.01em;
+      letter-spacing: .12em;
     }
 
     /* フルブリード写真（2枚目以降） */
@@ -183,14 +191,9 @@
       <img src="./5.webp" alt="児童発達支援" />
       <div class="ch-hero__overlay">
         <p class="ch-hero__eyebrow">Child Development Support</p>
-        <h1 class="ch-hero__title">児童発達支援</h1>
+        <p class="ch-hero__label">児童発達支援</p>
+        <h1 class="ch-hero__title">土台となる<br>「見えない力」は、<br>こどもが自ら育む。</h1>
       </div>
-    </div>
-
-    <!-- ② コピー 1 -->
-    <div class="ch-copy ch-anim">
-      <p class="ch-copy__lead">土台となる<br>「見えない力」は、<br>こどもが自ら育む。</p>
-      <p class="ch-copy__body">自己効力感と折れない心——目に見えないその土台こそが、10年後の経済的自立を支える確かな根っこになる。</p>
     </div>
 
     <!-- ③ 写真 2 -->
