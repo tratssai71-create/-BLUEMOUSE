@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="theme-color" content="#FFFEFB" />
+  <meta name="theme-color" content="#1a1a1a" />
   <title>放課後等デイサービス | BLUE MOUSE</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -11,66 +11,78 @@
   <link rel="stylesheet" href="./layout.css?v=37" />
   <style>
     /*
-      描画の考え方:
-        - 全7セクションを position:fixed でビューポートに重ねる
-        - JS が「今見ている1枚」＋「次にスライドインする1枚」だけ visibility:visible
-        - それ以外の5枚は visibility:hidden → ブラウザが描画を完全スキップ
-        - スクロールは window を使うため bm-main を overflow:visible に上書き
-        - bm-layout の transform アニメーションは fixed の containing block になるので無効化
+      sticky スタックが動く条件:
+        position:sticky は「スクロールコンテナ」の祖先に overflow:hidden/auto/scroll が
+        あると壊れる。layout.css で .bm-main{overflow-x:hidden} が設定されているため、
+        CSS仕様により overflow-y が auto に強制され .bm-main がスクロールコンテナになる。
+        overflow:visible に上書きすることで window がスクロールコンテナになり sticky が動く。
+        bm-layout の transform アニメーションも containing block を作るので無効化。
     */
     .bm-layout { animation: none !important; }
     .bm-main   { padding: 0 !important; overflow: visible !important; }
 
-    /* --- セクション共通 --- */
+    /* ===== 全セクション共通 ===== */
     .as-section {
-      position: fixed;
+      position: sticky;
       top: 0;
-      left: 25vw;
-      width: 50vw;
       height: 100vh;
       height: 100svh;
+      width: 100%;
       overflow: hidden;
-      visibility: hidden;   /* JS が 2 枚だけ visible にする */
+      /* z-index : inline で 1〜7 指定。後のセクションが前のセクションの上に重なる */
     }
-    /* JS 起動前に最初のセクションだけ見せる（FOUC 防止） */
-    .as-section[data-idx="0"] { visibility: visible; }
 
-    /* --- 写真セクション --- */
+    /* ===== [1] ヒーロー：背景＋テキストのみ ===== */
+    .as-hero {
+      background: #0f0f0f;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      padding: 56px 52px;
+    }
+    .as-hero__eyebrow {
+      font-family: "Inter", sans-serif;
+      font-size: 10px; font-weight: 500;
+      letter-spacing: .28em; text-transform: uppercase;
+      color: rgba(255,255,255,.38);
+      margin-bottom: 14px;
+    }
+    .as-hero__label {
+      font-family: "Zen Kaku Gothic New","Noto Sans JP",sans-serif;
+      font-size: clamp(.72rem,1.0vw,.9rem); font-weight: 400;
+      color: rgba(255,255,255,.5);
+      letter-spacing: .18em; margin: 0 0 18px;
+    }
+    .as-hero__title {
+      font-family: "Zen Kurenaido","Noto Sans JP",sans-serif;
+      font-size: clamp(2.2rem,4.2vw,4.6rem); font-weight: 400;
+      color: rgba(255,254,251,.88);
+      line-height: 1.4; margin: 0; letter-spacing: .1em;
+    }
+    /* 右下に薄いアクセントライン */
+    .as-hero::after {
+      content: '';
+      position: absolute;
+      bottom: 0; right: 0;
+      width: 38%; height: 3px;
+      background: linear-gradient(to left, #FE8C68, transparent);
+    }
+
+    /* ===== 写真セクション ===== */
     .as-photo { background: #111; }
     .as-photo__img {
       position: absolute;
-      inset: 0; width: 100%; height: 115%; top: -7.5%;
+      inset: 0; width: 100%; height: 100%;
       object-fit: cover; object-position: center; display: block;
     }
     .as-photo__img.pos-center { object-position: center 40%; }
     .as-photo__grad {
       position: absolute; inset: 0;
-      background: linear-gradient(to bottom, transparent 30%, rgba(0,0,0,.58) 100%);
+      background: linear-gradient(to bottom, transparent 35%, rgba(0,0,0,.52) 100%);
       pointer-events: none;
     }
-    .as-photo__copy {
-      position: absolute; bottom: 0; left: 0; right: 0;
-      padding: 56px 52px;
-      display: flex; flex-direction: column;
-    }
-    .as-photo__eyebrow {
-      font-family: "Inter", sans-serif;
-      font-size: 10px; font-weight: 500;
-      letter-spacing: .28em; text-transform: uppercase;
-      color: rgba(255,255,255,.48); margin-bottom: 14px;
-    }
-    .as-photo__label {
-      font-family: "Zen Kaku Gothic New","Noto Sans JP",sans-serif;
-      font-size: clamp(.72rem,1.0vw,.9rem); font-weight: 400;
-      color: rgba(255,255,255,.6); letter-spacing: .18em; margin: 0 0 18px;
-    }
-    .as-photo__title {
-      font-family: "Zen Kurenaido","Noto Sans JP",sans-serif;
-      font-size: clamp(1.9rem,3.3vw,3.4rem); font-weight: 400;
-      color: rgba(255,254,251,.92); line-height: 1.5; margin: 0; letter-spacing: .12em;
-    }
 
-    /* --- テキストセクション --- */
+    /* ===== テキストセクション ===== */
     .as-text {
       background: #FFFEFB;
       display: flex; flex-direction: column; justify-content: center;
@@ -84,7 +96,8 @@
     .as-text__lead {
       font-family: "Zen Kaku Gothic New","Noto Sans JP",sans-serif;
       font-size: clamp(2.0rem,3.8vw,4.2rem); font-weight: 700;
-      color: #1d1d1f; line-height: 1.35; margin: 0 0 36px; letter-spacing: -.015em;
+      color: #1d1d1f; line-height: 1.35;
+      margin: 0 0 36px; letter-spacing: -.015em;
     }
     .as-text__body {
       font-family: "Zen Kaku Gothic New","Noto Sans JP",sans-serif;
@@ -92,7 +105,7 @@
       line-height: 2.15; color: rgba(51,37,26,.52); max-width: 500px;
     }
 
-    /* --- CTA セクション --- */
+    /* ===== CTA セクション ===== */
     .as-cta {
       background: #1a1a1a;
       display: flex; flex-direction: column; justify-content: center;
@@ -106,7 +119,8 @@
     .as-cta__lead {
       font-family: "Zen Kaku Gothic New","Noto Sans JP",sans-serif;
       font-size: clamp(1.9rem,3.6vw,3.8rem); font-weight: 700;
-      color: rgba(255,254,251,.92); line-height: 1.32; margin: 0 0 52px; letter-spacing: -.015em;
+      color: rgba(255,254,251,.92); line-height: 1.32;
+      margin: 0 0 52px; letter-spacing: -.015em;
     }
     .as-cta__btn {
       display: inline-flex; align-items: center; gap: 14px;
@@ -118,19 +132,21 @@
     }
     .as-cta__btn:hover { transform: translateY(-4px); opacity: .82; }
 
-    /* --- 入場アニメーション --- */
+    /* ===== 入場アニメーション ===== */
     .as-anim {
       opacity: 0;
-      transform: translateY(36px);
+      transform: translateY(32px);
       transition: opacity .9s cubic-bezier(.22,1,.36,1),
                   transform .9s cubic-bezier(.22,1,.36,1);
     }
     .as-anim.is-visible { opacity: 1; transform: none; }
 
-    /* --- 進行ドット --- */
+    /* ===== 進行ドット ===== */
     .as-dots {
-      position: fixed; right: calc(25vw + 20px); top: 50%;
-      transform: translateY(-50%); z-index: 500;
+      position: fixed;
+      right: calc(25vw + 20px); top: 50%;
+      transform: translateY(-50%);
+      z-index: 500;
       display: flex; flex-direction: column; gap: 11px;
       pointer-events: none;
     }
@@ -143,13 +159,12 @@
     .as-dots.dark .as-dot        { background: rgba(255,255,255,.28); }
     .as-dots.dark .as-dot.active { background: rgba(255,255,255,.92); }
 
-    /* --- モバイル --- */
+    /* ===== モバイル ===== */
     @media (max-width: 780px) {
-      .as-section { left: 0 !important; width: 100vw !important; }
-      .as-photo__copy { padding: 36px 22px; }
-      .as-text { padding: 0 22px; }
-      .as-cta  { padding: 0 22px; }
-      .as-dots { display: none; }
+      .as-hero  { padding: 36px 22px; }
+      .as-text  { padding: 0 22px; }
+      .as-cta   { padding: 0 22px; }
+      .as-dots  { display: none; }
     }
   </style>
 </head>
@@ -174,15 +189,11 @@
   <!-- ===== メイン ===== -->
   <main class="bm-main">
 
-    <!-- [1] ヒーロー写真 -->
-    <section class="as-section as-photo" style="z-index:1" data-idx="0" data-dark="1">
-      <img class="as-photo__img pos-center" src="./photos/hokago_opt.jpg" alt="放課後等デイサービス" />
-      <div class="as-photo__grad"></div>
-      <div class="as-photo__copy">
-        <p class="as-photo__eyebrow as-anim">Afterschool Day Service</p>
-        <p class="as-photo__label  as-anim">放課後等デイサービス</p>
-        <h1 class="as-photo__title as-anim">強みとなる<br>「見える力」は、<br>伴走者と共に育む。</h1>
-      </div>
+    <!-- [1] ヒーロー：背景＋テキストのみ（写真なし） -->
+    <section class="as-section as-hero" style="z-index:1" data-idx="0" data-dark="1">
+      <p class="as-hero__eyebrow as-anim">Afterschool Day Service</p>
+      <p class="as-hero__label  as-anim">放課後等デイサービス</p>
+      <h1 class="as-hero__title as-anim">強みとなる<br>「見える力」は、<br>伴走者と共に育む。</h1>
     </section>
 
     <!-- [2] テキスト 1 -->
@@ -192,10 +203,10 @@
       <p class="as-text__body as-anim">学校では教えてくれないスキルがある。ITの力、社会性、自分で考える力——放課後の積み重ねが、経済的自立への確かな一歩になります。</p>
     </section>
 
-    <!-- [3] 写真 2 -->
+    <!-- [3] 写真 -->
     <section class="as-section as-photo" style="z-index:3" data-idx="2" data-dark="1">
       <img class="as-photo__img" src="./3.webp" alt="IT療育" loading="lazy" />
-      <div class="as-photo__grad" style="background:linear-gradient(to bottom,transparent 45%,rgba(0,0,0,.42) 100%)"></div>
+      <div class="as-photo__grad"></div>
     </section>
 
     <!-- [4] テキスト 2 -->
@@ -205,10 +216,10 @@
       <p class="as-text__body as-anim">プログラミング・PCスキル・デジタル表現——就労で求められる力を、楽しみながら本物の環境で身につけます。</p>
     </section>
 
-    <!-- [5] 写真 3 -->
+    <!-- [5] 写真 2 -->
     <section class="as-section as-photo" style="z-index:5" data-idx="4" data-dark="1">
-      <img class="as-photo__img" src="./photos/riku_opt.jpg" alt="スタッフ" loading="lazy" />
-      <div class="as-photo__grad" style="background:linear-gradient(to bottom,transparent 45%,rgba(0,0,0,.42) 100%)"></div>
+      <img class="as-photo__img pos-center" src="./photos/riku_opt.jpg" alt="スタッフ" loading="lazy" />
+      <div class="as-photo__grad"></div>
     </section>
 
     <!-- [6] テキスト 3 -->
@@ -224,9 +235,6 @@
       <p class="as-cta__lead  as-anim">まずは、<br>見学に来てください。</p>
       <a href="./contact.html" class="as-cta__btn as-anim">見学・お問い合わせ ›</a>
     </section>
-
-    <!-- sections が fixed で高さを作らないため、スクロール量を確保するスペーサー -->
-    <div id="as-spacer"></div>
 
   </main>
 
@@ -287,93 +295,36 @@
   var sections = Array.from(document.querySelectorAll('.as-section'));
   var dotEls   = Array.from(document.querySelectorAll('.as-dot'));
   var dotsWrap = document.getElementById('as-dots');
-  var spacer   = document.getElementById('as-spacer');
-  var n        = sections.length;       /* 7 */
+  var n        = sections.length;
+  var seen     = sections.map(function () { return false; });
 
-  var vh      = window.innerHeight;
-  var ticking = false;
-  var seen    = sections.map(function () { return false; });
-
-  /* ---- スペーサーでスクロール距離を確保 ----
-     section 0 に留まる 1vh + section 1〜6 が各 1vh で入る = n * vh
-     scrollable = spacer_height（fixed sections は高さを作らない）       */
-  function setup () {
-    vh = window.innerHeight;
-    spacer.style.height = (n * vh) + 'px';
-  }
-
-  /* ---- メイン描画ループ（rAF から呼ばれる） ---- */
-  function draw () {
-    ticking = false;
-    var st = window.pageYOffset;
-    vh = window.innerHeight;
-
-    /*
-      baseIdx : 今画面に完全に映っているセクション
-      nextIdx : 下から入ってくるセクション（baseIdx + 1）
-      progress: 0（まだ入ってない）〜 1（完全に入った）
-      nextTy  : 次セクションの translateY (px)  vh→0 で滑り込む
-    */
-    var baseIdx = Math.min(Math.floor(st / vh), n - 2);
-    var progress = Math.min(st / vh - baseIdx, 1);
-    var nextIdx  = baseIdx + 1;
-    var nextTy   = Math.round(vh * (1 - progress));
-
-    sections.forEach(function (s, i) {
-      if (i === baseIdx) {
-        s.style.visibility = '';
-        s.style.transform  = 'translateY(0)';
-      } else if (i === nextIdx) {
-        s.style.visibility = '';
-        s.style.transform  = 'translateY(' + nextTy + 'px)';
-      } else {
-        /* それ以外は完全に描画スキップ */
-        s.style.visibility = 'hidden';
-        /* transform は触らない（余計な仕事をさせない） */
-      }
+  /* ---- テキスト入場（IntersectionObserver：スクロール計算ゼロ） ---- */
+  var obs = new IntersectionObserver(function (entries) {
+    entries.forEach(function (entry) {
+      if (!entry.isIntersecting) return;
+      var idx = +entry.target.getAttribute('data-idx');
+      if (seen[idx]) return;
+      seen[idx] = true;
+      var els = Array.from(entry.target.querySelectorAll('.as-anim'));
+      els.forEach(function (el, i) {
+        setTimeout(function () { el.classList.add('is-visible'); }, i * 120);
+      });
     });
+  }, { threshold: 0.3 });
 
-    /* テキスト入場アニメーション */
-    if (!seen[baseIdx]) {
-      seen[baseIdx] = true;
-      animateIn(sections[baseIdx]);
-    }
-    if (!seen[nextIdx] && progress > 0.55) {
-      seen[nextIdx] = true;
-      animateIn(sections[nextIdx]);
-    }
+  sections.forEach(function (s) { obs.observe(s); });
 
-    /* ドット */
-    var ai = progress > 0.5 ? nextIdx : baseIdx;
+  /* ---- ドット更新（数値演算のみ・DOM transform なし） ---- */
+  function updateDots () {
+    var vh = window.innerHeight;
+    var ai = Math.min(Math.round(window.pageYOffset / vh), n - 1);
     dotEls.forEach(function (d, j) { d.classList.toggle('active', j === ai); });
     if (dotsWrap) {
       dotsWrap.classList.toggle('dark', !!sections[ai].getAttribute('data-dark'));
     }
   }
-
-  /* ---- テキスト入場アニメーション ---- */
-  function animateIn (section) {
-    var els = Array.from(section.querySelectorAll('.as-anim'));
-    els.forEach(function (el, i) {
-      setTimeout(function () { el.classList.add('is-visible'); }, 60 + i * 110);
-    });
-  }
-
-  /* ---- 起動 ---- */
-  setup();
-  draw();
-
-  /* 最初のセクションのテキストはすぐにアニメ */
-  setTimeout(function () {
-    seen[0] = true;
-    animateIn(sections[0]);
-  }, 250);
-
-  window.addEventListener('scroll', function () {
-    if (!ticking) { requestAnimationFrame(draw); ticking = true; }
-  }, { passive: true });
-
-  window.addEventListener('resize', function () { setup(); draw(); });
+  window.addEventListener('scroll', updateDots, { passive: true });
+  updateDots();
 })();
 </script>
 </body>
