@@ -25,7 +25,7 @@ h1, h2, h3, h4, h5, h6 {
   font-family: var(--font-heading);
   font-weight: normal; /* W6 は書体自体が太いため normal で十分 */
 }
-h2 { letter-spacing: 1.3em; }
+h2 { letter-spacing: .12em; }
 
 /* 英数字が主体の要素 → Inter */
 .bm-copy,
@@ -930,7 +930,7 @@ h2 { letter-spacing: 1.3em; }
 
 /* ===== レスポンシブ ===== */
 @media (max-width: 780px) {
-  h2 { letter-spacing: 2.0em; }
+  h2 { letter-spacing: .16em; }
 
 
   .bm-layout { grid-template-columns: 1fr; }
