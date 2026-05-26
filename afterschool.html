@@ -246,7 +246,7 @@
 
     <!-- [3] 写真 2 -->
     <section class="as-section as-photo" style="z-index:3" data-idx="2" data-dark="1">
-      <img class="as-photo__img" src="./3.webp" alt="IT療育" />
+      <img class="as-photo__img" src="./3.webp" alt="IT療育" loading="lazy" />
       <div class="as-photo__grad" style="background:linear-gradient(to bottom,transparent 45%,rgba(0,0,0,.42) 100%)"></div>
     </section>
 
@@ -259,7 +259,7 @@
 
     <!-- [5] 写真 3 -->
     <section class="as-section as-photo" style="z-index:5" data-idx="4" data-dark="1">
-      <img class="as-photo__img" src="./photos/riku_opt.jpg" alt="スタッフ" />
+      <img class="as-photo__img" src="./photos/riku_opt.jpg" alt="スタッフ" loading="lazy" />
       <div class="as-photo__grad" style="background:linear-gradient(to bottom,transparent 45%,rgba(0,0,0,.42) 100%)"></div>
     </section>
 
@@ -336,129 +336,127 @@
 (function () {
   'use strict';
 
-  var sections  = Array.from(document.querySelectorAll('.as-section'));
-  var dotEls    = Array.from(document.querySelectorAll('.as-dot'));
-  var dotsWrap  = document.getElementById('as-dots');
-  var spacer    = document.getElementById('as-spacer');
-  var n         = sections.length;
+  var sections = Array.from(document.querySelectorAll('.as-section'));
+  var dotEls   = Array.from(document.querySelectorAll('.as-dot'));
+  var dotsWrap = document.getElementById('as-dots');
+  var spacer   = document.getElementById('as-spacer');
+  var n        = sections.length;
 
-  /* アニメーション済みフラグ（最初のセクションはすぐにアニメ） */
+  /* キャッシュ */
+  var vh      = window.innerHeight;
+  var ticking = false;
+  var prevTy  = sections.map(function (_, i) { return i === 0 ? 0 : vh; });
   var animated = sections.map(function (_, i) { return i === 0; });
 
-  /* ---- スペーサー高さを設定（sections は fixed で高さを作らないため） ----
-     スクロール距離 = (n + 1) * vh
-       - 最初の1vhは section[0] に留まる時間
-       - その後 section[1]〜section[n-1] が1つずつスライドイン
-       スペーサー高さ = スクロール距離 + vh（viewport分） = (n + 1) * vh + vh = (n + 2) * vh
-     実際は (n + 1) * windowHeight で十分 */
+  /* ---- スペーサー：sections は fixed なので自分で高さを作らない ----
+     必要なスクロール距離 = n * vh（section[0]の留まり1vh + 残り n-1 回のスライドイン）
+     scrollable = spacer_height（sections が fixed でカラム内に高さを作らないため）
+     なので spacer = n * vh                                              */
   function setup() {
-    var vh = window.innerHeight;
-    spacer.style.height = ((n + 1) * vh) + 'px';
+    vh = window.innerHeight;
+    spacer.style.height = (n * vh) + 'px';
+    /* prevTy を強制リセット（リサイズ時） */
+    for (var k = 0; k < n; k++) prevTy[k] = -9999;
   }
 
-  /* ---- スクロール処理 ---- */
-  function update() {
+  /* ---- メイン描画（rAF 内で実行） ---- */
+  function draw() {
+    ticking = false;
     var scrollTop = window.pageYOffset;
-    var vh = window.innerHeight;
 
     sections.forEach(function (section, i) {
       var ty;
-
       if (i === 0) {
-        /* 最初のセクションは常にトップに固定 */
         ty = 0;
       } else {
-        /*
-          セクション i は scroll = [i*vh, (i+1)*vh] の間にスライドイン:
-            enterStart = i * vh  → translateY = vh（まだ画面外）
-            enterEnd   = (i+1)*vh → translateY = 0（完全に入った）
-        */
-        var enterStart = i * vh;
-        var enterEnd   = (i + 1) * vh;
-
-        if (scrollTop <= enterStart) {
+        /* section i : scroll [i*vh, (i+1)*vh] でスライドイン */
+        var es = i * vh;
+        var ee = (i + 1) * vh;
+        if (scrollTop <= es) {
           ty = vh;
-        } else if (scrollTop >= enterEnd) {
+        } else if (scrollTop >= ee) {
           ty = 0;
         } else {
-          ty = enterEnd - scrollTop;
+          ty = ee - scrollTop;
         }
       }
 
-      section.style.transform = 'translateY(' + ty + 'px)';
+      /* 変化がある時だけ DOM を触る */
+      if (Math.abs(ty - prevTy[i]) > 0.2) {
+        prevTy[i] = ty;
+        section.style.transform = 'translateY(' + Math.round(ty) + 'px)';
+      }
 
-      /* テキスト入場アニメーション：50%以上スライドインしたら発火 */
+      /* テキスト入場：50% 以上スライドインで発火 */
       if (!animated[i] && ty < vh * 0.5) {
         animated[i] = true;
         animateIn(section);
       }
     });
 
-    /* ドット更新：最も手前（z-index高）の表示セクションをアクティブに */
-    var activeIdx = Math.min(
-      Math.floor((scrollTop + window.innerHeight * 0.5) / window.innerHeight),
-      n - 1
-    );
-    dotEls.forEach(function (d, j) {
-      d.classList.toggle('active', j === activeIdx);
-    });
+    /* ドット */
+    var ai = Math.min(Math.floor((scrollTop + vh * 0.5) / vh), n - 1);
+    dotEls.forEach(function (d, j) { d.classList.toggle('active', j === ai); });
     if (dotsWrap) {
-      dotsWrap.classList.toggle('dark', !!sections[activeIdx].getAttribute('data-dark'));
+      dotsWrap.classList.toggle('dark', !!sections[ai].getAttribute('data-dark'));
+    }
+  }
+
+  /* ---- スクロールハンドラ：rAF でスロットリング ---- */
+  function onScroll() {
+    if (!ticking) {
+      requestAnimationFrame(draw);
+      ticking = true;
     }
   }
 
   /* ---- テキスト入場アニメーション ---- */
   function animateIn(section) {
     var els = Array.from(section.querySelectorAll(
-      '.as-text__num, .as-text__lead, .as-text__body,' +
-      '.as-cta__label, .as-cta__lead, .as-cta__btn,' +
-      '.as-photo__eyebrow, .as-photo__label, .as-photo__title'
+      '.as-text__num,.as-text__lead,.as-text__body,' +
+      '.as-cta__label,.as-cta__lead,.as-cta__btn,' +
+      '.as-photo__eyebrow,.as-photo__label,.as-photo__title'
     ));
     els.forEach(function (el, i) {
-      /* まず瞬時に初期状態へ */
       el.style.transition = 'none';
       el.style.opacity    = '0';
-      el.style.transform  = 'translateY(52px)';
-      /* 次フレームでトランジションを付けて動かす */
-      requestAnimationFrame(function () {
-        requestAnimationFrame(function () {
-          var delay = i * 0.12;
-          el.style.transition =
-            'opacity 0.9s cubic-bezier(.22,1,.36,1) ' + delay + 's,' +
-            'transform 0.9s cubic-bezier(.22,1,.36,1) ' + delay + 's';
-          el.style.opacity   = '1';
-          el.style.transform = 'translateY(0)';
-        });
-      });
+      el.style.transform  = 'translateY(44px)';
+      /* 1フレーム後にトランジションを有効化 */
+      var delay = i * 110;
+      setTimeout(function () {
+        el.style.transition =
+          'opacity 0.85s cubic-bezier(.22,1,.36,1) ' + (delay / 1000) + 's,' +
+          'transform 0.85s cubic-bezier(.22,1,.36,1) ' + (delay / 1000) + 's';
+        el.style.opacity   = '1';
+        el.style.transform = 'translateY(0)';
+      }, 20 + delay);
     });
   }
 
-  /* ---- 初期化 ----
-     セクション2以降のテキストを非表示にしておく */
+  /* ---- 初期化 ---- */
   function init() {
+    /* section 2 以降のテキストを非表示 */
     sections.forEach(function (section, i) {
       if (i === 0) return;
-      var els = section.querySelectorAll(
-        '.as-text__num, .as-text__lead, .as-text__body,' +
-        '.as-cta__label, .as-cta__lead, .as-cta__btn,' +
-        '.as-photo__eyebrow, .as-photo__label, .as-photo__title'
-      );
-      els.forEach(function (el) {
+      section.querySelectorAll(
+        '.as-text__num,.as-text__lead,.as-text__body,' +
+        '.as-cta__label,.as-cta__lead,.as-cta__btn,' +
+        '.as-photo__eyebrow,.as-photo__label,.as-photo__title'
+      ).forEach(function (el) {
         el.style.opacity   = '0';
-        el.style.transform = 'translateY(52px)';
+        el.style.transform = 'translateY(44px)';
       });
     });
-
     /* 最初のセクションはすぐにアニメ */
-    setTimeout(function () { animateIn(sections[0]); }, 180);
+    setTimeout(function () { animateIn(sections[0]); }, 200);
   }
 
   /* ---- 起動 ---- */
   setup();
   init();
-  update();
-  window.addEventListener('scroll', update, { passive: true });
-  window.addEventListener('resize', function () { setup(); update(); });
+  draw();
+  window.addEventListener('scroll', onScroll, { passive: true });
+  window.addEventListener('resize', function () { setup(); draw(); });
 })();
 </script>
 </body>
