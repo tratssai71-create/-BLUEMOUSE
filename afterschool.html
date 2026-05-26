@@ -331,18 +331,34 @@
 
   sections.forEach(function (s) { obs.observe(s); });
 
-  /* ---- ドット更新（スクロールリスナー：数値計算のみ、DOM書き換えなし）  ---- */
-  function updateDots() {
-    var s  = window.pageYOffset;
+  /* ---- スクロール更新（rAF スロットリング） ---- */
+  var ticking = false;
+
+  function onFrame() {
+    ticking = false;
+    var st = window.pageYOffset;
     var vh = window.innerHeight;
-    var ai = Math.min(Math.round(s / vh), n - 1);
+    var ai = Math.min(Math.round(st / vh), n - 1);
+
+    /* ドット */
     dotEls.forEach(function (d, j) { d.classList.toggle('active', j === ai); });
     if (dotsWrap) {
       dotsWrap.classList.toggle('dark', !!sections[ai].getAttribute('data-dark'));
     }
+
+    /* 描画最適化：現在セクションとその1枚下だけ visible、それ以外は hidden で
+       ブラウザの合成コストをカット。上スクロール時も ai-1 は常に visible なので
+       セクションが突然消えることはない。                                        */
+    sections.forEach(function (s, i) {
+      s.style.visibility = (i >= ai - 1) ? '' : 'hidden';
+    });
   }
-  window.addEventListener('scroll', updateDots, { passive: true });
-  updateDots();
+
+  window.addEventListener('scroll', function () {
+    if (!ticking) { requestAnimationFrame(onFrame); ticking = true; }
+  }, { passive: true });
+
+  onFrame(); /* 初期状態 */
 })();
 </script>
 </body>
