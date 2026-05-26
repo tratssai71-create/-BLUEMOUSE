@@ -10,28 +10,34 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Noto+Sans+JP:wght@400;500;700&family=Zen+Kaku+Gothic+New:wght@300;400;500;700&family=Zen+Kurenaido&family=Zen+Maru+Gothic:wght@500;700&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="./layout.css?v=37" />
   <style>
-    /* bm-layout の入場アニメーションを無効化（transform が fixed の containing block になるため） */
+    /*
+      stacking scroll のしくみ:
+        position:sticky + top:0 を全セクションに付ける。
+        各セクションは自分の高さ(100vh)分だけ通常フローに存在するので
+        ページ全体の高さ = n × 100vh になる。
+        スクロールが進むと後のセクション(z-index高)が前のセクションの上に
+        スライドして重なり、sticky で top:0 に貼り付く。
+        → JavaScript でスクロールを一切触らない＝負荷ゼロ。
+
+      sticky が壊れる原因:
+        .bm-main の overflow-x:hidden が overflow-y:auto を引き起こし
+        .bm-main がスクロールコンテナになってしまう。
+        overflow:visible で上書きすると window がスクロールコンテナになり sticky が動く。
+        .bm-layout の animation(transform)も containing block 問題を起こすので無効化。
+    */
+
     .bm-layout { animation: none !important; }
+    .bm-main   { padding: 0 !important; overflow: visible !important; }
 
-    /* bm-main のパディングをリセット */
-    .bm-main { padding: 0 !important; }
-
-    /* ===== セクション：position: fixed で中央カラムに固定 ===== */
+    /* ===== 各セクション ===== */
     .as-section {
-      position: fixed;
+      position: sticky;
       top: 0;
-      left: 25vw;
-      width: 50vw;
       height: 100vh;
       height: 100svh;
+      width: 100%;
       overflow: hidden;
-      /* z-index は inline style で指定 */
-      /* JS が translateY を制御 */
-    }
-
-    /* ページ読み込み時：セクション2以降は画面外（下）に置く */
-    .as-section:not(:first-child) {
-      transform: translateY(100vh);
+      /* z-index は inline style で 1〜7 指定 */
     }
 
     /* ===== 写真セクション ===== */
@@ -46,8 +52,8 @@
       object-position: center;
       display: block;
     }
-    .as-photo__img.pos-top    { object-position: center top; }
     .as-photo__img.pos-center { object-position: center 40%; }
+    .as-photo__img.pos-top    { object-position: center top; }
 
     .as-photo__grad {
       position: absolute;
@@ -55,7 +61,6 @@
       background: linear-gradient(to bottom, transparent 30%, rgba(0,0,0,.58) 100%);
       pointer-events: none;
     }
-
     .as-photo__copy {
       position: absolute;
       bottom: 0; left: 0; right: 0;
@@ -65,143 +70,113 @@
     }
     .as-photo__eyebrow {
       font-family: "Inter", sans-serif;
-      font-size: 10px;
-      font-weight: 500;
-      letter-spacing: .28em;
-      text-transform: uppercase;
+      font-size: 10px; font-weight: 500;
+      letter-spacing: .28em; text-transform: uppercase;
       color: rgba(255,255,255,.48);
       margin-bottom: 14px;
     }
     .as-photo__label {
       font-family: "Zen Kaku Gothic New", "Noto Sans JP", sans-serif;
-      font-size: clamp(0.72rem, 1.0vw, 0.9rem);
-      font-weight: 400;
+      font-size: clamp(0.72rem, 1.0vw, 0.9rem); font-weight: 400;
       color: rgba(255,255,255,.6);
       letter-spacing: .18em;
       margin: 0 0 18px;
     }
     .as-photo__title {
       font-family: "Zen Kurenaido", "Noto Sans JP", sans-serif;
-      font-size: clamp(1.9rem, 3.3vw, 3.4rem);
-      font-weight: 400;
+      font-size: clamp(1.9rem, 3.3vw, 3.4rem); font-weight: 400;
       color: rgba(255,254,251,.92);
-      line-height: 1.5;
-      margin: 0;
-      letter-spacing: .12em;
+      line-height: 1.5; margin: 0; letter-spacing: .12em;
     }
 
     /* ===== テキストセクション ===== */
     .as-text {
       background: #FFFEFB;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
+      display: flex; flex-direction: column; justify-content: center;
       padding: 0 56px;
     }
     .as-text__num {
       font-family: "Inter", sans-serif;
-      font-size: 11px;
-      letter-spacing: .28em;
-      color: rgba(51,37,26,.22);
-      margin-bottom: 30px;
+      font-size: 11px; letter-spacing: .28em;
+      color: rgba(51,37,26,.22); margin-bottom: 30px;
     }
     .as-text__lead {
       font-family: "Zen Kaku Gothic New", "Noto Sans JP", sans-serif;
-      font-size: clamp(2.0rem, 3.8vw, 4.2rem);
-      font-weight: 700;
-      color: #1d1d1f;
-      line-height: 1.35;
-      margin: 0 0 36px;
-      letter-spacing: -.015em;
+      font-size: clamp(2.0rem, 3.8vw, 4.2rem); font-weight: 700;
+      color: #1d1d1f; line-height: 1.35;
+      margin: 0 0 36px; letter-spacing: -.015em;
     }
     .as-text__body {
       font-family: "Zen Kaku Gothic New", "Noto Sans JP", sans-serif;
-      font-size: clamp(0.9rem, 1.25vw, 1.05rem);
-      font-weight: 400;
-      line-height: 2.15;
-      color: rgba(51,37,26,.52);
-      max-width: 500px;
+      font-size: clamp(0.9rem, 1.25vw, 1.05rem); font-weight: 400;
+      line-height: 2.15; color: rgba(51,37,26,.52); max-width: 500px;
     }
 
     /* ===== CTA セクション ===== */
     .as-cta {
       background: #1a1a1a;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
+      display: flex; flex-direction: column; justify-content: center;
       padding: 0 56px;
     }
     .as-cta__label {
       font-family: "Inter", sans-serif;
-      font-size: 10px;
-      letter-spacing: .32em;
-      text-transform: uppercase;
-      color: rgba(255,255,255,.25);
-      margin-bottom: 22px;
+      font-size: 10px; letter-spacing: .32em; text-transform: uppercase;
+      color: rgba(255,255,255,.25); margin-bottom: 22px;
     }
     .as-cta__lead {
       font-family: "Zen Kaku Gothic New", "Noto Sans JP", sans-serif;
-      font-size: clamp(1.9rem, 3.6vw, 3.8rem);
-      font-weight: 700;
-      color: rgba(255,254,251,.92);
-      line-height: 1.32;
-      margin: 0 0 52px;
-      letter-spacing: -.015em;
+      font-size: clamp(1.9rem, 3.6vw, 3.8rem); font-weight: 700;
+      color: rgba(255,254,251,.92); line-height: 1.32;
+      margin: 0 0 52px; letter-spacing: -.015em;
     }
     .as-cta__btn {
-      display: inline-flex;
-      align-items: center;
-      gap: 14px;
+      display: inline-flex; align-items: center; gap: 14px;
       padding: 22px 56px;
-      background: #FFFEFB;
-      color: #1a1a1a;
+      background: #FFFEFB; color: #1a1a1a;
       font-family: "Zen Maru Gothic", "Noto Sans JP", sans-serif;
-      font-size: 15px;
-      font-weight: 500;
-      border-radius: 999px;
-      text-decoration: none;
-      letter-spacing: .07em;
-      align-self: flex-start;
+      font-size: 15px; font-weight: 500;
+      border-radius: 999px; text-decoration: none;
+      letter-spacing: .07em; align-self: flex-start;
       transition: transform .25s, opacity .25s;
     }
     .as-cta__btn:hover { transform: translateY(-4px); opacity: .82; }
+
+    /* ===== 入場アニメーション ===== */
+    .as-anim {
+      opacity: 0;
+      transform: translateY(36px);
+      transition: opacity .9s cubic-bezier(.22,1,.36,1),
+                  transform .9s cubic-bezier(.22,1,.36,1);
+    }
+    .as-anim.is-visible {
+      opacity: 1;
+      transform: none;
+    }
 
     /* ===== 進行ドット ===== */
     .as-dots {
       position: fixed;
       right: calc(25vw + 20px);
-      top: 50%;
-      transform: translateY(-50%);
+      top: 50%; transform: translateY(-50%);
       z-index: 500;
-      display: flex;
-      flex-direction: column;
-      gap: 11px;
+      display: flex; flex-direction: column; gap: 11px;
       pointer-events: none;
     }
     .as-dot {
-      width: 5px; height: 5px;
-      border-radius: 50%;
+      width: 5px; height: 5px; border-radius: 50%;
       background: rgba(0,0,0,.18);
       transition: background .35s, transform .35s;
     }
-    .as-dot.active {
-      background: #FE8C68;
-      transform: scale(1.8);
-    }
+    .as-dot.active { background: #FE8C68; transform: scale(1.8); }
     .as-dots.dark .as-dot        { background: rgba(255,255,255,.28); }
     .as-dots.dark .as-dot.active { background: rgba(255,255,255,.92); }
 
     /* ===== モバイル ===== */
     @media (max-width: 780px) {
-      .as-section {
-        left: 0 !important;
-        width: 100vw !important;
-        height: 100svh;
-      }
       .as-photo__copy { padding: 36px 22px; }
-      .as-text { padding: 0 22px; }
-      .as-cta  { padding: 0 22px; }
-      .as-dots { display: none; }
+      .as-text  { padding: 0 22px; }
+      .as-cta   { padding: 0 22px; }
+      .as-dots  { display: none; }
     }
   </style>
 </head>
@@ -226,22 +201,22 @@
   <!-- ===== メイン ===== -->
   <main class="bm-main">
 
-    <!-- [1] 写真：ヒーロー -->
+    <!-- [1] ヒーロー写真 -->
     <section class="as-section as-photo" style="z-index:1" data-idx="0" data-dark="1">
       <img class="as-photo__img pos-center" src="./photos/hokago_opt.jpg" alt="放課後等デイサービス" />
       <div class="as-photo__grad"></div>
       <div class="as-photo__copy">
-        <p class="as-photo__eyebrow">Afterschool Day Service</p>
-        <p class="as-photo__label">放課後等デイサービス</p>
-        <h1 class="as-photo__title">強みとなる<br>「見える力」は、<br>伴走者と共に育む。</h1>
+        <p class="as-photo__eyebrow as-anim">Afterschool Day Service</p>
+        <p class="as-photo__label  as-anim">放課後等デイサービス</p>
+        <h1 class="as-photo__title as-anim">強みとなる<br>「見える力」は、<br>伴走者と共に育む。</h1>
       </div>
     </section>
 
     <!-- [2] テキスト 1 -->
     <section class="as-section as-text" style="z-index:2" data-idx="1">
-      <p class="as-text__num">01</p>
-      <p class="as-text__lead">放課後の時間が、<br>10年後の自分を決める。</p>
-      <p class="as-text__body">学校では教えてくれないスキルがある。ITの力、社会性、自分で考える力——放課後の積み重ねが、経済的自立への確かな一歩になります。</p>
+      <p class="as-text__num  as-anim">01</p>
+      <p class="as-text__lead as-anim">放課後の時間が、<br>10年後の自分を決める。</p>
+      <p class="as-text__body as-anim">学校では教えてくれないスキルがある。ITの力、社会性、自分で考える力——放課後の積み重ねが、経済的自立への確かな一歩になります。</p>
     </section>
 
     <!-- [3] 写真 2 -->
@@ -252,9 +227,9 @@
 
     <!-- [4] テキスト 2 -->
     <section class="as-section as-text" style="z-index:4" data-idx="3">
-      <p class="as-text__num">02</p>
-      <p class="as-text__lead">ITスキルを、<br>実践で育てる。</p>
-      <p class="as-text__body">プログラミング・PCスキル・デジタル表現——就労で求められる力を、楽しみながら本物の環境で身につけます。</p>
+      <p class="as-text__num  as-anim">02</p>
+      <p class="as-text__lead as-anim">ITスキルを、<br>実践で育てる。</p>
+      <p class="as-text__body as-anim">プログラミング・PCスキル・デジタル表現——就労で求められる力を、楽しみながら本物の環境で身につけます。</p>
     </section>
 
     <!-- [5] 写真 3 -->
@@ -265,20 +240,17 @@
 
     <!-- [6] テキスト 3 -->
     <section class="as-section as-text" style="z-index:6" data-idx="5">
-      <p class="as-text__num">03</p>
-      <p class="as-text__lead">専門スタッフが、<br>あなたの隣で<br>伴走する。</p>
-      <p class="as-text__body">強みを見つけ、伸ばすのが私たちの仕事。それぞれのペースで、10年後のロードマップを一緒に描きます。</p>
+      <p class="as-text__num  as-anim">03</p>
+      <p class="as-text__lead as-anim">専門スタッフが、<br>あなたの隣で<br>伴走する。</p>
+      <p class="as-text__body as-anim">強みを見つけ、伸ばすのが私たちの仕事。それぞれのペースで、10年後のロードマップを一緒に描きます。</p>
     </section>
 
     <!-- [7] CTA -->
     <section class="as-section as-cta" style="z-index:7" data-idx="6" data-dark="1">
-      <p class="as-cta__label">Contact</p>
-      <p class="as-cta__lead">まずは、<br>見学に来てください。</p>
-      <a href="./contact.html" class="as-cta__btn">見学・お問い合わせ ›</a>
+      <p class="as-cta__label as-anim">Contact</p>
+      <p class="as-cta__lead  as-anim">まずは、<br>見学に来てください。</p>
+      <a href="./contact.html" class="as-cta__btn as-anim">見学・お問い合わせ ›</a>
     </section>
-
-    <!-- スクロール高さを確保するスペーサー（sections は fixed なので自分では高さを作らない） -->
-    <div id="as-spacer"></div>
 
   </main>
 
@@ -339,124 +311,38 @@
   var sections = Array.from(document.querySelectorAll('.as-section'));
   var dotEls   = Array.from(document.querySelectorAll('.as-dot'));
   var dotsWrap = document.getElementById('as-dots');
-  var spacer   = document.getElementById('as-spacer');
   var n        = sections.length;
+  var seen     = sections.map(function () { return false; });
 
-  /* キャッシュ */
-  var vh      = window.innerHeight;
-  var ticking = false;
-  var prevTy  = sections.map(function (_, i) { return i === 0 ? 0 : vh; });
-  var animated = sections.map(function (_, i) { return i === 0; });
-
-  /* ---- スペーサー：sections は fixed なので自分で高さを作らない ----
-     必要なスクロール距離 = n * vh（section[0]の留まり1vh + 残り n-1 回のスライドイン）
-     scrollable = spacer_height（sections が fixed でカラム内に高さを作らないため）
-     なので spacer = n * vh                                              */
-  function setup() {
-    vh = window.innerHeight;
-    spacer.style.height = (n * vh) + 'px';
-    /* prevTy を強制リセット（リサイズ時） */
-    for (var k = 0; k < n; k++) prevTy[k] = -9999;
-  }
-
-  /* ---- メイン描画（rAF 内で実行） ---- */
-  function draw() {
-    ticking = false;
-    var scrollTop = window.pageYOffset;
-
-    sections.forEach(function (section, i) {
-      var ty;
-      if (i === 0) {
-        ty = 0;
-      } else {
-        /* section i : scroll [i*vh, (i+1)*vh] でスライドイン */
-        var es = i * vh;
-        var ee = (i + 1) * vh;
-        if (scrollTop <= es) {
-          ty = vh;
-        } else if (scrollTop >= ee) {
-          ty = 0;
-        } else {
-          ty = ee - scrollTop;
-        }
-      }
-
-      /* 変化がある時だけ DOM を触る */
-      if (Math.abs(ty - prevTy[i]) > 0.2) {
-        prevTy[i] = ty;
-        section.style.transform = 'translateY(' + Math.round(ty) + 'px)';
-      }
-
-      /* テキスト入場：50% 以上スライドインで発火 */
-      if (!animated[i] && ty < vh * 0.5) {
-        animated[i] = true;
-        animateIn(section);
-      }
+  /* ---- テキスト入場アニメーション（IntersectionObserver） ----
+     スクロールイベントを使わず軽量                              */
+  var obs = new IntersectionObserver(function (entries) {
+    entries.forEach(function (entry) {
+      if (!entry.isIntersecting) return;
+      var idx = parseInt(entry.target.getAttribute('data-idx'), 10);
+      if (seen[idx]) return;
+      seen[idx] = true;
+      var anims = Array.from(entry.target.querySelectorAll('.as-anim'));
+      anims.forEach(function (el, i) {
+        setTimeout(function () { el.classList.add('is-visible'); }, i * 120);
+      });
     });
+  }, { threshold: 0.25 });
 
-    /* ドット */
-    var ai = Math.min(Math.floor((scrollTop + vh * 0.5) / vh), n - 1);
+  sections.forEach(function (s) { obs.observe(s); });
+
+  /* ---- ドット更新（スクロールリスナー：数値計算のみ、DOM書き換えなし）  ---- */
+  function updateDots() {
+    var s  = window.pageYOffset;
+    var vh = window.innerHeight;
+    var ai = Math.min(Math.round(s / vh), n - 1);
     dotEls.forEach(function (d, j) { d.classList.toggle('active', j === ai); });
     if (dotsWrap) {
       dotsWrap.classList.toggle('dark', !!sections[ai].getAttribute('data-dark'));
     }
   }
-
-  /* ---- スクロールハンドラ：rAF でスロットリング ---- */
-  function onScroll() {
-    if (!ticking) {
-      requestAnimationFrame(draw);
-      ticking = true;
-    }
-  }
-
-  /* ---- テキスト入場アニメーション ---- */
-  function animateIn(section) {
-    var els = Array.from(section.querySelectorAll(
-      '.as-text__num,.as-text__lead,.as-text__body,' +
-      '.as-cta__label,.as-cta__lead,.as-cta__btn,' +
-      '.as-photo__eyebrow,.as-photo__label,.as-photo__title'
-    ));
-    els.forEach(function (el, i) {
-      el.style.transition = 'none';
-      el.style.opacity    = '0';
-      el.style.transform  = 'translateY(44px)';
-      /* 1フレーム後にトランジションを有効化 */
-      var delay = i * 110;
-      setTimeout(function () {
-        el.style.transition =
-          'opacity 0.85s cubic-bezier(.22,1,.36,1) ' + (delay / 1000) + 's,' +
-          'transform 0.85s cubic-bezier(.22,1,.36,1) ' + (delay / 1000) + 's';
-        el.style.opacity   = '1';
-        el.style.transform = 'translateY(0)';
-      }, 20 + delay);
-    });
-  }
-
-  /* ---- 初期化 ---- */
-  function init() {
-    /* section 2 以降のテキストを非表示 */
-    sections.forEach(function (section, i) {
-      if (i === 0) return;
-      section.querySelectorAll(
-        '.as-text__num,.as-text__lead,.as-text__body,' +
-        '.as-cta__label,.as-cta__lead,.as-cta__btn,' +
-        '.as-photo__eyebrow,.as-photo__label,.as-photo__title'
-      ).forEach(function (el) {
-        el.style.opacity   = '0';
-        el.style.transform = 'translateY(44px)';
-      });
-    });
-    /* 最初のセクションはすぐにアニメ */
-    setTimeout(function () { animateIn(sections[0]); }, 200);
-  }
-
-  /* ---- 起動 ---- */
-  setup();
-  init();
-  draw();
-  window.addEventListener('scroll', onScroll, { passive: true });
-  window.addEventListener('resize', function () { setup(); draw(); });
+  window.addEventListener('scroll', updateDots, { passive: true });
+  updateDots();
 })();
 </script>
 </body>
