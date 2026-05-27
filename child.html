@@ -161,18 +161,22 @@
     .ch-dots.dark .ch-dot        { background: rgba(255,255,255,.28); }
     .ch-dots.dark .ch-dot.active { background: rgba(255,255,255,.9); }
 
-    /* ===== インク滲みアニメーション ===== */
-    .ch-wc {
-      display: inline-block;
-      opacity: 0;
+    /* ===== ライン展開 × インク滲みアニメーション ===== */
+    .ch-write-line {
+      display: block;
+      white-space: nowrap;
+      overflow: hidden;
+      width: 0;
       filter: blur(14px);
+      opacity: 0;
       transition:
-        opacity  2.2s ease,
-        filter   2.8s cubic-bezier(0.16, 1, 0.3, 1);
+        width   2.0s cubic-bezier(0.16, 1, 0.3, 1),
+        filter  2.6s ease,
+        opacity 0.6s ease;
     }
-    .ch-wc.on {
+    .ch-write-line.on {
+      filter:  blur(0px);
       opacity: 1;
-      filter: blur(0px);
     }
 
     /* ===== モバイル ===== */
@@ -354,18 +358,14 @@
     if (dotsWrap) dotsWrap.classList.toggle('dark', !!sections[ai].getAttribute('data-dark'));
   }
 
-  /* ---- 書くアニメーション初期化（DOM準備） ---- */
-  (function initWriteAnim () {
+  /* ---- ライン展開アニメーション初期化（DOM準備） ---- */
+  (function initLineAnim () {
     var h1 = document.getElementById('ch-write-h1');
     if (!h1) return;
     var lines = h1.innerHTML.split(/<br\s*\/?>/i);
     var html  = '';
-    lines.forEach(function (line, li) {
-      Array.from(line).forEach(function (ch) {
-        var safe = ch === '&' ? '&amp;' : ch === '<' ? '&lt;' : ch === '>' ? '&gt;' : ch;
-        html += '<span class="ch-wc">' + safe + '</span>';
-      });
-      if (li < lines.length - 1) html += '<br>';
+    lines.forEach(function (line) {
+      html += '<span class="ch-write-line">' + line + '</span>';
     });
     h1.innerHTML = html;
   })();
@@ -374,11 +374,21 @@
   function startWriteAnim () {
     if (writeStarted) return;
     writeStarted = true;
-    var h1    = document.getElementById('ch-write-h1');
+    var h1 = document.getElementById('ch-write-h1');
     if (!h1) return;
-    var chars = Array.from(h1.querySelectorAll('.ch-wc'));
-    chars.forEach(function (ch, i) {
-      setTimeout(function () { ch.classList.add('on'); }, 150 + i * 220);
+    var lines = Array.from(h1.querySelectorAll('.ch-write-line'));
+
+    /* 各行の自然な幅を計測してから width:0 に戻す */
+    lines.forEach(function (l) { l.style.width = 'auto'; });
+    var widths = lines.map(function (l) { return l.scrollWidth; });
+    lines.forEach(function (l) { l.style.width = '0'; });
+
+    /* 1行ずつ順番に展開 */
+    lines.forEach(function (l, i) {
+      setTimeout(function () {
+        l.style.width = widths[i] + 'px';
+        l.classList.add('on');
+      }, 200 + i * 700);
     });
   }
 
