@@ -51,11 +51,15 @@
       font-family: "Inter", sans-serif;
       font-size: clamp(.68rem, .95vw, .86rem);
       font-weight: 400;
-      letter-spacing: 1.1em;
+      letter-spacing: .65em;
       color: rgba(51,37,26,.38);
-      line-height: 1.9;
+      line-height: 1;
       margin: 0;
       text-align: left;
+      align-self: stretch;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
     }
 
     /* ===== ヒーロー（背景＋テキストのみ） ===== */
@@ -278,7 +282,14 @@
     <!-- [0] タイトル -->
     <section class="ch-section ch-title" style="z-index:1" data-idx="0">
       <h1 class="ch-title__ja ch-anim">児童<br>発達<br>支援</h1>
-      <p class="ch-title__en ch-anim">Children<br>build<br>their<br>own<br>unseen<br>foundation.</p>
+      <p class="ch-title__en ch-anim">
+        <span>Children</span>
+        <span>build</span>
+        <span>their</span>
+        <span>own</span>
+        <span>unseen</span>
+        <span>foundation.</span>
+      </p>
     </section>
 
     <!-- [1] ヒーロー -->
