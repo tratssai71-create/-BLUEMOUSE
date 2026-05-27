@@ -161,6 +161,34 @@
     .ch-dots.dark .ch-dot        { background: rgba(255,255,255,.28); }
     .ch-dots.dark .ch-dot.active { background: rgba(255,255,255,.9); }
 
+    /* ===== 書くアニメーション ===== */
+    .ch-wc {
+      display: inline-block;
+      clip-path: inset(0 108% 0 0);
+      transition: clip-path 0.24s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .ch-wc.on { clip-path: inset(0 0% 0 0); }
+
+    /* カーソル（ペン先） */
+    #ch-cursor {
+      display: inline-block;
+      width: 3px; height: 0.75em;
+      background: #6aadcc;
+      vertical-align: middle;
+      margin-left: 1px;
+      border-radius: 1px;
+      opacity: 0;
+      transition: opacity 0.1s;
+    }
+    #ch-cursor.active {
+      opacity: 1;
+      animation: ch-cur-blink 0.7s step-end infinite;
+    }
+    @keyframes ch-cur-blink {
+      0%,100% { opacity: 1; }
+      50%      { opacity: 0; }
+    }
+
     /* ===== モバイル ===== */
     @media (max-width: 780px) {
       .ch-section { left: 0 !important; width: 100vw !important; }
@@ -197,7 +225,7 @@
     <section class="ch-section ch-hero" style="z-index:1" data-idx="0">
       <p class="ch-photo__eyebrow ch-anim">Child Development Support</p>
       <p class="ch-photo__label  ch-anim">児童発達支援</p>
-      <h1 class="ch-photo__title ch-anim">土台となる<br>「見えない力」は、<br>こどもが自ら育む。</h1>
+      <h1 class="ch-photo__title" id="ch-write-h1">土台となる<br>「見えない力」は、<br>こどもが自ら育む。</h1>
     </section>
 
     <!-- [2] テキスト 1 -->
@@ -340,10 +368,57 @@
     if (dotsWrap) dotsWrap.classList.toggle('dark', !!sections[ai].getAttribute('data-dark'));
   }
 
+  /* ---- 書くアニメーション初期化（DOM準備） ---- */
+  (function initWriteAnim () {
+    var h1 = document.getElementById('ch-write-h1');
+    if (!h1) return;
+    var lines = h1.innerHTML.split(/<br\s*\/?>/i);
+    var html  = '';
+    lines.forEach(function (line, li) {
+      Array.from(line).forEach(function (ch) {
+        var safe = ch === '&' ? '&amp;' : ch === '<' ? '&lt;' : ch === '>' ? '&gt;' : ch;
+        html += '<span class="ch-wc">' + safe + '</span>';
+      });
+      if (li < lines.length - 1) html += '<br>';
+    });
+    /* カーソルを末尾に追加 */
+    html += '<span id="ch-cursor"></span>';
+    h1.innerHTML = html;
+  })();
+
+  var writeStarted = false;
+  function startWriteAnim () {
+    if (writeStarted) return;
+    writeStarted = true;
+    var h1     = document.getElementById('ch-write-h1');
+    var cursor = document.getElementById('ch-cursor');
+    if (!h1) return;
+    var chars  = Array.from(h1.querySelectorAll('.ch-wc'));
+    var total  = chars.length;
+    cursor && cursor.classList.add('active');
+    chars.forEach(function (ch, i) {
+      setTimeout(function () {
+        ch.classList.add('on');
+        /* カーソルを現在の文字の直後に移動 */
+        if (cursor) ch.parentNode.insertBefore(cursor, ch.nextSibling);
+        /* 最後の文字が出たらカーソルを点滅だけに */
+        if (i === total - 1) {
+          setTimeout(function () {
+            if (cursor) { cursor.style.animation = 'ch-cur-blink 1.2s step-end infinite'; }
+          }, 300);
+        }
+      }, 350 + i * 68);
+    });
+  }
+
   function animateIn (section) {
     Array.from(section.querySelectorAll('.ch-anim')).forEach(function (el, i) {
       setTimeout(function () { el.classList.add('is-visible'); }, 60 + i * 110);
     });
+    /* ヒーロー（section 0）のときだけ書くアニメを起動 */
+    if (+section.getAttribute('data-idx') === 0) {
+      setTimeout(startWriteAnim, 200);
+    }
   }
 
   function onScroll () {
