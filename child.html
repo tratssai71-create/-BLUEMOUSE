@@ -27,6 +27,42 @@
     .ch-section[data-idx="0"] { visibility: visible; }
 
 
+    /* ===== タイトルセクション ===== */
+    .ch-title {
+      background: #FFFEFB;
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: center;
+      gap: 40px;
+      padding: 56px 52px;
+    }
+    .ch-title__ja {
+      font-family: "Zen Kurenaido", "Noto Sans JP", sans-serif;
+      font-size: clamp(2.6rem, 4.8vw, 5.2rem);
+      font-weight: 400;
+      color: #1d1d1f;
+      letter-spacing: .08em;
+      line-height: 1.1;
+      margin: 0;
+      flex-shrink: 0;
+    }
+    .ch-title__div {
+      width: 1px;
+      height: 6em;
+      background: rgba(51,37,26,.12);
+      flex-shrink: 0;
+    }
+    .ch-title__en {
+      font-family: "Inter", sans-serif;
+      font-size: clamp(.7rem, 1vw, .9rem);
+      font-weight: 400;
+      color: rgba(51,37,26,.38);
+      letter-spacing: .04em;
+      line-height: 1.9;
+      margin: 0;
+    }
+
     /* ===== ヒーロー（背景＋テキストのみ） ===== */
     .ch-hero {
       background: #FFFEFB;
@@ -244,39 +280,46 @@
   <!-- ===== メイン ===== -->
   <main class="bm-main">
 
+    <!-- [0] タイトル -->
+    <section class="ch-section ch-title" style="z-index:1" data-idx="0">
+      <h1 class="ch-title__ja ch-anim">児童<br>発達<br>支援</h1>
+      <div class="ch-title__div ch-anim"></div>
+      <p class="ch-title__en ch-anim">Children build their own<br>unseen foundation.</p>
+    </section>
+
     <!-- [1] ヒーロー -->
-    <section class="ch-section ch-hero" style="z-index:1" data-idx="0">
+    <section class="ch-section ch-hero" style="z-index:2" data-idx="1">
       <p class="ch-photo__eyebrow ch-anim">Child Development Support</p>
       <p class="ch-photo__label  ch-anim">児童発達支援</p>
       <h1 class="ch-photo__title" id="ch-hero-h1">土台となる<br>「見えない力」は、<br>こどもが自ら育む。</h1>
     </section>
 
     <!-- [2] テキスト 1 -->
-    <section class="ch-section ch-text" style="z-index:2" data-idx="1" data-dark="1">
+    <section class="ch-section ch-text" style="z-index:3" data-idx="2" data-dark="1">
       <p class="ch-text__lead text" id="ch-text09-lead">「こどもが主役」の、<br>秩序ある療育。</p>
       <p class="ch-text__body text" id="ch-text09-body">好きなことに夢中になって取り組む時間の中で、小さな「できた」が自然と積み重なる。ルールのある環境の中で、こどもが主体的に動ける場面をつくります。</p>
     </section>
 
     <!-- [3] 写真（積み木） -->
-    <section class="ch-section ch-photo" style="z-index:3" data-idx="2" data-dark="1">
+    <section class="ch-section ch-photo" style="z-index:4" data-idx="3" data-dark="1">
       <img class="ch-photo__img pos-35" src="./tsumiki_opt.jpg" alt="からから積み木で遊ぶこども" loading="lazy" />
       <div class="ch-photo__grad"></div>
     </section>
 
     <!-- [4] テキスト 2 -->
-    <section class="ch-section ch-text" style="z-index:4" data-idx="3">
+    <section class="ch-section ch-text" style="z-index:5" data-idx="4">
       <p class="ch-text__lead" id="ch-s4-lead">専門スタッフが、<br>深く観て、<br>そっとそばにいる。</p>
       <p class="ch-text__body" id="ch-s4-body">むやみに介入しすぎず、その子が自分で答えを見つける場面をつくる。それが一般的な預かり施設との一番の違いです。</p>
     </section>
 
     <!-- [5] 写真 2 -->
-    <section class="ch-section ch-photo" style="z-index:5" data-idx="4" data-dark="1">
+    <section class="ch-section ch-photo" style="z-index:6" data-idx="5" data-dark="1">
       <img class="ch-photo__img pos-35" src="./1.webp" alt="スタッフとこども" loading="lazy" />
       <div class="ch-photo__grad"></div>
     </section>
 
     <!-- [6] CTA -->
-    <section class="ch-section ch-cta" style="z-index:6" data-idx="5">
+    <section class="ch-section ch-cta" style="z-index:7" data-idx="6">
       <p class="ch-anim">まずはお気軽にご相談・見学のお申し込みをどうぞ。<br>受給者証の取得からサポートします。</p>
       <a href="./contact.html" class="ch-cta__btn ch-anim">見学・お問い合わせ ›</a>
     </section>
@@ -329,6 +372,7 @@
 <!-- 進行ドット -->
 <div class="ch-dots" id="ch-dots">
   <span class="ch-dot active"></span>
+  <span class="ch-dot"></span>
   <span class="ch-dot"></span>
   <span class="ch-dot"></span>
   <span class="ch-dot"></span>
@@ -451,8 +495,8 @@
     Array.from(section.querySelectorAll('.ch-anim')).forEach(function (el, i) {
       setTimeout(function () { el.classList.add('is-visible'); }, 60 + i * 110);
     });
-    /* section4: clip-path ワイプ起動 */
-    if (+section.getAttribute('data-idx') === 3) {
+    /* section5: clip-path ワイプ起動 */
+    if (+section.getAttribute('data-idx') === 4) {
       var leadWcs    = section.querySelectorAll('#ch-s4-lead .ch-wc');
       var bodyWcs    = section.querySelectorAll('#ch-s4-body .ch-wc');
       var leadInterval = 115;
@@ -465,15 +509,15 @@
         setTimeout(function () { span.classList.add('on'); }, bodyStart + i * bodyInterval);
       });
     }
-    /* section1: h1 インク滲み起動 */
-    if (+section.getAttribute('data-idx') === 0) {
+    /* section2: h1 インク滲み起動 */
+    if (+section.getAttribute('data-idx') === 1) {
       setTimeout(function () {
         var h1 = document.getElementById('ch-hero-h1');
         if (h1) h1.classList.add('is-active');
       }, 280);
     }
-    /* section2: text09 を1回再生 → 固定表示 */
-    if (+section.getAttribute('data-idx') === 1) {
+    /* section3: text09 を1回再生 → 固定表示 */
+    if (+section.getAttribute('data-idx') === 2) {
       [['ch-text09-lead','0.12'], ['ch-text09-body','0.04']].forEach(function (pair, i) {
         var el  = document.getElementById(pair[0]);
         var dpc = pair[1];
