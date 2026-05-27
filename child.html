@@ -41,9 +41,25 @@
       background: linear-gradient(to left, #6aadcc, transparent);
     }
     /* ヒーロー（白背景）のテキストを暗色に */
-    .ch-hero .ch-photo__eyebrow { color: rgba(51,37,26,.38); }
-    .ch-hero .ch-photo__label   { color: rgba(51,37,26,.5);  }
-    .ch-hero .ch-photo__title   { color: #1d1d1f; }
+    .ch-hero .ch-photo__eyebrow {
+      color: rgba(51,37,26,.32);
+    }
+    /* 「児童発達支援」メインタイトル */
+    .ch-hero .ch-photo__label {
+      font-family: "Zen Kurenaido", "Noto Sans JP", sans-serif;
+      font-size: clamp(2.8rem, 5.2vw, 5.4rem);
+      font-weight: 400;
+      color: #1d1d1f;
+      letter-spacing: .06em;
+      line-height: 1.15;
+      margin: 0 0 28px;
+    }
+    .ch-hero .ch-photo__title {
+      font-size: clamp(1rem, 1.6vw, 1.4rem);
+      color: rgba(29,29,31,.48);
+      letter-spacing: .06em;
+      line-height: 1.8;
+    }
 
     /* 2枚目テキストセクションを黒背景に */
     .ch-section[data-idx="1"].ch-text {
