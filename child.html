@@ -31,11 +31,15 @@
     .ch-title {
       background: #FFFEFB;
       display: flex;
-      flex-direction: row;
       align-items: center;
       justify-content: center;
-      gap: 18px;
       padding: 56px 52px;
+    }
+    .ch-title__inner {
+      display: flex;
+      flex-direction: row;
+      align-items: stretch;
+      gap: 18px;
     }
     .ch-title__ja {
       font-family: "Zen Kurenaido", "Noto Sans JP", sans-serif;
@@ -56,7 +60,6 @@
       line-height: 1;
       margin: 0;
       text-align: left;
-      align-self: stretch;
       display: flex;
       flex-direction: column;
       justify-content: space-between;
@@ -281,15 +284,17 @@
 
     <!-- [0] タイトル -->
     <section class="ch-section ch-title" style="z-index:1" data-idx="0">
-      <h1 class="ch-title__ja ch-anim">児童<br>発達<br>支援</h1>
-      <p class="ch-title__en ch-anim">
-        <span>Children</span>
-        <span>build</span>
-        <span>their</span>
-        <span>own</span>
-        <span>unseen</span>
-        <span>foundation.</span>
-      </p>
+      <div class="ch-title__inner">
+        <h1 class="ch-title__ja ch-anim">児童<br>発達<br>支援</h1>
+        <p class="ch-title__en ch-anim">
+          <span>Children</span>
+          <span>build</span>
+          <span>their</span>
+          <span>own</span>
+          <span>unseen</span>
+          <span>foundation.</span>
+        </p>
+      </div>
     </section>
 
     <!-- [1] ヒーロー -->
