@@ -39,7 +39,7 @@
       display: flex;
       flex-direction: row;
       align-items: stretch;
-      gap: 18px;
+      width: 100%;
     }
     .ch-title__ja {
       font-family: "Zen Kurenaido", "Noto Sans JP", sans-serif;
@@ -49,7 +49,12 @@
       letter-spacing: .08em;
       line-height: 1.1;
       margin: 0;
-      flex-shrink: 0;
+      flex: 0 0 50%;
+      text-align: right;
+      padding-right: 18px;
+      box-sizing: border-box;
+      display: flex;
+      align-items: center;
     }
     .ch-title__en {
       font-family: "Inter", sans-serif;
