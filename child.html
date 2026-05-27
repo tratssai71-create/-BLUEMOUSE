@@ -31,11 +31,12 @@
     .ch-title {
       background: #FFFEFB;
       display: flex;
-      flex-direction: row;
+      flex-direction: column;
       align-items: center;
       justify-content: center;
-      gap: 40px;
+      gap: 16px;
       padding: 56px 52px;
+      text-align: center;
     }
     .ch-title__ja {
       font-family: "Zen Kurenaido", "Noto Sans JP", sans-serif;
@@ -45,21 +46,14 @@
       letter-spacing: .08em;
       line-height: 1.1;
       margin: 0;
-      flex-shrink: 0;
-    }
-    .ch-title__div {
-      width: 1px;
-      height: 6em;
-      background: rgba(51,37,26,.12);
-      flex-shrink: 0;
     }
     .ch-title__en {
       font-family: "Inter", sans-serif;
-      font-size: clamp(.7rem, 1vw, .9rem);
-      font-weight: 400;
-      color: rgba(51,37,26,.38);
-      letter-spacing: .04em;
-      line-height: 1.9;
+      font-size: clamp(.6rem, .82vw, .74rem);
+      font-weight: 500;
+      letter-spacing: .28em;
+      text-transform: uppercase;
+      color: rgba(51,37,26,.3);
       margin: 0;
     }
 
@@ -283,8 +277,7 @@
     <!-- [0] タイトル -->
     <section class="ch-section ch-title" style="z-index:1" data-idx="0">
       <h1 class="ch-title__ja ch-anim">児童<br>発達<br>支援</h1>
-      <div class="ch-title__div ch-anim"></div>
-      <p class="ch-title__en ch-anim">Children build their own<br>unseen foundation.</p>
+      <p class="ch-title__en ch-anim">Child Development Support</p>
     </section>
 
     <!-- [1] ヒーロー -->
