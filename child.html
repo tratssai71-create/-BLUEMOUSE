@@ -203,16 +203,13 @@
       100%  { filter: blur(4px); opacity: 0; }
     }
 
-    /* ===== Section4 行マスクスライド ===== */
-    .ch-rl  { display: block; overflow: hidden; line-height: 1.35; }
-    .ch-rli {
-      display: block;
-      transform: translateY(112%);
-      transition: transform 0.78s cubic-bezier(.16,1,.3,1);
+    /* ===== Section4 clip-path 横ワイプ（描かれる） ===== */
+    .ch-wc {
+      display: inline-block;
+      clip-path: inset(0 108% 0 0);
+      transition: clip-path 0.22s cubic-bezier(.16,1,.3,1);
     }
-    #ch-s4-lead.is-active .ch-rl:nth-child(1) .ch-rli { transform: translateY(0); transition-delay: 0s;    }
-    #ch-s4-lead.is-active .ch-rl:nth-child(2) .ch-rli { transform: translateY(0); transition-delay: 0.13s; }
-    #ch-s4-lead.is-active .ch-rl:nth-child(3) .ch-rli { transform: translateY(0); transition-delay: 0.26s; }
+    .ch-wc.on { clip-path: inset(0 0% 0 0); }
 
     /* ===== モバイル ===== */
     @media (max-width: 780px) {
@@ -414,14 +411,20 @@
   initText09El(document.getElementById('ch-text09-lead'), '0.12');
   initText09El(document.getElementById('ch-text09-body'), '0.04');
 
-  /* ---- section4 行マスク初期化 ---- */
-  (function initRevealLead () {
+  /* ---- section4 clip-path ワイプ初期化 ---- */
+  (function initWipeS4 () {
     var el = document.getElementById('ch-s4-lead');
     if (!el) return;
-    var lines = el.innerHTML.split(/<br\s*\/?>/i);
-    el.innerHTML = lines.map(function (line) {
-      return '<span class="ch-rl"><span class="ch-rli">' + line + '</span></span>';
-    }).join('');
+    var parts = el.innerHTML.split(/<br\s*\/?>/i);
+    var html  = '';
+    parts.forEach(function (part, pi) {
+      Array.from(part).forEach(function (ch) {
+        var safe = ch === '&' ? '&amp;' : ch === '<' ? '&lt;' : ch === '>' ? '&gt;' : ch;
+        html += '<span class="ch-wc">' + safe + '</span>';
+      });
+      if (pi < parts.length - 1) html += '<br>';
+    });
+    el.innerHTML = html;
   })();
 
   /* ---- h1 インク滲み初期化 ---- */
@@ -445,12 +448,12 @@
     Array.from(section.querySelectorAll('.ch-anim')).forEach(function (el, i) {
       setTimeout(function () { el.classList.add('is-visible'); }, 60 + i * 110);
     });
-    /* section4: 行マスクスライド起動 */
+    /* section4: clip-path ワイプ起動 */
     if (+section.getAttribute('data-idx') === 3) {
-      setTimeout(function () {
-        var lead = document.getElementById('ch-s4-lead');
-        if (lead) lead.classList.add('is-active');
-      }, 150);
+      var wcs = section.querySelectorAll('#ch-s4-lead .ch-wc');
+      Array.from(wcs).forEach(function (span, i) {
+        setTimeout(function () { span.classList.add('on'); }, 150 + i * 55);
+      });
     }
     /* section1: h1 インク滲み起動 */
     if (+section.getAttribute('data-idx') === 0) {
