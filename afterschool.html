@@ -320,14 +320,15 @@
     sections[base].style.transform = 'translateY(0)';
     sections[next].style.transform = 'translateY(' + ty + 'px)';
 
-    /* visibility: 対象セクションが切り替わった時だけ更新 */
+    /* visibility: 対象セクションが切り替わった時だけ更新
+       ※ '' (空)にすると CSS の visibility:hidden に戻るので必ず 'visible' を明示する */
     if (base !== prevBase || next !== prevNext) {
       if (prevBase >= 0 && prevBase !== base && prevBase !== next)
         sections[prevBase].style.visibility = 'hidden';
       if (prevNext >= 0 && prevNext !== base && prevNext !== next)
         sections[prevNext].style.visibility = 'hidden';
-      sections[base].style.visibility = '';
-      sections[next].style.visibility = '';
+      sections[base].style.visibility = 'visible';
+      sections[next].style.visibility = 'visible';
       prevBase = base;
       prevNext = next;
     }
