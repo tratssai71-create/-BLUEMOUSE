@@ -430,13 +430,13 @@
     sections[base].style.transform = 'translateY(0)';
     sections[next].style.transform = 'translateY(' + ty + 'px)';
 
-    /* section0: タイトル文字をスクロールに連動して左にフェードアウト */
-    var titleProgress = Math.min(1, Math.max(0, st / vh));
+    /* section0: タイトル文字をスクロール前半40%で左フェードアウト完了 */
+    var titleProgress = Math.min(1, Math.max(0, st / (vh * 0.4)));
     [titleJaEl, titleEnEl].forEach(function (el) {
       if (!el) return;
       if (titleProgress > 0) {
         el.style.transition = 'none';
-        el.style.opacity    = String(Math.max(0, 1 - titleProgress * 1.6));
+        el.style.opacity    = String(Math.max(0, 1 - titleProgress));
         el.style.transform  = 'translateX(' + Math.round(-titleProgress * 120) + 'px)';
       } else {
         el.style.transition = '';
