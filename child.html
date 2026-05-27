@@ -179,6 +179,24 @@
       opacity: 1;
     }
 
+    /* ===== Section2 text09 アニメーション ===== */
+    .text > .char {
+      display: inline-block;
+      filter: blur(8px);
+      opacity: 0;
+    }
+    .text.is-active > .char {
+      animation: text09 1s cubic-bezier(0.77, 0, 0.175, 1);
+      animation-fill-mode: forwards;
+      animation-delay: calc(0.12s * var(--char-index));
+    }
+    @keyframes text09 {
+      0%    { filter: blur(8px); opacity: 0; }
+      33.3% { filter: blur(2px); opacity: 1; }
+      50%   { filter: blur(0);   opacity: 1; }
+      100%  { filter: blur(4px); opacity: 0; }
+    }
+
     /* ===== モバイル ===== */
     @media (max-width: 780px) {
       .ch-section { left: 0 !important; width: 100vw !important; }
@@ -220,7 +238,7 @@
 
     <!-- [2] テキスト 1 -->
     <section class="ch-section ch-text" style="z-index:2" data-idx="1" data-dark="1">
-      <p class="ch-text__lead ch-anim">「こどもが主役」の、<br>秩序ある療育。</p>
+      <p class="ch-text__lead text" id="ch-text09-lead">「こどもが主役」の、<br>秩序ある療育。</p>
       <p class="ch-text__body ch-anim">好きなことに夢中になって取り組む時間の中で、小さな「できた」が自然と積み重なる。ルールのある環境の中で、こどもが主体的に動ける場面をつくります。</p>
     </section>
 
@@ -392,12 +410,35 @@
     });
   }
 
+  /* ---- text09 初期化（section2 のリード文を .char に分割） ---- */
+  (function initText09 () {
+    var el = document.getElementById('ch-text09-lead');
+    if (!el) return;
+    var parts = el.innerHTML.split(/<br\s*\/?>/i);
+    var html  = '';
+    var idx   = 0;
+    parts.forEach(function (part, pi) {
+      Array.from(part).forEach(function (ch) {
+        var safe = ch === '&' ? '&amp;' : ch === '<' ? '&lt;' : ch === '>' ? '&gt;' : ch;
+        html += '<span class="char" style="--char-index:' + idx + '">' + safe + '</span>';
+        idx++;
+      });
+      if (pi < parts.length - 1) html += '<br>';
+    });
+    el.innerHTML = html;
+  })();
+
   function animateIn (section) {
     Array.from(section.querySelectorAll('.ch-anim')).forEach(function (el, i) {
       setTimeout(function () { el.classList.add('is-visible'); }, 60 + i * 110);
     });
     if (+section.getAttribute('data-idx') === 0) {
       setTimeout(startWriteAnim, 150);
+    }
+    /* section2: text09 を起動 */
+    if (+section.getAttribute('data-idx') === 1) {
+      var lead = document.getElementById('ch-text09-lead');
+      if (lead) setTimeout(function () { lead.classList.add('is-active'); }, 200);
     }
   }
 
