@@ -203,6 +203,17 @@
       100%  { filter: blur(4px); opacity: 0; }
     }
 
+    /* ===== Section4 行マスクスライド ===== */
+    .ch-rl  { display: block; overflow: hidden; line-height: 1.35; }
+    .ch-rli {
+      display: block;
+      transform: translateY(112%);
+      transition: transform 0.78s cubic-bezier(.16,1,.3,1);
+    }
+    #ch-s4-lead.is-active .ch-rl:nth-child(1) .ch-rli { transform: translateY(0); transition-delay: 0s;    }
+    #ch-s4-lead.is-active .ch-rl:nth-child(2) .ch-rli { transform: translateY(0); transition-delay: 0.13s; }
+    #ch-s4-lead.is-active .ch-rl:nth-child(3) .ch-rli { transform: translateY(0); transition-delay: 0.26s; }
+
     /* ===== モバイル ===== */
     @media (max-width: 780px) {
       .ch-section { left: 0 !important; width: 100vw !important; }
@@ -256,7 +267,7 @@
 
     <!-- [4] テキスト 2 -->
     <section class="ch-section ch-text" style="z-index:4" data-idx="3">
-      <p class="ch-text__lead ch-anim">専門スタッフが、<br>深く観て、<br>そっとそばにいる。</p>
+      <p class="ch-text__lead" id="ch-s4-lead">専門スタッフが、<br>深く観て、<br>そっとそばにいる。</p>
       <p class="ch-text__body ch-anim">むやみに介入しすぎず、その子が自分で答えを見つける場面をつくる。それが一般的な預かり施設との一番の違いです。</p>
     </section>
 
@@ -403,6 +414,16 @@
   initText09El(document.getElementById('ch-text09-lead'), '0.12');
   initText09El(document.getElementById('ch-text09-body'), '0.04');
 
+  /* ---- section4 行マスク初期化 ---- */
+  (function initRevealLead () {
+    var el = document.getElementById('ch-s4-lead');
+    if (!el) return;
+    var lines = el.innerHTML.split(/<br\s*\/?>/i);
+    el.innerHTML = lines.map(function (line) {
+      return '<span class="ch-rl"><span class="ch-rli">' + line + '</span></span>';
+    }).join('');
+  })();
+
   /* ---- h1 インク滲み初期化 ---- */
   (function initInkH1 () {
     var h1 = document.getElementById('ch-hero-h1');
@@ -424,6 +445,13 @@
     Array.from(section.querySelectorAll('.ch-anim')).forEach(function (el, i) {
       setTimeout(function () { el.classList.add('is-visible'); }, 60 + i * 110);
     });
+    /* section4: 行マスクスライド起動 */
+    if (+section.getAttribute('data-idx') === 3) {
+      setTimeout(function () {
+        var lead = document.getElementById('ch-s4-lead');
+        if (lead) lead.classList.add('is-active');
+      }, 150);
+    }
     /* section1: h1 インク滲み起動 */
     if (+section.getAttribute('data-idx') === 0) {
       setTimeout(function () {
