@@ -182,6 +182,12 @@
       animation-fill-mode: forwards;
       animation-delay: calc(0.12s * var(--char-index));
     }
+    /* アニメ完了後、固定表示 */
+    .text.is-done > .char {
+      filter: blur(0) !important;
+      opacity: 1 !important;
+      animation: none !important;
+    }
     @keyframes text09 {
       0%    { filter: blur(8px); opacity: 0; }
       33.3% { filter: blur(2px); opacity: 1; }
@@ -393,16 +399,26 @@
     Array.from(section.querySelectorAll('.ch-anim')).forEach(function (el, i) {
       setTimeout(function () { el.classList.add('is-visible'); }, 60 + i * 110);
     });
-    /* section2: text09 を1回起動 */
+    /* section2: text09 を1回再生 → 固定表示 */
     if (+section.getAttribute('data-idx') === 1) {
-      ['ch-text09-lead','ch-text09-body'].forEach(function (id, i) {
-        var el = document.getElementById(id);
+      [['ch-text09-lead','0.12'], ['ch-text09-body','0.04']].forEach(function (pair, i) {
+        var el  = document.getElementById(pair[0]);
+        var dpc = pair[1];
         if (!el) return;
-        var dpc = el.dataset.delayPerChar || '0.12';
-        Array.from(el.querySelectorAll('.char')).forEach(function (ch) {
+        var chars    = Array.from(el.querySelectorAll('.char'));
+        var totalMs  = Math.round((parseFloat(dpc) * (chars.length - 1) + 1.0) * 1000);
+        chars.forEach(function (ch) {
           ch.style.animationDelay = 'calc(' + dpc + 's * ' + ch.style.getPropertyValue('--char-index') + ')';
         });
-        setTimeout(function () { el.classList.add('is-active'); }, 200 + i * 400);
+        var start = 200 + i * 400;
+        setTimeout(function () {
+          el.classList.add('is-active');
+          /* アニメ完了後に is-active → is-done へ切替 */
+          setTimeout(function () {
+            el.classList.remove('is-active');
+            el.classList.add('is-done');
+          }, totalMs + 100);
+        }, start);
       });
     }
   }
