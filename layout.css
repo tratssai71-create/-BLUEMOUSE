@@ -1044,13 +1044,13 @@ h2 { letter-spacing: .12em; }
     margin-top: 18px;
     width: 40px; height: 40px;
     padding: 8px;
-    background: #e91e63;
+    background: #000;
     border: none;
     border-radius: 50%;
     cursor: pointer;
     transition: background .15s;
   }
-  .bm-hamburger:hover { background: #c2185b; }
+  .bm-hamburger:hover { background: #333; }
   .bm-hamburger span {
     display: block;
     width: 18px; height: 2px;
