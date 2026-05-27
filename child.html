@@ -161,19 +161,13 @@
     .ch-dots.dark .ch-dot        { background: rgba(255,255,255,.28); }
     .ch-dots.dark .ch-dot.active { background: rgba(255,255,255,.9); }
 
-    /* ===== 書き順アニメーション（Hanzi Writer） ===== */
-    .ch-hw-wrap {
+    /* ===== 書くアニメーション ===== */
+    .ch-wc {
       display: inline-block;
-      vertical-align: middle;
-      position: relative;
-      top: -0.05em;
+      clip-path: inset(0 108% 0 0);
+      transition: clip-path 0.13s cubic-bezier(0.16, 1, 0.3, 1);
     }
-    .ch-kana-span {
-      display: inline-block;
-      opacity: 0;
-      transition: opacity 0.14s ease;
-    }
-    .ch-kana-span.on { opacity: 1; }
+    .ch-wc.on { clip-path: inset(0 0% 0 0); }
 
     /* ===== モバイル ===== */
     @media (max-width: 780px) {
@@ -299,7 +293,6 @@
   <span class="ch-dot"></span>
 </div>
 
-<script src="https://cdn.jsdelivr.net/npm/hanzi-writer@3.5/dist/hanzi-writer.min.js"></script>
 <script src="./layout.js"></script>
 <script>
 (function () {
@@ -355,93 +348,32 @@
     if (dotsWrap) dotsWrap.classList.toggle('dark', !!sections[ai].getAttribute('data-dark'));
   }
 
-  /* ---- 書き順アニメーション初期化（DOM準備） ---- */
-  var hwUid = 0;
-  function isKanji (ch) {
-    var c = ch.charCodeAt(0);
-    return (c >= 0x4E00 && c <= 0x9FFF) || (c >= 0x3400 && c <= 0x4DBF);
-  }
-
-  (function initStrokeAnim () {
+  /* ---- 書くアニメーション初期化（DOM準備） ---- */
+  (function initWriteAnim () {
     var h1 = document.getElementById('ch-write-h1');
     if (!h1) return;
-    var sz    = Math.round(parseFloat(getComputedStyle(h1).fontSize));
     var lines = h1.innerHTML.split(/<br\s*\/?>/i);
-    var queue = [];
-    var frag  = document.createDocumentFragment();
-
+    var html  = '';
     lines.forEach(function (line, li) {
-      var lineSpan = document.createElement('span');
-      lineSpan.style.display = 'block';
-
       Array.from(line).forEach(function (ch) {
-        if (isKanji(ch)) {
-          var id   = 'hw' + (++hwUid);
-          var wrap = document.createElement('span');
-          wrap.id  = id;
-          wrap.className = 'ch-hw-wrap';
-          wrap.style.width  = sz + 'px';
-          wrap.style.height = sz + 'px';
-          lineSpan.appendChild(wrap);
-          queue.push({ type: 'kanji', id: id, char: ch, sz: sz });
-        } else {
-          var span = document.createElement('span');
-          span.textContent = ch;
-          span.className   = 'ch-kana-span';
-          lineSpan.appendChild(span);
-          queue.push({ type: 'kana', el: span });
-        }
+        var safe = ch === '&' ? '&amp;' : ch === '<' ? '&lt;' : ch === '>' ? '&gt;' : ch;
+        html += '<span class="ch-wc">' + safe + '</span>';
       });
-
-      frag.appendChild(lineSpan);
-      if (li < lines.length - 1) frag.appendChild(document.createElement('br'));
+      if (li < lines.length - 1) html += '<br>';
     });
-
-    h1.innerHTML = '';
-    h1.appendChild(frag);
-    h1._strokeQ = queue;
+    h1.innerHTML = html;
   })();
 
-  var strokeStarted = false;
-  function startStrokeAnim () {
-    if (strokeStarted) return;
-    strokeStarted = true;
-    var h1 = document.getElementById('ch-write-h1');
-    if (!h1 || !h1._strokeQ) return;
-    var queue = h1._strokeQ;
-    var idx   = 0;
-
-    function next () {
-      if (idx >= queue.length) return;
-      var item = queue[idx++];
-
-      if (item.type === 'kanji' && typeof HanziWriter !== 'undefined') {
-        try {
-          var writer = HanziWriter.create(item.id, item.char, {
-            width:                item.sz,
-            height:               item.sz,
-            padding:              Math.round(item.sz * 0.04),
-            strokeColor:          '#1d1d1f',
-            radicalColor:         '#1d1d1f',
-            strokeAnimationSpeed: 1.3,
-            delayBetweenStrokes:  80,
-            showCharacter:        false,
-            showOutline:          false,
-          });
-          writer.animateCharacter({ onComplete: function () { setTimeout(next, 55); } });
-        } catch (e) {
-          /* 未収録文字はスキップ */
-          next();
-        }
-      } else if (item.type === 'kana') {
-        item.el.classList.add('on');
-        setTimeout(next, 48);
-      } else {
-        next(); /* HanziWriter 未ロード時フォールバック */
-      }
-    }
-
-    setTimeout(next, 350);
+  var writeStarted = false;
+  function startWriteAnim () {
+    if (writeStarted) return;
+    writeStarted = true;
+    var h1    = document.getElementById('ch-write-h1');
+    if (!h1) return;
+    var chars = Array.from(h1.querySelectorAll('.ch-wc'));
+    chars.forEach(function (ch, i) {
+      setTimeout(function () { ch.classList.add('on'); }, 200 + i * 35);
+    });
   }
 
   function animateIn (section) {
@@ -449,7 +381,7 @@
       setTimeout(function () { el.classList.add('is-visible'); }, 60 + i * 110);
     });
     if (+section.getAttribute('data-idx') === 0) {
-      setTimeout(startStrokeAnim, 200);
+      setTimeout(startWriteAnim, 150);
     }
   }
 
