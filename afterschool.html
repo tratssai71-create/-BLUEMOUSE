@@ -36,13 +36,30 @@
     /* 最初のセクションは JS 起動前から表示（FOUC防止） */
     .as-section[data-idx="0"] { visibility: visible; }
 
-    /* ===== ヒーロー：背景＋テキストのみ ===== */
+    /* ===== ヒーロー：写真背景 ===== */
     .as-hero {
-      background: #0f0f0f;
-      display: flex;
-      flex-direction: column;
-      justify-content: flex-end;
+      background: #111;
+    }
+    .as-hero__img {
+      position: absolute;
+      inset: 0; width: 100%; height: 100%;
+      object-fit: cover; object-position: center 30%;
+      display: block;
+    }
+    .as-hero__overlay {
+      position: absolute; inset: 0;
+      background: linear-gradient(
+        to bottom,
+        rgba(0,0,0,.18) 0%,
+        rgba(0,0,0,.52) 60%,
+        rgba(0,0,0,.78) 100%
+      );
+    }
+    .as-hero__copy {
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
       padding: 56px 52px;
+      display: flex; flex-direction: column;
     }
     .as-hero__eyebrow {
       font-family: "Inter", sans-serif;
@@ -212,9 +229,13 @@
 
     <!-- [1] ヒーロー -->
     <section class="as-section as-hero" style="z-index:1" data-idx="0" data-dark="1">
-      <p class="as-hero__eyebrow as-anim">Afterschool Day Service</p>
-      <p class="as-hero__label  as-anim">放課後等デイサービス</p>
-      <h1 class="as-hero__title" id="as-write-h1">強みとなる<br>「見える力」は、<br>伴走者と共に育む。</h1>
+      <img class="as-hero__img" src="./tsumiki_opt.jpg" alt="積み木" />
+      <div class="as-hero__overlay"></div>
+      <div class="as-hero__copy">
+        <p class="as-hero__eyebrow as-anim">Afterschool Day Service</p>
+        <p class="as-hero__label  as-anim">放課後等デイサービス</p>
+        <h1 class="as-hero__title" id="as-write-h1">強みとなる<br>「見える力」は、<br>伴走者と共に育む。</h1>
+      </div>
     </section>
 
     <!-- [2] テキスト 1 -->
