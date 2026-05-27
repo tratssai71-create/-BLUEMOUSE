@@ -153,6 +153,33 @@
     .as-dots.dark .as-dot        { background: rgba(255,255,255,.28); }
     .as-dots.dark .as-dot.active { background: rgba(255,255,255,.92); }
 
+    /* ===== 書くアニメーション ===== */
+    .as-wc {
+      display: inline-block;
+      clip-path: inset(0 108% 0 0);
+      transition: clip-path 0.24s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .as-wc.on { clip-path: inset(0 0% 0 0); }
+
+    #as-cursor {
+      display: inline-block;
+      width: 3px; height: 0.75em;
+      background: #FE8C68;
+      vertical-align: middle;
+      margin-left: 1px;
+      border-radius: 1px;
+      opacity: 0;
+      transition: opacity 0.1s;
+    }
+    #as-cursor.active {
+      opacity: 1;
+      animation: as-cur-blink 0.7s step-end infinite;
+    }
+    @keyframes as-cur-blink {
+      0%,100% { opacity: 1; }
+      50%      { opacity: 0; }
+    }
+
     @media (max-width: 780px) {
       .as-section { left: 0 !important; width: 100vw !important; }
       .as-hero  { padding: 36px 22px; }
@@ -187,7 +214,7 @@
     <section class="as-section as-hero" style="z-index:1" data-idx="0" data-dark="1">
       <p class="as-hero__eyebrow as-anim">Afterschool Day Service</p>
       <p class="as-hero__label  as-anim">放課後等デイサービス</p>
-      <h1 class="as-hero__title as-anim">強みとなる<br>「見える力」は、<br>伴走者と共に育む。</h1>
+      <h1 class="as-hero__title" id="as-write-h1">強みとなる<br>「見える力」は、<br>伴走者と共に育む。</h1>
     </section>
 
     <!-- [2] テキスト 1 -->
@@ -343,10 +370,53 @@
     if (dotsWrap) dotsWrap.classList.toggle('dark', !!sections[ai].getAttribute('data-dark'));
   }
 
+  /* ---- 書くアニメーション初期化（DOM準備） ---- */
+  (function initWriteAnim () {
+    var h1 = document.getElementById('as-write-h1');
+    if (!h1) return;
+    var lines = h1.innerHTML.split(/<br\s*\/?>/i);
+    var html  = '';
+    lines.forEach(function (line, li) {
+      Array.from(line).forEach(function (ch) {
+        var safe = ch === '&' ? '&amp;' : ch === '<' ? '&lt;' : ch === '>' ? '&gt;' : ch;
+        html += '<span class="as-wc">' + safe + '</span>';
+      });
+      if (li < lines.length - 1) html += '<br>';
+    });
+    html += '<span id="as-cursor"></span>';
+    h1.innerHTML = html;
+  })();
+
+  var writeStarted = false;
+  function startWriteAnim () {
+    if (writeStarted) return;
+    writeStarted = true;
+    var h1     = document.getElementById('as-write-h1');
+    var cursor = document.getElementById('as-cursor');
+    if (!h1) return;
+    var chars  = Array.from(h1.querySelectorAll('.as-wc'));
+    var total  = chars.length;
+    cursor && cursor.classList.add('active');
+    chars.forEach(function (ch, i) {
+      setTimeout(function () {
+        ch.classList.add('on');
+        if (cursor) ch.parentNode.insertBefore(cursor, ch.nextSibling);
+        if (i === total - 1) {
+          setTimeout(function () {
+            if (cursor) cursor.style.animation = 'as-cur-blink 1.2s step-end infinite';
+          }, 300);
+        }
+      }, 350 + i * 68);
+    });
+  }
+
   function animateIn (section) {
     Array.from(section.querySelectorAll('.as-anim')).forEach(function (el, i) {
       setTimeout(function () { el.classList.add('is-visible'); }, 60 + i * 110);
     });
+    if (+section.getAttribute('data-idx') === 0) {
+      setTimeout(startWriteAnim, 200);
+    }
   }
 
   function onScroll () {
