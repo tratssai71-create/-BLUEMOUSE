@@ -134,7 +134,7 @@
     }
     .ch-cta__btn:hover { transform: translateY(-3px); opacity: .82; }
 
-    /* ===== 入場アニメーション ===== */
+    /* ===== 入場アニメーション（スライドアップ） ===== */
     .ch-anim {
       opacity: 0;
       transform: translateY(32px);
@@ -142,6 +142,15 @@
                   transform .9s cubic-bezier(.22,1,.36,1);
     }
     .ch-anim.is-visible { opacity: 1; transform: none; }
+
+    /* ===== 入場アニメーション（ブラーイン） ===== */
+    .ch-blur-anim {
+      opacity: 0;
+      filter: blur(14px);
+      transition: opacity 1.3s ease,
+                  filter  1.3s ease;
+    }
+    .ch-blur-anim.is-visible { opacity: 1; filter: blur(0); }
 
     /* ===== 進行ドット ===== */
     .ch-dots {
@@ -214,9 +223,9 @@
 
     <!-- [1] ヒーロー -->
     <section class="ch-section ch-hero" style="z-index:1" data-idx="0">
-      <p class="ch-photo__eyebrow ch-anim">Child Development Support</p>
-      <p class="ch-photo__label  ch-anim">児童発達支援</p>
-      <h1 class="ch-photo__title ch-anim">土台となる<br>「見えない力」は、<br>こどもが自ら育む。</h1>
+      <p class="ch-photo__eyebrow ch-blur-anim">Child Development Support</p>
+      <p class="ch-photo__label  ch-blur-anim">児童発達支援</p>
+      <h1 class="ch-photo__title ch-blur-anim">土台となる<br>「見えない力」は、<br>こどもが自ら育む。</h1>
     </section>
 
     <!-- [2] テキスト 1 -->
@@ -380,22 +389,35 @@
   initText09El(document.getElementById('ch-text09-lead'), '0.12');
   initText09El(document.getElementById('ch-text09-body'), '0.04');
 
-  function animateIn (section) {
-    Array.from(section.querySelectorAll('.ch-anim')).forEach(function (el, i) {
-      setTimeout(function () { el.classList.add('is-visible'); }, 60 + i * 110);
+  /* ---- text09 ループ ---- */
+  function startText09Loop (id, dpc, initialDelay) {
+    var el = document.getElementById(id);
+    if (!el) return;
+    var chars   = Array.from(el.querySelectorAll('.char'));
+    var totalMs = Math.round((parseFloat(dpc) * (chars.length - 1) + 1.1) * 1000);
+
+    /* animationDelay を一度だけ設定 */
+    chars.forEach(function (ch) {
+      ch.style.animationDelay = 'calc(' + dpc + 's * ' + ch.style.getPropertyValue('--char-index') + ')';
     });
-    /* section2: text09 を起動 */
+
+    function cycle () {
+      el.classList.remove('is-active');
+      void el.offsetWidth;          /* reflow でアニメをリセット */
+      el.classList.add('is-active');
+      setTimeout(cycle, totalMs + 700);   /* 完了後 700ms 休んで再起動 */
+    }
+    setTimeout(cycle, initialDelay);
+  }
+
+  function animateIn (section) {
+    Array.from(section.querySelectorAll('.ch-anim, .ch-blur-anim')).forEach(function (el, i) {
+      setTimeout(function () { el.classList.add('is-visible'); }, 60 + i * 130);
+    });
+    /* section2: text09 ループ起動 */
     if (+section.getAttribute('data-idx') === 1) {
-      ['ch-text09-lead','ch-text09-body'].forEach(function (id, i) {
-        var el = document.getElementById(id);
-        if (!el) return;
-        /* delay-per-char を CSS変数として適用 */
-        var dpc = el.dataset.delayPerChar || '0.12';
-        Array.from(el.querySelectorAll('.char')).forEach(function (ch) {
-          ch.style.animationDelay = 'calc(' + dpc + 's * ' + ch.style.getPropertyValue('--char-index') + ')';
-        });
-        setTimeout(function () { el.classList.add('is-active'); }, 200 + i * 400);
-      });
+      startText09Loop('ch-text09-lead', '0.12', 200);
+      startText09Loop('ch-text09-body', '0.04', 650);
     }
   }
 
