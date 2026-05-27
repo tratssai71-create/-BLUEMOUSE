@@ -207,7 +207,7 @@
     .ch-wc {
       display: inline-block;
       clip-path: inset(0 108% 0 0);
-      transition: clip-path 0.22s cubic-bezier(.16,1,.3,1);
+      transition: clip-path 0.38s cubic-bezier(.16,1,.3,1);
     }
     .ch-wc.on { clip-path: inset(0 0% 0 0); }
 
@@ -265,7 +265,7 @@
     <!-- [4] テキスト 2 -->
     <section class="ch-section ch-text" style="z-index:4" data-idx="3">
       <p class="ch-text__lead" id="ch-s4-lead">専門スタッフが、<br>深く観て、<br>そっとそばにいる。</p>
-      <p class="ch-text__body ch-anim">むやみに介入しすぎず、その子が自分で答えを見つける場面をつくる。それが一般的な預かり施設との一番の違いです。</p>
+      <p class="ch-text__body" id="ch-s4-body">むやみに介入しすぎず、その子が自分で答えを見つける場面をつくる。それが一般的な預かり施設との一番の違いです。</p>
     </section>
 
     <!-- [5] 写真 3 -->
@@ -412,8 +412,8 @@
   initText09El(document.getElementById('ch-text09-body'), '0.04');
 
   /* ---- section4 clip-path ワイプ初期化 ---- */
-  (function initWipeS4 () {
-    var el = document.getElementById('ch-s4-lead');
+  function initWipeEl (id) {
+    var el = document.getElementById(id);
     if (!el) return;
     var parts = el.innerHTML.split(/<br\s*\/?>/i);
     var html  = '';
@@ -425,7 +425,9 @@
       if (pi < parts.length - 1) html += '<br>';
     });
     el.innerHTML = html;
-  })();
+  }
+  initWipeEl('ch-s4-lead');
+  initWipeEl('ch-s4-body');
 
   /* ---- h1 インク滲み初期化 ---- */
   (function initInkH1 () {
@@ -450,9 +452,15 @@
     });
     /* section4: clip-path ワイプ起動 */
     if (+section.getAttribute('data-idx') === 3) {
-      var wcs = section.querySelectorAll('#ch-s4-lead .ch-wc');
-      Array.from(wcs).forEach(function (span, i) {
-        setTimeout(function () { span.classList.add('on'); }, 150 + i * 55);
+      var leadWcs = section.querySelectorAll('#ch-s4-lead .ch-wc');
+      var bodyWcs = section.querySelectorAll('#ch-s4-body .ch-wc');
+      var interval = 75;
+      Array.from(leadWcs).forEach(function (span, i) {
+        setTimeout(function () { span.classList.add('on'); }, 150 + i * interval);
+      });
+      var bodyStart = 150 + leadWcs.length * interval + 200;
+      Array.from(bodyWcs).forEach(function (span, i) {
+        setTimeout(function () { span.classList.add('on'); }, bodyStart + i * interval);
       });
     }
     /* section1: h1 インク滲み起動 */
