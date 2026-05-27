@@ -432,9 +432,13 @@
 
     sections[base].style.transform = 'translateY(0)';
     if (base === 0) {
-      /* section0→1 は横スクロール：右から左へ */
+      /* section0→1 は横スクロール：タイトル消去後(0.6vh〜)に右から入る */
       var vw = window.innerWidth;
-      sections[next].style.transform = 'translateX(' + Math.round(vw * progress) + 'px)';
+      var delay   = 0.6;
+      var horizPr = st < vh * delay
+        ? 1
+        : Math.max(0, 1 - (st - vh * delay) / (vh * (1 - delay)));
+      sections[next].style.transform = 'translateX(' + Math.round(vw * horizPr) + 'px)';
     } else {
       sections[next].style.transform = 'translateY(' + ty + 'px)';
     }
