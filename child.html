@@ -161,23 +161,6 @@
     .ch-dots.dark .ch-dot        { background: rgba(255,255,255,.28); }
     .ch-dots.dark .ch-dot.active { background: rgba(255,255,255,.9); }
 
-    /* ===== ライン展開 × インク滲みアニメーション ===== */
-    .ch-write-line {
-      display: block;
-      white-space: nowrap;
-      overflow: hidden;
-      width: 0;
-      filter: blur(14px);
-      opacity: 0;
-      transition:
-        width   2.0s cubic-bezier(0.16, 1, 0.3, 1),
-        filter  2.6s ease,
-        opacity 0.6s ease;
-    }
-    .ch-write-line.on {
-      filter:  blur(0px);
-      opacity: 1;
-    }
 
     /* ===== Section2 text09 アニメーション ===== */
     .text > .char {
@@ -233,13 +216,13 @@
     <section class="ch-section ch-hero" style="z-index:1" data-idx="0">
       <p class="ch-photo__eyebrow ch-anim">Child Development Support</p>
       <p class="ch-photo__label  ch-anim">児童発達支援</p>
-      <h1 class="ch-photo__title" id="ch-write-h1">土台となる<br>「見えない力」は、<br>こどもが自ら育む。</h1>
+      <h1 class="ch-photo__title ch-anim">土台となる<br>「見えない力」は、<br>こどもが自ら育む。</h1>
     </section>
 
     <!-- [2] テキスト 1 -->
     <section class="ch-section ch-text" style="z-index:2" data-idx="1" data-dark="1">
       <p class="ch-text__lead text" id="ch-text09-lead">「こどもが主役」の、<br>秩序ある療育。</p>
-      <p class="ch-text__body ch-anim">好きなことに夢中になって取り組む時間の中で、小さな「できた」が自然と積み重なる。ルールのある環境の中で、こどもが主体的に動ける場面をつくります。</p>
+      <p class="ch-text__body text" id="ch-text09-body">好きなことに夢中になって取り組む時間の中で、小さな「できた」が自然と積み重なる。ルールのある環境の中で、こどもが主体的に動ける場面をつくります。</p>
     </section>
 
     <!-- [3] 写真 2 -->
@@ -376,44 +359,11 @@
     if (dotsWrap) dotsWrap.classList.toggle('dark', !!sections[ai].getAttribute('data-dark'));
   }
 
-  /* ---- ライン展開アニメーション初期化（DOM準備） ---- */
-  (function initLineAnim () {
-    var h1 = document.getElementById('ch-write-h1');
-    if (!h1) return;
-    var lines = h1.innerHTML.split(/<br\s*\/?>/i);
-    var html  = '';
-    lines.forEach(function (line) {
-      html += '<span class="ch-write-line">' + line + '</span>';
-    });
-    h1.innerHTML = html;
-  })();
-
-  var writeStarted = false;
-  function startWriteAnim () {
-    if (writeStarted) return;
-    writeStarted = true;
-    var h1 = document.getElementById('ch-write-h1');
-    if (!h1) return;
-    var lines = Array.from(h1.querySelectorAll('.ch-write-line'));
-
-    /* 各行の自然な幅を計測してから width:0 に戻す */
-    lines.forEach(function (l) { l.style.width = 'auto'; });
-    var widths = lines.map(function (l) { return l.scrollWidth; });
-    lines.forEach(function (l) { l.style.width = '0'; });
-
-    /* 1行ずつ順番に展開 */
-    lines.forEach(function (l, i) {
-      setTimeout(function () {
-        l.style.width = widths[i] + 'px';
-        l.classList.add('on');
-      }, 200 + i * 700);
-    });
-  }
-
-  /* ---- text09 初期化（section2 のリード文を .char に分割） ---- */
-  (function initText09 () {
-    var el = document.getElementById('ch-text09-lead');
+  /* ---- text09 初期化（.text 要素を .char に分割） ---- */
+  function initText09El (el, delayPerChar) {
     if (!el) return;
+    /* data-delay-per-char に delay値を保存して animateIn で使う */
+    el.dataset.delayPerChar = delayPerChar || '0.12';
     var parts = el.innerHTML.split(/<br\s*\/?>/i);
     var html  = '';
     var idx   = 0;
@@ -426,19 +376,26 @@
       if (pi < parts.length - 1) html += '<br>';
     });
     el.innerHTML = html;
-  })();
+  }
+  initText09El(document.getElementById('ch-text09-lead'), '0.12');
+  initText09El(document.getElementById('ch-text09-body'), '0.04');
 
   function animateIn (section) {
     Array.from(section.querySelectorAll('.ch-anim')).forEach(function (el, i) {
       setTimeout(function () { el.classList.add('is-visible'); }, 60 + i * 110);
     });
-    if (+section.getAttribute('data-idx') === 0) {
-      setTimeout(startWriteAnim, 150);
-    }
     /* section2: text09 を起動 */
     if (+section.getAttribute('data-idx') === 1) {
-      var lead = document.getElementById('ch-text09-lead');
-      if (lead) setTimeout(function () { lead.classList.add('is-active'); }, 200);
+      ['ch-text09-lead','ch-text09-body'].forEach(function (id, i) {
+        var el = document.getElementById(id);
+        if (!el) return;
+        /* delay-per-char を CSS変数として適用 */
+        var dpc = el.dataset.delayPerChar || '0.12';
+        Array.from(el.querySelectorAll('.char')).forEach(function (ch) {
+          ch.style.animationDelay = 'calc(' + dpc + 's * ' + ch.style.getPropertyValue('--char-index') + ')';
+        });
+        setTimeout(function () { el.classList.add('is-active'); }, 200 + i * 400);
+      });
     }
   }
 
