@@ -262,16 +262,16 @@
       <div class="ch-photo__grad"></div>
     </section>
 
-    <!-- [4] 写真 2 -->
-    <section class="ch-section ch-photo" style="z-index:4" data-idx="3" data-dark="1">
-      <img class="ch-photo__img pos-35" src="./1.webp" alt="スタッフとこども" loading="lazy" />
-      <div class="ch-photo__grad"></div>
-    </section>
-
-    <!-- [5] テキスト 2 -->
-    <section class="ch-section ch-text" style="z-index:5" data-idx="4">
+    <!-- [4] テキスト 2 -->
+    <section class="ch-section ch-text" style="z-index:4" data-idx="3">
       <p class="ch-text__lead" id="ch-s4-lead">専門スタッフが、<br>深く観て、<br>そっとそばにいる。</p>
       <p class="ch-text__body" id="ch-s4-body">むやみに介入しすぎず、その子が自分で答えを見つける場面をつくる。それが一般的な預かり施設との一番の違いです。</p>
+    </section>
+
+    <!-- [5] 写真 2 -->
+    <section class="ch-section ch-photo" style="z-index:5" data-idx="4" data-dark="1">
+      <img class="ch-photo__img pos-35" src="./1.webp" alt="スタッフとこども" loading="lazy" />
+      <div class="ch-photo__grad"></div>
     </section>
 
     <!-- [6] 写真 3 -->
@@ -457,8 +457,8 @@
     Array.from(section.querySelectorAll('.ch-anim')).forEach(function (el, i) {
       setTimeout(function () { el.classList.add('is-visible'); }, 60 + i * 110);
     });
-    /* section5: clip-path ワイプ起動 */
-    if (+section.getAttribute('data-idx') === 4) {
+    /* section4: clip-path ワイプ起動 */
+    if (+section.getAttribute('data-idx') === 3) {
       var leadWcs    = section.querySelectorAll('#ch-s4-lead .ch-wc');
       var bodyWcs    = section.querySelectorAll('#ch-s4-body .ch-wc');
       var leadInterval = 115;
