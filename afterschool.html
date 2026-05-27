@@ -4,8 +4,6 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="theme-color" content="#1a1a1a" />
-  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
-  <meta http-equiv="Pragma" content="no-cache" />
   <title>放課後等デイサービス | BLUE MOUSE</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -13,28 +11,32 @@
   <link rel="stylesheet" href="./layout.css?v=37" />
   <style>
     /*
-      sticky スタックが動く条件:
-        position:sticky は「スクロールコンテナ」の祖先に overflow:hidden/auto/scroll が
-        あると壊れる。layout.css で .bm-main{overflow-x:hidden} が設定されているため、
-        CSS仕様により overflow-y が auto に強制され .bm-main がスクロールコンテナになる。
-        overflow:visible に上書きすることで window がスクロールコンテナになり sticky が動く。
-        bm-layout の transform アニメーションも containing block を作るので無効化。
+      ■ 方式: position:fixed + JS translateY
+        - 全セクションをビューポートに固定
+        - JS は「今の1枚」と「次の1枚」の2枚だけ visibility:visible
+        - それ以外は visibility:hidden → GPU が描画スキップ
+        - 結果: 常時2枚だけコンポジット → 軽量
+      ■ bm-layout の animation(transform) を無効化
+        → transform があると fixed の containing block になりズレる
     */
     .bm-layout { animation: none !important; }
-    .bm-main   { padding: 0 !important; overflow: visible !important; }
+    .bm-main   { padding: 0 !important; }
 
     /* ===== 全セクション共通 ===== */
     .as-section {
-      position: sticky;
+      position: fixed;
       top: 0;
+      left: 25vw;
+      width: 50vw;
       height: 100vh;
       height: 100svh;
-      width: 100%;
       overflow: hidden;
-      /* z-index : inline で 1〜7 指定。後のセクションが前のセクションの上に重なる */
+      visibility: hidden; /* JS が2枚だけ visible にする */
     }
+    /* 最初のセクションは JS 起動前から表示（FOUC防止） */
+    .as-section[data-idx="0"] { visibility: visible; }
 
-    /* ===== [1] ヒーロー：背景＋テキストのみ ===== */
+    /* ===== ヒーロー：背景＋テキストのみ ===== */
     .as-hero {
       background: #0f0f0f;
       display: flex;
@@ -46,14 +48,12 @@
       font-family: "Inter", sans-serif;
       font-size: 10px; font-weight: 500;
       letter-spacing: .28em; text-transform: uppercase;
-      color: rgba(255,255,255,.38);
-      margin-bottom: 14px;
+      color: rgba(255,255,255,.38); margin-bottom: 14px;
     }
     .as-hero__label {
       font-family: "Zen Kaku Gothic New","Noto Sans JP",sans-serif;
       font-size: clamp(.72rem,1.0vw,.9rem); font-weight: 400;
-      color: rgba(255,255,255,.5);
-      letter-spacing: .18em; margin: 0 0 18px;
+      color: rgba(255,255,255,.5); letter-spacing: .18em; margin: 0 0 18px;
     }
     .as-hero__title {
       font-family: "Zen Kurenaido","Noto Sans JP",sans-serif;
@@ -61,11 +61,9 @@
       color: rgba(255,254,251,.88);
       line-height: 1.4; margin: 0; letter-spacing: .1em;
     }
-    /* 右下に薄いアクセントライン */
     .as-hero::after {
       content: '';
-      position: absolute;
-      bottom: 0; right: 0;
+      position: absolute; bottom: 0; right: 0;
       width: 38%; height: 3px;
       background: linear-gradient(to left, #FE8C68, transparent);
     }
@@ -98,8 +96,7 @@
     .as-text__lead {
       font-family: "Zen Kaku Gothic New","Noto Sans JP",sans-serif;
       font-size: clamp(2.0rem,3.8vw,4.2rem); font-weight: 700;
-      color: #1d1d1f; line-height: 1.35;
-      margin: 0 0 36px; letter-spacing: -.015em;
+      color: #1d1d1f; line-height: 1.35; margin: 0 0 36px; letter-spacing: -.015em;
     }
     .as-text__body {
       font-family: "Zen Kaku Gothic New","Noto Sans JP",sans-serif;
@@ -121,8 +118,7 @@
     .as-cta__lead {
       font-family: "Zen Kaku Gothic New","Noto Sans JP",sans-serif;
       font-size: clamp(1.9rem,3.6vw,3.8rem); font-weight: 700;
-      color: rgba(255,254,251,.92); line-height: 1.32;
-      margin: 0 0 52px; letter-spacing: -.015em;
+      color: rgba(255,254,251,.92); line-height: 1.32; margin: 0 0 52px; letter-spacing: -.015em;
     }
     .as-cta__btn {
       display: inline-flex; align-items: center; gap: 14px;
@@ -136,8 +132,7 @@
 
     /* ===== 入場アニメーション ===== */
     .as-anim {
-      opacity: 0;
-      transform: translateY(32px);
+      opacity: 0; transform: translateY(36px);
       transition: opacity .9s cubic-bezier(.22,1,.36,1),
                   transform .9s cubic-bezier(.22,1,.36,1);
     }
@@ -145,12 +140,9 @@
 
     /* ===== 進行ドット ===== */
     .as-dots {
-      position: fixed;
-      right: calc(25vw + 20px); top: 50%;
-      transform: translateY(-50%);
-      z-index: 500;
-      display: flex; flex-direction: column; gap: 11px;
-      pointer-events: none;
+      position: fixed; right: calc(25vw + 20px); top: 50%;
+      transform: translateY(-50%); z-index: 500;
+      display: flex; flex-direction: column; gap: 11px; pointer-events: none;
     }
     .as-dot {
       width: 5px; height: 5px; border-radius: 50%;
@@ -161,8 +153,8 @@
     .as-dots.dark .as-dot        { background: rgba(255,255,255,.28); }
     .as-dots.dark .as-dot.active { background: rgba(255,255,255,.92); }
 
-    /* ===== モバイル ===== */
     @media (max-width: 780px) {
+      .as-section { left: 0 !important; width: 100vw !important; }
       .as-hero  { padding: 36px 22px; }
       .as-text  { padding: 0 22px; }
       .as-cta   { padding: 0 22px; }
@@ -191,7 +183,7 @@
   <!-- ===== メイン ===== -->
   <main class="bm-main">
 
-    <!-- [1] ヒーロー：背景＋テキストのみ（写真なし） -->
+    <!-- [1] ヒーロー -->
     <section class="as-section as-hero" style="z-index:1" data-idx="0" data-dark="1">
       <p class="as-hero__eyebrow as-anim">Afterschool Day Service</p>
       <p class="as-hero__label  as-anim">放課後等デイサービス</p>
@@ -238,6 +230,9 @@
       <a href="./contact.html" class="as-cta__btn as-anim">見学・お問い合わせ ›</a>
     </section>
 
+    <!-- sections が fixed のため高さゼロ → スクロール量確保用スペーサー -->
+    <div id="as-spacer"></div>
+
   </main>
 
   <!-- ===== 右サイドバー ===== -->
@@ -278,7 +273,6 @@
   </aside>
 </div>
 
-<!-- 進行ドット -->
 <div class="as-dots" id="as-dots">
   <span class="as-dot active"></span>
   <span class="as-dot"></span>
@@ -297,36 +291,74 @@
   var sections = Array.from(document.querySelectorAll('.as-section'));
   var dotEls   = Array.from(document.querySelectorAll('.as-dot'));
   var dotsWrap = document.getElementById('as-dots');
+  var spacer   = document.getElementById('as-spacer');
   var n        = sections.length;
+
+  var vh       = window.innerHeight;
+  var ticking  = false;
+  var prevBase = -1;
+  var prevNext = -1;
   var seen     = sections.map(function () { return false; });
 
-  /* ---- テキスト入場（IntersectionObserver：スクロール計算ゼロ） ---- */
-  var obs = new IntersectionObserver(function (entries) {
-    entries.forEach(function (entry) {
-      if (!entry.isIntersecting) return;
-      var idx = +entry.target.getAttribute('data-idx');
-      if (seen[idx]) return;
-      seen[idx] = true;
-      var els = Array.from(entry.target.querySelectorAll('.as-anim'));
-      els.forEach(function (el, i) {
-        setTimeout(function () { el.classList.add('is-visible'); }, i * 120);
-      });
-    });
-  }, { threshold: 0.3 });
-
-  sections.forEach(function (s) { obs.observe(s); });
-
-  /* ---- ドット更新（数値演算のみ・DOM transform なし） ---- */
-  function updateDots () {
-    var vh = window.innerHeight;
-    var ai = Math.min(Math.round(window.pageYOffset / vh), n - 1);
-    dotEls.forEach(function (d, j) { d.classList.toggle('active', j === ai); });
-    if (dotsWrap) {
-      dotsWrap.classList.toggle('dark', !!sections[ai].getAttribute('data-dark'));
-    }
+  /* スクロール高さを確保（sections は fixed で高さを作らない） */
+  function setup () {
+    vh = window.innerHeight;
+    spacer.style.height = (n * vh) + 'px';
   }
-  window.addEventListener('scroll', updateDots, { passive: true });
-  updateDots();
+
+  /* ---- メイン描画 ---- */
+  function draw () {
+    ticking = false;
+    var st   = window.pageYOffset;
+    vh       = window.innerHeight;
+
+    var base  = Math.min(Math.floor(st / vh), n - 2);
+    var next  = base + 1;
+    var ty    = Math.round(vh * Math.max(0, 1 - (st / vh - base)));
+
+    /* transform: 現在と次だけ更新（コンポジットのみ・高速） */
+    sections[base].style.transform = 'translateY(0)';
+    sections[next].style.transform = 'translateY(' + ty + 'px)';
+
+    /* visibility: 対象セクションが切り替わった時だけ更新 */
+    if (base !== prevBase || next !== prevNext) {
+      if (prevBase >= 0 && prevBase !== base && prevBase !== next)
+        sections[prevBase].style.visibility = 'hidden';
+      if (prevNext >= 0 && prevNext !== base && prevNext !== next)
+        sections[prevNext].style.visibility = 'hidden';
+      sections[base].style.visibility = '';
+      sections[next].style.visibility = '';
+      prevBase = base;
+      prevNext = next;
+    }
+
+    /* テキスト入場アニメーション */
+    if (!seen[base]) { seen[base] = true; animateIn(sections[base]); }
+    if (!seen[next] && ty < vh * 0.5) { seen[next] = true; animateIn(sections[next]); }
+
+    /* ドット */
+    var ai = ty < vh * 0.5 ? next : base;
+    dotEls.forEach(function (d, j) { d.classList.toggle('active', j === ai); });
+    if (dotsWrap) dotsWrap.classList.toggle('dark', !!sections[ai].getAttribute('data-dark'));
+  }
+
+  function animateIn (section) {
+    Array.from(section.querySelectorAll('.as-anim')).forEach(function (el, i) {
+      setTimeout(function () { el.classList.add('is-visible'); }, 60 + i * 110);
+    });
+  }
+
+  function onScroll () {
+    if (!ticking) { requestAnimationFrame(draw); ticking = true; }
+  }
+
+  /* 起動 */
+  setup();
+  draw();
+  setTimeout(function () { seen[0] = true; animateIn(sections[0]); }, 250);
+
+  window.addEventListener('scroll',  onScroll, { passive: true });
+  window.addEventListener('resize',  function () { setup(); draw(); });
 })();
 </script>
 </body>
