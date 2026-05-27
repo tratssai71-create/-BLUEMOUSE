@@ -26,6 +26,21 @@
     }
     .ch-section[data-idx="0"] { visibility: visible; }
 
+    /* ===== ヒーロー（背景＋テキストのみ） ===== */
+    .ch-hero {
+      background: #0f0f0f;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      padding: 56px 52px;
+    }
+    .ch-hero::after {
+      content: '';
+      position: absolute; bottom: 0; right: 0;
+      width: 38%; height: 3px;
+      background: linear-gradient(to left, #6aadcc, transparent);
+    }
+
     /* ===== 写真セクション ===== */
     .ch-photo { background: #111; }
     .ch-photo__img {
@@ -138,6 +153,7 @@
     /* ===== モバイル ===== */
     @media (max-width: 780px) {
       .ch-section { left: 0 !important; width: 100vw !important; }
+      .ch-hero  { padding: 36px 22px; }
       .ch-photo__copy { padding: 36px 22px; }
       .ch-text { padding: 0 22px; }
       .ch-cta  { padding: 0 22px; }
@@ -166,15 +182,11 @@
   <!-- ===== メイン ===== -->
   <main class="bm-main">
 
-    <!-- [1] ヒーロー写真 -->
-    <section class="ch-section ch-photo" style="z-index:1" data-idx="0" data-dark="1">
-      <img class="ch-photo__img pos-25" src="./5.webp" alt="児童発達支援" />
-      <div class="ch-photo__grad"></div>
-      <div class="ch-photo__copy">
-        <p class="ch-photo__eyebrow ch-anim">Child Development Support</p>
-        <p class="ch-photo__label  ch-anim">児童発達支援</p>
-        <h1 class="ch-photo__title ch-anim">土台となる<br>「見えない力」は、<br>こどもが自ら育む。</h1>
-      </div>
+    <!-- [1] ヒーロー -->
+    <section class="ch-section ch-hero" style="z-index:1" data-idx="0" data-dark="1">
+      <p class="ch-photo__eyebrow ch-anim">Child Development Support</p>
+      <p class="ch-photo__label  ch-anim">児童発達支援</p>
+      <h1 class="ch-photo__title ch-anim">土台となる<br>「見えない力」は、<br>こどもが自ら育む。</h1>
     </section>
 
     <!-- [2] テキスト 1 -->
