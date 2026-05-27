@@ -30,8 +30,10 @@
     .ch-title {
       background: #FFFEFB;
       display: flex;
-      align-items: center;
+      flex-direction: row;
+      align-items: flex-end;
       justify-content: center;
+      gap: 28px;
       padding: 56px 52px;
     }
     .ch-title__text {
@@ -41,16 +43,17 @@
       color: #1d1d1f;
       letter-spacing: .06em;
       line-height: 1.2;
-      margin: 0 0 16px;
+      margin: 0;
     }
     .ch-title__en {
       font-family: "Inter", sans-serif;
-      font-size: clamp(.65rem, .9vw, .8rem);
+      font-size: clamp(.62rem, .85vw, .78rem);
       font-weight: 500;
-      letter-spacing: .28em;
+      letter-spacing: .22em;
       text-transform: uppercase;
       color: rgba(51,37,26,.36);
-      margin: 0;
+      margin: 0 0 .5em;
+      line-height: 1.8;
     }
 
     /* ===== ヒーロー（背景＋テキストのみ） ===== */
