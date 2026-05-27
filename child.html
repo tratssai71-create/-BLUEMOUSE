@@ -167,8 +167,8 @@
       opacity: 0;
       filter: blur(14px);
       transition:
-        opacity  0.8s ease,
-        filter   1.0s cubic-bezier(0.16, 1, 0.3, 1);
+        opacity  1.4s ease,
+        filter   1.8s cubic-bezier(0.16, 1, 0.3, 1);
     }
     .ch-wc.on {
       opacity: 1;
@@ -378,7 +378,7 @@
     if (!h1) return;
     var chars = Array.from(h1.querySelectorAll('.ch-wc'));
     chars.forEach(function (ch, i) {
-      setTimeout(function () { ch.classList.add('on'); }, 150 + i * 50);
+      setTimeout(function () { ch.classList.add('on'); }, 150 + i * 110);
     });
   }
 
