@@ -11,17 +11,20 @@
   <link rel="stylesheet" href="./layout.css?v=37" />
   <style>
     .bm-layout { animation: none !important; }
-    .bm-main   { padding: 0 !important; overflow: visible !important; }
+    .bm-main   { padding: 0 !important; }
 
     /* ===== 全セクション共通 ===== */
     .ch-section {
-      position: sticky;
+      position: fixed;
       top: 0;
+      left: 25vw;
+      width: 50vw;
       height: 100vh;
       height: 100svh;
-      width: 100%;
       overflow: hidden;
+      visibility: hidden;
     }
+    .ch-section[data-idx="0"] { visibility: visible; }
 
     /* ===== 写真セクション ===== */
     .ch-photo { background: #111; }
@@ -134,6 +137,7 @@
 
     /* ===== モバイル ===== */
     @media (max-width: 780px) {
+      .ch-section { left: 0 !important; width: 100vw !important; }
       .ch-photo__copy { padding: 36px 22px; }
       .ch-text { padding: 0 22px; }
       .ch-cta  { padding: 0 22px; }
@@ -203,6 +207,9 @@
       <a href="./contact.html" class="ch-cta__btn ch-anim">見学・お問い合わせ ›</a>
     </section>
 
+    <!-- sections が fixed のため高さゼロ → スクロール量確保用スペーサー -->
+    <div id="ch-spacer"></div>
+
   </main>
 
   <!-- ===== 右サイドバー ===== -->
@@ -263,36 +270,69 @@
   var sections = Array.from(document.querySelectorAll('.ch-section'));
   var dotEls   = Array.from(document.querySelectorAll('.ch-dot'));
   var dotsWrap = document.getElementById('ch-dots');
+  var spacer   = document.getElementById('ch-spacer');
   var n        = sections.length;
+
+  var vh       = window.innerHeight;
+  var ticking  = false;
+  var prevBase = -1;
+  var prevNext = -1;
   var seen     = sections.map(function () { return false; });
 
-  /* ---- テキスト入場（IntersectionObserver） ---- */
-  var obs = new IntersectionObserver(function (entries) {
-    entries.forEach(function (entry) {
-      if (!entry.isIntersecting) return;
-      var idx = +entry.target.getAttribute('data-idx');
-      if (seen[idx]) return;
-      seen[idx] = true;
-      var els = Array.from(entry.target.querySelectorAll('.ch-anim'));
-      els.forEach(function (el, i) {
-        setTimeout(function () { el.classList.add('is-visible'); }, i * 120);
-      });
-    });
-  }, { threshold: 0.3 });
-
-  sections.forEach(function (s) { obs.observe(s); });
-
-  /* ---- ドット更新 ---- */
-  function updateDots () {
-    var vh = window.innerHeight;
-    var ai = Math.min(Math.round(window.pageYOffset / vh), n - 1);
-    dotEls.forEach(function (d, j) { d.classList.toggle('active', j === ai); });
-    if (dotsWrap) {
-      dotsWrap.classList.toggle('dark', !!sections[ai].getAttribute('data-dark'));
-    }
+  /* スクロール高さを確保 */
+  function setup () {
+    vh = window.innerHeight;
+    spacer.style.height = (n * vh) + 'px';
   }
-  window.addEventListener('scroll', updateDots, { passive: true });
-  updateDots();
+
+  /* ---- メイン描画 ---- */
+  function draw () {
+    ticking = false;
+    var st  = window.pageYOffset;
+    vh      = window.innerHeight;
+
+    var base = Math.min(Math.floor(st / vh), n - 2);
+    var next = base + 1;
+    var ty   = Math.round(vh * Math.max(0, 1 - (st / vh - base)));
+
+    sections[base].style.transform = 'translateY(0)';
+    sections[next].style.transform = 'translateY(' + ty + 'px)';
+
+    if (base !== prevBase || next !== prevNext) {
+      if (prevBase >= 0 && prevBase !== base && prevBase !== next)
+        sections[prevBase].style.visibility = 'hidden';
+      if (prevNext >= 0 && prevNext !== base && prevNext !== next)
+        sections[prevNext].style.visibility = 'hidden';
+      sections[base].style.visibility = 'visible';
+      sections[next].style.visibility = 'visible';
+      prevBase = base;
+      prevNext = next;
+    }
+
+    if (!seen[base]) { seen[base] = true; animateIn(sections[base]); }
+    if (!seen[next] && ty < vh * 0.5) { seen[next] = true; animateIn(sections[next]); }
+
+    var ai = ty < vh * 0.5 ? next : base;
+    dotEls.forEach(function (d, j) { d.classList.toggle('active', j === ai); });
+    if (dotsWrap) dotsWrap.classList.toggle('dark', !!sections[ai].getAttribute('data-dark'));
+  }
+
+  function animateIn (section) {
+    Array.from(section.querySelectorAll('.ch-anim')).forEach(function (el, i) {
+      setTimeout(function () { el.classList.add('is-visible'); }, 60 + i * 110);
+    });
+  }
+
+  function onScroll () {
+    if (!ticking) { requestAnimationFrame(draw); ticking = true; }
+  }
+
+  setup();
+  draw();
+  setTimeout(function () { seen[0] = true; animateIn(sections[0]); }, 250);
+
+  window.addEventListener('scroll', onScroll, { passive: true });
+  window.addEventListener('resize', function () { setup(); draw(); });
 })();
 </script>
 </body>
