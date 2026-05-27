@@ -28,7 +28,7 @@
 
     /* ===== ヒーロー（背景＋テキストのみ） ===== */
     .ch-hero {
-      background: #0f0f0f;
+      background: #FFFEFB;
       display: flex;
       flex-direction: column;
       justify-content: flex-end;
@@ -40,6 +40,17 @@
       width: 38%; height: 3px;
       background: linear-gradient(to left, #6aadcc, transparent);
     }
+    /* ヒーロー（白背景）のテキストを暗色に */
+    .ch-hero .ch-photo__eyebrow { color: rgba(51,37,26,.38); }
+    .ch-hero .ch-photo__label   { color: rgba(51,37,26,.5);  }
+    .ch-hero .ch-photo__title   { color: #1d1d1f; }
+
+    /* 2枚目テキストセクションを黒背景に */
+    .ch-section[data-idx="1"].ch-text {
+      background: #0f0f0f;
+    }
+    .ch-section[data-idx="1"] .ch-text__lead { color: rgba(255,254,251,.9); }
+    .ch-section[data-idx="1"] .ch-text__body { color: rgba(255,254,251,.45); }
 
     /* ===== 写真セクション ===== */
     .ch-photo { background: #111; }
@@ -183,14 +194,14 @@
   <main class="bm-main">
 
     <!-- [1] ヒーロー -->
-    <section class="ch-section ch-hero" style="z-index:1" data-idx="0" data-dark="1">
+    <section class="ch-section ch-hero" style="z-index:1" data-idx="0">
       <p class="ch-photo__eyebrow ch-anim">Child Development Support</p>
       <p class="ch-photo__label  ch-anim">児童発達支援</p>
       <h1 class="ch-photo__title ch-anim">土台となる<br>「見えない力」は、<br>こどもが自ら育む。</h1>
     </section>
 
     <!-- [2] テキスト 1 -->
-    <section class="ch-section ch-text" style="z-index:2" data-idx="1">
+    <section class="ch-section ch-text" style="z-index:2" data-idx="1" data-dark="1">
       <p class="ch-text__lead ch-anim">「こどもが主役」の、<br>秩序ある療育。</p>
       <p class="ch-text__body ch-anim">好きなことに夢中になって取り組む時間の中で、小さな「できた」が自然と積み重なる。ルールのある環境の中で、こどもが主体的に動ける場面をつくります。</p>
     </section>
