@@ -30,30 +30,32 @@
     .ch-title {
       background: #FFFEFB;
       display: flex;
-      flex-direction: row;
-      align-items: flex-end;
+      align-items: center;
       justify-content: center;
-      gap: 28px;
+      gap: 20px;
       padding: 56px 52px;
     }
+    /* 縦書き：日本語 */
     .ch-title__text {
+      writing-mode: vertical-rl;
       font-family: "Zen Kurenaido", "Noto Sans JP", sans-serif;
-      font-size: clamp(2.4rem, 4.6vw, 5rem);
+      font-size: clamp(2.6rem, 4.8vw, 5.2rem);
       font-weight: 400;
       color: #1d1d1f;
-      letter-spacing: .06em;
-      line-height: 1.2;
+      letter-spacing: .12em;
       margin: 0;
     }
+    /* 縦書き：英語アクセント */
     .ch-title__en {
+      writing-mode: vertical-rl;
+      text-orientation: mixed;
       font-family: "Inter", sans-serif;
-      font-size: clamp(.62rem, .85vw, .78rem);
+      font-size: clamp(.6rem, .8vw, .72rem);
       font-weight: 500;
-      letter-spacing: .22em;
+      letter-spacing: .18em;
       text-transform: uppercase;
-      color: rgba(51,37,26,.36);
-      margin: 0 0 .5em;
-      line-height: 1.8;
+      color: rgba(51,37,26,.3);
+      margin: 0;
     }
 
     /* ===== ヒーロー（背景＋テキストのみ） ===== */
