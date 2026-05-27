@@ -452,15 +452,16 @@
     });
     /* section4: clip-path ワイプ起動 */
     if (+section.getAttribute('data-idx') === 3) {
-      var leadWcs = section.querySelectorAll('#ch-s4-lead .ch-wc');
-      var bodyWcs = section.querySelectorAll('#ch-s4-body .ch-wc');
-      var interval = 75;
+      var leadWcs    = section.querySelectorAll('#ch-s4-lead .ch-wc');
+      var bodyWcs    = section.querySelectorAll('#ch-s4-body .ch-wc');
+      var leadInterval = 115;
+      var bodyInterval = 75;
       Array.from(leadWcs).forEach(function (span, i) {
-        setTimeout(function () { span.classList.add('on'); }, 150 + i * interval);
+        setTimeout(function () { span.classList.add('on'); }, 150 + i * leadInterval);
       });
-      var bodyStart = 150 + leadWcs.length * interval + 200;
+      var bodyStart = 150 + leadWcs.length * leadInterval + 200;
       Array.from(bodyWcs).forEach(function (span, i) {
-        setTimeout(function () { span.classList.add('on'); }, bodyStart + i * interval);
+        setTimeout(function () { span.classList.add('on'); }, bodyStart + i * bodyInterval);
       });
     }
     /* section1: h1 インク滲み起動 */
