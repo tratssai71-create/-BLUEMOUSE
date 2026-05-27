@@ -161,13 +161,19 @@
     .ch-dots.dark .ch-dot        { background: rgba(255,255,255,.28); }
     .ch-dots.dark .ch-dot.active { background: rgba(255,255,255,.9); }
 
-    /* ===== 書くアニメーション ===== */
+    /* ===== インク滲みアニメーション ===== */
     .ch-wc {
       display: inline-block;
-      clip-path: inset(0 108% 0 0);
-      transition: clip-path 0.13s cubic-bezier(0.16, 1, 0.3, 1);
+      opacity: 0;
+      filter: blur(14px);
+      transition:
+        opacity  0.45s ease,
+        filter   0.55s cubic-bezier(0.16, 1, 0.3, 1);
     }
-    .ch-wc.on { clip-path: inset(0 0% 0 0); }
+    .ch-wc.on {
+      opacity: 1;
+      filter: blur(0px);
+    }
 
     /* ===== モバイル ===== */
     @media (max-width: 780px) {
@@ -372,7 +378,7 @@
     if (!h1) return;
     var chars = Array.from(h1.querySelectorAll('.ch-wc'));
     chars.forEach(function (ch, i) {
-      setTimeout(function () { ch.classList.add('on'); }, 200 + i * 35);
+      setTimeout(function () { ch.classList.add('on'); }, 150 + i * 20);
     });
   }
 
