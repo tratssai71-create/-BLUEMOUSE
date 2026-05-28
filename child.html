@@ -444,7 +444,7 @@
         ? 1
         : Math.max(0, 1 - (stRel - vh * delay) / (vh * (1 - delay)));
       sections[next].style.transform = 'translateX(' + Math.round(16 * hPr) + 'px)';
-      sections[next].style.opacity   = String(hPr);
+      sections[next].style.opacity   = String(1 - hPr);
     } else {
       sections[next].style.transform = 'translateY(' + ty + 'px)';
       sections[next].style.opacity   = '';
