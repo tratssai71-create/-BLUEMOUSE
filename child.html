@@ -421,12 +421,13 @@
     var progress = Math.max(0, 1 - (st / vh - base));
     var ty       = Math.round(vh * progress);
 
+    var hPr = 1;
     sections[base].style.transform = 'translateY(0)';
     if (base === 0 || base === 1) {
       /* section0→1、1→2：section 自体は opacity フェードのみ（translateX なし） */
       var stRel = st - base * vh;
       var delay = 0.92;
-      var hPr   = stRel < vh * delay
+      hPr = stRel < vh * delay
         ? 1
         : Math.max(0, 1 - (stRel - vh * delay) / (vh * (1 - delay)));
       sections[next].style.transform = 'translateY(0)';
@@ -436,7 +437,7 @@
       sections[next].style.opacity   = '';
     }
 
-    /* section0: タイトル文字をスクロール前半40%で左フェードアウト完了 */
+    /* section0: タイトル文字をスクロールで左フェードアウト */
     var titleProgress = Math.min(1, Math.max(0, st / (vh * 1.05)));
     [titleJaEl, titleEnEl].forEach(function (el) {
       if (!el) return;
@@ -451,17 +452,25 @@
       }
     });
 
-    /* section1: タイトルと同じ左フェードアウト */
+    /* section1: 出現=右からフェードイン、消滅=左フェードアウト（消滅の鏡像） */
     var s1Progress = Math.min(1, Math.max(0, (st - vh) / (vh * 1.05)));
+    var s1EntryPr  = base === 0 ? hPr : 0;
     heroAnimEls.forEach(function (el) {
       if (s1Progress > 0) {
+        /* 消滅: 左へフェードアウト */
         el.style.transition = 'none';
         el.style.opacity    = String(Math.max(0, 1 - s1Progress));
         el.style.transform  = 'translateX(' + Math.round(-s1Progress * 16) + 'px)';
+      } else if (s1EntryPr > 0) {
+        /* 出現: 右からフェードイン（消滅の鏡像） */
+        el.style.transition = 'none';
+        el.style.opacity    = String(Math.max(0, 1 - s1EntryPr));
+        el.style.transform  = 'translateX(' + Math.round(s1EntryPr * 16) + 'px)';
       } else {
-        el.style.transition = '';
-        el.style.opacity    = '';
-        el.style.transform  = '';
+        /* 定位置 */
+        el.style.transition = 'none';
+        el.style.opacity    = '1';
+        el.style.transform  = 'none';
       }
     });
 
