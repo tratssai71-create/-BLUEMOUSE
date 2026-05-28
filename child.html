@@ -432,6 +432,7 @@
 
     var hPr = 1;
     sections[base].style.transform = 'translateY(0)';
+    sections[base].style.opacity   = ''; /* base は常にフル表示（高速スクロール対策） */
     if (base === 0 || base === 1) {
       /* section0→1、1→2：section 自体は opacity フェードのみ（translateX なし） */
       var delay = base === 0 ? 0.99 : 0.92;
