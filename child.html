@@ -186,6 +186,8 @@
     .ch-anim.is-visible { opacity: 1; transform: none; }
     .ch-title .ch-anim { transform: translateX(40px); }
     .ch-title .ch-anim.is-visible { opacity: 1; transform: none; }
+    .ch-hero .ch-anim { transform: translateX(40px); }
+    .ch-hero .ch-anim.is-visible { opacity: 1; transform: none; }
 
     /* ===== インク滲み風（1枚目 h1） ===== */
     #ch-hero-h1 .ch-ink {
@@ -307,7 +309,7 @@
     <section class="ch-section ch-hero" style="z-index:2" data-idx="1">
       <p class="ch-photo__eyebrow ch-anim">Child Development Support</p>
       <p class="ch-photo__label  ch-anim">児童発達支援</p>
-      <h1 class="ch-photo__title" id="ch-hero-h1">土台となる<br>「見えない力」は、<br>こどもが自ら育む。</h1>
+      <h1 class="ch-photo__title ch-anim" id="ch-hero-h1">土台となる<br>「見えない力」は、<br>こどもが自ら育む。</h1>
     </section>
 
     <!-- [2] テキスト 1 -->
@@ -406,8 +408,9 @@
   var dotsWrap   = document.getElementById('ch-dots');
   var spacer     = document.getElementById('ch-spacer');
   var n          = sections.length;
-  var titleJaEl  = document.querySelector('.ch-title__ja');
-  var titleEnEl  = document.querySelector('.ch-title__en');
+  var titleJaEl   = document.querySelector('.ch-title__ja');
+  var titleEnEl   = document.querySelector('.ch-title__en');
+  var heroAnimEls = Array.from(document.querySelectorAll('.ch-hero .ch-anim'));
 
   var vh       = window.innerHeight;
   var ticking  = false;
@@ -433,15 +436,15 @@
     var ty       = Math.round(vh * progress);
 
     sections[base].style.transform = 'translateY(0)';
-    if (base === 0) {
-      /* section0→1 は横スクロール：タイトル消去後(0.6vh〜)に右から入る */
-      var vw = window.innerWidth;
-      var delay   = 0.92;
-      var horizPr = st < vh * delay
+    if (base === 0 || base === 1) {
+      /* section0→1、1→2 ともに横スクロール遷移 */
+      var stRel  = st - base * vh;
+      var delay  = 0.92;
+      var hPr    = stRel < vh * delay
         ? 1
-        : Math.max(0, 1 - (st - vh * delay) / (vh * (1 - delay)));
-      sections[next].style.transform = 'translateX(' + Math.round(16 * horizPr) + 'px)';
-      sections[next].style.opacity   = String(1 - horizPr);
+        : Math.max(0, 1 - (stRel - vh * delay) / (vh * (1 - delay)));
+      sections[next].style.transform = 'translateX(' + Math.round(16 * hPr) + 'px)';
+      sections[next].style.opacity   = String(hPr);
     } else {
       sections[next].style.transform = 'translateY(' + ty + 'px)';
       sections[next].style.opacity   = '';
@@ -455,6 +458,20 @@
         el.style.transition = 'none';
         el.style.opacity    = String(Math.max(0, 1 - titleProgress));
         el.style.transform  = 'translateX(' + Math.round(-titleProgress * 16) + 'px)';
+      } else {
+        el.style.transition = '';
+        el.style.opacity    = '';
+        el.style.transform  = '';
+      }
+    });
+
+    /* section1: タイトルと同じ左フェードアウト */
+    var s1Progress = Math.min(1, Math.max(0, (st - vh) / (vh * 1.05)));
+    heroAnimEls.forEach(function (el) {
+      if (s1Progress > 0) {
+        el.style.transition = 'none';
+        el.style.opacity    = String(Math.max(0, 1 - s1Progress));
+        el.style.transform  = 'translateX(' + Math.round(-s1Progress * 16) + 'px)';
       } else {
         el.style.transition = '';
         el.style.opacity    = '';
