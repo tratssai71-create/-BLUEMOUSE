@@ -438,9 +438,11 @@
       var horizPr = st < vh * delay
         ? 1
         : Math.max(0, 1 - (st - vh * delay) / (vh * (1 - delay)));
-      sections[next].style.transform = 'translateX(' + Math.round(vw * horizPr) + 'px)';
+      sections[next].style.transform = 'translateX(' + Math.round(16 * horizPr) + 'px)';
+      sections[next].style.opacity   = String(1 - horizPr);
     } else {
       sections[next].style.transform = 'translateY(' + ty + 'px)';
+      sections[next].style.opacity   = '';
     }
 
     /* section0: タイトル文字をスクロール前半40%で左フェードアウト完了 */
