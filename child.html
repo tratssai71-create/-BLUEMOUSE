@@ -426,7 +426,9 @@
     if (base === 0 || base === 1) {
       /* section0→1、1→2：section 自体は opacity フェードのみ（translateX なし） */
       var stRel = st - base * vh;
-      var delay = 0.92;
+      /* base=0: section1の入場はスクロール55%から開始（長めにフェードイン）
+         base=1: section2以降は従来通り92% */
+      var delay = base === 0 ? 0.55 : 0.92;
       hPr = stRel < vh * delay
         ? 1
         : Math.max(0, 1 - (stRel - vh * delay) / (vh * (1 - delay)));
