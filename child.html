@@ -189,20 +189,6 @@
     .ch-hero .ch-anim { transform: translateX(40px); }
     .ch-hero .ch-anim.is-visible { opacity: 1; transform: none; }
 
-    /* ===== インク滲み風（1枚目 h1） ===== */
-    #ch-hero-h1 .ch-ink {
-      display: inline-block;
-      opacity: 0;
-      filter: blur(14px);
-    }
-    #ch-hero-h1.is-active .ch-ink {
-      animation: chInkIn 1.6s cubic-bezier(.16,1,.3,1) forwards;
-      animation-delay: calc(0.09s * var(--char-index));
-    }
-    @keyframes chInkIn {
-      to { filter: blur(0); opacity: 1; }
-    }
-
     /* ===== 進行ドット ===== */
     .ch-dots {
       position: fixed;
@@ -538,23 +524,6 @@
   initWipeEl('ch-s4-lead');
   initWipeEl('ch-s4-body');
 
-  /* ---- h1 インク滲み初期化 ---- */
-  (function initInkH1 () {
-    var h1 = document.getElementById('ch-hero-h1');
-    if (!h1) return;
-    var parts = h1.innerHTML.split(/<br\s*\/?>/i);
-    var html  = ''; var idx = 0;
-    parts.forEach(function (part, pi) {
-      Array.from(part).forEach(function (ch) {
-        var safe = ch === '&' ? '&amp;' : ch === '<' ? '&lt;' : ch === '>' ? '&gt;' : ch;
-        html += '<span class="ch-ink" style="--char-index:' + idx + '">' + safe + '</span>';
-        idx++;
-      });
-      if (pi < parts.length - 1) html += '<br>';
-    });
-    h1.innerHTML = html;
-  })();
-
   function animateIn (section) {
     var sIdx     = +section.getAttribute('data-idx');
     var interval = sIdx === 1 ? 0 : 110;
@@ -574,13 +543,6 @@
       Array.from(bodyWcs).forEach(function (span, i) {
         setTimeout(function () { span.classList.add('on'); }, bodyStart + i * bodyInterval);
       });
-    }
-    /* section2: h1 インク滲み起動 */
-    if (+section.getAttribute('data-idx') === 1) {
-      setTimeout(function () {
-        var h1 = document.getElementById('ch-hero-h1');
-        if (h1) h1.classList.add('is-active');
-      }, 280);
     }
     /* section3: text09 を1回再生 → 固定表示 */
     if (+section.getAttribute('data-idx') === 2) {
