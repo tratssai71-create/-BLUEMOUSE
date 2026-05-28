@@ -437,13 +437,13 @@
 
     sections[base].style.transform = 'translateY(0)';
     if (base === 0 || base === 1) {
-      /* section0→1、1→2 ともに横スクロール遷移 */
-      var stRel  = st - base * vh;
-      var delay  = 0.92;
-      var hPr    = stRel < vh * delay
+      /* section0→1、1→2：section 自体は opacity フェードのみ（translateX なし） */
+      var stRel = st - base * vh;
+      var delay = 0.92;
+      var hPr   = stRel < vh * delay
         ? 1
         : Math.max(0, 1 - (stRel - vh * delay) / (vh * (1 - delay)));
-      sections[next].style.transform = 'translateX(' + Math.round(16 * hPr) + 'px)';
+      sections[next].style.transform = 'translateY(0)';
       sections[next].style.opacity   = String(1 - hPr);
     } else {
       sections[next].style.transform = 'translateY(' + ty + 'px)';
@@ -491,7 +491,8 @@
     }
 
     if (!seen[base]) { seen[base] = true; animateIn(sections[base]); }
-    if (!seen[next] && ty < vh * 0.5) { seen[next] = true; animateIn(sections[next]); }
+    /* section1・2 は定位置（base）になってから animateIn。それ以降は従来通り早期発火 */
+    if (!seen[next] && ty < vh * 0.5 && base > 1) { seen[next] = true; animateIn(sections[next]); }
 
     var ai = ty < vh * 0.5 ? next : base;
     dotEls.forEach(function (d, j) { d.classList.toggle('active', j === ai); });
