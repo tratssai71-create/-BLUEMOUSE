@@ -556,8 +556,10 @@
   })();
 
   function animateIn (section) {
+    var sIdx     = +section.getAttribute('data-idx');
+    var interval = sIdx === 1 ? 0 : 110;
     Array.from(section.querySelectorAll('.ch-anim')).forEach(function (el, i) {
-      setTimeout(function () { el.classList.add('is-visible'); }, 60 + i * 110);
+      setTimeout(function () { el.classList.add('is-visible'); }, 60 + i * interval);
     });
     /* section5: clip-path ワイプ起動 */
     if (+section.getAttribute('data-idx') === 4) {
