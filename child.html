@@ -42,7 +42,7 @@
       gap: 18px;
       position: absolute;
       top: 50%;
-      left: 52px;
+      left: calc(50% - clamp(2.8rem, 5.2vw, 5.6rem));
       transform: translateY(-50%);
       width: fit-content;
       height: fit-content;
@@ -229,7 +229,7 @@
     @media (max-width: 780px) {
       .ch-section { left: 0 !important; width: 100vw !important; }
       .ch-title { padding: 0; }
-      .ch-title__inner { top: calc(50% + 26px); left: 22px; } /* ヘッダー26px補正 + 左寄せ */
+      .ch-title__inner { top: calc(50% + 26px); } /* ヘッダー26px補正 */
       .ch-hero  { padding: 36px 22px; }
       .ch-photo__copy { padding: 36px 22px; }
       .ch-text { padding: 0 22px; }
