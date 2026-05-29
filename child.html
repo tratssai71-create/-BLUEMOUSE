@@ -41,9 +41,10 @@
       align-items: center;
       gap: 18px;
       position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
+      inset: 0;
+      margin: auto;
+      width: fit-content;
+      height: fit-content;
     }
     .ch-title__ja {
       font-family: "Zen Kurenaido", "Noto Sans JP", sans-serif;
@@ -232,6 +233,7 @@
     @media (max-width: 780px) {
       .ch-section { left: 0 !important; width: 100vw !important; }
       .ch-title { padding: 0; }
+      .ch-title__inner { top: 52px; } /* 固定ヘッダー52px分だけ下げて視覚的中央に */
       .ch-hero  { padding: 36px 22px; }
       .ch-photo__copy { padding: 36px 22px; }
       .ch-text { padding: 0 22px; }
