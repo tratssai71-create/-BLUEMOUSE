@@ -101,12 +101,23 @@
     .ch-hero .ch-photo__label   { color: rgba(51,37,26,.5);  }
     .ch-hero .ch-photo__title   { color: #1d1d1f; }
 
-    /* 2枚目テキストセクションを黒背景に */
-    .ch-section[data-idx="1"].ch-text {
-      background: #0f0f0f;
+    /* 黒背景＋背景写真テキストセクション */
+    .ch-section[data-idx="2"].ch-text {
+      background: #0a0a0a; /* 写真読み込み前のフォールバック */
     }
-    .ch-section[data-idx="1"] .ch-text__lead { color: rgba(255,254,251,.9); }
-    .ch-section[data-idx="1"] .ch-text__body { color: rgba(255,254,251,.45); }
+    .ch-section[data-idx="2"] .ch-text__overlay {
+      position: absolute;
+      inset: 0;
+      background: rgba(0,0,0,.50);
+      pointer-events: none;
+    }
+    .ch-section[data-idx="2"] .ch-text__lead,
+    .ch-section[data-idx="2"] .ch-text__body {
+      position: relative;
+      z-index: 1;
+    }
+    .ch-section[data-idx="2"] .ch-text__lead { color: rgba(255,254,251,.92); }
+    .ch-section[data-idx="2"] .ch-text__body { color: rgba(255,254,251,.50); }
 
     /* ===== 写真セクション ===== */
     .ch-photo { background: #111; }
@@ -287,8 +298,10 @@
       </div>
     </section>
 
-    <!-- [2] テキスト 1 -->
+    <!-- [2] テキスト 1（背景：積み木写真） -->
     <section class="ch-section ch-text" style="z-index:3" data-idx="2" data-dark="1">
+      <img class="ch-photo__img pos-35" src="./tsumiki_opt.jpg" alt="からから積み木で遊ぶこども" loading="lazy" />
+      <div class="ch-text__overlay"></div>
       <p class="ch-text__lead text" id="ch-text09-lead">「こどもが主役」の、<br>秩序ある療育。</p>
       <p class="ch-text__body text" id="ch-text09-body">好きなことに夢中になって取り組む時間の中で、小さな「できた」が自然と積み重なる。ルールのある環境の中で、こどもが主体的に動ける場面をつくります。</p>
     </section>
