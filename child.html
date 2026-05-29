@@ -389,43 +389,63 @@
   var prevBase = -1;
   var prevNext = -1;
 
-  /* ===== 通過セクション：縮んで積み上がるサムネイル ===== */
+  /* ===== 通過セクション：円に丸まって積み上がり、戻れる ===== */
   var thumbs = [];
   var SEC_BG = ['#FFFEFB','#FFFEFB','#0f0f0f','#111','#FFFEFB','#111','#FFFEFB'];
+  var DIAM   = 62; /* 丸のサイズ（px） */
+  var DUR    = '0.88s';
+  var EASE   = 'cubic-bezier(.16,1,.3,1)';
 
   function spawnThumb(idx) {
-    var i      = thumbs.length;
-    var panelL = window.innerWidth  * 0.25;
-    var panelW = window.innerWidth  * 0.50;
-    var panelH = window.innerHeight;
-    var scale  = 76 / panelW;
-    var rot    = (Math.random() - 0.5) * 14;
-    var ox     = (Math.random() - 0.5) * 12;
-    var oy     = (Math.random() - 0.5) * 8;
-    var tx     = panelL + 22 + ox - panelL; /* = 22 + ox */
-    var ty     = 22 + oy;
+    var i   = thumbs.length;
+    var pL  = window.innerWidth  * 0.25;
+    var pW  = window.innerWidth  * 0.50;
+    var pH  = window.innerHeight;
+    var sc  = DIAM / pW;
+    /* 積み重なる位置：全部ほぼ同じ場所にランダムなズレで重なる */
+    var ox  = (Math.random() - 0.5) * 16;
+    var oy  = (Math.random() - 0.5) * 10;
+    var rot = (Math.random() - 0.5) * 22;
+    var tx  = 28 + ox;   /* パネル左端からの相対X */
+    var ty  = 28 + oy;
 
     var t = document.createElement('div');
+    t._tx = tx; t._ty = ty; t._sc = sc; t._rot = rot;
     t.style.cssText = [
       'position:fixed',
       'z-index:' + (200 + i),
       'pointer-events:none',
-      'will-change:transform,border-radius,box-shadow',
-      'left:' + panelL + 'px',
+      'will-change:transform,border-radius',
+      'left:' + pL + 'px',
       'top:0',
-      'width:' + panelW + 'px',
-      'height:' + panelH + 'px',
+      'width:' + pW + 'px',
+      'height:' + pH + 'px',
       'background:' + (SEC_BG[idx] || '#FFFEFB'),
       'transform-origin:0 0',
+      'border-radius:0px',
+      'overflow:hidden',
     ].join(';');
     document.body.appendChild(t);
-    /* レイアウト確定後にトランジションをセット → アニメ開始 */
-    t.getBoundingClientRect();
-    t.style.transition = 'transform 0.9s cubic-bezier(.16,1,.3,1), border-radius 0.9s, box-shadow 0.9s';
-    t.style.transform    = 'translate(' + tx + 'px,' + ty + 'px) scale(' + scale + ') rotate(' + rot + 'deg)';
-    t.style.borderRadius = '5px';
-    t.style.boxShadow    = '0 4px 18px rgba(0,0,0,.22)';
+
+    t.getBoundingClientRect(); /* レイアウト確定 */
+
+    /* パネル中央→丸くなりながら左上へ移動 */
+    t.style.transition = 'transform ' + DUR + ' ' + EASE + ', border-radius ' + DUR + ' ' + EASE + ', box-shadow ' + DUR;
+    t.style.transform    = 'translate(' + tx + 'px,' + ty + 'px) scale(' + sc + ') rotate(' + rot + 'deg)';
+    t.style.borderRadius = '50%';
+    t.style.boxShadow    = '0 4px 22px rgba(0,0,0,.24)';
     thumbs.push(t);
+  }
+
+  function popThumb() {
+    if (!thumbs.length) return;
+    var t = thumbs.pop();
+    /* 丸いまま中央に戻り、広がりながら四角く戻る */
+    t.style.transition = 'transform ' + DUR + ' ' + EASE + ', border-radius ' + DUR + ' ' + EASE + ', box-shadow ' + DUR;
+    t.style.transform    = 'translate(0px,0px) scale(1) rotate(0deg)';
+    t.style.borderRadius = '0px';
+    t.style.boxShadow    = 'none';
+    setTimeout(function () { if (t.parentNode) t.parentNode.removeChild(t); }, 920);
   }
 
   var seen          = sections.map(function () { return false; });
@@ -518,7 +538,13 @@
         sections[prevNext].style.visibility = 'hidden';
       sections[base].style.visibility = 'visible';
       sections[next].style.visibility = 'visible';
-      if (base > prevBase && prevBase >= 0) spawnThumb(prevBase);
+      if (prevBase >= 0) {
+        if (base > prevBase) {
+          for (var k = prevBase; k < base; k++) spawnThumb(k);
+        } else if (base < prevBase) {
+          for (var k = 0; k < prevBase - base; k++) popThumb();
+        }
+      }
       prevBase = base;
       prevNext = next;
     }
