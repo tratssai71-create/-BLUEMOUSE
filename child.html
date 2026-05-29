@@ -227,7 +227,15 @@
     /* ===== モバイル ===== */
     @media (max-width: 780px) {
       .ch-section { left: 0 !important; width: 100vw !important; }
-      .ch-title { padding: 92px 22px 40px; justify-content: center; } /* 92px = 40px + 52px(mobile header) */
+      .ch-title { padding: 0; }
+      /* flex を使わず absolute で正確に垂直中央に固定 */
+      .ch-title__inner {
+        position: absolute;
+        top: 50%;
+        left: 22px;
+        right: 22px;
+        transform: translateY(-50%);
+      }
       .ch-hero  { padding: 36px 22px; }
       .ch-photo__copy { padding: 36px 22px; }
       .ch-text { padding: 0 22px; }
