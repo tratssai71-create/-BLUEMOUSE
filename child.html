@@ -443,12 +443,21 @@
 
     sections[base].style.transform = 'translateY(0)';
     sections[base].style.opacity   = ''; /* base は常にフル表示（高速スクロール対策） */
-    /* 全セクション共通：下からスライドアップ */
-    sections[next].style.transform = 'translateY(' + ty + 'px)';
-    sections[next].style.opacity   = '';
+    if (base === 0) {
+      /* section0→1：タイトルFO完了後にフェードイン（スライドなし） */
+      var hPr = stRel < secSpan * 0.85
+        ? 1
+        : Math.max(0, 1 - (stRel - secSpan * 0.85) / (secSpan * 0.15));
+      sections[next].style.transform = 'translateY(0)';
+      sections[next].style.opacity   = String(1 - hPr);
+    } else {
+      /* 他セクション：下からスライドアップ */
+      sections[next].style.transform = 'translateY(' + ty + 'px)';
+      sections[next].style.opacity   = '';
+    }
 
     /* section0: タイトル文字 — スクロール30%まで保持、残り70%でフェードアウト */
-    var titleProgress = Math.min(1, Math.max(0, (st - vh * 0.3) / (vh * 0.7)));
+    var titleProgress = Math.min(1, Math.max(0, (st - vh * 0.3) / (vh * 0.5)));
     [titleJaEl, titleEnEl].forEach(function (el) {
       if (!el) return;
       if (titleProgress > 0) {
