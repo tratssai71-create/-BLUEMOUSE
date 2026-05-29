@@ -41,9 +41,9 @@
       align-items: center;
       gap: 18px;
       position: absolute;
-      top: calc(50% + clamp(1.43rem, 2.64vw, 2.86rem));
-      left: 50%;
-      transform: translate(-50%, -50%);
+      top: 50%;
+      left: 52px;
+      transform: translateY(-50%);
       width: fit-content;
       height: fit-content;
     }
@@ -229,7 +229,7 @@
     @media (max-width: 780px) {
       .ch-section { left: 0 !important; width: 100vw !important; }
       .ch-title { padding: 0; }
-      .ch-title__inner { top: calc(50% + 26px + clamp(1.43rem, 2.64vw, 2.86rem)); } /* ヘッダー26px補正 */
+      .ch-title__inner { top: calc(50% + 26px); left: 22px; } /* ヘッダー26px補正 + 左寄せ */
       .ch-hero  { padding: 36px 22px; }
       .ch-photo__copy { padding: 36px 22px; }
       .ch-text { padding: 0 22px; }
