@@ -907,7 +907,7 @@ h2 { letter-spacing: .12em; }
   animation: bm-fab-pulse 2.5s ease-in-out infinite;
 }
 @media (max-width: 780px) {
-  .bm-info-fab { display: flex; }
+  .bm-info-fab { display: none; }
 }
 .bm-info-fab svg {
   width: 22px; height: 22px;
