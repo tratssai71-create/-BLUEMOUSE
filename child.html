@@ -106,15 +106,18 @@
       background: #0a0a0a; /* 写真読み込み前のフォールバック */
     }
     .ch-section[data-idx="2"] .ch-text__overlay {
-      display: none;
+      position: absolute;
+      inset: 0;
+      background: rgba(0,0,0,.42);
+      pointer-events: none;
     }
     .ch-section[data-idx="2"] .ch-text__lead,
     .ch-section[data-idx="2"] .ch-text__body {
       position: relative;
       z-index: 1;
     }
-    .ch-section[data-idx="2"] .ch-text__lead { color: rgba(29,29,31,.92); }
-    .ch-section[data-idx="2"] .ch-text__body { color: rgba(29,29,31,.65); }
+    .ch-section[data-idx="2"] .ch-text__lead { color: rgba(255,254,251,.92); }
+    .ch-section[data-idx="2"] .ch-text__body { color: rgba(255,254,251,.60); }
 
     /* ===== 写真セクション ===== */
     .ch-photo { background: #111; }
