@@ -26,7 +26,9 @@
 
     /* トップページはパディングなし */
     .bm-main { padding: 0 !important; }
-    /* サイドバーロゴ非表示 */
+    /* bm-layout の transform アニメが fixed の含有ブロックになるのを防ぐ */
+    .bm-layout { animation: none !important; }
+    /* サイドバーロゴ非表示（バッジが代わりに表示） */
     .bm-left .bm-logo { display: none !important; }
 
     /* 各セクション */

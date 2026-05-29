@@ -69,7 +69,7 @@ h2 { letter-spacing: .12em; }
   height: auto;
   display: block;
 }
-.bm-logo { display: block; padding: 24px 16px 16px; }
+.bm-logo { display: none; padding: 24px 16px 16px; }
 
 
 /* ナビ */
