@@ -76,12 +76,19 @@
     /* ===== ヒーロー（背景＋テキストのみ） ===== */
     .ch-hero {
       background: #FFFEFB;
+      padding: 56px 52px;
+    }
+    .ch-hero__inner {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      text-align: center;
       display: flex;
       flex-direction: column;
-      justify-content: center;
       align-items: center;
-      text-align: center;
-      padding: 56px 52px;
+      width: max-content;
+      max-width: calc(100% - 44px);
     }
     .ch-hero::after {
       content: '';
@@ -273,9 +280,11 @@
 
     <!-- [1] ヒーロー -->
     <section class="ch-section ch-hero" style="z-index:2" data-idx="1">
-      <p class="ch-photo__eyebrow ch-anim">Children build their own unseen foundation.</p>
-      <p class="ch-photo__label  ch-anim">児童発達支援</p>
-      <h1 class="ch-photo__title ch-anim" id="ch-hero-h1">土台となる<br>「見えない力」は、<br>こどもが自ら育む。</h1>
+      <div class="ch-hero__inner">
+        <p class="ch-photo__eyebrow ch-anim">Children build their own unseen foundation.</p>
+        <p class="ch-photo__label  ch-anim">児童発達支援</p>
+        <h1 class="ch-photo__title ch-anim" id="ch-hero-h1">土台となる<br>「見えない力」は、<br>こどもが自ら育む。</h1>
+      </div>
     </section>
 
     <!-- [2] テキスト 1 -->
