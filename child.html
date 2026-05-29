@@ -405,6 +405,7 @@
   var n          = sections.length;
   var titleJaEl   = document.querySelector('.ch-title__ja');
   var titleEnEl   = document.querySelector('.ch-title__en');
+  var heroH1El    = document.querySelector('#ch-hero-h1');
 
   var vh       = window.innerHeight;
   var ticking  = false;
@@ -453,13 +454,24 @@
         seen[next] = true;
         animateIn(sections[next]);
       }
+    } else if (base === 1) {
+      /* section1→2：h1 FO完了（80%）後にsection2フェードイン */
+      var hPr = stRel < secSpan * 0.80
+        ? 1
+        : Math.max(0, 1 - (stRel - secSpan * 0.80) / (secSpan * 0.20));
+      sections[next].style.transform = 'translateY(0)';
+      sections[next].style.opacity   = String(1 - hPr);
+      if (!seen[next] && hPr < 1) {
+        seen[next] = true;
+        animateIn(sections[next]);
+      }
     } else {
       /* 他セクション：下からスライドアップ */
       sections[next].style.transform = 'translateY(' + ty + 'px)';
       sections[next].style.opacity   = '';
     }
 
-    /* section0: タイトル文字 — スクロール30%まで保持、残り70%でフェードアウト */
+    /* section0: タイトル文字 フェードアウト（30%〜80%） */
     var titleProgress = Math.min(1, Math.max(0, (st - vh * 0.3) / (vh * 0.5)));
     [titleJaEl, titleEnEl].forEach(function (el) {
       if (!el) return;
@@ -473,6 +485,20 @@
         el.style.transform  = '';
       }
     });
+
+    /* section1: h1フェードアウト（30%〜80%） */
+    if (base === 1 && heroH1El) {
+      var s1FadePr = Math.min(1, Math.max(0, (stRel - secSpan * 0.3) / (secSpan * 0.5)));
+      if (s1FadePr > 0) {
+        heroH1El.style.transition = 'none';
+        heroH1El.style.opacity    = String(Math.max(0, 1 - s1FadePr));
+        heroH1El.style.transform  = 'translateX(' + Math.round(-s1FadePr * 16) + 'px)';
+      } else {
+        heroH1El.style.transition = '';
+        heroH1El.style.opacity    = '';
+        heroH1El.style.transform  = '';
+      }
+    }
 
 
     if (base !== prevBase || next !== prevNext) {
