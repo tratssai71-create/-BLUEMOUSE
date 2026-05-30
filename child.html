@@ -101,21 +101,36 @@
     .ch-hero .ch-photo__label   { color: rgba(51,37,26,.5);  }
     .ch-hero .ch-photo__title   { color: #1d1d1f; }
 
-    /* セクション2：透明背景・テキストのみ */
+    /* 黒背景＋背景写真テキストセクション */
     .ch-section[data-idx="2"].ch-text {
-      background: transparent;
+      background: #0a0a0a;
+      left: 0 !important;
+      width: 100vw !important;
+      height: 100vh !important;
+      height: 100svh !important;
+    }
+    .ch-section[data-idx="2"] .ch-photo__img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center center;
     }
     .ch-section[data-idx="2"] .ch-text__lead,
     .ch-section[data-idx="2"] .ch-text__body {
-      font-family: "Inter", sans-serif;
-      font-size: clamp(.9rem, 1.25vw, 1.05rem);
-      font-weight: 400;
-      letter-spacing: .12em;
+      position: relative;
+      z-index: 1;
+    }
+    .ch-section[data-idx="2"] .ch-text__lead,
+    .ch-section[data-idx="2"] .ch-text__body {
+      font-family: "Zen Kaku Gothic New", "Noto Sans JP", sans-serif;
+      font-size: clamp(1.7rem, 2.4vw, 2.1rem);
+      font-weight: 700;
+      letter-spacing: .88em;
       line-height: 2.0;
       margin: 0 0 18px;
     }
     .ch-section[data-idx="2"] .ch-text__lead { color: #1d1d1f; }
-    .ch-section[data-idx="2"] .ch-text__body { color: rgba(51,37,26,.52); max-width: none; }
+    .ch-section[data-idx="2"] .ch-text__body { color: #1d1d1f; max-width: none; }
 
     /* ===== 写真セクション ===== */
     .ch-photo { background: #111; }
@@ -294,15 +309,9 @@
       </div>
     </section>
 
-<<<<<<< HEAD
     <!-- [2] テキスト 1（背景：積み木写真） -->
     <section class="ch-section ch-text" style="z-index:3" data-idx="2" data-dark="1">
       <p class="ch-text__lead text" id="ch-text09-lead">「こども中心」という、<br>秩序ある環境。<br><br></p>
-=======
-    <!-- [2] テキスト 1（透明背景） -->
-    <section class="ch-section ch-text" style="z-index:3" data-idx="2">
-      <p class="ch-text__lead text" id="ch-text09-lead">「こども中心」という、<br>秩序ある環境。</p>
->>>>>>> a20b748 (child: section 2 - transparent bg, text only, no photo)
       <p class="ch-text__body text" id="ch-text09-body">心地よい時間の中で「できた」を重ねていくこと</p>
     </section>
 
