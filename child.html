@@ -224,7 +224,7 @@
     .ch-anim.is-visible { opacity: 1; transform: none; }
     .ch-title .ch-anim { transform: translateX(40px); }
     .ch-title .ch-anim.is-visible { opacity: 1; transform: none; }
-    .ch-hero .ch-anim { opacity: 0; transform: translateX(60px); }
+    .ch-hero .ch-anim { opacity: 0; transform: translateX(40px); }
     .ch-hero .ch-anim.is-visible { opacity: 1; transform: none; }
     .ch-section[data-idx="3"] .ch-anim { transform: translateX(40px); }
     .ch-section[data-idx="3"] .ch-anim.is-visible { opacity: 1; transform: none; }
@@ -427,7 +427,6 @@
 
 
   var seen          = sections.map(function () { return false; });
-  var s2Animating   = false; /* section2 入場アニメーション中フラグ */
   /* 全セクション均等スクロール（各 1vh） */
   var sectionStarts = [0, 1, 2, 3, 4, 5, 6, 7]; /* 各セクション開始位置（vh倍数） */
 
@@ -506,12 +505,11 @@
     /* section2: h1フェードアウト（タイトル1と同じ 開始5% スパン85%） */
     if (base === 2 && heroH1El) {
       var s1FadePr = Math.min(1, Math.max(0, (stRel - secSpan * 0.05) / (secSpan * 0.85)));
-      if (s1FadePr > 0 && !s2Animating) {
-        /* フェードアウト（入場アニメーション中は割り込まない） */
+      if (s1FadePr > 0) {
         heroH1El.style.transition = 'none';
         heroH1El.style.opacity    = String(Math.max(0, 1 - s1FadePr));
         heroH1El.style.transform  = 'translateX(' + Math.round(-s1FadePr * 16) + 'px)';
-      } else if (!s2Animating && heroH1El.style.opacity !== '') {
+      } else {
         heroH1El.style.transition = '';
         heroH1El.style.opacity    = '';
         heroH1El.style.transform  = '';
@@ -598,38 +596,9 @@
     var sIdx     = +section.getAttribute('data-idx');
     var interval = sIdx === 2 ? 0 : 110;
 
-    if (sIdx === 2) {
-      /* section2: CSS transition を使わず rAF で直接アニメーション */
-      var h1 = section.querySelector('#ch-hero-h1');
-      if (h1) {
-        s2Animating = true;
-        var s2Dur   = 900;
-        var s2Start = null;
-        function s2ease(t) { return t < .5 ? 2*t*t : -1+(4-2*t)*t; }
-        function s2step(ts) {
-          if (!s2Start) s2Start = ts;
-          var p = Math.min((ts - s2Start) / s2Dur, 1);
-          var e = s2ease(p);
-          if (s2Animating) {
-            h1.style.opacity   = String(e);
-            h1.style.transform = 'translateX(' + Math.round((1 - e) * 60) + 'px)';
-          }
-          if (p < 1 && s2Animating) {
-            requestAnimationFrame(s2step);
-          } else {
-            s2Animating = false;
-            h1.classList.add('is-visible');
-            h1.style.opacity   = '';
-            h1.style.transform = '';
-          }
-        }
-        requestAnimationFrame(s2step);
-      }
-    } else {
-      Array.from(section.querySelectorAll('.ch-anim')).forEach(function (el, i) {
-        setTimeout(function () { el.classList.add('is-visible'); }, 60 + i * interval);
-      });
-    }
+    Array.from(section.querySelectorAll('.ch-anim')).forEach(function (el, i) {
+      setTimeout(function () { el.classList.add('is-visible'); }, 60 + i * interval);
+    });
     /* section5: clip-path ワイプ起動 */
     if (+section.getAttribute('data-idx') === 5) {
       var leadWcs    = section.querySelectorAll('#ch-s4-lead .ch-wc');
