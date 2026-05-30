@@ -417,6 +417,8 @@
   var titleJaEl   = document.querySelector('.ch-title__ja');
   var titleEnEl   = document.querySelector('.ch-title__en');
   var heroH1El    = document.querySelector('#ch-hero-h1');
+  var s2LeadEl    = document.querySelector('#ch-text09-lead');
+  var s2BodyEl    = document.querySelector('#ch-text09-body');
 
   var vh       = window.innerHeight;
   var ticking  = false;
@@ -466,12 +468,27 @@
         animateIn(sections[next]);
       }
     } else if (base === 1) {
-      /* section1→2：h1 FO完了（80%）後にスライドアップ開始 */
+      /* section1→2：h1 FO完了（80%）後にフェードイン */
       var s2Pr = stRel < secSpan * 0.80
         ? 1
         : Math.max(0, 1 - (stRel - secSpan * 0.80) / (secSpan * 0.20));
-      sections[next].style.transform = 'translateY(' + Math.round(vh * s2Pr) + 'px)';
-      sections[next].style.opacity   = '';
+      sections[next].style.transform = 'translateY(0)';
+      sections[next].style.opacity   = String(1 - s2Pr);
+      if (!seen[next] && s2Pr < 1) {
+        seen[next] = true;
+        animateIn(sections[next]);
+      }
+    } else if (base === 2) {
+      /* section2→3：テキスト FO完了（80%）後にフェードイン */
+      var s3Pr = stRel < secSpan * 0.80
+        ? 1
+        : Math.max(0, 1 - (stRel - secSpan * 0.80) / (secSpan * 0.20));
+      sections[next].style.transform = 'translateY(0)';
+      sections[next].style.opacity   = String(1 - s3Pr);
+      if (!seen[next] && s3Pr < 1) {
+        seen[next] = true;
+        animateIn(sections[next]);
+      }
     } else {
       /* 他セクション：下からスライドアップ */
       sections[next].style.transform = 'translateY(' + ty + 'px)';
@@ -507,6 +524,23 @@
       }
     }
 
+    /* section2: テキスト フェードアウト（30%〜80%） */
+    if (base === 2) {
+      var s2FadePr = Math.min(1, Math.max(0, (stRel - secSpan * 0.3) / (secSpan * 0.5)));
+      [s2LeadEl, s2BodyEl].forEach(function (el) {
+        if (!el) return;
+        if (s2FadePr > 0) {
+          el.style.transition = 'none';
+          el.style.opacity    = String(Math.max(0, 1 - s2FadePr));
+          el.style.transform  = 'translateX(' + Math.round(-s2FadePr * 16) + 'px)';
+        } else {
+          el.style.transition = '';
+          el.style.opacity    = '';
+          el.style.transform  = '';
+        }
+      });
+    }
+
 
     if (base !== prevBase || next !== prevNext) {
       if (prevBase >= 0 && prevBase !== base && prevBase !== next)
@@ -520,8 +554,8 @@
     }
 
     if (!seen[base]) { seen[base] = true; animateIn(sections[base]); }
-    /* section1・2 は定位置（base）になってから animateIn。それ以降は従来通り早期発火 */
-    if (!seen[next] && ty < vh * 0.5 && base > 1) { seen[next] = true; animateIn(sections[next]); }
+    /* section1・2・3 は定位置（base）になってから animateIn。それ以降は従来通り早期発火 */
+    if (!seen[next] && ty < vh * 0.5 && base > 2) { seen[next] = true; animateIn(sections[next]); }
 
     var ai = ty < vh * 0.5 ? next : base;
     dotEls.forEach(function (d, j) { d.classList.toggle('active', j === ai); });
