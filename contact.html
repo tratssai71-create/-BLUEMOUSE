@@ -280,6 +280,18 @@
     }
     .ct-map-btn:hover { opacity: .7; }
 
+    /* ===== 入場アニメーション ===== */
+    .ct-anim {
+      opacity: 0;
+      transform: translateY(32px);
+      transition: opacity .9s cubic-bezier(.22,1,.36,1),
+                  transform .9s cubic-bezier(.22,1,.36,1);
+    }
+    .ct-anim.is-visible { opacity: 1; transform: none; }
+    /* ヘッダーは右からスライドイン（child.htmlのtitleと同じ） */
+    .ct-header .ct-anim { transform: translateX(40px); }
+    .ct-header .ct-anim.is-visible { opacity: 1; transform: none; }
+
     @media (max-width: 780px) {
       .ct-facilities, .ct-access-grid { grid-template-columns: 1fr; }
       .bm-form__submit { text-align: center; }
@@ -336,17 +348,17 @@
   <main class="bm-main">
 
     <div class="ct-header">
-      <span class="ct-kicker">Contact / Inquiry</span>
-      <h1 class="ct-title">お問い合わせ・<br>見学予約</h1>
-      <p class="ct-lead">見学・体験・ご相談など、お気軽にご連絡ください。<br>2営業日以内にご返信いたします。</p>
+      <span class="ct-kicker ct-anim">Contact / Inquiry</span>
+      <h1 class="ct-title ct-anim">お問い合わせ・<br>見学予約</h1>
+      <p class="ct-lead ct-anim">見学・体験・ご相談など、お気軽にご連絡ください。<br>2営業日以内にご返信いたします。</p>
     </div>
 
     <!-- 事業所を選択 -->
-    <p class="ct-select-hint">お問い合わせの事業所をお選びください（任意）</p>
+    <p class="ct-select-hint ct-anim">お問い合わせの事業所をお選びください（任意）</p>
     <div class="ct-facilities">
 
       <!-- BLUE MOUSE -->
-      <div class="ct-facility is-selected" id="fac-blue" onclick="selectFacility('blue')">
+      <div class="ct-facility ct-anim is-selected" id="fac-blue" onclick="selectFacility('blue')">
         <div class="ct-facility__img">
           <img src="./1.webp" alt="BLUE MOUSE" />
           <span class="ct-facility__badge">放課後等デイサービス</span>
@@ -360,7 +372,7 @@
       </div>
 
       <!-- LITTLE BLUE MOUSE -->
-      <div class="ct-facility" id="fac-little" onclick="selectFacility('little')">
+      <div class="ct-facility ct-anim" id="fac-little" onclick="selectFacility('little')">
         <div class="ct-facility__img">
           <img src="./5.webp" alt="LITTLE BLUE MOUSE" />
           <span class="ct-facility__badge">児童発達支援事業</span>
@@ -377,7 +389,7 @@
     </div>
 
     <!-- フォーム -->
-    <div class="ct-section">
+    <div class="ct-section ct-anim">
       <h2 class="ct-section-title">お問い合わせフォーム</h2>
       <form class="bm-form" id="contact-form" novalidate>
         <div class="bm-form__row">
@@ -443,11 +455,11 @@
 
     <!-- アクセス -->
     <div class="ct-section">
-      <h2 class="ct-section-title">施設へのアクセス</h2>
+      <h2 class="ct-section-title ct-anim">施設へのアクセス</h2>
       <div class="ct-access-grid">
 
         <!-- BLUE MOUSE -->
-        <div class="ct-access-card">
+        <div class="ct-access-card ct-anim">
           <div class="ct-access-card__img">
             <img src="./1.webp" alt="BLUE MOUSE" />
           </div>
@@ -465,7 +477,7 @@
         </div>
 
         <!-- LITTLE BLUE MOUSE -->
-        <div class="ct-access-card">
+        <div class="ct-access-card ct-anim">
           <div class="ct-access-card__img">
             <img src="./5.webp" alt="LITTLE BLUE MOUSE" />
           </div>
@@ -517,6 +529,37 @@
 </div>
 <script src="./layout.js"></script>
 <script>
+  /* ---- 入場アニメーション ---- */
+  /* ヘッダー：child.htmlのタイトルセクションと同じ right→center staggered */
+  setTimeout(function () {
+    var headerAnims = document.querySelectorAll('.ct-header .ct-anim');
+    headerAnims.forEach(function (el, i) {
+      setTimeout(function () { el.classList.add('is-visible'); }, 60 + i * 120);
+    });
+  }, 250);
+
+  /* それ以外：スクロールで下からスライドアップ */
+  var scrollAnims = Array.from(document.querySelectorAll('.ct-anim')).filter(function (el) {
+    return !el.closest('.ct-header');
+  });
+  /* 事業所カードは左右で 150ms ずらす */
+  scrollAnims.forEach(function (el) {
+    var siblings = el.parentElement ? Array.from(el.parentElement.querySelectorAll(':scope > .ct-anim')) : [];
+    var sibIdx   = siblings.indexOf(el);
+    el.dataset.ctDelay = sibIdx > 0 ? sibIdx * 150 : 0;
+  });
+
+  var io = new IntersectionObserver(function (entries) {
+    entries.forEach(function (entry) {
+      if (!entry.isIntersecting) return;
+      var delay = parseInt(entry.target.dataset.ctDelay || '0', 10);
+      setTimeout(function () { entry.target.classList.add('is-visible'); }, delay);
+      io.unobserve(entry.target);
+    });
+  }, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
+
+  scrollAnims.forEach(function (el) { io.observe(el); });
+
   /* ---- 事業所カード選択 ---- */
   function selectFacility(type) {
     document.getElementById('fac-blue').classList.toggle('is-selected', type === 'blue');
