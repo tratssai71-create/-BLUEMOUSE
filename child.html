@@ -667,14 +667,17 @@
     goToSection(e.deltaY > 0 ? currentBase() + 1 : currentBase() - 1);
   }, { passive: false });
 
-  /* タッチスワイプ */
+  /* タッチスワイプ（ネイティブスクロール無効・アニメーション完了まで次の入力を無視） */
   window.addEventListener('touchstart', function (e) {
     touchStartY = e.touches[0].clientY;
   }, { passive: true });
+  window.addEventListener('touchmove', function (e) {
+    e.preventDefault();
+  }, { passive: false });
   window.addEventListener('touchend', function (e) {
     if (scrollLocked) return;
     var dy = touchStartY - e.changedTouches[0].clientY;
-    if (Math.abs(dy) < 50) return;
+    if (Math.abs(dy) < 10) return; /* 誤操作防止の最小値のみ */
     goToSection(dy > 0 ? currentBase() + 1 : currentBase() - 1);
   }, { passive: true });
 
