@@ -509,7 +509,8 @@
         heroH1El.style.transition = 'none';
         heroH1El.style.opacity    = String(Math.max(0, 1 - s1FadePr));
         heroH1El.style.transform  = 'translateX(' + Math.round(-s1FadePr * 16) + 'px)';
-      } else {
+      } else if (heroH1El.style.opacity !== '') {
+        /* フェードアウト後に戻ってきた場合だけクリア（初回入場時はCSSトランジションを保護） */
         heroH1El.style.transition = '';
         heroH1El.style.opacity    = '';
         heroH1El.style.transform  = '';
