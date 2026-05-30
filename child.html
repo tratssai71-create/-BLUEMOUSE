@@ -420,6 +420,7 @@
   var s2LeadEl    = document.querySelector('#ch-text09-lead');
   var s2BodyEl    = document.querySelector('#ch-text09-body');
   var s2Anim      = false; /* section2 h1 入場アニメ実行中フラグ（draw干渉防止） */
+  var s3Anim      = false; /* section3 テキスト入場アニメ実行中フラグ（draw干渉防止） */
 
   var vh       = window.innerHeight;
   var ticking  = false;
@@ -511,7 +512,7 @@
     }
 
     /* section3: テキスト フェードアウト（タイトルと同じ 開始5% スパン85%） */
-    if (base === 3) {
+    if (base === 3 && !s3Anim) {
       var s2FadePr = Math.min(1, Math.max(0, (stRel - secSpan * 0.05) / (secSpan * 0.85)));
       [s2LeadEl, s2BodyEl].forEach(function (el) {
         if (!el) return;
@@ -592,35 +593,36 @@
   /* タイトル(.ch-anim)と同じイージング */
   var titleEase = makeCubicBezier(0.22, 1, 0.36, 1);
 
-  /* section2 h1：CSS任せにせず rAF でインライン直接アニメ（タイトルと同じ動き） */
-  function slideInHeroH1 () {
-    if (!heroH1El) return;
-    s2Anim = true;
-    var dur    = 900;   /* タイトルと同じ 0.9s */
-    var fromX  = 40;    /* タイトルと同じ 40px */
-    var startT = null;
-    heroH1El.style.transition = 'none';
-    heroH1El.style.opacity    = '0';
-    heroH1El.style.transform  = 'translateX(' + fromX + 'px)';
-    function ease (t) { return titleEase(t); }
-    function step (ts) {
-      if (!startT) startT = ts;
-      var p = Math.min((ts - startT) / dur, 1);
-      var e = ease(p);
-      heroH1El.style.opacity   = String(e);
-      heroH1El.style.transform = 'translateX(' + (fromX * (1 - e)) + 'px)';
-      if (p < 1) {
-        requestAnimationFrame(step);
-      } else {
-        /* 完了：is-visible を付与しインラインをクリア（以降の draw 制御に委ねる） */
-        heroH1El.classList.add('is-visible');
-        heroH1El.style.transition = '';
-        heroH1El.style.opacity    = '';
-        heroH1El.style.transform  = '';
-        s2Anim = false;
+  /* CSS任せにせず rAF でインライン直接アニメ（タイトルと同じ動き）。
+     delayMs後に開始、完了時 is-visible 付与＋インラインクリア＋onDone呼び出し。 */
+  function rafSlideInEl (el, delayMs, onDone) {
+    if (!el) { if (onDone) onDone(); return; }
+    setTimeout(function () {
+      var dur    = 900;   /* タイトルと同じ 0.9s */
+      var fromX  = 40;    /* タイトルと同じ 40px */
+      var startT = null;
+      el.style.transition = 'none';
+      el.style.opacity    = '0';
+      el.style.transform  = 'translateX(' + fromX + 'px)';
+      function step (ts) {
+        if (!startT) startT = ts;
+        var p = Math.min((ts - startT) / dur, 1);
+        var e = titleEase(p);
+        el.style.opacity   = String(e);
+        el.style.transform = 'translateX(' + (fromX * (1 - e)) + 'px)';
+        if (p < 1) {
+          requestAnimationFrame(step);
+        } else {
+          /* 完了：is-visible を付与しインラインをクリア（以降の draw 制御に委ねる） */
+          el.classList.add('is-visible');
+          el.style.transition = '';
+          el.style.opacity    = '';
+          el.style.transform  = '';
+          if (onDone) onDone();
+        }
       }
-    }
-    requestAnimationFrame(step);
+      requestAnimationFrame(step);
+    }, delayMs);
   }
 
   function animateIn (section) {
@@ -628,8 +630,12 @@
     var interval = sIdx === 2 ? 0 : 110;
 
     if (sIdx === 2) {
-      s2Anim = true; /* 60ms遅延中に draw が触らないよう即フラグ */
-      setTimeout(slideInHeroH1, 60); /* タイトルと同じ初動ディレイ */
+      s2Anim = true; /* 入場中 draw が触らないよう即フラグ（60ms遅延含む） */
+      rafSlideInEl(heroH1El, 60, function () { s2Anim = false; });
+    } else if (sIdx === 3) {
+      s3Anim = true; /* 入場中 draw が触らないよう即フラグ */
+      rafSlideInEl(s2LeadEl, 60);                                    /* タイトルと同じ初動60ms */
+      rafSlideInEl(s2BodyEl, 60 + 110, function () { s3Anim = false; }); /* 110msずらし */
     } else {
       Array.from(section.querySelectorAll('.ch-anim')).forEach(function (el, i) {
         setTimeout(function () { el.classList.add('is-visible'); }, 60 + i * interval);
