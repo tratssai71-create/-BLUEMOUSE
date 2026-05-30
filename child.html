@@ -633,6 +633,62 @@
     if (!ticking) { requestAnimationFrame(draw); ticking = true; }
   }
 
+  /* ===== 高速スクロール防止：1セクション単位で移動 ===== */
+  var scrollLocked = false;
+  var touchStartY  = 0;
+
+  function currentBase () {
+    var st = window.pageYOffset;
+    var b  = 0;
+    for (var i = n - 2; i >= 0; i--) {
+      if (st >= sectionStarts[i] * window.innerHeight) { b = i; break; }
+    }
+    return b;
+  }
+
+  function goToSection (idx) {
+    if (idx < 0 || idx >= n) return;
+    scrollLocked = true;
+    var target = sectionStarts[idx] * window.innerHeight;
+    window.scrollTo({ top: target, behavior: 'smooth' });
+    /* scrollend 対応 + タイムアウトフォールバック */
+    var timer = setTimeout(function () { scrollLocked = false; }, 1000);
+    window.addEventListener('scrollend', function onEnd () {
+      window.removeEventListener('scrollend', onEnd);
+      clearTimeout(timer);
+      scrollLocked = false;
+    }, { once: true });
+  }
+
+  /* マウスホイール */
+  window.addEventListener('wheel', function (e) {
+    e.preventDefault();
+    if (scrollLocked) return;
+    goToSection(e.deltaY > 0 ? currentBase() + 1 : currentBase() - 1);
+  }, { passive: false });
+
+  /* タッチスワイプ */
+  window.addEventListener('touchstart', function (e) {
+    touchStartY = e.touches[0].clientY;
+  }, { passive: true });
+  window.addEventListener('touchend', function (e) {
+    if (scrollLocked) return;
+    var dy = touchStartY - e.changedTouches[0].clientY;
+    if (Math.abs(dy) < 50) return;
+    goToSection(dy > 0 ? currentBase() + 1 : currentBase() - 1);
+  }, { passive: true });
+
+  /* キーボード（↑↓ / Space） */
+  window.addEventListener('keydown', function (e) {
+    if (e.key === 'ArrowDown' || e.key === ' ') {
+      e.preventDefault();
+      if (!scrollLocked) goToSection(currentBase() + 1);
+    } else if (e.key === 'ArrowUp') {
+      e.preventDefault();
+      if (!scrollLocked) goToSection(currentBase() - 1);
+    }
+  });
+
   setup();
   draw();
   setTimeout(function () { seen[0] = true; animateIn(sections[0]); }, 250);
