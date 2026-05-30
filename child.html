@@ -224,8 +224,9 @@
     .ch-anim.is-visible { opacity: 1; transform: none; }
     .ch-title .ch-anim { transform: translateX(40px); }
     .ch-title .ch-anim.is-visible { opacity: 1; transform: none; }
-    .ch-hero .ch-anim { opacity: 0; transform: translateX(40px); }
-    .ch-hero .ch-anim.is-visible { opacity: 1; transform: none; }
+    /* DEBUG: 赤枠=is-visible未付与 / 緑枠=is-visible付与済 */
+    .ch-hero .ch-anim { opacity: 0; transform: translateX(40px); outline: 6px solid red; }
+    .ch-hero .ch-anim.is-visible { opacity: 1; transform: none; outline: 6px solid green; }
     .ch-section[data-idx="3"] .ch-anim { transform: translateX(40px); }
     .ch-section[data-idx="3"] .ch-anim.is-visible { opacity: 1; transform: none; }
 
