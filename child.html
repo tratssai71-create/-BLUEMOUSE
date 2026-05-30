@@ -454,17 +454,6 @@
         seen[next] = true;
         animateIn(sections[next]);
       }
-    } else if (base === 1) {
-      /* section1→2：h1 FO完了（80%）後にsection2フェードイン */
-      var hPr = stRel < secSpan * 0.80
-        ? 1
-        : Math.max(0, 1 - (stRel - secSpan * 0.80) / (secSpan * 0.20));
-      sections[next].style.transform = 'translateY(0)';
-      sections[next].style.opacity   = String(1 - hPr);
-      if (!seen[next] && hPr < 1) {
-        seen[next] = true;
-        animateIn(sections[next]);
-      }
     } else {
       /* 他セクション：下からスライドアップ */
       sections[next].style.transform = 'translateY(' + ty + 'px)';
