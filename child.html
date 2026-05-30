@@ -101,56 +101,36 @@
     .ch-hero .ch-photo__label   { color: rgba(51,37,26,.5);  }
     .ch-hero .ch-photo__title   { color: #1d1d1f; }
 
-    /* section 2：積み木背景テキスト */
-    .ch-section[data-idx="2"].ch-text {
-      background: #0a0a0a;
+    /* セクション3（テキスト） */
+    .ch-section[data-idx="3"].ch-text {
+      background: #FFFEFB;
+      left: 0 !important;
+      width: 100vw !important;
+      height: 100vh !important;
+      height: 100svh !important;
     }
-    .ch-section[data-idx="2"] .ch-text__overlay {
-      position: absolute; inset: 0;
-      background: rgba(0,0,0,.42);
-      pointer-events: none; z-index: 0;
+    .ch-section[data-idx="3"] .ch-photo__img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center center;
     }
-    .ch-section[data-idx="2"] .ch-text__lead,
-    .ch-section[data-idx="2"] .ch-text__body {
-      position: relative; z-index: 1;
+    .ch-section[data-idx="3"] .ch-text__lead,
+    .ch-section[data-idx="3"] .ch-text__body {
+      position: relative;
+      z-index: 1;
+    }
+    .ch-section[data-idx="3"] .ch-text__lead,
+    .ch-section[data-idx="3"] .ch-text__body {
       font-family: "Zen Kaku Gothic New", "Noto Sans JP", sans-serif;
-      font-size: clamp(.9rem,1.25vw,1.05rem);
-      font-weight: 400; letter-spacing: .12em;
-      line-height: 2.0; margin: 0 0 18px;
+      font-size: clamp(1.7rem, 2.4vw, 2.1rem);
+      font-weight: 700;
+      letter-spacing: .88em;
+      line-height: 2.0;
+      margin: 0 0 18px;
     }
-    .ch-section[data-idx="2"] .ch-text__lead { color: rgba(255,254,251,.92); }
-    .ch-section[data-idx="2"] .ch-text__body { color: rgba(255,254,251,.60); max-width: none; }
-
-    /* ===== 横スライド写真 ===== */
-    .ch-hslide {
-      position: absolute; inset: 0;
-      transform: translateX(100%);
-      will-change: transform;
-      overflow: hidden;
-      z-index: 3;
-    }
-    .ch-hslide__img {
-      position: absolute; inset: 0;
-      width: 100%; height: 100%;
-      object-fit: cover; object-position: center;
-      display: block;
-    }
-    .ch-hslide__caption {
-      position: absolute; bottom: 48px; left: 52px; right: 52px;
-      font-family: "Zen Kaku Gothic New","Noto Sans JP",sans-serif;
-      font-size: clamp(.82rem,1.1vw,.95rem); font-weight: 400;
-      color: rgba(255,254,251,.85); letter-spacing: .06em;
-      line-height: 1.7; z-index: 1;
-      text-shadow: 0 1px 8px rgba(0,0,0,.4);
-    }
-    .ch-hslide__grad {
-      position: absolute; inset: 0;
-      background: linear-gradient(to bottom, transparent 40%, rgba(0,0,0,.55) 100%);
-      pointer-events: none;
-    }
-    @media (max-width: 780px) {
-      .ch-hslide__caption { bottom: 32px; left: 22px; right: 22px; }
-    }
+    .ch-section[data-idx="3"] .ch-text__lead { color: #1d1d1f; }
+    .ch-section[data-idx="3"] .ch-text__body { color: #1d1d1f; max-width: none; }
 
     /* ===== 写真セクション ===== */
     .ch-photo { background: #111; }
@@ -337,24 +317,10 @@
       </div>
     </section>
 
-    <!-- [2] テキスト＋横スライド写真 -->
-    <section class="ch-section ch-text" style="z-index:3" data-idx="2" data-dark="1">
-      <img class="ch-photo__img pos-35" src="./tsumiki_opt.jpg" alt="からから積み木で遊ぶこども" loading="lazy" />
-      <div class="ch-text__overlay"></div>
-      <p class="ch-text__lead text" id="ch-text09-lead">「こども中心」という、<br>秩序ある環境。</p>
-      <p class="ch-text__body text" id="ch-text09-body">心地よい時間の中で「できた」を重ねていくこと</p>
-      <!-- 横スライド写真1 -->
-      <div class="ch-hslide ch-hslide--1" id="ch-hs1">
-        <img class="ch-hslide__img" src="https://images.unsplash.com/photo-1503454537195-1dcabb73ffb9?auto=format&fit=crop&w=800&q=80" alt="こどもが遊ぶ様子" loading="lazy" />
-        <div class="ch-hslide__grad"></div>
-        <p class="ch-hslide__caption">自ら選び、夢中になる時間。</p>
-      </div>
-      <!-- 横スライド写真2 -->
-      <div class="ch-hslide ch-hslide--2" id="ch-hs2">
-        <img class="ch-hslide__img" src="https://images.unsplash.com/photo-1516627145497-ae6968895b74?auto=format&fit=crop&w=800&q=80" alt="こどもと大人の関わり" loading="lazy" />
-        <div class="ch-hslide__grad"></div>
-        <p class="ch-hslide__caption">そっと見守り、そっとそばにいる。</p>
-      </div>
+    <!-- [3] テキスト 1 -->
+    <section class="ch-section ch-text" style="z-index:4" data-idx="3">
+      <p class="ch-text__lead text ch-anim" id="ch-text09-lead">「こども中心」という、<br>秩序ある環境。<br><br></p>
+      <p class="ch-text__body text ch-anim" id="ch-text09-body">心地よい時間の中で「できた」を重ねていくこと</p>
     </section>
 
     <!-- [4] 写真（積み木） -->
@@ -460,12 +426,9 @@
   var prevNext = -1;
 
 
-  var hslide1 = document.getElementById('ch-hs1');
-  var hslide2 = document.getElementById('ch-hs2');
-
   var seen          = sections.map(function () { return false; });
-  /* section2 に横スライド写真2枚分スクロール量を追加（3vh） */
-  var sectionStarts = [0, 1, 2, 5, 6, 7, 8]; /* 各セクション開始位置（vh倍数） */
+  /* 全セクション均等スクロール（各 1vh） */
+  var sectionStarts = [0, 1, 2, 3, 4, 5, 6, 7]; /* 各セクション開始位置（vh倍数） */
 
   /* スクロール高さを確保 */
   function setup () {
@@ -504,38 +467,17 @@
         seen[next] = true;
         animateIn(sections[next]);
       }
-    } else if (base === 2) {
-      /* section2→3：h1 FO完了（80%）後にフェードイン */
-      var s2Pr = stRel < secSpan * 0.80
+    } else {
+      /* デフォルト：80%到達後にフェードイン（新規セクション追加時も同様） */
+      var fadePr = stRel < secSpan * 0.80
         ? 1
         : Math.max(0, 1 - (stRel - secSpan * 0.80) / (secSpan * 0.20));
       sections[next].style.transform = 'translateY(0)';
-      sections[next].style.opacity   = String(1 - s2Pr);
-      if (!seen[next] && s2Pr < 1) {
+      sections[next].style.opacity   = String(1 - fadePr);
+      if (!seen[next] && fadePr < 1) {
         seen[next] = true;
         animateIn(sections[next]);
       }
-    } else if (base === 2) {
-      /* section2：横スライド写真2枚 → 次セクション下からスライドアップ */
-      var p1 = Math.max(0, Math.min(1, stRel / vh));
-      var p2 = Math.max(0, Math.min(1, (stRel - vh) / vh));
-      if (hslide1) hslide1.style.transform = 'translateX(' + ((1 - p1) * 100).toFixed(1) + '%)';
-      if (hslide2) hslide2.style.transform = 'translateX(' + ((1 - p2) * 100).toFixed(1) + '%)';
-      var nextTy2 = Math.round(vh * Math.max(0, 1 - Math.max(0, stRel - 2 * vh) / vh));
-      sections[next].style.transform = 'translateY(' + nextTy2 + 'px)';
-      sections[next].style.opacity   = '';
-      if (!seen[next] && nextTy2 < vh * 0.5) {
-        seen[next] = true; animateIn(sections[next]);
-      }
-    } else {
-      /* section2以外：スライドをリセット */
-      if (base < 2) {
-        if (hslide1) hslide1.style.transform = 'translateX(100%)';
-        if (hslide2) hslide2.style.transform = 'translateX(100%)';
-      }
-      /* 他セクション：下からスライドアップ */
-      sections[next].style.transform = 'translateY(' + ty + 'px)';
-      sections[next].style.opacity   = '';
     }
 
     /* section0: タイトル文字 フェードアウト（30%〜80%） */
@@ -597,8 +539,7 @@
     }
 
     if (!seen[base]) { seen[base] = true; animateIn(sections[base]); }
-    /* section1〜4 は定位置（base）になってから animateIn。それ以降は従来通り早期発火 */
-    if (!seen[next] && ty < vh * 0.5 && base > 3) { seen[next] = true; animateIn(sections[next]); }
+    /* base になった時点で animateIn（まだなら） */
 
     var ai = ty < vh * 0.5 ? next : base;
     dotEls.forEach(function (d, j) { d.classList.toggle('active', j === ai); });
