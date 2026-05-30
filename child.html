@@ -510,9 +510,9 @@
       }
     }
 
-    /* section3: テキスト フェードアウト（30%〜80%） */
+    /* section3: テキスト フェードアウト（タイトルと同じ 開始5% スパン85%） */
     if (base === 3) {
-      var s2FadePr = Math.min(1, Math.max(0, (stRel - secSpan * 0.3) / (secSpan * 0.5)));
+      var s2FadePr = Math.min(1, Math.max(0, (stRel - secSpan * 0.05) / (secSpan * 0.85)));
       [s2LeadEl, s2BodyEl].forEach(function (el) {
         if (!el) return;
         if (s2FadePr > 0) {
@@ -547,26 +547,7 @@
     if (dotsWrap) dotsWrap.classList.toggle('dark', !!sections[ai].getAttribute('data-dark'));
   }
 
-  /* ---- text09 初期化（.text 要素を .char に分割） ---- */
-  function initText09El (el, delayPerChar) {
-    if (!el) return;
-    /* data-delay-per-char に delay値を保存して animateIn で使う */
-    el.dataset.delayPerChar = delayPerChar || '0.12';
-    var parts = el.innerHTML.split(/<br\s*\/?>/i);
-    var html  = '';
-    var idx   = 0;
-    parts.forEach(function (part, pi) {
-      Array.from(part).forEach(function (ch) {
-        var safe = ch === '&' ? '&amp;' : ch === '<' ? '&lt;' : ch === '>' ? '&gt;' : ch;
-        html += '<span class="char" style="--char-index:' + idx + '">' + safe + '</span>';
-        idx++;
-      });
-      if (pi < parts.length - 1) html += '<br>';
-    });
-    el.innerHTML = html;
-  }
-  initText09El(document.getElementById('ch-text09-lead'), '0.12');
-  initText09El(document.getElementById('ch-text09-body'), '0.04');
+  /* section3 のテキストはタイトルと同じく素のまま（文字分割せず .ch-anim スライドで統一） */
 
   /* ---- section4 clip-path ワイプ初期化 ---- */
   function initWipeEl (id) {
@@ -668,28 +649,7 @@
         setTimeout(function () { span.classList.add('on'); }, bodyStart + i * bodyInterval);
       });
     }
-    /* section3: text09 を1回再生 → 固定表示 */
-    if (+section.getAttribute('data-idx') === 3) {
-      [['ch-text09-lead','0.12'], ['ch-text09-body','0.04']].forEach(function (pair, i) {
-        var el  = document.getElementById(pair[0]);
-        var dpc = pair[1];
-        if (!el) return;
-        var chars    = Array.from(el.querySelectorAll('.char'));
-        var totalMs  = Math.round((parseFloat(dpc) * (chars.length - 1) + 1.0) * 1000);
-        chars.forEach(function (ch) {
-          ch.style.animationDelay = 'calc(' + dpc + 's * ' + ch.style.getPropertyValue('--char-index') + ')';
-        });
-        var start = 200 + i * 400;
-        setTimeout(function () {
-          el.classList.add('is-active');
-          /* アニメ完了後に is-active → is-done へ切替 */
-          setTimeout(function () {
-            el.classList.remove('is-active');
-            el.classList.add('is-done');
-          }, totalMs + 100);
-        }, start);
-      });
-    }
+    /* section3: タイトルと同じく .ch-anim スライドのみ（文字ごとアニメは廃止） */
   }
 
   function onScroll () {
