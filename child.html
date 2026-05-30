@@ -640,17 +640,24 @@
   }
 
   function goToSection (idx) {
-    if (idx < 0 || idx >= n) return;
-    scrollLocked = true;
-    var target = sectionStarts[idx] * window.innerHeight;
-    window.scrollTo({ top: target, behavior: 'smooth' });
-    /* scrollend 対応 + タイムアウトフォールバック */
-    var timer = setTimeout(function () { scrollLocked = false; }, 1000);
-    window.addEventListener('scrollend', function onEnd () {
-      window.removeEventListener('scrollend', onEnd);
-      clearTimeout(timer);
-      scrollLocked = false;
-    }, { once: true });
+    if (idx < 0 || idx >= n || scrollLocked) return;
+    scrollLocked  = true;
+    var startY    = window.pageYOffset;
+    var targetY   = sectionStarts[idx] * window.innerHeight;
+    if (startY === targetY) { scrollLocked = false; return; }
+    var startT    = null;
+    var dur       = 680; /* ms */
+
+    function ease (t) { return t < .5 ? 2*t*t : -1+(4-2*t)*t; } /* easeInOut */
+
+    function step (ts) {
+      if (!startT) startT = ts;
+      var p = Math.min((ts - startT) / dur, 1);
+      window.scrollTo(0, startY + (targetY - startY) * ease(p));
+      if (p < 1) { requestAnimationFrame(step); }
+      else        { scrollLocked = false; }
+    }
+    requestAnimationFrame(step);
   }
 
   /* マウスホイール */
