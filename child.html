@@ -468,14 +468,6 @@
         seen[next] = true;
         animateIn(sections[next]);
       }
-    } else if (base === 1) {
-      /* section1→2：親opacityは触らず''のまま（子のCSS transition保護） */
-      sections[next].style.transform = 'translateY(0)';
-      sections[next].style.opacity   = '';
-      if (!seen[next]) {
-        seen[next] = true;
-        animateIn(sections[next]);
-      }
     } else {
       /* デフォルト：80%到達後にフェードイン（新規セクション追加時も同様） */
       var fadePr = stRel < secSpan * 0.80
@@ -511,8 +503,7 @@
         heroH1El.style.transition = 'none';
         heroH1El.style.opacity    = String(Math.max(0, 1 - s1FadePr));
         heroH1El.style.transform  = 'translateX(' + Math.round(-s1FadePr * 16) + 'px)';
-      } else if (heroH1El.style.opacity !== '') {
-        /* フェードアウト後に戻った時だけクリア（CSS transition 実行中は触らない） */
+      } else {
         heroH1El.style.transition = '';
         heroH1El.style.opacity    = '';
         heroH1El.style.transform  = '';
