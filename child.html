@@ -467,6 +467,13 @@
         seen[next] = true;
         animateIn(sections[next]);
       }
+    } else if (base === 1) {
+      /* section1→2：フェードインのみ、animateInはbase=2になった瞬間に発火（スライドを見せるため） */
+      var fadePr = stRel < secSpan * 0.80
+        ? 1
+        : Math.max(0, 1 - (stRel - secSpan * 0.80) / (secSpan * 0.20));
+      sections[next].style.transform = 'translateY(0)';
+      sections[next].style.opacity   = String(1 - fadePr);
     } else {
       /* デフォルト：80%到達後にフェードイン（新規セクション追加時も同様） */
       var fadePr = stRel < secSpan * 0.80
