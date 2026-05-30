@@ -13,13 +13,33 @@
     /* ===== ページ全体 ===== */
     .bm-main {
       font-family: "Zen Kaku Gothic New", "Noto Sans JP", sans-serif;
+      padding: 0 !important;
     }
 
-    /* ===== ページ見出し ===== */
-    .ct-header {
-      padding: 48px 0 40px;
-      border-bottom: 1px solid rgba(51,37,26,.08);
-      margin-bottom: 44px;
+    /* ===== ヒーロー（全画面タイトル） ===== */
+    .ct-hero {
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      height: 100svh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 0 52px;
+      background: #FFFEFB;
+      z-index: 1;
+      overflow: hidden;
+    }
+    .ct-hero::after {
+      content: '';
+      position: absolute; bottom: 0; right: 0;
+      width: 38%; height: 2px;
+      background: linear-gradient(to left, #6aadcc, transparent);
+    }
+    .ct-hero__inner {
+      display: flex;
+      flex-direction: column;
+      will-change: transform, opacity;
     }
     .ct-kicker {
       font-family: "Inter", sans-serif;
@@ -27,16 +47,16 @@
       letter-spacing: .52em;
       text-transform: uppercase;
       color: rgba(51,37,26,.35);
-      margin-bottom: 14px;
+      margin-bottom: 18px;
       font-weight: 400;
       display: block;
     }
     .ct-title {
       font-family: "Zen Maru Gothic", "Noto Sans JP", sans-serif;
-      font-size: clamp(1.8rem, 2.8vw, 2.8rem);
+      font-size: clamp(2.2rem, 4vw, 4.4rem);
       font-weight: 500;
       color: #1d1d1f;
-      margin: 0 0 16px;
+      margin: 0 0 24px;
       letter-spacing: .06em;
       line-height: 1.35;
     }
@@ -44,8 +64,43 @@
       font-family: "Zen Kaku Gothic New", "Noto Sans JP", sans-serif;
       font-size: clamp(.82rem, 1.1vw, .92rem);
       color: rgba(51,37,26,.52);
-      line-height: 2.1;
+      line-height: 2.2;
       font-weight: 400;
+    }
+    /* スクロールヒント */
+    .ct-scroll-hint {
+      position: absolute;
+      bottom: 44px; left: 52px;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      font-family: "Inter", sans-serif;
+      font-size: 10px;
+      letter-spacing: .44em;
+      text-transform: uppercase;
+      color: rgba(51,37,26,.28);
+      will-change: opacity;
+    }
+    .ct-scroll-hint__line {
+      display: block;
+      width: 1px; height: 32px;
+      background: rgba(51,37,26,.22);
+      transform-origin: top;
+      animation: ctLine 2s ease-in-out infinite;
+    }
+    @keyframes ctLine {
+      0%,100% { transform: scaleY(1);   opacity: 1; }
+      50%      { transform: scaleY(.35); opacity: .3; }
+    }
+
+    /* ===== コンテンツ（ヒーローの上に重なってスライドアップ） ===== */
+    .ct-content {
+      position: relative;
+      z-index: 2;
+      background: #FFFEFB;
+      padding: 52px 52px 80px;
+      border-radius: 10px 10px 0 0;
+      box-shadow: 0 -10px 48px rgba(51,37,26,.07);
     }
 
     /* ===== 事業所カード ===== */
@@ -288,11 +343,14 @@
                   transform .9s cubic-bezier(.22,1,.36,1);
     }
     .ct-anim.is-visible { opacity: 1; transform: none; }
-    /* ヘッダーは右からスライドイン（child.htmlのtitleと同じ） */
-    .ct-header .ct-anim { transform: translateX(40px); }
-    .ct-header .ct-anim.is-visible { opacity: 1; transform: none; }
+    /* ヒーローは右からスライドイン（child.htmlのtitleと同じ） */
+    .ct-hero .ct-anim { transform: translateX(40px); }
+    .ct-hero .ct-anim.is-visible { opacity: 1; transform: none; }
 
     @media (max-width: 780px) {
+      .ct-hero { padding: 0 22px; }
+      .ct-scroll-hint { left: 22px; }
+      .ct-content { padding: 40px 22px 60px; border-radius: 8px 8px 0 0; }
       .ct-facilities, .ct-access-grid { grid-template-columns: 1fr; }
       .bm-form__submit { text-align: center; }
     }
@@ -347,11 +405,20 @@
   <!-- ===== メインコンテンツ ===== -->
   <main class="bm-main">
 
-    <div class="ct-header">
-      <span class="ct-kicker ct-anim">Contact / Inquiry</span>
-      <h1 class="ct-title ct-anim">お問い合わせ・<br>見学予約</h1>
-      <p class="ct-lead ct-anim">見学・体験・ご相談など、お気軽にご連絡ください。<br>2営業日以内にご返信いたします。</p>
+    <!-- ヒーロー全画面タイトル -->
+    <div class="ct-hero" id="ct-hero">
+      <div class="ct-hero__inner" id="ct-hero-inner">
+        <span class="ct-kicker ct-anim">Contact / Inquiry</span>
+        <h1 class="ct-title ct-anim">お問い合わせ・<br>見学予約</h1>
+        <p class="ct-lead ct-anim">見学・体験・ご相談など、お気軽にご連絡ください。<br>2営業日以内にご返信いたします。</p>
+      </div>
+      <div class="ct-scroll-hint" id="ct-scroll-hint">
+        <span class="ct-scroll-hint__line"></span>scroll
+      </div>
     </div>
+
+    <!-- コンテンツ（ヒーローの上に重なってスライドアップ） -->
+    <div class="ct-content" id="ct-content">
 
     <!-- 事業所を選択 -->
     <p class="ct-select-hint ct-anim">お問い合わせの事業所をお選びください（任意）</p>
@@ -497,6 +564,8 @@
       </div>
     </div>
 
+    </div><!-- /ct-content -->
+
   </main>
 
   <!-- ===== 右サイドバー ===== -->
@@ -519,7 +588,7 @@
         <p class="side-card__title">086-273-3880</p>
       </div>
     </div>
-    <a href="#" class="side-cta" onclick="document.querySelector('.ct-gform-wrap').scrollIntoView({behavior:'smooth'}); return false;">
+    <a href="#" class="side-cta" onclick="document.getElementById('ct-content').scrollIntoView({behavior:'smooth'}); return false;">
       フォームへ進む
       <span class="side-cta__icon">›</span>
     </a>
@@ -529,20 +598,35 @@
 </div>
 <script src="./layout.js"></script>
 <script>
-  /* ---- 入場アニメーション ---- */
-  /* ヘッダー：child.htmlのタイトルセクションと同じ right→center staggered */
+  /* ---- ヒーローアニメーション（child.htmlタイトルと同じ 右→中 staggered） ---- */
+  var heroInner  = document.getElementById('ct-hero-inner');
+  var scrollHint = document.getElementById('ct-scroll-hint');
+
   setTimeout(function () {
-    var headerAnims = document.querySelectorAll('.ct-header .ct-anim');
-    headerAnims.forEach(function (el, i) {
+    var heroAnims = document.querySelectorAll('.ct-hero .ct-anim');
+    heroAnims.forEach(function (el, i) {
       setTimeout(function () { el.classList.add('is-visible'); }, 60 + i * 120);
     });
   }, 250);
 
-  /* それ以外：スクロールで下からスライドアップ */
-  var scrollAnims = Array.from(document.querySelectorAll('.ct-anim')).filter(function (el) {
-    return !el.closest('.ct-header');
-  });
-  /* 事業所カードは左右で 150ms ずらす */
+  /* ---- ヒーローパラックス（スクロールで上へ消える） ---- */
+  function heroParallax () {
+    var st = window.pageYOffset;
+    var vh = window.innerHeight;
+    var p  = Math.min(1, st / (vh * 0.72));
+    if (heroInner) {
+      heroInner.style.opacity   = String(Math.max(0, 1 - p * 1.7));
+      heroInner.style.transform = 'translateY(' + Math.round(-p * 56) + 'px)';
+    }
+    if (scrollHint) {
+      scrollHint.style.opacity = String(Math.max(0, 1 - p * 4));
+    }
+  }
+  window.addEventListener('scroll', heroParallax, { passive: true });
+
+  /* ---- コンテンツ：スクロールで下からスライドアップ ---- */
+  var scrollAnims = Array.from(document.querySelectorAll('.ct-content .ct-anim'));
+  /* 兄弟要素は 150ms ずつ遅延 */
   scrollAnims.forEach(function (el) {
     var siblings = el.parentElement ? Array.from(el.parentElement.querySelectorAll(':scope > .ct-anim')) : [];
     var sibIdx   = siblings.indexOf(el);
