@@ -457,24 +457,13 @@
     sections[base].style.transform = 'translateY(0)';
     sections[base].style.opacity   = ''; /* base は常にフル表示（高速スクロール対策） */
     if (base === 0) {
-      /* section0→1：タイトルFO完了（80%）後にフェードイン＋コンテンツ同時出現 */
-      var hPr = stRel < secSpan * 0.80
-        ? 1
-        : Math.max(0, 1 - (stRel - secSpan * 0.80) / (secSpan * 0.20));
-      sections[next].style.transform = 'translateY(0)';
-      sections[next].style.opacity   = String(1 - hPr);
-      if (!seen[next] && hPr < 1) {
-        seen[next] = true;
-        animateIn(sections[next]);
-      }
-    } else if (base === 1) {
-      /* section1→2：ゆっくりフェードイン（55%〜100%、スパン45%） */
-      var fadePr = stRel < secSpan * 0.55
+      /* section0→1：ゆっくりフェードイン（55%〜100%、スパン45%） */
+      var hPr = stRel < secSpan * 0.55
         ? 1
         : Math.max(0, 1 - (stRel - secSpan * 0.55) / (secSpan * 0.45));
       sections[next].style.transform = 'translateY(0)';
-      sections[next].style.opacity   = String(1 - fadePr);
-      if (!seen[next] && fadePr < 1) {
+      sections[next].style.opacity   = String(1 - hPr);
+      if (!seen[next] && hPr < 1) {
         seen[next] = true;
         animateIn(sections[next]);
       }
