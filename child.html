@@ -224,8 +224,14 @@
     .ch-anim.is-visible { opacity: 1; transform: none; }
     .ch-title .ch-anim { transform: translateX(40px); }
     .ch-title .ch-anim.is-visible { opacity: 1; transform: none; }
-    .ch-hero .ch-anim { transform: translateX(40px); }
-    .ch-hero .ch-anim.is-visible { opacity: 1; transform: none; }
+    @keyframes ch-enter-right {
+      from { opacity: 0; transform: translateX(60px); }
+      to   { opacity: 1; transform: none; }
+    }
+    .ch-hero .ch-anim { opacity: 0; transform: translateX(60px); }
+    .ch-hero .ch-anim.is-visible {
+      animation: ch-enter-right 0.9s cubic-bezier(.22,1,.36,1) both;
+    }
     .ch-section[data-idx="3"] .ch-anim { transform: translateX(40px); }
     .ch-section[data-idx="3"] .ch-anim.is-visible { opacity: 1; transform: none; }
 
