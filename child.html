@@ -480,8 +480,8 @@
       }
     }
 
-    /* section0: タイトル文字 フェードアウト（開始10% 完了90% スパン80%） */
-    var titleProgress = Math.min(1, Math.max(0, (st - vh * 0.10) / (vh * 0.80)));
+    /* section0: タイトル文字 フェードアウト（開始5% 完了95% スパン90%） */
+    var titleProgress = Math.min(1, Math.max(0, (st - vh * 0.05) / (vh * 0.90)));
     [titleJaEl, titleEnEl].forEach(function (el) {
       if (!el) return;
       if (titleProgress > 0) {
