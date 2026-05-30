@@ -130,14 +130,14 @@
     .ch-section[data-idx="2"] .ch-text__lead,
     .ch-section[data-idx="2"] .ch-text__body {
       font-family: "Inter", sans-serif;
-      font-size: clamp(1.7rem, 2.4vw, 2.1rem);
-      font-weight: 700;
-      letter-spacing: .88em;
+      font-size: clamp(.9rem, 1.25vw, 1.05rem);
+      font-weight: 400;
+      letter-spacing: .12em;
       line-height: 2.0;
       margin: 0 0 18px;
     }
     .ch-section[data-idx="2"] .ch-text__lead { color: rgba(255,254,251,.92); }
-    .ch-section[data-idx="2"] .ch-text__body { color: rgba(255,254,251,.92); max-width: none; }
+    .ch-section[data-idx="2"] .ch-text__body { color: rgba(255,254,251,.60); max-width: none; }
 
     /* ===== 写真セクション ===== */
     .ch-photo { background: #111; }
@@ -273,14 +273,6 @@
       .ch-text { padding: 0 22px; }
       .ch-cta  { padding: 0 22px; }
       .ch-dots { display: none; }
-
-      /* section2: モバイルではletter-spacingを縮小 */
-      .ch-section[data-idx="2"] .ch-text__lead,
-      .ch-section[data-idx="2"] .ch-text__body {
-        letter-spacing: .08em;
-        font-size: clamp(.82rem, 3.2vw, .95rem);
-        line-height: 1.9;
-      }
     }
   </style>
 </head>
