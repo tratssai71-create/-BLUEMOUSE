@@ -677,7 +677,7 @@
   window.addEventListener('touchend', function (e) {
     if (scrollLocked) return;
     var dy = touchStartY - e.changedTouches[0].clientY;
-    if (Math.abs(dy) < 10) return; /* 誤操作防止の最小値のみ */
+    if (Math.abs(dy) < 5) return; /* 誤操作防止の最小値のみ */
     goToSection(dy > 0 ? currentBase() + 1 : currentBase() - 1);
   }, { passive: true });
 
