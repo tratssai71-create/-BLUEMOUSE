@@ -467,6 +467,17 @@
         seen[next] = true;
         animateIn(sections[next]);
       }
+    } else if (base === 1) {
+      /* section1→2：ゆっくりフェードイン（55%〜100%、スパン45%） */
+      var fadePr = stRel < secSpan * 0.55
+        ? 1
+        : Math.max(0, 1 - (stRel - secSpan * 0.55) / (secSpan * 0.45));
+      sections[next].style.transform = 'translateY(0)';
+      sections[next].style.opacity   = String(1 - fadePr);
+      if (!seen[next] && fadePr < 1) {
+        seen[next] = true;
+        animateIn(sections[next]);
+      }
     } else {
       /* デフォルト：80%到達後にフェードイン（新規セクション追加時も同様） */
       var fadePr = stRel < secSpan * 0.80
