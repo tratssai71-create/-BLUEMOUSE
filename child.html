@@ -101,36 +101,33 @@
     .ch-hero .ch-photo__label   { color: rgba(51,37,26,.5);  }
     .ch-hero .ch-photo__title   { color: #1d1d1f; }
 
-    /* セクション3（テキスト） */
+    /* section 3：積み木背景テキスト */
     .ch-section[data-idx="3"].ch-text {
-      background: #FFFEFB;
-      left: 0 !important;
-      width: 100vw !important;
-      height: 100vh !important;
-      height: 100svh !important;
+      background: #0a0a0a;
+      left: 0 !important; width: 100vw !important;
+      height: 100vh !important; height: 100svh !important;
     }
-    .ch-section[data-idx="3"] .ch-photo__img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      object-position: center center;
+    .ch-section[data-idx="3"] .ch-text__overlay {
+      position: absolute; inset: 0;
+      background: rgba(0,0,0,.42);
+      pointer-events: none; z-index: 0;
     }
     .ch-section[data-idx="3"] .ch-text__lead,
     .ch-section[data-idx="3"] .ch-text__body {
-      position: relative;
-      z-index: 1;
-    }
-    .ch-section[data-idx="3"] .ch-text__lead,
-    .ch-section[data-idx="3"] .ch-text__body {
+      position: relative; z-index: 1;
       font-family: "Zen Kaku Gothic New", "Noto Sans JP", sans-serif;
-      font-size: clamp(1.7rem, 2.4vw, 2.1rem);
-      font-weight: 700;
-      letter-spacing: .88em;
-      line-height: 2.0;
-      margin: 0 0 18px;
+      font-size: clamp(.9rem,1.25vw,1.05rem);
+      font-weight: 400; letter-spacing: .12em;
+      line-height: 2.0; margin: 0 0 18px;
     }
-    .ch-section[data-idx="3"] .ch-text__lead { color: #1d1d1f; }
-    .ch-section[data-idx="3"] .ch-text__body { color: #1d1d1f; max-width: none; }
+    .ch-section[data-idx="3"] .ch-text__lead { color: rgba(255,254,251,.92); }
+    .ch-section[data-idx="3"] .ch-text__body { color: rgba(255,254,251,.60); max-width: none; }
+
+    /* section 4：積み木写真（右からスライドイン） */
+    .ch-section[data-idx="4"].ch-photo {
+      left: 0 !important; width: 100vw !important;
+      height: 100vh !important; height: 100svh !important;
+    }
 
     /* ===== 写真セクション ===== */
     .ch-photo { background: #111; }
@@ -317,10 +314,12 @@
       </div>
     </section>
 
-    <!-- [3] テキスト 1 -->
-    <section class="ch-section ch-text" style="z-index:4" data-idx="3">
-      <p class="ch-text__lead text ch-anim" id="ch-text09-lead">「こども中心」という、<br>秩序ある環境。<br><br></p>
-      <p class="ch-text__body text ch-anim" id="ch-text09-body">心地よい時間の中で「できた」を重ねていくこと</p>
+    <!-- [3] テキスト（積み木背景） -->
+    <section class="ch-section ch-text" style="z-index:4" data-idx="3" data-dark="1">
+      <img class="ch-photo__img pos-35" src="./tsumiki_opt.jpg" alt="からから積み木で遊ぶこども" loading="lazy" />
+      <div class="ch-text__overlay"></div>
+      <p class="ch-text__lead text" id="ch-text09-lead">「こども中心」という、<br>秩序ある環境。</p>
+      <p class="ch-text__body text" id="ch-text09-body">心地よい時間の中で「できた」を重ねていくこと</p>
     </section>
 
     <!-- [4] 写真（積み木） -->
@@ -417,8 +416,6 @@
   var titleJaEl   = document.querySelector('.ch-title__ja');
   var titleEnEl   = document.querySelector('.ch-title__en');
   var heroH1El    = document.querySelector('#ch-hero-h1');
-  var s2LeadEl    = document.querySelector('#ch-text09-lead');
-  var s2BodyEl    = document.querySelector('#ch-text09-body');
 
   var vh       = window.innerHeight;
   var ticking  = false;
@@ -427,7 +424,6 @@
 
 
   var seen          = sections.map(function () { return false; });
-  /* 全セクション均等スクロール（各 1vh） */
   var sectionStarts = [0, 1, 2, 3, 4, 5, 6, 7]; /* 各セクション開始位置（vh倍数） */
 
   /* スクロール高さを確保 */
@@ -457,7 +453,7 @@
     sections[base].style.transform = 'translateY(0)';
     sections[base].style.opacity   = ''; /* base は常にフル表示（高速スクロール対策） */
     if (base === 0) {
-      /* section0→1：タイトルFO完了（80%）後にフェードイン＋コンテンツ同時出現 */
+      /* section0→1：タイトルFO完了（80%）後にフェードイン */
       var hPr = stRel < secSpan * 0.80
         ? 1
         : Math.max(0, 1 - (stRel - secSpan * 0.80) / (secSpan * 0.20));
@@ -467,17 +463,30 @@
         seen[next] = true;
         animateIn(sections[next]);
       }
-    } else {
-      /* デフォルト：80%到達後にフェードイン（新規セクション追加時も同様） */
-      var fadePr = stRel < secSpan * 0.80
+    } else if (base === 2) {
+      /* section2→3：h1 FO完了（80%）後にフェードイン */
+      var s2Pr = stRel < secSpan * 0.80
         ? 1
         : Math.max(0, 1 - (stRel - secSpan * 0.80) / (secSpan * 0.20));
       sections[next].style.transform = 'translateY(0)';
-      sections[next].style.opacity   = String(1 - fadePr);
-      if (!seen[next] && fadePr < 1) {
+      sections[next].style.opacity   = String(1 - s2Pr);
+      if (!seen[next] && s2Pr < 1) {
         seen[next] = true;
         animateIn(sections[next]);
       }
+    } else if (base === 3) {
+      /* section3→4：右からスライドイン（横スクロール比例） */
+      var vw = window.innerWidth;
+      sections[next].style.transform = 'translateX(' + Math.round(vw * progress) + 'px)';
+      sections[next].style.opacity   = '';
+      if (!seen[next] && progress < 0.5) {
+        seen[next] = true;
+        animateIn(sections[next]);
+      }
+    } else {
+      /* 他セクション：下からスライドアップ */
+      sections[next].style.transform = 'translateY(' + ty + 'px)';
+      sections[next].style.opacity   = '';
     }
 
     /* section0: タイトル文字 フェードアウト（30%〜80%） */
@@ -509,22 +518,6 @@
       }
     }
 
-    /* section3: テキスト フェードアウト（30%〜80%） */
-    if (base === 3) {
-      var s2FadePr = Math.min(1, Math.max(0, (stRel - secSpan * 0.3) / (secSpan * 0.5)));
-      [s2LeadEl, s2BodyEl].forEach(function (el) {
-        if (!el) return;
-        if (s2FadePr > 0) {
-          el.style.transition = 'none';
-          el.style.opacity    = String(Math.max(0, 1 - s2FadePr));
-          el.style.transform  = 'translateX(' + Math.round(-s2FadePr * 16) + 'px)';
-        } else {
-          el.style.transition = '';
-          el.style.opacity    = '';
-          el.style.transform  = '';
-        }
-      });
-    }
 
 
     if (base !== prevBase || next !== prevNext) {
@@ -587,7 +580,7 @@
 
   function animateIn (section) {
     var sIdx     = +section.getAttribute('data-idx');
-    var interval = sIdx === 2 ? 0 : 110;
+    var interval = sIdx === 3 ? 0 : 110;
     Array.from(section.querySelectorAll('.ch-anim')).forEach(function (el, i) {
       setTimeout(function () { el.classList.add('is-visible'); }, 60 + i * interval);
     });
@@ -605,7 +598,7 @@
         setTimeout(function () { span.classList.add('on'); }, bodyStart + i * bodyInterval);
       });
     }
-    /* section3: text09 を1回再生 → 固定表示 */
+    /* section3(tsumikiテキスト): text09 を1回再生 → 固定表示 */
     if (+section.getAttribute('data-idx') === 3) {
       [['ch-text09-lead','0.12'], ['ch-text09-body','0.04']].forEach(function (pair, i) {
         var el  = document.getElementById(pair[0]);
