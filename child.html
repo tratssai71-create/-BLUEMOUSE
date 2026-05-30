@@ -469,9 +469,9 @@
         animateIn(sections[next]);
       }
     } else if (base === 1) {
-      /* section1→2：フェードアウト無効テスト中（section2を即表示） */
+      /* section1→2：親opacityは触らず''のまま（子のCSS transition保護） */
       sections[next].style.transform = 'translateY(0)';
-      sections[next].style.opacity   = '1';
+      sections[next].style.opacity   = '';
       if (!seen[next]) {
         seen[next] = true;
         animateIn(sections[next]);
