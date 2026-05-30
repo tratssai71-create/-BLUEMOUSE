@@ -586,17 +586,42 @@
   initWipeEl('ch-s4-lead');
   initWipeEl('ch-s4-body');
 
-  /* section2 h1：CSS任せにせず rAF でインライン直接アニメ（右からスライド＋フェードイン） */
+  /* cubic-bezier(x1,y1,x2,y2) を JS で再現（タイトルのCSSイージングと一致させる用） */
+  function makeCubicBezier (x1, y1, x2, y2) {
+    function A (a, b) { return 1 - 3 * b + 3 * a; }
+    function B (a, b) { return 3 * b - 6 * a; }
+    function C (a)    { return 3 * a; }
+    function calc (t, a, b) { return ((A(a, b) * t + B(a, b)) * t + C(a)) * t; }
+    function slope (t, a, b) { return 3 * A(a, b) * t * t + 2 * B(a, b) * t + C(a); }
+    function tForX (x) {
+      var t = x;
+      for (var i = 0; i < 6; i++) {
+        var s = slope(t, x1, x2);
+        if (s === 0) break;
+        t -= (calc(t, x1, x2) - x) / s;
+      }
+      return t;
+    }
+    return function (x) {
+      if (x <= 0) return 0;
+      if (x >= 1) return 1;
+      return calc(tForX(x), y1, y2);
+    };
+  }
+  /* タイトル(.ch-anim)と同じイージング */
+  var titleEase = makeCubicBezier(0.22, 1, 0.36, 1);
+
+  /* section2 h1：CSS任せにせず rAF でインライン直接アニメ（タイトルと同じ動き） */
   function slideInHeroH1 () {
     if (!heroH1El) return;
     s2Anim = true;
-    var dur    = 900;
-    var fromX  = 48;
+    var dur    = 900;   /* タイトルと同じ 0.9s */
+    var fromX  = 40;    /* タイトルと同じ 40px */
     var startT = null;
     heroH1El.style.transition = 'none';
     heroH1El.style.opacity    = '0';
     heroH1El.style.transform  = 'translateX(' + fromX + 'px)';
-    function ease (t) { return 1 - Math.pow(1 - t, 3); } /* easeOutCubic */
+    function ease (t) { return titleEase(t); }
     function step (ts) {
       if (!startT) startT = ts;
       var p = Math.min((ts - startT) / dur, 1);
@@ -622,7 +647,8 @@
     var interval = sIdx === 2 ? 0 : 110;
 
     if (sIdx === 2) {
-      slideInHeroH1();
+      s2Anim = true; /* 60ms遅延中に draw が触らないよう即フラグ */
+      setTimeout(slideInHeroH1, 60); /* タイトルと同じ初動ディレイ */
     } else {
       Array.from(section.querySelectorAll('.ch-anim')).forEach(function (el, i) {
         setTimeout(function () { el.classList.add('is-visible'); }, 60 + i * interval);
