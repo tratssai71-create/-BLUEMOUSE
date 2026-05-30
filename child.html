@@ -101,27 +101,27 @@
     .ch-hero .ch-photo__label   { color: rgba(51,37,26,.5);  }
     .ch-hero .ch-photo__title   { color: #1d1d1f; }
 
-    /* セクション2 */
-    .ch-section[data-idx="2"].ch-text {
+    /* セクション3（テキスト） */
+    .ch-section[data-idx="3"].ch-text {
       background: #FFFEFB;
       left: 0 !important;
       width: 100vw !important;
       height: 100vh !important;
       height: 100svh !important;
     }
-    .ch-section[data-idx="2"] .ch-photo__img {
+    .ch-section[data-idx="3"] .ch-photo__img {
       width: 100%;
       height: 100%;
       object-fit: cover;
       object-position: center center;
     }
-    .ch-section[data-idx="2"] .ch-text__lead,
-    .ch-section[data-idx="2"] .ch-text__body {
+    .ch-section[data-idx="3"] .ch-text__lead,
+    .ch-section[data-idx="3"] .ch-text__body {
       position: relative;
       z-index: 1;
     }
-    .ch-section[data-idx="2"] .ch-text__lead,
-    .ch-section[data-idx="2"] .ch-text__body {
+    .ch-section[data-idx="3"] .ch-text__lead,
+    .ch-section[data-idx="3"] .ch-text__body {
       font-family: "Zen Kaku Gothic New", "Noto Sans JP", sans-serif;
       font-size: clamp(1.7rem, 2.4vw, 2.1rem);
       font-weight: 700;
@@ -129,8 +129,8 @@
       line-height: 2.0;
       margin: 0 0 18px;
     }
-    .ch-section[data-idx="2"] .ch-text__lead { color: #1d1d1f; }
-    .ch-section[data-idx="2"] .ch-text__body { color: #1d1d1f; max-width: none; }
+    .ch-section[data-idx="3"] .ch-text__lead { color: #1d1d1f; }
+    .ch-section[data-idx="3"] .ch-text__body { color: #1d1d1f; max-width: none; }
 
     /* ===== 写真セクション ===== */
     .ch-photo { background: #111; }
@@ -226,8 +226,8 @@
     .ch-title .ch-anim.is-visible { opacity: 1; transform: none; }
     .ch-hero .ch-anim { transform: translateX(40px); }
     .ch-hero .ch-anim.is-visible { opacity: 1; transform: none; }
-    .ch-section[data-idx="2"] .ch-anim { transform: translateX(40px); }
-    .ch-section[data-idx="2"] .ch-anim.is-visible { opacity: 1; transform: none; }
+    .ch-section[data-idx="3"] .ch-anim { transform: translateX(40px); }
+    .ch-section[data-idx="3"] .ch-anim.is-visible { opacity: 1; transform: none; }
 
     /* ===== 進行ドット ===== */
     .ch-dots {
@@ -304,39 +304,45 @@
       </div>
     </section>
 
-    <!-- [1] ヒーロー -->
-    <section class="ch-section ch-hero" style="z-index:2" data-idx="1">
+    <!-- [1] 写真（momose） -->
+    <section class="ch-section ch-photo" style="z-index:2" data-idx="1" data-dark="1">
+      <img class="ch-photo__img" src="./momose_opt.jpg" alt="こども" loading="lazy" />
+      <div class="ch-photo__grad"></div>
+    </section>
+
+    <!-- [2] ヒーロー -->
+    <section class="ch-section ch-hero" style="z-index:3" data-idx="2">
       <div class="ch-hero__inner">
         <h1 class="ch-photo__title ch-anim" id="ch-hero-h1">土台となる<br>「見えない力」は、<br>こどもが自ら育む。</h1>
       </div>
     </section>
 
-    <!-- [2] テキスト 1（背景：積み木写真） -->
-    <section class="ch-section ch-text" style="z-index:3" data-idx="2">
+    <!-- [3] テキスト 1 -->
+    <section class="ch-section ch-text" style="z-index:4" data-idx="3">
       <p class="ch-text__lead text ch-anim" id="ch-text09-lead">「こども中心」という、<br>秩序ある環境。<br><br></p>
       <p class="ch-text__body text ch-anim" id="ch-text09-body">心地よい時間の中で「できた」を重ねていくこと</p>
     </section>
 
-    <!-- [3] 写真（積み木） -->
-    <section class="ch-section ch-photo" style="z-index:4" data-idx="3" data-dark="1">
+    <!-- [4] 写真（積み木） -->
+    <section class="ch-section ch-photo" style="z-index:5" data-idx="4" data-dark="1">
       <img class="ch-photo__img pos-35" src="./tsumiki_opt.jpg" alt="からから積み木で遊ぶこども" loading="lazy" />
       <div class="ch-photo__grad"></div>
     </section>
 
-    <!-- [4] テキスト 2 -->
-    <section class="ch-section ch-text" style="z-index:5" data-idx="4">
+    <!-- [5] テキスト 2 -->
+    <section class="ch-section ch-text" style="z-index:6" data-idx="5">
       <p class="ch-text__lead" id="ch-s4-lead">専門スタッフが、<br>深く観て、<br>そっとそばにいる。</p>
       <p class="ch-text__body" id="ch-s4-body">むやみに介入しすぎず、その子が自分で答えを見つける場面をつくる。それが一般的な預かり施設との一番の違いです。</p>
     </section>
 
-    <!-- [5] 写真 2 -->
-    <section class="ch-section ch-photo" style="z-index:6" data-idx="5" data-dark="1">
+    <!-- [6] 写真 2 -->
+    <section class="ch-section ch-photo" style="z-index:7" data-idx="6" data-dark="1">
       <img class="ch-photo__img pos-35" src="./1.webp" alt="スタッフとこども" loading="lazy" />
       <div class="ch-photo__grad"></div>
     </section>
 
-    <!-- [6] CTA -->
-    <section class="ch-section ch-cta" style="z-index:7" data-idx="6">
+    <!-- [7] CTA -->
+    <section class="ch-section ch-cta" style="z-index:8" data-idx="7">
       <p class="ch-anim">まずはお気軽にご相談・見学のお申し込みをどうぞ。<br>受給者証の取得からサポートします。</p>
       <a href="./contact.html" class="ch-cta__btn ch-anim">見学・お問い合わせ ›</a>
     </section>
@@ -395,6 +401,7 @@
   <span class="ch-dot"></span>
   <span class="ch-dot"></span>
   <span class="ch-dot"></span>
+  <span class="ch-dot"></span>
 </div>
 
 <script src="./layout.js"></script>
@@ -421,7 +428,7 @@
 
   var seen          = sections.map(function () { return false; });
   /* 全セクション均等スクロール（各 1vh） */
-  var sectionStarts = [0, 1, 2, 3, 4, 5, 6]; /* 各セクション開始位置（vh倍数） */
+  var sectionStarts = [0, 1, 2, 3, 4, 5, 6, 7]; /* 各セクション開始位置（vh倍数） */
 
   /* スクロール高さを確保 */
   function setup () {
@@ -460,8 +467,8 @@
         seen[next] = true;
         animateIn(sections[next]);
       }
-    } else if (base === 1) {
-      /* section1→2：h1 FO完了（80%）後にフェードイン */
+    } else if (base === 2) {
+      /* section2→3：h1 FO完了（80%）後にフェードイン */
       var s2Pr = stRel < secSpan * 0.80
         ? 1
         : Math.max(0, 1 - (stRel - secSpan * 0.80) / (secSpan * 0.20));
@@ -471,8 +478,8 @@
         seen[next] = true;
         animateIn(sections[next]);
       }
-    } else if (base === 2) {
-      /* section2→3：テキスト FO完了（80%）後にフェードイン */
+    } else if (base === 3) {
+      /* section3→4：テキスト FO完了（80%）後にフェードイン */
       var s3Pr = stRel < secSpan * 0.80
         ? 1
         : Math.max(0, 1 - (stRel - secSpan * 0.80) / (secSpan * 0.20));
@@ -503,8 +510,8 @@
       }
     });
 
-    /* section1: h1フェードアウト（30%〜80%） */
-    if (base === 1 && heroH1El) {
+    /* section2: h1フェードアウト（30%〜80%） */
+    if (base === 2 && heroH1El) {
       var s1FadePr = Math.min(1, Math.max(0, (stRel - secSpan * 0.3) / (secSpan * 0.5)));
       if (s1FadePr > 0) {
         heroH1El.style.transition = 'none';
@@ -517,8 +524,8 @@
       }
     }
 
-    /* section2: テキスト フェードアウト（30%〜80%） */
-    if (base === 2) {
+    /* section3: テキスト フェードアウト（30%〜80%） */
+    if (base === 3) {
       var s2FadePr = Math.min(1, Math.max(0, (stRel - secSpan * 0.3) / (secSpan * 0.5)));
       [s2LeadEl, s2BodyEl].forEach(function (el) {
         if (!el) return;
@@ -547,8 +554,8 @@
     }
 
     if (!seen[base]) { seen[base] = true; animateIn(sections[base]); }
-    /* section1・2・3 は定位置（base）になってから animateIn。それ以降は従来通り早期発火 */
-    if (!seen[next] && ty < vh * 0.5 && base > 2) { seen[next] = true; animateIn(sections[next]); }
+    /* section1〜4 は定位置（base）になってから animateIn。それ以降は従来通り早期発火 */
+    if (!seen[next] && ty < vh * 0.5 && base > 3) { seen[next] = true; animateIn(sections[next]); }
 
     var ai = ty < vh * 0.5 ? next : base;
     dotEls.forEach(function (d, j) { d.classList.toggle('active', j === ai); });
@@ -596,12 +603,12 @@
 
   function animateIn (section) {
     var sIdx     = +section.getAttribute('data-idx');
-    var interval = sIdx === 1 ? 0 : 110;
+    var interval = sIdx === 2 ? 0 : 110;
     Array.from(section.querySelectorAll('.ch-anim')).forEach(function (el, i) {
       setTimeout(function () { el.classList.add('is-visible'); }, 60 + i * interval);
     });
     /* section5: clip-path ワイプ起動 */
-    if (+section.getAttribute('data-idx') === 4) {
+    if (+section.getAttribute('data-idx') === 5) {
       var leadWcs    = section.querySelectorAll('#ch-s4-lead .ch-wc');
       var bodyWcs    = section.querySelectorAll('#ch-s4-body .ch-wc');
       var leadInterval = 115;
@@ -615,7 +622,7 @@
       });
     }
     /* section3: text09 を1回再生 → 固定表示 */
-    if (+section.getAttribute('data-idx') === 2) {
+    if (+section.getAttribute('data-idx') === 3) {
       [['ch-text09-lead','0.12'], ['ch-text09-body','0.04']].forEach(function (pair, i) {
         var el  = document.getElementById(pair[0]);
         var dpc = pair[1];
