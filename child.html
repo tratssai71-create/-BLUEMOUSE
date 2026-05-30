@@ -273,6 +273,14 @@
       .ch-text { padding: 0 22px; }
       .ch-cta  { padding: 0 22px; }
       .ch-dots { display: none; }
+
+      /* section2: モバイルではletter-spacingを縮小 */
+      .ch-section[data-idx="2"] .ch-text__lead,
+      .ch-section[data-idx="2"] .ch-text__body {
+        letter-spacing: .08em;
+        font-size: clamp(.82rem, 3.2vw, .95rem);
+        line-height: 1.9;
+      }
     }
   </style>
 </head>
