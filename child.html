@@ -136,8 +136,8 @@
       line-height: 2.0;
       margin: 0 0 18px;
     }
-    .ch-section[data-idx="2"] .ch-text__lead { color: rgba(255,254,251,.92); }
-    .ch-section[data-idx="2"] .ch-text__body { color: rgba(255,254,251,.92); max-width: none; }
+    .ch-section[data-idx="2"] .ch-text__lead { color: #1d1d1f; }
+    .ch-section[data-idx="2"] .ch-text__body { color: #1d1d1f; max-width: none; }
 
     /* ===== 写真セクション ===== */
     .ch-photo { background: #111; }
@@ -318,7 +318,6 @@
 
     <!-- [2] テキスト 1（背景：積み木写真） -->
     <section class="ch-section ch-text" style="z-index:3" data-idx="2" data-dark="1">
-      <img class="ch-photo__img pos-35" src="./tsumiki_opt.jpg" alt="からから積み木で遊ぶこども" loading="lazy" />
       <div class="ch-text__overlay"></div>
       <p class="ch-text__lead text" id="ch-text09-lead">「こども中心」という、<br>秩序ある環境。<br><br></p>
       <p class="ch-text__body text" id="ch-text09-body">心地よい時間の中で「できた」を重ねていくこと</p>
@@ -468,10 +467,10 @@
         animateIn(sections[next]);
       }
     } else if (base === 1) {
-      /* section1→2：h1 FO完了（60%）後にゆっくりフェードイン（40%幅） */
-      var s2Pr = stRel < secSpan * 0.60
+      /* section1→2：h1 FO完了（80%）後にフェードイン */
+      var s2Pr = stRel < secSpan * 0.80
         ? 1
-        : Math.max(0, 1 - (stRel - secSpan * 0.60) / (secSpan * 0.40));
+        : Math.max(0, 1 - (stRel - secSpan * 0.80) / (secSpan * 0.20));
       sections[next].style.transform = 'translateY(0)';
       sections[next].style.opacity   = String(1 - s2Pr);
       if (!seen[next] && s2Pr < 1) {
