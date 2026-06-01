@@ -1,0 +1,4 @@
+
+# rembg 作業用（コミットしない）
+.venv-rembg/
+make_composite.py
