@@ -574,17 +574,27 @@
     });
   }, 250);
 
-  /* ---- ヒーローパラックス（スクロールで上へ消える） ---- */
+  /* ---- ヒーローフェードアウト（child.htmlのtitleと完全に同じ式） ----
+     開始: scroll 5%vh  完了: 90%vh  スパン: 85%
+     opacity: 1→0  translateX: 0→-16px（左へ微妙に流れる）
+  ---- */
   function heroParallax () {
     var st = window.pageYOffset;
     var vh = window.innerHeight;
-    var p  = Math.min(1, st / (vh * 0.72));
+    var p  = Math.min(1, Math.max(0, (st - vh * 0.05) / (vh * 0.85)));
     if (heroInner) {
-      heroInner.style.opacity   = String(Math.max(0, 1 - p * 1.7));
-      heroInner.style.transform = 'translateY(' + Math.round(-p * 56) + 'px)';
+      if (p > 0) {
+        heroInner.style.transition = 'none';
+        heroInner.style.opacity    = String(Math.max(0, 1 - p));
+        heroInner.style.transform  = 'translateX(' + Math.round(-p * 16) + 'px)';
+      } else {
+        heroInner.style.transition = '';
+        heroInner.style.opacity    = '';
+        heroInner.style.transform  = '';
+      }
     }
     if (scrollHint) {
-      scrollHint.style.opacity = String(Math.max(0, 1 - p * 4));
+      scrollHint.style.opacity = String(Math.max(0, 1 - p * 3));
     }
   }
   window.addEventListener('scroll', heroParallax, { passive: true });
