@@ -162,16 +162,18 @@
     }
     #box-2 .slide-overlay > * { position: relative; z-index: 1; }
 
-    /* ===== タイトルは一塊の背景ボックス（行ごとではなくまとめて1枚） ===== */
+    /* ===== タイトルは行ごとに背景（短い行は背景も短く・行間は密着） ===== */
     .slide-title {
       font-family: "Zen Kaku Gothic New", sans-serif;
       font-weight: 500;
-      display: inline-block;
+      display: inline;
+      -webkit-box-decoration-break: clone;
+      box-decoration-break: clone;
       background: rgba(255, 254, 251, 0.72);
       color: #1d1d1f;
-      padding: 8px 16px;
+      padding: 5px 12px;            /* 上下5px・左右12px 固定 */
       -webkit-text-stroke: 0;
-      line-height: 1.5;
+      line-height: calc(1em + 10px); /* 5+5px padding ＝ 隙間0・重なりなしで密着 */
       letter-spacing: .21em;
       border-radius: 2px;
     }
