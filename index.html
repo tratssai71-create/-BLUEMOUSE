@@ -43,8 +43,8 @@
       font-weight: 300 !important;
     }
     /* スライドタイトル=太さ400／サブタイトル=350（グローバル300を上書き） */
-    .bm-main .slide-title { font-weight: 450 !important; }
-    .bm-main .slide-title-sub { font-weight: 400 !important; }
+    .bm-main .slide-title { font-weight: 500 !important; }
+    .bm-main .slide-title-sub { font-weight: 450 !important; }
     /* bm-layout の transform アニメが fixed の含有ブロックになるのを防ぐ */
     .bm-layout { animation: none !important; }
     /* サイドバーロゴ非表示（バッジが代わりに表示） */
@@ -185,13 +185,13 @@
       display: inline-block;
       margin: 0;
     }
-    #box-1 .slide-title { font-size: clamp(1.7rem, 2.75vw, 2.6rem) !important; }
-    #box-2 .slide-title { font-size: clamp(1.55rem, 2.35vw, 2.25rem); }
+    #box-1 .slide-title { font-size: clamp(1.5rem, 2.45vw, 2.3rem) !important; }
+    #box-2 .slide-title { font-size: clamp(1.4rem, 2.1vw, 2.0rem); }
 
     .slide-title-sub {
       font-family: "Zen Kaku Gothic New", sans-serif;
       font-weight: 400;
-      font-size: 1.15em;
+      font-size: 1.0em;
       display: block;
       color: #1d1d1f;
       letter-spacing: .29em;
@@ -223,11 +223,12 @@
       display: inline-flex;
       align-items: center;
       gap: 0;
-      padding: 2px 11px;
+      padding: 3px 13px;
+      margin-top: 16px;             /* サブタイトルとの間隔 */
       background: #fff;
       color: #000;
       font-family: "Zen Kaku Gothic New", sans-serif;
-      font-size: 0.48em;            /* さらに小さく */
+      font-size: 0.55em;
       font-weight: 350;
       border-radius: 100px;
       border: 1.5px solid #fff;
@@ -394,12 +395,12 @@
         display: none !important;
       }
       /* スマホ：タイトルサイズ */
-      #box-1 .slide-title { font-size: clamp(1.35rem, 5.8vw, 2.1rem); word-break: normal; }
+      #box-1 .slide-title { font-size: clamp(1.1rem, 5.0vw, 1.8rem); word-break: normal; }
       /* 横パディングを狭めて文字が収まるように／テキストを上に */
       #box-1 .slide-overlay { padding: 48px 20px 52px; justify-content: flex-end; }
       #box-1 .slide-overlay::before { display: none; }
-      /* スマホ：MOREボタンは小さめ */
-      #box-1 .slide-btn { font-size: 0.62rem; padding: 4px 14px; }
+      /* スマホ：MOREボタン */
+      #box-1 .slide-btn { font-size: 0.75rem; padding: 6px 18px; margin-top: 18px; }
     }
 
     /* ===== スライドドット ===== */
