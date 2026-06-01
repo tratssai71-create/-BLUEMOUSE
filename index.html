@@ -43,8 +43,8 @@
       font-weight: 300 !important;
     }
     /* スライドタイトル=太さ400／サブタイトル=350（グローバル300を上書き） */
-    .bm-main .slide-title { font-weight: 400 !important; }
-    .bm-main .slide-title-sub { font-weight: 350 !important; }
+    .bm-main .slide-title { font-weight: 450 !important; }
+    .bm-main .slide-title-sub { font-weight: 400 !important; }
     /* bm-layout の transform アニメが fixed の含有ブロックになるのを防ぐ */
     .bm-layout { animation: none !important; }
     /* サイドバーロゴ非表示（バッジが代わりに表示） */
@@ -175,7 +175,7 @@
       padding: 5px 12px;            /* 上下5px・左右12px 固定 */
       -webkit-text-stroke: 0;
       line-height: calc(1em + 10px); /* 5+5px padding + 0px gap */
-      letter-spacing: .19em;
+      letter-spacing: .21em;
       border-radius: 2px;
     }
     /* ブロック用ラッパー */
@@ -183,26 +183,26 @@
       display: inline-block;
       margin: 0;
     }
-    #box-1 .slide-title { font-size: clamp(1.4rem, 2.3vw, 2.15rem) !important; }
-    #box-2 .slide-title { font-size: clamp(1.3rem, 1.95vw, 1.85rem); }
+    #box-1 .slide-title { font-size: clamp(1.5rem, 2.45vw, 2.3rem) !important; }
+    #box-2 .slide-title { font-size: clamp(1.4rem, 2.1vw, 2.0rem); }
 
     .slide-title-sub {
       font-family: "Zen Kaku Gothic New", sans-serif;
       font-weight: 400;
-      font-size: 0.95em;
+      font-size: 1.0em;
       display: inline;
       -webkit-box-decoration-break: clone;
       box-decoration-break: clone;
       background: rgba(255, 254, 251, 0.72);
       color: #1d1d1f;
       padding: 5px 12px;            /* 上下5px・左右12px 固定（同じ値） */
-      letter-spacing: .27em;
+      letter-spacing: .29em;
       line-height: calc(1em + 10px); /* 5+5px padding ＝ 隙間0・重なりなしで密着 */
       border-radius: 2px;
     }
     .slide-title-sub-block {
       display: block;
-      margin-top: 0;
+      margin-top: 16px;   /* タイトルとサブタイトルの間隔 */
     }
 
     .slide-lead {
@@ -262,7 +262,7 @@
       pointer-events: none;
     }
     #box-3 .slide-overlay > * { position: relative; z-index: 1; }
-    #box-3 .slide-title { font-size: clamp(2.3rem, 3.5vw, 3.3rem); color: #5EC1C6; }
+    #box-3 .slide-title { font-size: clamp(2.45rem, 3.7vw, 3.5rem); color: #5EC1C6; }
     #box-3 .slide-btn {
       display: inline-block;
       padding: 10px 24px;
