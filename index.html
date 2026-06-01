@@ -235,24 +235,24 @@
       gap: 0;
       padding: 3px 13px;
       margin-top: 16px;             /* サブタイトルとの間隔 */
-      background: #fff;
-      color: #000;
+      background: #000;
+      color: #fff;
       font-family: "Zen Kaku Gothic New", sans-serif;
       font-size: 0.55em;
-      font-weight: 350;
+      font-weight: 800 !important;   /* タイトルと同じ太字（グローバルa:300を上書き） */
       border-radius: 100px;
-      border: 1.5px solid #fff;
+      border: 1.5px solid #000;
       text-decoration: none;
       align-self: flex-start;
-      letter-spacing: .18em;
+      letter-spacing: .04em;
       position: relative;
       transition: transform .22s cubic-bezier(.34,1.56,.64,1), background .2s, border-color .2s, color .2s;
     }
     .btn-arrow { margin-left: 14px; font-style: normal; }
     #box-1 .slide-btn:hover {
-      background: rgba(255,255,255,0.85);
-      border-color: #fff;
-      color: #000;
+      background: rgba(0,0,0,0.78);
+      border-color: #000;
+      color: #fff;
       transform: scale(1.04);
     }
 
