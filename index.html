@@ -122,7 +122,7 @@
       display: flex;
       flex-direction: column;
       justify-content: flex-end;
-      padding: 32px 28px 60px 24px;
+      padding: 20px 20px 40px 18px;
     }
     #box-1 .slide-overlay::before { display: none; }
     #box-1 .slide-overlay > * { position: relative; z-index: 1; }
@@ -149,7 +149,8 @@
     }
     #box-2 .slide-overlay > * { position: relative; z-index: 1; }
 
-    /* ===== 一行ごとのラベルボックス（参考サイト風：しっかり白） ===== */
+    /* ===== 一行ごとのラベルボックス ===== */
+    /* padding px固定 + line-height: calc(1em + Xpx) でgapを常に8px固定 */
     .slide-title {
       font-family: "Noto Sans JP", sans-serif;
       font-weight: 500;
@@ -158,37 +159,37 @@
       box-decoration-break: clone;
       background: rgba(255, 254, 251, 0.72);
       color: #1d1d1f;
-      padding: .14em .40em .14em .30em;
+      padding: 4px 11px;            /* 上下4px・左右11px 固定 */
       -webkit-text-stroke: 0;
-      line-height: 1.75;
+      line-height: calc(1em + 16px); /* 4+4px padding + 8px gap = 16px */
       letter-spacing: .05em;
       border-radius: 2px;
     }
     /* ブロック用ラッパー */
     .slide-title-block {
       display: inline-block;
-      margin: 0 0 10px;
+      margin: 0 0 8px;
     }
-    #box-1 .slide-title { font-size: clamp(1.6rem, 2.6vw, 2.4rem) !important; }
-    #box-2 .slide-title { font-size: clamp(1.4rem, 2.2vw, 2.1rem); }
+    #box-1 .slide-title { font-size: clamp(1.1rem, 1.8vw, 1.7rem) !important; }
+    #box-2 .slide-title { font-size: clamp(1.0rem, 1.5vw, 1.4rem); }
 
     .slide-title-sub {
       font-family: "Noto Sans JP", sans-serif;
       font-weight: 400;
-      font-size: 1.15em;
+      font-size: 0.82em;
       display: inline;
       -webkit-box-decoration-break: clone;
       box-decoration-break: clone;
       background: rgba(255, 254, 251, 0.72);
       color: #1d1d1f;
-      padding: .14em .40em .14em .30em;
-      letter-spacing: .15em;
-      line-height: 2.1;
+      padding: 4px 11px;            /* 上下4px・左右11px 固定（同じ値） */
+      letter-spacing: .12em;
+      line-height: calc(1em + 16px); /* 同じ8px gap */
       border-radius: 2px;
     }
     .slide-title-sub-block {
       display: block;
-      margin-top: .5em;
+      margin-top: 6px;
     }
 
     .slide-lead {
@@ -210,7 +211,7 @@
       background: #000;
       color: #fff;
       font-family: "Zen Kaku Gothic New", sans-serif;
-      font-size: clamp(0.75rem, 1.4vw, 1.2rem);
+      font-size: clamp(0.65rem, 1.1vw, 0.9rem);
       font-weight: 400;
       border-radius: 100px;
       border: 1.5px solid #000;
@@ -339,7 +340,7 @@
       transition: opacity 0.4s ease;
     }
     .hero-logo-wordmark img {
-      width: 250px;
+      width: 160px;
       height: auto;
       display: block;
     }
