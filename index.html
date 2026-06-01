@@ -173,7 +173,9 @@
       color: #1d1d1f;
       padding: 5px 12px;            /* 上下5px・左右12px 固定 */
       -webkit-text-stroke: 0;
-      line-height: calc(1em + 10px); /* 5+5px padding ＝ 隙間0・重なりなしで密着 */
+      /* iOS Safari は日本語の行ボックスが1emより高く描画されるため、
+         半透明背景が行間で重なる。少し広げて重なりを解消 */
+      line-height: calc(1.22em + 10px);
       letter-spacing: .21em;
       border-radius: 2px;
     }
@@ -196,7 +198,7 @@
       color: #1d1d1f;
       padding: 5px 12px;            /* 上下5px・左右12px 固定（同じ値） */
       letter-spacing: .29em;
-      line-height: calc(1em + 10px); /* 5+5px padding ＝ 隙間0・重なりなしで密着 */
+      line-height: calc(1.22em + 10px); /* タイトルと同じく行間の重なりを解消 */
       border-radius: 2px;
     }
     .slide-title-sub-block {
