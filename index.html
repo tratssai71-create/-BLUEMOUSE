@@ -52,21 +52,15 @@
     @keyframes kb-pan   { from{transform:scale(1.0) translateY(0%)}            to{transform:scale(1.0) translateY(-2%)} }
     @keyframes kb-pan-x { from{transform:scale(1.07) translateX(-3%)}          to{transform:scale(1.07) translateX(3%)} }
 
+    /* 写真エリア：白背景モードでは非表示 */
     .hero-photos {
       position: absolute;
       top: 0; left: 0; right: 0; bottom: 0;
       z-index: 0;
       overflow: hidden;
+      display: none !important;
     }
-    /* 写真にだけかかる薄いシャドウ */
-    .hero-photos::after {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(to bottom, rgba(0,0,0,0.0) 0%, rgba(0,0,0,0.10) 60%, rgba(0,0,0,0.20) 100%);
-      z-index: 1;
-      pointer-events: none;
-    }
+    .hero-photos::after { display: none; }
     .hero-photo {
       position: absolute;
       top: 0; left: 0; right: 0; bottom: 0;
@@ -118,7 +112,10 @@
       transition: opacity 0.3s ease;
     }
 
-    /* box-1：左下 */
+    /* box-1：白背景モード — 左下配置 */
+    #box-1 {
+      background: #FFFEFB;
+    }
     #box-1 .slide-overlay {
       position: absolute;
       inset: 0;
@@ -128,15 +125,7 @@
       justify-content: flex-end;
       padding: 48px 44px 90px 32px;
     }
-    #box-1 .slide-overlay::before {
-      content: '';
-      position: absolute;
-      bottom: 0; left: 0; right: 0;
-      height: 55%;
-      background: linear-gradient(to bottom, transparent 0%, rgba(0,0,0,0.55) 100%);
-      z-index: 0;
-      pointer-events: none;
-    }
+    #box-1 .slide-overlay::before { display: none; }
     #box-1 .slide-overlay > * { position: relative; z-index: 1; }
     /* box-2：右上寄せ */
     #box-2 .slide-overlay {
@@ -161,14 +150,26 @@
     }
     #box-2 .slide-overlay > * { position: relative; z-index: 1; }
 
+    /* ===== 一行ごとのラベルボックス ===== */
     .slide-title {
       font-family: "Noto Sans JP", sans-serif;
       font-weight: 400;
-      color: rgba(255,254,251,0.88);
+      /* display:inline + box-decoration-break で行ごとに背景ボックス */
+      display: inline;
+      -webkit-box-decoration-break: clone;
+      box-decoration-break: clone;
+      background: rgba(94,193,198,0.13);
+      color: #1d1d1f;
+      padding: .18em .45em .18em .35em;
       -webkit-text-stroke: 0;
-      line-height: 1.25;
-      margin: 0 0 16px;
+      line-height: 1.85;
       letter-spacing: .06em;
+      border-radius: 3px;
+    }
+    /* ブロック用ラッパー（display:inline-blockでflexの影響を断つ） */
+    .slide-title-block {
+      display: inline-block;
+      margin: 0 0 16px;
     }
     #box-1 .slide-title { font-size: clamp(2.6rem, 4.6vw, 4.4rem) !important; }
     #box-2 .slide-title { font-size: clamp(1.6rem, 2.5vw, 2.4rem); }
@@ -177,10 +178,21 @@
       font-family: "Noto Sans JP", sans-serif;
       font-weight: 400;
       font-size: 0.44em;
+      /* 同じく一行ごとのボックス */
+      display: inline;
+      -webkit-box-decoration-break: clone;
+      box-decoration-break: clone;
+      background: rgba(94,193,198,0.10);
+      color: rgba(29,29,31,0.78);
+      padding: .22em .5em .22em .4em;
+      letter-spacing: .30em;
+      line-height: 2.2;
+      border-radius: 2px;
+      margin-top: 0;
+    }
+    .slide-title-sub-block {
       display: block;
-      letter-spacing: .35em;
-      line-height: 1.7;
-      margin-top: .45em;
+      margin-top: .6em;
     }
 
     .slide-lead {
@@ -372,7 +384,7 @@
       #box-1 .slide-title { font-size: clamp(1.8rem, 7.0vw, 3.5rem); word-break: normal; }
       /* 横パディングを狭めて文字が収まるように／テキストを上に */
       #box-1 .slide-overlay { padding: 48px 20px 52px; justify-content: flex-end; }
-      #box-1 .slide-overlay::before { height: 65%; background: linear-gradient(to bottom, transparent 0%, rgba(0,0,0,0.65) 100%); }
+      #box-1 .slide-overlay::before { display: none; }
       /* スマホ：ボタンを少し大きく */
       #box-1 .slide-btn { font-size: 0.95rem; padding: 10px 28px; }
     }
@@ -391,13 +403,13 @@
       width: 12px;
       height: 2px;
       border-radius: 2px;
-      background: rgba(255,255,255,0.35);
+      background: rgba(51,37,26,0.20);
       transition: width 0.4s ease, background 0.4s ease;
       display: block;
     }
     .slide-dot.active {
       width: 24px;
-      background: rgba(255,255,255,0.95);
+      background: rgba(94,193,198,0.90);
     }
 
     /* ===== スクロール誘導矢印 ===== */
@@ -417,8 +429,8 @@
     .scroll-hint span {
       display: block;
       width: 10px; height: 10px;
-      border-right: 2px solid rgba(255,255,255,.8);
-      border-bottom: 2px solid rgba(255,255,255,.8);
+      border-right: 2px solid rgba(51,37,26,.45);
+      border-bottom: 2px solid rgba(51,37,26,.45);
       transform: rotate(45deg);
     }
     @keyframes scroll-hint-pulse {
@@ -575,7 +587,12 @@
       <!-- スクロール誘導 -->
 
       <div class="slide-overlay">
-        <h2 class="slide-title">主体性療育から<br>IT療育へ<br><span class="slide-title-sub">経済的自立から逆算した、<br>10年後のロードマップ</span></h2>
+        <div class="slide-title-block">
+          <h2 class="slide-title">主体性療育から<br>IT療育へ</h2>
+        </div>
+        <div class="slide-title-sub-block">
+          <span class="slide-title-sub">経済的自立から逆算した、<br>10年後のロードマップ</span>
+        </div>
         <a class="slide-btn js-slide-btn" href="" style="display:none">詳細はこちら <span class="btn-arrow">›</span></a>
       </div>
     </div>
@@ -757,12 +774,23 @@ document.querySelectorAll('.side-loc-tab').forEach(function(btn) {
   function updateTitle(photos, idx) {
     var parent   = photos[0].closest('.hero-photos').parentElement;
     var titleEl  = parent.querySelector('.slide-title');
+    var subBlock = parent.querySelector('.slide-title-sub-block');
     var btnEl    = parent.querySelector('.js-slide-btn');
     if (!titleEl) return;
     var raw      = photos[idx].getAttribute('data-title') || '';
     var btnText  = photos[idx].getAttribute('data-btn-text') || '';
     var btnHref  = photos[idx].getAttribute('data-btn-href') || '';
-    titleEl.innerHTML = raw;
+    /* 新構造：<span class='slide-title-sub'>…</span> を分離 */
+    var subMatch = raw.match(/<span[^>]*class=['"]slide-title-sub['"][^>]*>([\s\S]*?)<\/span>/i);
+    var subHtml  = subMatch ? subMatch[1] : '';
+    var mainHtml = raw.replace(/<br>\s*<span[^>]*class=['"]slide-title-sub['"][^>]*>[\s\S]*?<\/span>/i, '')
+                      .replace(/<span[^>]*class=['"]slide-title-sub['"][^>]*>[\s\S]*?<\/span>/i, '');
+    titleEl.innerHTML = mainHtml;
+    if (subBlock) {
+      var subSpan = subBlock.querySelector('.slide-title-sub');
+      if (subSpan) subSpan.innerHTML = subHtml;
+      subBlock.style.display = subHtml ? '' : 'none';
+    }
     if (btnEl) {
       if (btnText) {
         btnEl.innerHTML = btnText;
