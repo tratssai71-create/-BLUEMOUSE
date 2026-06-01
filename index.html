@@ -162,20 +162,22 @@
     }
     #box-2 .slide-overlay > * { position: relative; z-index: 1; }
 
-    /* ===== タイトルは行ごとに背景（短い行は背景も短く・行間は密着） ===== */
+    /* ===== タイトル：各行を独立ブロック(display:table)で縦に積む =====
+       行ごとの白背景を「文字メトリクス依存のinline」ではなくブロックの箱で
+       積むため、ブラウザに関係なく重なり/隙間が一切出ない。短い行は背景も短い。*/
     .slide-title {
       font-family: "Zen Kaku Gothic New", sans-serif;
       font-weight: 500;
-      display: inline;
-      -webkit-box-decoration-break: clone;
-      box-decoration-break: clone;
-      background: rgba(255, 254, 251, 0.9);
+      display: block;
       color: #1d1d1f;
-      padding: 5px 12px;            /* 上下5px・左右12px 固定 */
       -webkit-text-stroke: 0;
-      /* ソリッド背景なので重なっても均一。行間は密着 */
-      line-height: calc(1em + 10px);
       letter-spacing: .21em;
+    }
+    .slide-title .tl-line {
+      display: table;               /* 文字幅に縮む行ごとの独立ブロック */
+      background: rgba(255, 254, 251, 0.8);
+      padding: 5px 12px;
+      line-height: 1.2;             /* 箱の高さ（行内のみ） */
       border-radius: 2px;
     }
     /* ブロック用ラッパー */
@@ -190,14 +192,15 @@
       font-family: "Zen Kaku Gothic New", sans-serif;
       font-weight: 400;
       font-size: 1.0em;
-      display: inline;
-      -webkit-box-decoration-break: clone;
-      box-decoration-break: clone;
-      background: rgba(255, 254, 251, 0.9);
+      display: block;
       color: #1d1d1f;
-      padding: 5px 12px;            /* 上下5px・左右12px 固定（同じ値） */
       letter-spacing: .29em;
-      line-height: calc(1em + 10px); /* ソリッド背景・行間は密着 */
+    }
+    .slide-title-sub .tl-line {
+      display: table;               /* タイトルと同じ：行ごと独立ブロック */
+      background: rgba(255, 254, 251, 0.8);
+      padding: 5px 12px;
+      line-height: 1.2;
       border-radius: 2px;
     }
     .slide-title-sub-block {
@@ -599,10 +602,10 @@
 
       <div class="slide-overlay">
         <div class="slide-title-block">
-          <h2 class="slide-title">主体性療育から<br>IT療育へ</h2>
+          <h2 class="slide-title"><span class="tl-line">主体性療育から</span><span class="tl-line">IT療育へ</span></h2>
         </div>
         <div class="slide-title-sub-block">
-          <span class="slide-title-sub">経済的自立から逆算した、<br>10年後のロードマップ</span>
+          <span class="slide-title-sub"><span class="tl-line">経済的自立から逆算した、</span><span class="tl-line">10年後のロードマップ</span></span>
         </div>
         <a class="slide-btn js-slide-btn" href="" style="display:none">MORE <span class="btn-arrow">›</span></a>
       </div>
@@ -782,6 +785,16 @@ document.querySelectorAll('.side-loc-tab').forEach(function(btn) {
   var ANIM_DUR       = '8s ease-out forwards';
   var SLIDE_INTERVAL = 5000;
 
+  /* <br>区切りの各行を独立ブロック .tl-line でラップ（行ごとの背景箱） */
+  function wrapLines(html) {
+    return (html || '')
+      .split(/<br\s*\/?>/i)
+      .map(function (s) { return s.trim(); })
+      .filter(function (s) { return s.length; })
+      .map(function (s) { return '<span class="tl-line">' + s + '</span>'; })
+      .join('');
+  }
+
   function updateTitle(photos, idx) {
     var parent   = photos[0].closest('.hero-photos').parentElement;
     var titleEl  = parent.querySelector('.slide-title');
@@ -796,10 +809,10 @@ document.querySelectorAll('.side-loc-tab').forEach(function(btn) {
     var subHtml  = subMatch ? subMatch[1] : '';
     var mainHtml = raw.replace(/<br>\s*<span[^>]*class=['"]slide-title-sub['"][^>]*>[\s\S]*?<\/span>/i, '')
                       .replace(/<span[^>]*class=['"]slide-title-sub['"][^>]*>[\s\S]*?<\/span>/i, '');
-    titleEl.innerHTML = mainHtml;
+    titleEl.innerHTML = wrapLines(mainHtml);
     if (subBlock) {
       var subSpan = subBlock.querySelector('.slide-title-sub');
-      if (subSpan) subSpan.innerHTML = subHtml;
+      if (subSpan) subSpan.innerHTML = wrapLines(subHtml);
       subBlock.style.display = subHtml ? '' : 'none';
     }
     if (btnEl) {
