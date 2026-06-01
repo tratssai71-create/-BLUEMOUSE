@@ -42,8 +42,9 @@
       font-family: "Zen Kaku Gothic New", sans-serif !important;
       font-weight: 300 !important;
     }
-    /* スライドタイトルだけ太さ500（グローバル300を上書き） */
-    .bm-main .slide-title { font-weight: 500 !important; }
+    /* スライドタイトル=太さ400／サブタイトル=350（グローバル300を上書き） */
+    .bm-main .slide-title { font-weight: 400 !important; }
+    .bm-main .slide-title-sub { font-weight: 350 !important; }
     /* bm-layout の transform アニメが fixed の含有ブロックになるのを防ぐ */
     .bm-layout { animation: none !important; }
     /* サイドバーロゴ非表示（バッジが代わりに表示） */
@@ -105,9 +106,9 @@
     .slide-title-sub {
       font-family: "Zen Kaku Gothic New", sans-serif;
       font-weight: 400;
-      font-size: 0.44em;
+      font-size: 0.50em;
       display: block;
-      letter-spacing: .35em;
+      letter-spacing: .38em;
       line-height: 1.7;
       margin-top: .45em;
     }
@@ -174,7 +175,7 @@
       padding: 5px 12px;            /* 上下5px・左右12px 固定 */
       -webkit-text-stroke: 0;
       line-height: calc(1em + 10px); /* 5+5px padding + 0px gap */
-      letter-spacing: .14em;
+      letter-spacing: .17em;
       border-radius: 2px;
     }
     /* ブロック用ラッパー */
@@ -182,20 +183,20 @@
       display: inline-block;
       margin: 0;
     }
-    #box-1 .slide-title { font-size: clamp(1.2rem, 2.0vw, 1.85rem) !important; }
-    #box-2 .slide-title { font-size: clamp(1.1rem, 1.65vw, 1.55rem); }
+    #box-1 .slide-title { font-size: clamp(1.3rem, 2.15vw, 2.0rem) !important; }
+    #box-2 .slide-title { font-size: clamp(1.2rem, 1.8vw, 1.7rem); }
 
     .slide-title-sub {
       font-family: "Zen Kaku Gothic New", sans-serif;
       font-weight: 400;
-      font-size: 0.82em;
+      font-size: 0.90em;
       display: inline;
       -webkit-box-decoration-break: clone;
       box-decoration-break: clone;
       background: rgba(255, 254, 251, 0.72);
       color: #1d1d1f;
       padding: 5px 12px;            /* 上下5px・左右12px 固定（同じ値） */
-      letter-spacing: .22em;
+      letter-spacing: .25em;
       line-height: calc(1em + 20px); /* 同じ10px gap */
       border-radius: 2px;
     }
@@ -261,7 +262,7 @@
       pointer-events: none;
     }
     #box-3 .slide-overlay > * { position: relative; z-index: 1; }
-    #box-3 .slide-title { font-size: clamp(2.0rem, 3.1vw, 2.9rem); color: #5EC1C6; }
+    #box-3 .slide-title { font-size: clamp(2.15rem, 3.3vw, 3.1rem); color: #5EC1C6; }
     #box-3 .slide-btn {
       display: inline-block;
       padding: 10px 24px;
