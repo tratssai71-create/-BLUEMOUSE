@@ -52,24 +52,14 @@
     @keyframes kb-pan   { from{transform:scale(1.0) translateY(0%)}            to{transform:scale(1.0) translateY(-2%)} }
     @keyframes kb-pan-x { from{transform:scale(1.07) translateX(-3%)}          to{transform:scale(1.07) translateX(3%)} }
 
-    /* 写真エリア：薄く透かす（水彩風） */
+    /* 写真エリア：フル表示 */
     .hero-photos {
       position: absolute;
       top: 0; left: 0; right: 0; bottom: 0;
       z-index: 0;
       overflow: hidden;
-      opacity: 0.28;
     }
-    /* 白オーバーレイで写真をほんのり淡く */
-    .hero-photos::after {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background: #FFFEFB;
-      opacity: 0.45;
-      z-index: 1;
-      pointer-events: none;
-    }
+    .hero-photos::after { display: none; }
     .hero-photo {
       position: absolute;
       top: 0; left: 0; right: 0; bottom: 0;
@@ -159,49 +149,47 @@
     }
     #box-2 .slide-overlay > * { position: relative; z-index: 1; }
 
-    /* ===== 一行ごとのラベルボックス ===== */
+    /* ===== 一行ごとのラベルボックス（参考サイト風：しっかり白） ===== */
     .slide-title {
       font-family: "Noto Sans JP", sans-serif;
-      font-weight: 400;
-      /* display:inline + box-decoration-break で行ごとに背景ボックス */
+      font-weight: 500;
       display: inline;
       -webkit-box-decoration-break: clone;
       box-decoration-break: clone;
-      background: rgba(94,193,198,0.13);
+      background: rgba(255, 254, 251, 0.93);
       color: #1d1d1f;
-      padding: .10em .30em .10em .22em;
+      padding: .14em .40em .14em .30em;
       -webkit-text-stroke: 0;
-      line-height: 1.70;
-      letter-spacing: .06em;
-      border-radius: 3px;
+      line-height: 1.75;
+      letter-spacing: .05em;
+      border-radius: 2px;
     }
-    /* ブロック用ラッパー（display:inline-blockでflexの影響を断つ） */
+    /* ブロック用ラッパー */
     .slide-title-block {
       display: inline-block;
-      margin: 0 0 16px;
+      margin: 0 0 10px;
     }
-    #box-1 .slide-title { font-size: clamp(1.6rem, 2.8vw, 2.6rem) !important; }
-    #box-2 .slide-title { font-size: clamp(1.2rem, 1.8vw, 1.8rem); }
+    #box-1 .slide-title { font-size: clamp(1.5rem, 2.6vw, 2.4rem) !important; }
+    #box-2 .slide-title { font-size: clamp(1.1rem, 1.7vw, 1.7rem); }
 
     .slide-title-sub {
       font-family: "Noto Sans JP", sans-serif;
       font-weight: 400;
-      font-size: 0.44em;
-      /* 同じく一行ごとのボックス */
+      font-size: 0.48em;
+      /* サブも一行ごとボックス（ティール色） */
       display: inline;
       -webkit-box-decoration-break: clone;
       box-decoration-break: clone;
-      background: rgba(94,193,198,0.10);
-      color: rgba(29,29,31,0.78);
-      padding: .12em .36em .12em .28em;
-      letter-spacing: .22em;
-      line-height: 2.0;
+      background: rgba(94, 193, 198, 0.88);
+      color: #fff;
+      padding: .14em .40em .14em .30em;
+      letter-spacing: .15em;
+      line-height: 2.1;
       border-radius: 2px;
-      margin-top: 0;
     }
     .slide-title-sub-block {
       display: block;
-      margin-top: .6em;
+      margin-top: .5em;
     }
 
     .slide-lead {
