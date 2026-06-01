@@ -589,6 +589,71 @@
   }
   window.addEventListener('scroll', heroParallax, { passive: true });
 
+  /* ================================================================
+     スナップスクロール（child.html の goToSection と同じ仕組み）
+     ヒーロー ↔ コンテンツ を 1スワイプで切り替え
+  ================================================================ */
+  var scrollLocked = false;
+  var touchStartY  = 0;
+
+  /* child.html と同じ easeInOut アニメーション */
+  function animateTo (target, cb) {
+    if (scrollLocked) return;
+    var startY = window.pageYOffset;
+    if (Math.abs(startY - target) < 2) { if (cb) cb(); return; }
+    scrollLocked = true;
+    var t0  = null;
+    var dur = 900;
+    function ease (t) { return t < .5 ? 2*t*t : -1+(4-2*t)*t; }
+    function step (ts) {
+      if (!t0) t0 = ts;
+      var p = Math.min((ts - t0) / dur, 1);
+      window.scrollTo(0, startY + (target - startY) * ease(p));
+      if (p < 1) { requestAnimationFrame(step); }
+      else        { scrollLocked = false; if (cb) cb(); }
+    }
+    requestAnimationFrame(step);
+  }
+
+  function goDown () { animateTo(window.innerHeight); } /* ヒーロー → コンテンツ */
+  function goUp   () { animateTo(0); }                 /* コンテンツ → ヒーロー  */
+
+  /* ---- ヒーローゾーン判定 ---- */
+  function inHero      () { return window.pageYOffset < window.innerHeight * 0.15; }
+  function atContentTop() { return window.pageYOffset > window.innerHeight * 0.8
+                                && window.pageYOffset < window.innerHeight * 1.3; }
+
+  /* ---- マウスホイール ---- */
+  window.addEventListener('wheel', function (e) {
+    if (scrollLocked) { e.preventDefault(); return; }
+    if (inHero() && e.deltaY > 0)       { e.preventDefault(); goDown(); }
+    else if (atContentTop() && e.deltaY < 0) { e.preventDefault(); goUp(); }
+  }, { passive: false });
+
+  /* ---- タッチスワイプ ---- */
+  window.addEventListener('touchstart', function (e) {
+    touchStartY = e.touches[0].clientY;
+  }, { passive: true });
+  window.addEventListener('touchmove', function (e) {
+    if (scrollLocked || inHero()) e.preventDefault();
+  }, { passive: false });
+  window.addEventListener('touchend', function (e) {
+    if (scrollLocked) return;
+    var dy = touchStartY - e.changedTouches[0].clientY;
+    if (Math.abs(dy) < 8) return;
+    if (inHero() && dy > 0)          goDown();
+    else if (atContentTop() && dy < 0) goUp();
+  }, { passive: true });
+
+  /* ---- キーボード（↓ / Space / ↑） ---- */
+  window.addEventListener('keydown', function (e) {
+    if (e.key === 'ArrowDown' || e.key === ' ') {
+      if (inHero()) { e.preventDefault(); goDown(); }
+    } else if (e.key === 'ArrowUp') {
+      if (atContentTop()) { e.preventDefault(); goUp(); }
+    }
+  });
+
   /* ---- コンテンツ：スクロールで下からスライドアップ ---- */
   var scrollAnims = Array.from(document.querySelectorAll('.ct-content .ct-anim'));
   /* 兄弟要素は 150ms ずつ遅延 */
