@@ -161,53 +161,36 @@
     }
     #box-2 .slide-overlay > * { position: relative; z-index: 1; }
 
-    /* ブロックラッパー（flex アイテムはこちら） */
-    .slide-title-block { margin-bottom: 16px; }
-
-    /* h2 本体：display:inline + clone で1行ごとにボックス */
     .slide-title {
       font-family: "Noto Sans JP", sans-serif;
       font-weight: 400;
-      color: #1d1d1f;
+      color: rgba(255,254,251,0.88);
       -webkit-text-stroke: 0;
-      line-height: 2.2;
+      line-height: 1.25;
+      margin: 0 0 16px;
       letter-spacing: .06em;
-      display: inline;
-      background: rgba(255,255,255,0.82);
-      padding: 6px 16px 10px;
-      box-decoration-break: clone;
-      -webkit-box-decoration-break: clone;
     }
     #box-1 .slide-title { font-size: clamp(2.6rem, 4.6vw, 4.4rem) !important; }
     #box-2 .slide-title { font-size: clamp(1.6rem, 2.5vw, 2.4rem); }
 
-    /* サブタイトル行も個別ボックス */
     .slide-title-sub {
-      font-size: 0.44em;
+      font-family: "Noto Sans JP", sans-serif;
       font-weight: 400;
-      letter-spacing: .30em;
-      line-height: 2.6;
-      display: inline;
-      background: rgba(255,255,255,0.72);
-      padding: 4px 14px 7px;
-      box-decoration-break: clone;
-      -webkit-box-decoration-break: clone;
-      margin-top: 0;
+      font-size: 0.44em;
+      display: block;
+      letter-spacing: .35em;
+      line-height: 1.7;
+      margin-top: .45em;
     }
 
     .slide-lead {
       font-family: "Noto Sans JP", sans-serif;
-      color: #1d1d1f;
+      color: rgba(255,255,255,.9);
       font-size: 13.5px;
       font-weight: 400;
-      line-height: 2.2;
-      margin: 0 0 18px;
+      line-height: 2.0;
+      margin: 0 0 24px;
       letter-spacing: .10em;
-      display: inline;
-      background: rgba(255,255,255,0.72);
-      padding: 5px 14px 8px;
-      box-decoration-break: clone;
-      -webkit-box-decoration-break: clone;
     }
 
     /* box-1 のボタン */
@@ -257,7 +240,7 @@
       pointer-events: none;
     }
     #box-3 .slide-overlay > * { position: relative; z-index: 1; }
-    #box-3 .slide-title { font-size: clamp(1.8rem, 2.9vw, 2.7rem); }
+    #box-3 .slide-title { font-size: clamp(1.8rem, 2.9vw, 2.7rem); color: #5EC1C6; }
     #box-3 .slide-btn {
       display: inline-block;
       padding: 10px 24px;
@@ -592,9 +575,7 @@
       <!-- スクロール誘導 -->
 
       <div class="slide-overlay">
-        <div class="slide-title-block">
-          <h2 class="slide-title">主体性療育から<br>IT療育へ<br><span class="slide-title-sub">経済的自立から逆算した、<br>10年後のロードマップ</span></h2>
-        </div>
+        <h2 class="slide-title">主体性療育から<br>IT療育へ<br><span class="slide-title-sub">経済的自立から逆算した、<br>10年後のロードマップ</span></h2>
         <a class="slide-btn js-slide-btn" href="" style="display:none">詳細はこちら <span class="btn-arrow">›</span></a>
       </div>
     </div>
