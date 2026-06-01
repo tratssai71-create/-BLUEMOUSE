@@ -169,13 +169,12 @@
       display: inline;
       -webkit-box-decoration-break: clone;
       box-decoration-break: clone;
-      background: rgba(255, 254, 251, 0.72);
+      background: #FFFEFB;
       color: #1d1d1f;
       padding: 5px 12px;            /* 上下5px・左右12px 固定 */
       -webkit-text-stroke: 0;
-      /* iOS Safari は日本語の行ボックスが1emより高く描画されるため、
-         半透明背景が行間で重なる。少し広げて重なりを解消 */
-      line-height: calc(1.22em + 10px);
+      /* ソリッド背景なので重なっても均一。行間は密着 */
+      line-height: calc(1em + 10px);
       letter-spacing: .21em;
       border-radius: 2px;
     }
@@ -194,11 +193,11 @@
       display: inline;
       -webkit-box-decoration-break: clone;
       box-decoration-break: clone;
-      background: rgba(255, 254, 251, 0.72);
+      background: #FFFEFB;
       color: #1d1d1f;
       padding: 5px 12px;            /* 上下5px・左右12px 固定（同じ値） */
       letter-spacing: .29em;
-      line-height: calc(1.22em + 10px); /* タイトルと同じく行間の重なりを解消 */
+      line-height: calc(1em + 10px); /* ソリッド背景・行間は密着 */
       border-radius: 2px;
     }
     .slide-title-sub-block {
