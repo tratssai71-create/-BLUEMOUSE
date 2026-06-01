@@ -43,8 +43,8 @@
       font-weight: 300 !important;
     }
     /* スライドタイトル=太さ400／サブタイトル=350（グローバル300を上書き） */
-    .bm-main .slide-title, .bm-main .slide-title .tl-line { font-weight: 900 !important; }
-    .bm-main .slide-title-sub, .bm-main .slide-title-sub .tl-line { font-weight: 900 !important; }
+    .bm-main .slide-title, .bm-main .slide-title .tl-line { font-weight: 800 !important; }
+    .bm-main .slide-title-sub, .bm-main .slide-title-sub .tl-line { font-weight: 700 !important; }
     /* bm-layout の transform アニメが fixed の含有ブロックになるのを防ぐ */
     .bm-layout { animation: none !important; }
     /* サイドバーロゴ非表示（バッジが代わりに表示） */
@@ -179,7 +179,7 @@
       display: block;
       color: #fff;
       -webkit-text-stroke: 0;
-      letter-spacing: .06em;
+      letter-spacing: .02em;
       text-shadow: 0 1px 14px rgba(0, 0, 0, 0.4);
     }
     .slide-title .tl-line {
@@ -194,7 +194,7 @@
       display: inline-block;
       margin: 0;
     }
-    #box-1 .slide-title { font-size: clamp(1.8rem, 2.9vw, 2.75rem) !important; }
+    #box-1 .slide-title { font-size: clamp(2.05rem, 3.25vw, 3.05rem) !important; }
     #box-2 .slide-title { font-size: clamp(1.4rem, 2.1vw, 2.0rem); }
 
     .slide-title-sub {
@@ -203,7 +203,7 @@
       font-size: 1.2em;
       display: block;
       color: #fff;
-      letter-spacing: .10em;
+      letter-spacing: .04em;
       text-shadow: 0 1px 12px rgba(0, 0, 0, 0.4);
     }
     .slide-title-sub .tl-line {
@@ -215,7 +215,7 @@
     }
     .slide-title-sub-block {
       display: block;
-      margin-top: 16px;   /* タイトルとサブタイトルの間隔 */
+      margin-top: 0;   /* タイトルとサブタイトルの間隔：なし */
     }
 
     .slide-lead {
