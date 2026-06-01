@@ -185,8 +185,8 @@
     .slide-title .tl-line {
       display: table;               /* 行ごとに縦に積む */
       background: transparent;      /* 白背景ボックス廃止：写真に直接白文字 */
-      padding: 2px 0;
-      line-height: 1.2;
+      padding: 0;
+      line-height: 1.05;            /* 行間を詰める */
       border-radius: 0;
     }
     /* ブロック用ラッパー */
@@ -233,12 +233,12 @@
       display: inline-flex;
       align-items: center;
       gap: 0;
-      padding: 3px 13px;
+      padding: 5px 18px;
       margin-top: 16px;             /* サブタイトルとの間隔 */
       background: #000;
       color: #fff;
       font-family: "Zen Kaku Gothic New", sans-serif;
-      font-size: 0.55em;
+      font-size: 0.68em;
       font-weight: 800 !important;   /* タイトルと同じ太字（グローバルa:300を上書き） */
       border-radius: 100px;
       border: 1.5px solid #000;
