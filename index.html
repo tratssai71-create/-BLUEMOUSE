@@ -72,7 +72,15 @@
       z-index: 0;
       overflow: hidden;
     }
-    .hero-photos::after { display: none; }
+    /* 背景写真に若干の黒フィルタ（テキスト白背景より下・写真の上） */
+    .hero-photos::after {
+      content: "";
+      position: absolute;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(0, 0, 0, 0.15);
+      pointer-events: none;
+      z-index: 1;
+    }
     .hero-photo {
       position: absolute;
       top: 0; left: 0; right: 0; bottom: 0;
