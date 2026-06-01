@@ -43,6 +43,11 @@
       position: relative;
       overflow: hidden;
     }
+    /* 背景白 */
+    #box-1 { background: #FFFEFB; }
+    .hero-photos { display: none !important; }
+    #box-1 .slide-overlay::before { display: none; }
+    #hero-white-overlay { display: none; }
 
     /* ---- ヒーロー写真：Ken Burns ---- */
     @keyframes kb       { from{transform:scale(1.0)}                           to{transform:scale(1.06)} }
@@ -164,7 +169,7 @@
     .slide-title {
       font-family: "Noto Sans JP", sans-serif;
       font-weight: 400;
-      color: rgba(255,254,251,0.88);
+      color: #1d1d1f;
       -webkit-text-stroke: 0;
       line-height: 1.25;
       margin: 0 0 16px;
@@ -185,7 +190,7 @@
 
     .slide-lead {
       font-family: "Noto Sans JP", sans-serif;
-      color: rgba(255,255,255,.9);
+      color: rgba(51,37,26,.62);
       font-size: 13.5px;
       font-weight: 400;
       line-height: 2.0;
@@ -391,13 +396,13 @@
       width: 12px;
       height: 2px;
       border-radius: 2px;
-      background: rgba(255,255,255,0.35);
+      background: rgba(51,37,26,0.20);
       transition: width 0.4s ease, background 0.4s ease;
       display: block;
     }
     .slide-dot.active {
       width: 24px;
-      background: rgba(255,255,255,0.95);
+      background: rgba(51,37,26,0.65);
     }
 
     /* ===== スクロール誘導矢印 ===== */
