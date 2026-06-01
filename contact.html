@@ -36,36 +36,44 @@
       width: 38%; height: 2px;
       background: linear-gradient(to left, #6aadcc, transparent);
     }
+    /* ヒーロー内レイアウト（child.html タイトルと同じ横並び） */
     .ct-hero__inner {
       display: flex;
-      flex-direction: column;
+      flex-direction: row;
+      align-items: center;
+      gap: 22px;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: fit-content;
+      height: fit-content;
       will-change: transform, opacity;
-    }
-    .ct-kicker {
-      font-family: "Inter", sans-serif;
-      font-size: 10px;
-      letter-spacing: .52em;
-      text-transform: uppercase;
-      color: rgba(51,37,26,.35);
-      margin-bottom: 18px;
-      font-weight: 400;
-      display: block;
     }
     .ct-title {
       font-family: "Zen Maru Gothic", "Noto Sans JP", sans-serif;
-      font-size: clamp(2.2rem, 4vw, 4.4rem);
+      font-size: clamp(2.4rem, 4.4vw, 5rem);
       font-weight: 500;
       color: #1d1d1f;
-      margin: 0 0 24px;
-      letter-spacing: .06em;
-      line-height: 1.35;
+      margin: 0;
+      letter-spacing: .07em;
+      line-height: 1.2;
+      flex-shrink: 0;
     }
-    .ct-lead {
-      font-family: "Zen Kaku Gothic New", "Noto Sans JP", sans-serif;
-      font-size: clamp(.82rem, 1.1vw, .92rem);
-      color: rgba(51,37,26,.52);
-      line-height: 2.2;
+    .ct-title__en {
+      font-family: "Inter", sans-serif;
+      font-size: clamp(.66rem, .92vw, .84rem);
       font-weight: 400;
+      letter-spacing: .65em;
+      color: rgba(51,37,26,.38);
+      line-height: 1;
+      margin: 0;
+      padding: 6px 0;
+      text-align: left;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      gap: clamp(1.2rem, 2.2vw, 2.6rem);
     }
     /* スクロールヒント */
     .ct-scroll-hint {
@@ -349,9 +357,12 @@
 
     @media (max-width: 780px) {
       .ct-hero { padding: 0 22px; }
+      .ct-hero__inner { gap: 14px; }
+      .ct-title { font-size: clamp(1.9rem, 7vw, 2.6rem); }
+      .ct-title__en { gap: clamp(.9rem, 3.5vw, 1.6rem); font-size: clamp(.6rem, 2.2vw, .76rem); }
       .ct-scroll-hint { left: 22px; }
       .ct-content { padding: 40px 22px 60px; border-radius: 8px 8px 0 0; }
-      .ct-facilities, .ct-access-grid { grid-template-columns: 1fr; }
+      .ct-access-grid { grid-template-columns: 1fr; }
       .bm-form__submit { text-align: center; }
     }
   </style>
@@ -408,9 +419,12 @@
     <!-- ヒーロー全画面タイトル -->
     <div class="ct-hero" id="ct-hero">
       <div class="ct-hero__inner" id="ct-hero-inner">
-        <span class="ct-kicker ct-anim">Contact / Inquiry</span>
         <h1 class="ct-title ct-anim">お問い合わせ・<br>見学予約</h1>
-        <p class="ct-lead ct-anim">見学・体験・ご相談など、お気軽にご連絡ください。<br>2営業日以内にご返信いたします。</p>
+        <p class="ct-title__en ct-anim">
+          <span>Contact</span>
+          <span>Inquiry</span>
+          <span>Reservation</span>
+        </p>
       </div>
       <div class="ct-scroll-hint" id="ct-scroll-hint">
         <span class="ct-scroll-hint__line"></span>scroll
@@ -567,10 +581,11 @@
   var heroInner  = document.getElementById('ct-hero-inner');
   var scrollHint = document.getElementById('ct-scroll-hint');
 
+  /* child.html と同じ 60ms 基準 + 110ms stagger */
   setTimeout(function () {
     var heroAnims = document.querySelectorAll('.ct-hero .ct-anim');
     heroAnims.forEach(function (el, i) {
-      setTimeout(function () { el.classList.add('is-visible'); }, 60 + i * 120);
+      setTimeout(function () { el.classList.add('is-visible'); }, 60 + i * 110);
     });
   }, 250);
 
