@@ -1035,7 +1035,7 @@ h2 { letter-spacing: .12em; }
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    gap: 6px;
+    gap: 7px;
     flex-shrink: 0;
     margin-left: auto;
     margin-top: 4px;        /* ほんの少し下げる */
@@ -1054,17 +1054,19 @@ h2 { letter-spacing: .12em; }
     width: 24px; height: 1.5px;   /* 長く・細く上品に */
     background: #fff;
     border-radius: 2px;
-    box-shadow: 0 1px 3px rgba(0,0,0,.38);  /* 写真上での最小限の視認性 */
+    /* 背景に応じて自動反転：明るい写真では黒、暗い所では白。影なしで常時視認 */
+    mix-blend-mode: difference;
     transition: transform .28s ease, opacity .2s ease, background .2s ease;
   }
+  /* 2本線に（3本目は隠す） */
+  .bm-hamburger span:nth-child(3) { display: none; }
   .bm-mobile-header--hero .bm-hamburger span {
     background: #fff;
   }
-  /* 開いた時：濃いバツ（×印）。円は出さない */
-  .bm-hamburger.is-open span { background: #1a2628 !important; box-shadow: none; }
-  .bm-hamburger.is-open span:nth-child(1) { transform: translateY(7.5px) rotate(45deg); }
-  .bm-hamburger.is-open span:nth-child(2) { opacity: 0; transform: scaleX(0); }
-  .bm-hamburger.is-open span:nth-child(3) { transform: translateY(-7.5px) rotate(-45deg); }
+  /* 開いた時：×印。左ドロワーの暗いオーバーレイ上なので白で固定（blend解除） */
+  .bm-hamburger.is-open span { mix-blend-mode: normal; background: #fff !important; }
+  .bm-hamburger.is-open span:nth-child(1) { transform: translateY(4.25px) rotate(45deg); }
+  .bm-hamburger.is-open span:nth-child(2) { transform: translateY(-4.25px) rotate(-45deg); }
 
   /* オーバーレイ（ドロワー外クリックで閉じる） */
   .bm-drawer-overlay {
