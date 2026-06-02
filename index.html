@@ -148,7 +148,8 @@
       display: flex;
       flex-direction: column;
       justify-content: flex-end;
-      padding: 20px 20px 40px 20px;
+      /* 左に溜め(44px)・底から少し浮かせる(56px)＝端貼り付き/底ベタを解消 */
+      padding: 20px 20px 56px 44px;
     }
     #box-1 .slide-overlay::before { display: none; }
     #box-1 .slide-overlay > * { position: relative; z-index: 1; }
@@ -280,12 +281,11 @@
       color: #fff;
       font-family: "Zen Kaku Gothic New", sans-serif;
       font-size: 1.15em;
-      font-weight: 800 !important;   /* タイトルと同じ太字（グローバルa:300を上書き） */
+      font-weight: 700 !important;   /* 800→700：小CTAで重すぎを解消（グローバルa:300を上書き） */
       border-radius: 100px;
-      border: 1.5px solid var(--bm-coral);
       text-decoration: none;
       align-self: flex-start;
-      letter-spacing: .24em;
+      letter-spacing: .14em;         /* .24em→.14em：張りすぎを解消し上品に */
       position: relative;
       /* 通常時：ごく薄いコーラル影で「浮いて押せる」質感 */
       box-shadow: 0 4px 14px rgba(242,144,108,0.28);
@@ -300,7 +300,6 @@
     }
     #box-1 .slide-btn:hover {
       background: var(--bm-coral-dark);
-      border-color: var(--bm-coral-dark);
       color: #fff;
       transform: scale(1.04);
       /* ホバー：影を少し深くして一段浮かせる */
