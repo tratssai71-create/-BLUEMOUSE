@@ -89,10 +89,10 @@
       position: absolute;
       top: 0; left: 0; right: 0; bottom: 0;
       background: linear-gradient(to top,
-        rgba(0,0,0,0.58) 0%,
-        rgba(0,0,0,0.30) 32%,
-        rgba(0,0,0,0.12) 60%,
-        rgba(0,0,0,0.06) 100%);
+        rgba(var(--bm-ink),0.58) 0%,
+        rgba(var(--bm-ink),0.30) 32%,
+        rgba(var(--bm-ink),0.12) 60%,
+        rgba(var(--bm-ink),0.06) 100%);
       pointer-events: none;
       z-index: 1;
     }
@@ -181,6 +181,8 @@
       --bm-coral-dark: #e87e59;   /* コーラル濃いめ：hover */
       --bm-teal: #5ec1c6;         /* ティール：アクセント */
       --bm-yellow: #f5d24a;       /* イエロー：補助アクセント */
+      --bm-cream: #fffdf7;        /* 温かみのあるオフホワイト：写真上の文字（純白より上品） */
+      --bm-ink: 40, 30, 24;       /* ブランドの暖色ダーク（rgb）：スクリムを純黒でなく温かく */
     }
 
     /* ===== キッカー（タイトル上の小さなラベル） ===== */
@@ -216,7 +218,7 @@
       font-family: "Zen Kaku Gothic New", sans-serif;
       font-weight: 500;
       display: block;
-      color: #fff;
+      color: var(--bm-cream);
       -webkit-text-stroke: 0;
       letter-spacing: 0.05em;
       text-shadow: 0 1px 14px rgba(0, 0, 0, 0.4);
@@ -241,7 +243,7 @@
       font-weight: 400;
       font-size: 0.9em;
       display: block;
-      color: #fff;
+      color: var(--bm-cream);
       letter-spacing: 0.07em;
       text-shadow: 0 1px 12px rgba(0, 0, 0, 0.4);
     }
