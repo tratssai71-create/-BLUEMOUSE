@@ -170,6 +170,14 @@
     }
     #box-2 .slide-overlay > * { position: relative; z-index: 1; }
 
+    /* ===== ブランドカラー（採用サイトbouemouse.studio.siteに合わせる） ===== */
+    :root {
+      --bm-coral: #f2906c;        /* コーラル：主要CTA */
+      --bm-coral-dark: #e87e59;   /* コーラル濃いめ：hover */
+      --bm-teal: #5ec1c6;         /* ティール：アクセント */
+      --bm-yellow: #f5d24a;       /* イエロー：補助アクセント */
+    }
+
     /* ===== キッカー（タイトル上の小さなラベル） ===== */
     .slide-kicker {
       display: inline-flex;
@@ -179,7 +187,7 @@
       font-weight: 500 !important;
       font-size: 0.85rem;
       letter-spacing: 0.4em;
-      color: #fff;
+      color: var(--bm-teal);
       text-transform: uppercase;
       margin: 0;
       text-shadow: 0 1px 10px rgba(0, 0, 0, 0.4);
@@ -261,13 +269,13 @@
       gap: 0;
       padding: 8px 40px;
       margin-top: 16px;             /* サブタイトルとの間隔 */
-      background: #000;
+      background: var(--bm-coral);
       color: #fff;
       font-family: "Zen Kaku Gothic New", sans-serif;
       font-size: 1.15em;
       font-weight: 800 !important;   /* タイトルと同じ太字（グローバルa:300を上書き） */
       border-radius: 100px;
-      border: 1.5px solid #000;
+      border: 1.5px solid var(--bm-coral);
       text-decoration: none;
       align-self: flex-start;
       letter-spacing: .24em;
@@ -276,8 +284,8 @@
     }
     .btn-arrow { margin-left: 14px; font-style: normal; }
     #box-1 .slide-btn:hover {
-      background: rgba(0,0,0,0.78);
-      border-color: #000;
+      background: var(--bm-coral-dark);
+      border-color: var(--bm-coral-dark);
       color: #fff;
       transform: scale(1.04);
     }
