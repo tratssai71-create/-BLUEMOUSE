@@ -9,7 +9,8 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <!-- トップページで実際に使うのは Inter（英字）と Zen Kaku Gothic New（和文）の2種のみ。
        未使用フォント5種を削除しスマホ読み込みを軽量化 -->
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Zen+Kaku+Gothic+New:wght@300;400;500;700;900&display=swap" rel="stylesheet" />
+  <!-- Fraunces はキッカー(立体)と英語サブ(イタリック)にだけ使うため ital 軸込みで読込 -->
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,400;1,9..144,500;1,9..144,600&family=Inter:wght@400;500;600;700&family=Zen+Kaku+Gothic+New:wght@300;400;500;700;900&display=swap" rel="stylesheet" />
   <link rel="preload" href="./photos/ichigo2.jpg" as="image" />
   <link rel="stylesheet" href="./layout.css?v=37" />
   <style>
@@ -48,7 +49,12 @@
     }
     /* スライドタイトル=太さ400／サブタイトル=350（グローバル300を上書き） */
     .bm-main .slide-title, .bm-main .slide-title .tl-line { font-weight: 700 !important; }
-    .bm-main .slide-title-sub, .bm-main .slide-title-sub .tl-line { font-weight: 500 !important; }
+    /* 英語サブタイトル：Frauncesのイタリックで体温と編集感を出す（MOREはInterのまま） */
+    .bm-main .slide-title-sub, .bm-main .slide-title-sub .tl-line {
+      font-weight: 500 !important;
+      font-family: "Fraunces", "Inter", "Zen Kaku Gothic New", serif !important;
+      font-style: italic;
+    }
     /* bm-layout の transform アニメが fixed の含有ブロックになるのを防ぐ */
     .bm-layout { animation: none !important; }
     /* サイドバーロゴ非表示（バッジが代わりに表示） */
@@ -206,7 +212,11 @@
     }
     .slide-kicker-block { display: block; }
     /* グローバル .bm-main p(0,1,1) を上回る詳細度で太さを確実に適用 */
-    .bm-main .slide-kicker { font-weight: 500 !important; }
+    /* キッカー PHILOSOPHY：大文字なのでFrauncesの立体(ローマン)で端正に */
+    .bm-main .slide-kicker {
+      font-weight: 500 !important;
+      font-family: "Fraunces", "Inter", "Zen Kaku Gothic New", serif !important;
+    }
 
     /* ===== タイトル：各行を独立ブロック(display:table)で縦に積む =====
        行ごとの白背景を「文字メトリクス依存のinline」ではなくブロックの箱で
