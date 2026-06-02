@@ -170,6 +170,30 @@
     }
     #box-2 .slide-overlay > * { position: relative; z-index: 1; }
 
+    /* ===== キッカー（タイトル上の小さなラベル） ===== */
+    .slide-kicker {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      font-family: "Zen Kaku Gothic New", sans-serif;
+      font-weight: 500 !important;
+      font-size: 0.78rem;
+      letter-spacing: 0.28em;
+      color: #fff;
+      text-transform: uppercase;
+      margin: 0 0 10px;
+      text-shadow: 0 1px 10px rgba(0, 0, 0, 0.4);
+    }
+    .slide-kicker::before {
+      content: "";
+      display: inline-block;
+      width: 28px;
+      height: 1px;
+      background: currentColor;
+      opacity: 0.85;
+    }
+    .slide-kicker-block { display: block; }
+
     /* ===== タイトル：各行を独立ブロック(display:table)で縦に積む =====
        行ごとの白背景を「文字メトリクス依存のinline」ではなくブロックの箱で
        積むため、ブラウザに関係なく重なり/隙間が一切出ない。短い行は背景も短い。*/
@@ -590,6 +614,7 @@
       </span>
       <div class="hero-photos">
         <img class="hero-photo hp-active" src="./photos/IMG_8852.jpg" alt="BLUE MOUSE"
+          data-kicker="PHILOSOPHY"
           data-title="主体性療育から<br>IT療育へ<br><span class='slide-title-sub'>From Autonomy<br>To IT-Driven Developmental Support</span>"
           data-btn-text="MORE <span class='btn-arrow'>›</span>" data-btn-href="./philosophy.html" data-anim="kb-pan" />
         <img class="hero-photo" src="./photos/IMG_8852.jpg" alt="児童発達支援事業" loading="lazy"
@@ -612,6 +637,9 @@
       <!-- スクロール誘導 -->
 
       <div class="slide-overlay">
+        <div class="slide-kicker-block">
+          <p class="slide-kicker">PHILOSOPHY</p>
+        </div>
         <div class="slide-title-block">
           <h2 class="slide-title"><span class="tl-line">主体性療育から</span><span class="tl-line">IT療育へ</span></h2>
         </div>
@@ -810,9 +838,16 @@ document.querySelectorAll('.side-loc-tab').forEach(function(btn) {
     var parent   = photos[0].closest('.hero-photos').parentElement;
     var titleEl  = parent.querySelector('.slide-title');
     var subBlock = parent.querySelector('.slide-title-sub-block');
+    var kickBlock= parent.querySelector('.slide-kicker-block');
     var btnEl    = parent.querySelector('.js-slide-btn');
     if (!titleEl) return;
     var raw      = photos[idx].getAttribute('data-title') || '';
+    var kicker   = photos[idx].getAttribute('data-kicker') || '';
+    if (kickBlock) {
+      var kickEl = kickBlock.querySelector('.slide-kicker');
+      if (kickEl) kickEl.textContent = kicker;
+      kickBlock.style.display = kicker ? '' : 'none';
+    }
     var btnText  = photos[idx].getAttribute('data-btn-text') || '';
     var btnHref  = photos[idx].getAttribute('data-btn-href') || '';
     /* 新構造：<span class='slide-title-sub'>…</span> を分離 */
