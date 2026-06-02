@@ -956,6 +956,10 @@ h2 { letter-spacing: .12em; }
   .bm-left.is-open {
     transform: translateX(0);
   }
+  /* ドロワーが開いた時はXボタンを暗色に */
+  body.drawer-open .bm-hamburger span {
+    background: #33251a;
+  }
   /* ドロワーが開いたときにナビアイテムをスタガーで出現 */
   .bm-left.is-open .bm-nav > *:nth-child(1)  { animation: nav-item-in .32s ease both .08s; }
   .bm-left.is-open .bm-nav > *:nth-child(2)  { animation: nav-item-in .32s ease both .14s; }
@@ -1024,38 +1028,45 @@ h2 { letter-spacing: .12em; }
     color: #3a9095;
   }
 
-  /* メニューボタン（右端固定）＝アイコンではなく「MENU」テキスト */
-  /* キッカーと同じ書体・字間で揃え、エディトリアルな品に。開くとCLOSEへ */
+  /* ハンバーガーボタン（右端固定） */
+  /* デザイン重視：円・枠なしのミニマルな細線。タップ領域は確保しつつ見た目は線だけ */
   .bm-hamburger {
-    display: inline-flex;
+    display: flex;
+    flex-direction: column;
     align-items: center;
     justify-content: center;
+    gap: 7px;
     flex-shrink: 0;
     margin-left: auto;
     margin-top: 4px;        /* ほんの少し下げる */
     margin-right: 16px;     /* 右端から内側へ余白 */
-    padding: 8px 4px;       /* タップ領域確保 */
+    width: 44px; height: 44px;  /* 見えないタップ領域 */
+    padding: 10px;
     background: transparent;
     border: none;
     border-radius: 0;
     cursor: pointer;
-    font-family: "Zen Kaku Gothic New", sans-serif;
-    font-weight: 500;
-    font-size: 0.72rem;
-    letter-spacing: 0.28em;
-    text-indent: 0.28em;    /* 字間の右余白を相殺して右端を揃える */
-    text-transform: uppercase;
-    color: #fff;
-    line-height: 1;
-    /* 背景に応じて自動反転：影なしで常時視認 */
-    mix-blend-mode: difference;
     transition: opacity .2s ease;
   }
-  .bm-hamburger::before { content: "MENU"; }
   .bm-hamburger:hover { opacity: .7; }
-  /* 開いた時：CLOSE 表記。左ドロワーの暗いオーバーレイ上なので白で固定（blend解除） */
-  .bm-hamburger.is-open { mix-blend-mode: normal; color: #fff; }
-  .bm-hamburger.is-open::before { content: "CLOSE"; }
+  .bm-hamburger span {
+    display: block;
+    width: 24px; height: 1.5px;   /* 長く・細く上品に */
+    background: #fff;
+    border-radius: 2px;
+    /* 背景に応じて自動反転：明るい写真では黒、暗い所では白。影なしで常時視認 */
+    mix-blend-mode: difference;
+    transition: transform .28s ease, opacity .2s ease, background .2s ease;
+  }
+  /* 2本線に（3本目は隠す） */
+  .bm-hamburger span:nth-child(3) { display: none; }
+  .bm-mobile-header--hero .bm-hamburger span {
+    background: #fff;
+  }
+  /* 開いた時：×印。左ドロワーの暗いオーバーレイ上なので白で固定（blend解除） */
+  .bm-hamburger.is-open span { mix-blend-mode: normal; background: #fff !important; }
+  .bm-hamburger.is-open span:nth-child(1) { transform: translateY(4.25px) rotate(45deg); }
+  .bm-hamburger.is-open span:nth-child(2) { transform: translateY(-4.25px) rotate(-45deg); }
 
   /* オーバーレイ（ドロワー外クリックで閉じる） */
   .bm-drawer-overlay {

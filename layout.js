@@ -258,7 +258,9 @@
       '<a class="bm-mobile-header__logo" href="' + logoHref + '">' +
         '<img src="' + logoSrc + '" alt="BLUE MOUSE" />' +
       '</a>' +
-      '<button type="button" class="bm-hamburger" id="bm-hamburger" aria-label="メニューを開く"></button>';
+      '<button type="button" class="bm-hamburger" id="bm-hamburger" aria-label="メニューを開く">' +
+        '<span></span><span></span><span></span>' +
+      '</button>';
     document.body.insertBefore(header, document.body.firstChild);
 
     // オーバーレイ生成
