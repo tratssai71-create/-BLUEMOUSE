@@ -990,6 +990,9 @@ h2 { letter-spacing: .12em; }
     /* 固定ヘッダー自身にブレンドを掛けると、中身（白い線）が後ろの写真と
        反転合成される。線(span)に掛けても文脈が分離して効かないためここで掛ける */
     mix-blend-mode: difference;
+    /* 中間グレー背景でも輪郭が残るよう、ごく薄いグロー（ハロー）を付与。
+       differenceの弱点をエッジで補う控えめな保険 */
+    filter: drop-shadow(0 0 2px rgba(0,0,0,0.6));
   }
   /* ロゴ */
   .bm-mobile-header__logo {
