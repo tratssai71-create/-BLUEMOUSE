@@ -76,12 +76,17 @@
       z-index: 0;
       overflow: hidden;
     }
-    /* 背景写真に若干の黒フィルタ（テキスト白背景より下・写真の上） */
+    /* 背景写真のスクリム：フラットに暗くせず「下（テキスト位置）だけ落とす」
+       グラデーション。上は写真を鮮やかに残し、左下の文字に必要なコントラストを与える */
     .hero-photos::after {
       content: "";
       position: absolute;
       top: 0; left: 0; right: 0; bottom: 0;
-      background: rgba(0, 0, 0, 0.3);
+      background: linear-gradient(to top,
+        rgba(0,0,0,0.58) 0%,
+        rgba(0,0,0,0.30) 32%,
+        rgba(0,0,0,0.12) 60%,
+        rgba(0,0,0,0.06) 100%);
       pointer-events: none;
       z-index: 1;
     }
@@ -115,16 +120,6 @@
       word-break: keep-all;
       overflow-wrap: break-word;
     }
-    .slide-title-sub {
-      font-family: "Zen Kaku Gothic New", sans-serif;
-      font-weight: 400;
-      font-size: 0.55em;
-      display: block;
-      letter-spacing: .40em;
-      line-height: 1.7;
-      margin-top: .45em;
-    }
-
     /* ===== 白フェードオーバーレイ（写真エリアのみ） ===== */
     #hero-white-overlay {
       position: absolute;
@@ -147,7 +142,7 @@
       display: flex;
       flex-direction: column;
       justify-content: flex-end;
-      padding: 20px 20px 40px 18px;
+      padding: 20px 20px 40px 20px;
     }
     #box-1 .slide-overlay::before { display: none; }
     #box-1 .slide-overlay > * { position: relative; z-index: 1; }
@@ -253,7 +248,7 @@
     }
     .slide-title-sub-block {
       display: block;
-      margin-top: -2px;   /* タイトルとサブタイトルの間隔 */
+      margin-top: 4px;   /* タイトルとサブタイトルの間隔（唯一の制御点） */
     }
 
     .slide-lead {
@@ -447,7 +442,7 @@
         left: 16px;
       }
       .hero-logo-wordmark img {
-        width: 250px;
+        width: 150px;
       }
       /* モバイルヘッダーのロゴは非表示（写真上のロゴだけ使う） */
       .bm-mobile-header__logo {
@@ -851,7 +846,7 @@ document.querySelectorAll('.side-loc-tab').forEach(function(btn) {
 /* ---- ヒーロー写真：Ken Burns + クロスフェード ---- */
 (function () {
   var ANIM_DUR       = '8s ease-out forwards';
-  var SLIDE_INTERVAL = 5000;
+  var SLIDE_INTERVAL = 6500;
 
   /* <br>区切りの各行を独立ブロック .tl-line でラップ（行ごとの背景箱） */
   function wrapLines(html) {
