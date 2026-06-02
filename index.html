@@ -467,18 +467,22 @@
       display: flex;
       gap: 8px;
       align-items: center;
+      /* どんな写真の上でもバーの輪郭が残るよう、全体に控えめな影 */
+      filter: drop-shadow(0 1px 3px rgba(0,0,0,0.45));
     }
     .slide-dot {
       width: 12px;
-      height: 2px;
-      border-radius: 2px;
-      background: rgba(51,37,26,0.20);
+      height: 3px;
+      border-radius: 3px;
+      /* 非アクティブ：白45%で写真上でも視認できる */
+      background: rgba(255,255,255,0.45);
       transition: width 0.4s ease, background 0.4s ease;
       display: block;
     }
     .slide-dot.active {
       width: 24px;
-      background: rgba(94,193,198,0.90);
+      /* アクティブ：ブランドのティール（不透明）でハッキリ現在地を示す */
+      background: var(--bm-teal);
     }
 
     /* ===== スクロール誘導矢印 ===== */
