@@ -215,7 +215,9 @@
     }
     .slide-title-sub-block {
       display: block;
-      margin-top: -2px;   /* タイトルとサブタイトルの間隔：ほんの少し広げる */
+      order: -1;          /* サブタイトルをタイトルの上（キッカー位置）へ */
+      margin-top: 0;
+      margin-bottom: 6px; /* サブとタイトルの間隔 */
     }
 
     .slide-lead {
