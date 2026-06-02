@@ -1040,24 +1040,33 @@ h2 { letter-spacing: .12em; }
     margin-top: 18px;
     width: 40px; height: 40px;
     padding: 8px;
-    background: #000;
-    border: none;
+    background: rgba(0,0,0,0.40);
+    -webkit-backdrop-filter: blur(8px);
+    backdrop-filter: blur(8px);
+    border: 1px solid rgba(255,255,255,0.22);
     border-radius: 50%;
     cursor: pointer;
-    transition: background .15s;
+    transition: background .2s, border-color .2s;
   }
-  .bm-hamburger:hover { background: #333; }
+  .bm-hamburger:hover { background: rgba(0,0,0,0.58); }
   .bm-hamburger span {
     display: block;
     width: 18px; height: 2px;
     background: #fff;
     border-radius: 2px;
-    transition: transform .28s ease, opacity .2s ease;
+    transition: transform .28s ease, opacity .2s ease, background .2s ease;
   }
   .bm-mobile-header--hero .bm-hamburger span {
     background: #fff;
   }
-  .bm-hamburger.is-open span { background: #fff !important; }
+  /* 開いた時：白丸＋濃いバツ（×印） */
+  .bm-hamburger.is-open {
+    background: #fff;
+    border-color: rgba(0,0,0,0.08);
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+  }
+  .bm-hamburger.is-open span { background: #1a2628 !important; }
   .bm-hamburger.is-open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
   .bm-hamburger.is-open span:nth-child(2) { opacity: 0; transform: scaleX(0); }
   .bm-hamburger.is-open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
