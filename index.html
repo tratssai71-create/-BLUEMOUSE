@@ -7,18 +7,21 @@
   <title>BLUE MOUSE | 放課後等デイサービス・児童発達支援</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Hachi+Maru+Pop&family=Noto+Sans+JP:wght@400;500;600;700;800;900&family=Shippori+Mincho:wght@400;500;600;700&family=Zen+Kaku+Gothic+New:wght@300;400;500;700;900&family=Zen+Kurenaido&family=Zen+Maru+Gothic:wght@300;400;500;700;900&display=swap" rel="stylesheet" />
+  <!-- トップページで実際に使うのは Inter（英字）と Zen Kaku Gothic New（和文）の2種のみ。
+       未使用フォント5種を削除しスマホ読み込みを軽量化 -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Zen+Kaku+Gothic+New:wght@300;400;500;700;900&display=swap" rel="stylesheet" />
   <link rel="preload" href="./photos/ichigo2.jpg" as="image" />
   <link rel="stylesheet" href="./layout.css?v=37" />
   <style>
     /* トップページのフォント：Zen Kaku Gothic New に統一（layout.css の変数・直接指定も上書き） */
     :root {
-      --font-heading: "Zen Kaku Gothic New", sans-serif;
-      --font-body:    "Zen Kaku Gothic New", sans-serif;
-      --font-en:      "Zen Kaku Gothic New", sans-serif;
+      /* Inter を先頭に：英字はInter、かな漢字はZen Kakuへ自動フォールバック */
+      --font-heading: "Inter", "Zen Kaku Gothic New", sans-serif;
+      --font-body:    "Inter", "Zen Kaku Gothic New", sans-serif;
+      --font-en:      "Inter", "Zen Kaku Gothic New", sans-serif;
     }
     .bm-nav__item,
-    .bm-nav__group-link { font-family: "Zen Kaku Gothic New", sans-serif; }
+    .bm-nav__group-link { font-family: "Inter", "Zen Kaku Gothic New", sans-serif; }
 
     /* トップページではINFOボタン非表示 */
     .bm-info-fab { display: none !important; }
@@ -39,7 +42,8 @@
     /* ===== トップページ全体フォント：Zen Kaku Gothic New に統一・細め ===== */
     .bm-main, .bm-main h1, .bm-main h2, .bm-main h3, .bm-main h4,
     .bm-main p, .bm-main a, .bm-main span, .bm-main button, .bm-main div {
-      font-family: "Zen Kaku Gothic New", sans-serif !important;
+      /* Inter（英字）→ Zen Kaku Gothic New（和文）の順。英字専用書体で品を一段上げる */
+      font-family: "Inter", "Zen Kaku Gothic New", sans-serif !important;
       font-weight: 300 !important;
     }
     /* スライドタイトル=太さ400／サブタイトル=350（グローバル300を上書き） */
