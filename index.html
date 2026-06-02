@@ -454,8 +454,16 @@
       /* 横パディングを狭めて文字が収まるように／テキストを上に */
       #box-1 .slide-overlay { padding: 48px 20px 52px; justify-content: flex-end; }
       #box-1 .slide-overlay::before { display: none; }
-      /* スマホ：MOREボタン */
-      #box-1 .slide-btn { font-size: 0.95rem; padding: 8px 28px; margin-top: 18px; }
+      /* スマホ：MOREボタン
+         タップ領域を最低44px以上に（縦padding 8px→12px）。
+         font-sizeを16px(1rem)に上げ主役CTAとして十分な存在感に。
+         字間は小画面で締まって見える.2emへ微調整 */
+      #box-1 .slide-btn {
+        font-size: 1rem;
+        padding: 12px 30px;
+        margin-top: 18px;
+        letter-spacing: .2em;
+      }
     }
 
     /* ===== スライドドット ===== */
