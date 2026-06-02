@@ -1036,7 +1036,7 @@ h2 { letter-spacing: .12em; }
   .bm-hamburger {
     display: flex;
     flex-direction: column;
-    align-items: center;
+    align-items: flex-end;   /* 右端揃え（不等長を意図的に見せる） */
     justify-content: center;
     gap: 7px;
     flex-shrink: 0;
@@ -1058,15 +1058,18 @@ h2 { letter-spacing: .12em; }
     background: #fff;
     border-radius: 2px;
     /* 反転合成はヘッダー側(.bm-mobile-header)で実施。線は白のままでOK */
-    transition: transform .28s ease, opacity .2s ease, background .2s ease;
+    transition: transform .28s ease, width .28s ease, opacity .2s ease, background .2s ease;
   }
+  /* 不等長：上は長く、下は短く */
+  .bm-hamburger span:nth-child(1) { width: 24px; }
+  .bm-hamburger span:nth-child(2) { width: 15px; }
   /* 2本線に（3本目は隠す） */
   .bm-hamburger span:nth-child(3) { display: none; }
   .bm-mobile-header--hero .bm-hamburger span {
     background: #fff;
   }
-  /* 開いた時：×印（白のまま。ヘッダー側のdifferenceで背景に応じ反転） */
-  .bm-hamburger.is-open span { background: #fff !important; }
+  /* 開いた時：×印。左右対称になるよう幅を揃え中央化（白のまま、ヘッダーdifferenceで反転） */
+  .bm-hamburger.is-open span { background: #fff !important; width: 22px; align-self: center; }
   .bm-hamburger.is-open span:nth-child(1) { transform: translateY(4.25px) rotate(45deg); }
   .bm-hamburger.is-open span:nth-child(2) { transform: translateY(-4.25px) rotate(-45deg); }
 
