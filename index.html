@@ -53,7 +53,8 @@
       font-weight: 700 !important;
       font-family: "Inter", "Zen Kaku Gothic New", sans-serif !important;
     }
-    .bm-main .slide-title-sub, .bm-main .slide-title-sub .tl-line { font-weight: 500 !important; }
+    .bm-main .slide-title-sub, .bm-main .slide-title-sub .tl-line,
+    .bm-main .slide-title-sub2 { font-weight: 500 !important; }
     /* bm-layout の transform アニメが fixed の含有ブロックになるのを防ぐ */
     .bm-layout { animation: none !important; }
     /* サイドバーロゴ非表示（バッジが代わりに表示） */
@@ -259,16 +260,16 @@
       margin-top: 4px;   /* タイトルとサブタイトルの間隔（唯一の制御点） */
     }
 
-    /* サブタイトル2：説明的な小さめの一文（サブタイトル1の下） */
+    /* サブタイトル2：フォントスタイルはサブタイトル1と完全に同一 */
     .slide-title-sub2 {
-      font-family: "Inter", "Zen Kaku Gothic New", sans-serif;
-      font-weight: 300;
-      font-size: clamp(0.8rem, 2.5vw, 0.95rem);
+      font-family: "Zen Kaku Gothic New", sans-serif;
+      font-weight: 400;
+      font-size: 0.9em;
       display: block;
-      color: rgba(255, 253, 247, 0.82);
-      letter-spacing: 0.08em;
-      line-height: 1.7;
-      text-shadow: 0 1px 10px rgba(0, 0, 0, 0.45);
+      color: var(--bm-cream);
+      letter-spacing: 0.07em;
+      line-height: 1.2;
+      text-shadow: 0 1px 12px rgba(0, 0, 0, 0.4);
     }
     .slide-title-sub2-block {
       display: block;
