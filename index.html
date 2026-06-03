@@ -9,9 +9,8 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <!-- トップページで実際に使うのは Inter（英字）と Zen Kaku Gothic New（和文）の2種のみ。
        未使用フォント5種を削除しスマホ読み込みを軽量化 -->
-  <!-- 見出し=Zen Old Mincho(明朝) / 本文=Zen Kaku Gothic New(ゴシック) / 英字=Inter。
-       明朝とゴシックは同じZenスーパーファミリーで混植が破綻しない -->
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Zen+Kaku+Gothic+New:wght@300;400;500;700;900&family=Zen+Old+Mincho:wght@500;700;900&display=swap" rel="stylesheet" />
+  <!-- 見出し・本文=Zen Kaku Gothic New(ゴシック) / 英字=Inter。 -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Zen+Kaku+Gothic+New:wght@300;400;500;700;900&display=swap" rel="stylesheet" />
   <link rel="preload" href="./photos/ichigo2.jpg" as="image" />
   <link rel="stylesheet" href="./layout.css?v=37" />
   <style>
@@ -49,10 +48,10 @@
       font-weight: 300 !important;
     }
     /* スライドタイトル=太さ400／サブタイトル=350（グローバル300を上書き） */
-    /* ヒーロー見出しだけ明朝(Zen Old Mincho)。グローバルのInter/Zen Kakuを詳細度で上書き */
+    /* ヒーロー見出し=Zen Kaku Gothic New(ゴシック)。英字Interの後ろに置き和文を担当 */
     .bm-main .slide-title, .bm-main .slide-title .tl-line {
       font-weight: 700 !important;
-      font-family: "Zen Old Mincho", "Zen Kaku Gothic New", serif !important;
+      font-family: "Inter", "Zen Kaku Gothic New", sans-serif !important;
     }
     .bm-main .slide-title-sub, .bm-main .slide-title-sub .tl-line { font-weight: 500 !important; }
     /* bm-layout の transform アニメが fixed の含有ブロックになるのを防ぐ */
