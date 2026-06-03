@@ -54,7 +54,7 @@
       font-family: "Inter", "Zen Kaku Gothic New", sans-serif !important;
     }
     .bm-main .slide-title-sub, .bm-main .slide-title-sub .tl-line,
-    .bm-main .slide-title-sub2 { font-weight: 500 !important; }
+    .bm-main .slide-title-sub2, .bm-main .slide-title-sub2 .tl-line { font-weight: 500 !important; }
     /* bm-layout の transform アニメが fixed の含有ブロックになるのを防ぐ */
     .bm-layout { animation: none !important; }
     /* サイドバーロゴ非表示（バッジが代わりに表示） */
@@ -270,6 +270,10 @@
       letter-spacing: 0.07em;
       line-height: 1.2;
       text-shadow: 0 1px 12px rgba(0, 0, 0, 0.4);
+    }
+    .slide-title-sub2 .tl-line {
+      display: table;        /* サブタイトル1と同じ：行ごとに縦に積む */
+      line-height: 1.2;
     }
     .slide-title-sub2-block {
       display: block;
@@ -663,7 +667,7 @@
         <img class="hero-photo hp-active" src="./photos/IMG_8852.jpg" alt="BLUE MOUSE"
           data-kicker="PHILOSOPHY"
           data-title="主体性療育から<br>IT療育へ<br><span class='slide-title-sub'>From Autonomy<br>To IT-Driven Developmental Support</span>"
-          data-sub2="経済的自立から逆算した、10年後のロードマップ。"
+          data-sub2="経済的自立から逆算した、<br>10年後のロードマップ。"
           data-btn-text="MORE <span class='btn-arrow'>›</span>" data-btn-href="./philosophy.html" data-anim="kb-pan" />
         <img class="hero-photo" src="./photos/IMG_8852.jpg" alt="児童発達支援事業" loading="lazy"
           data-title="児童発達支援<br><span class='slide-title-sub'>土台となる「見えない力」は、<br>こどもが自ら育む</span>"
@@ -695,7 +699,7 @@
           <span class="slide-title-sub"><span class="tl-line">From Autonomy</span><span class="tl-line">To IT-Driven Developmental Support</span></span>
         </div>
         <div class="slide-title-sub2-block">
-          <span class="slide-title-sub2">経済的自立から逆算した、10年後のロードマップ。</span>
+          <span class="slide-title-sub2"><span class="tl-line">経済的自立から逆算した、</span><span class="tl-line">10年後のロードマップ。</span></span>
         </div>
         <a class="slide-btn js-slide-btn" href="" style="display:none">MORE <span class="btn-arrow">›</span></a>
       </div>
@@ -917,7 +921,7 @@ document.querySelectorAll('.side-loc-tab').forEach(function(btn) {
     var sub2Block = parent.querySelector('.slide-title-sub2-block');
     if (sub2Block) {
       var sub2Span = sub2Block.querySelector('.slide-title-sub2');
-      if (sub2Span) sub2Span.textContent = sub2;
+      if (sub2Span) sub2Span.innerHTML = wrapLines(sub2);
       sub2Block.style.display = sub2 ? '' : 'none';
     }
     if (btnEl) {
