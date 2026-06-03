@@ -53,8 +53,9 @@
       font-weight: 700 !important;
       font-family: "Inter", "Zen Kaku Gothic New", sans-serif !important;
     }
-    .bm-main .slide-title-sub, .bm-main .slide-title-sub .tl-line,
-    .bm-main .slide-title-sub2, .bm-main .slide-title-sub2 .tl-line { font-weight: 500 !important; }
+    .bm-main .slide-title-sub, .bm-main .slide-title-sub .tl-line { font-weight: 500 !important; }
+    /* サブ2は和文の一文なので一段軽く（400）でエレガントに */
+    .bm-main .slide-title-sub2, .bm-main .slide-title-sub2 .tl-line { font-weight: 400 !important; }
     /* bm-layout の transform アニメが fixed の含有ブロックになるのを防ぐ */
     .bm-layout { animation: none !important; }
     /* サイドバーロゴ非表示（バッジが代わりに表示） */
@@ -268,12 +269,12 @@
       display: block;
       color: var(--bm-cream);
       letter-spacing: 0.07em;
-      line-height: 1.2;
+      line-height: 1.65;     /* 和文の一文なので行間を広げて上品に */
       text-shadow: 0 1px 12px rgba(0, 0, 0, 0.4);
     }
     .slide-title-sub2 .tl-line {
       display: table;        /* サブタイトル1と同じ：行ごとに縦に積む */
-      line-height: 1.2;
+      line-height: 1.65;     /* 2行の間隔をゆったり */
     }
     .slide-title-sub2-block {
       display: block;
