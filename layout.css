@@ -974,6 +974,68 @@ h2 { letter-spacing: .12em; }
   /* ヘッダーにロゴを移動するのでドロワー内ロゴは非表示 */
   .bm-left .bm-logo { display: none; }
 
+  /* ===== 開いた全画面ドロワーの作り込み ===== */
+  /* 上=ロゴ / 中=ナビ / 下=お問い合わせCTA を縦に配分し、間を生かす */
+  .bm-left {
+    padding: 56px 28px calc(env(safe-area-inset-bottom, 0px) + 36px);
+    gap: 0;
+  }
+  /* 上部ロゴ（開いた時だけ表示。詳細度0,3,0で index 側の !important を上書き） */
+  .bm-left.is-open .bm-logo {
+    display: flex !important;
+    justify-content: center;
+    padding: 8px 0 20px;
+    margin: 0;
+  }
+  .bm-left .bm-logo img { width: 132px; }
+
+  /* ナビは縦に伸ばし、最後のCTAを底へ押し出す */
+  .bm-left .bm-nav {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+  /* メニュー項目：大きめ・ゆったり・薄い区切り線・左コーラルバー枠 */
+  .bm-left .bm-nav__item {
+    font-size: 20px;
+    font-weight: 400;
+    letter-spacing: .12em;
+    color: #5a4035;
+    padding: 15px 8px 15px 13px;
+    border-left: 3px solid transparent;
+    border-bottom: 1px solid rgba(0,0,0,.06);
+    border-radius: 0;
+  }
+  .bm-left .bm-nav__item:hover { background: rgba(242,144,108,.07); color: #33251a; }
+  .bm-left .bm-nav__item.is-active {
+    color: #d9734d;
+    font-weight: 700;
+    border-left-color: #f2906c;
+    background: rgba(242,144,108,.06);
+  }
+  /* 最後の「お問い合わせ」をコーラルのピルCTAに昇格し、最下部へ */
+  .bm-left .bm-nav__item[data-page="contact"] {
+    margin: 28px 0 4px;
+    margin-top: auto;
+    text-align: center;
+    background: #f2906c;
+    color: #fff;
+    border: none;
+    border-radius: 100px;
+    padding: 15px 24px;
+    font-weight: 700;
+    letter-spacing: .22em;
+    box-shadow: 0 4px 14px rgba(242,144,108,.28);
+    transition: background .2s, box-shadow .25s, transform .2s;
+  }
+  .bm-left .bm-nav__item[data-page="contact"]:hover,
+  .bm-left .bm-nav__item[data-page="contact"].is-active {
+    background: #e87e59;
+    color: #fff;
+    box-shadow: 0 8px 22px rgba(242,144,108,.42);
+  }
+
   /* モバイルヘッダー */
   .bm-mobile-header {
     display: flex;
