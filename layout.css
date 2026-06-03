@@ -259,6 +259,11 @@ h2 { letter-spacing: .12em; }
   from { opacity: 0; transform: translateX(-20px); }
   to   { opacity: 1; transform: translateX(0); }
 }
+/* 全画面ドロワー：行が下からせり上がるエディトリアルなリビール */
+@keyframes nav-rise {
+  from { opacity: 0; transform: translateY(34px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
 
 /* デスクトップ：ページ読み込み時にスタガーで出現（.bm-page-enterより遅めにして見えやすく） */
 @media (min-width: 781px) {
@@ -974,67 +979,105 @@ h2 { letter-spacing: .12em; }
   /* ヘッダーにロゴを移動するのでドロワー内ロゴは非表示 */
   .bm-left .bm-logo { display: none; }
 
-  /* ===== 開いた全画面ドロワーの作り込み ===== */
-  /* 上=ロゴ / 中=ナビ / 下=お問い合わせCTA を縦に配分し、間を生かす */
+  /* ===== 開いた全画面ドロワー：暖色ダークのエディトリアル（スタジオ流） ===== */
+  /* 明るいサイト→開いた瞬間に暖色ダークへ切替。大きな文字＋和英ペア＋通し番号、
+     色は禁欲（クリーム＋コーラル1色）、ホバーで他行を沈め、行は下からせり上げる */
   .bm-left {
-    padding: 56px 28px calc(env(safe-area-inset-bottom, 0px) + 36px);
+    padding: 60px 30px calc(env(safe-area-inset-bottom, 0px) + 30px);
     gap: 0;
+    background: #241a11;
+    box-shadow: -8px 0 40px rgba(0,0,0,.4);
+    justify-content: flex-start;
   }
-  /* 上部ロゴ（開いた時だけ表示。詳細度0,3,0で index 側の !important を上書き） */
+  /* ロゴ（開いた時だけ・左上に小さく・クリームに反転） */
   .bm-left.is-open .bm-logo {
     display: flex !important;
-    justify-content: center;
-    padding: 8px 0 20px;
+    justify-content: flex-start;
+    padding: 0 0 30px;
     margin: 0;
+    animation: nav-rise .55s cubic-bezier(.16,1,.3,1) both .04s;
   }
-  .bm-left .bm-logo img { width: 132px; }
+  .bm-left .bm-logo img {
+    width: 112px;
+    filter: brightness(0) invert(1) opacity(.9);
+  }
 
-  /* ナビは縦に伸ばし、最後のCTAを底へ押し出す */
+  /* ナビ：縦いっぱい。©は margin-top:auto で最下部へ */
   .bm-left .bm-nav {
     flex: 1;
     display: flex;
     flex-direction: column;
     gap: 0;
   }
-  /* メニュー項目：大きめ・ゆったり・薄い区切り線・左コーラルバー枠 */
+  /* メニュー項目：番号＋英語の小ラインの上に、大きな和文見出し */
   .bm-left .bm-nav__item {
-    font-size: 20px;
-    font-weight: 400;
-    letter-spacing: .12em;
-    color: #5a4035;
-    padding: 15px 8px 15px 13px;
-    border-left: 3px solid transparent;
-    border-bottom: 1px solid rgba(0,0,0,.06);
-    border-radius: 0;
-  }
-  .bm-left .bm-nav__item:hover { background: rgba(242,144,108,.07); color: #33251a; }
-  .bm-left .bm-nav__item.is-active {
-    color: #d9734d;
-    font-weight: 700;
-    border-left-color: #f2906c;
-    background: rgba(242,144,108,.06);
-  }
-  /* 最後の「お問い合わせ」をコーラルのピルCTAに昇格し、最下部へ */
-  .bm-left .bm-nav__item[data-page="contact"] {
-    margin: 28px 0 4px;
-    margin-top: auto;
-    text-align: center;
-    background: #f2906c;
-    color: #fff;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 3px;
+    padding: 14px 6px;
     border: none;
-    border-radius: 100px;
-    padding: 15px 24px;
+    border-radius: 0;
+    font-size: clamp(1.5rem, 6vw, 2rem);
     font-weight: 700;
-    letter-spacing: .22em;
-    box-shadow: 0 4px 14px rgba(242,144,108,.28);
-    transition: background .2s, box-shadow .25s, transform .2s;
+    line-height: 1.08;
+    letter-spacing: .03em;
+    color: #fffdf7;
+    transition: opacity .35s ease, color .25s ease, transform .3s cubic-bezier(.16,1,.3,1);
   }
-  .bm-left .bm-nav__item[data-page="contact"]:hover,
-  .bm-left .bm-nav__item[data-page="contact"].is-active {
-    background: #e87e59;
-    color: #fff;
-    box-shadow: 0 8px 22px rgba(242,144,108,.42);
+  /* 通し番号＋英語ラベル（小・Inter・字間広め・くすませる） */
+  .bm-left .bm-nav__item::before {
+    font-family: "Inter", sans-serif;
+    font-size: .62rem;
+    font-weight: 600;
+    letter-spacing: .26em;
+    color: rgba(255,253,247,.42);
+    text-transform: uppercase;
+    transition: color .25s ease;
   }
+  .bm-left .bm-nav__item:nth-child(1)::before { content: "01   Home"; }
+  .bm-left .bm-nav__item:nth-child(2)::before { content: "02   Philosophy"; }
+  .bm-left .bm-nav__item:nth-child(3)::before { content: "03   Child Development"; }
+  .bm-left .bm-nav__item:nth-child(4)::before { content: "04   After School"; }
+  .bm-left .bm-nav__item:nth-child(5)::before { content: "05   Recruit"; }
+  .bm-left .bm-nav__item:nth-child(6)::before { content: "06   About"; }
+  .bm-left .bm-nav__item:nth-child(7)::before { content: "07   Contact"; }
+  /* お問い合わせ＝コーラルで強調（塗りボタンにはしない＝禁欲的に） */
+  .bm-left .bm-nav__item:nth-child(7) { color: #f2906c; }
+  .bm-left .bm-nav__item:nth-child(7)::before { color: rgba(242,144,108,.55); }
+
+  /* ホバー：他行を沈め、対象だけ前へ。視線が一点に集まる */
+  .bm-left .bm-nav:hover .bm-nav__item { opacity: .3; }
+  .bm-left .bm-nav__item:hover {
+    opacity: 1 !important;
+    color: #f2906c;
+    transform: translateX(8px);
+  }
+  .bm-left .bm-nav__item:hover::before { color: rgba(242,144,108,.65); }
+  .bm-left .bm-nav__item.is-active { color: #f2906c; }
+  .bm-left .bm-nav__item.is-active::before { color: rgba(242,144,108,.6); }
+
+  /* 最下部の著作権メタ（名刺のように締める） */
+  .bm-left .bm-nav::after {
+    content: "© 合同会社BLUEMOUSE";
+    margin-top: auto;
+    padding: 30px 6px 0;
+    font-family: "Inter", sans-serif;
+    font-size: .62rem;
+    font-weight: 600;
+    letter-spacing: .24em;
+    color: rgba(255,253,247,.32);
+  }
+
+  /* 登場：行が下からせり上がる（カスタムイージング・スタガー） */
+  .bm-left.is-open .bm-nav > *:nth-child(1) { animation: nav-rise .6s cubic-bezier(.16,1,.3,1) both .12s; }
+  .bm-left.is-open .bm-nav > *:nth-child(2) { animation: nav-rise .6s cubic-bezier(.16,1,.3,1) both .19s; }
+  .bm-left.is-open .bm-nav > *:nth-child(3) { animation: nav-rise .6s cubic-bezier(.16,1,.3,1) both .26s; }
+  .bm-left.is-open .bm-nav > *:nth-child(4) { animation: nav-rise .6s cubic-bezier(.16,1,.3,1) both .33s; }
+  .bm-left.is-open .bm-nav > *:nth-child(5) { animation: nav-rise .6s cubic-bezier(.16,1,.3,1) both .40s; }
+  .bm-left.is-open .bm-nav > *:nth-child(6) { animation: nav-rise .6s cubic-bezier(.16,1,.3,1) both .47s; }
+  .bm-left.is-open .bm-nav > *:nth-child(7) { animation: nav-rise .6s cubic-bezier(.16,1,.3,1) both .54s; }
 
   /* モバイルヘッダー */
   .bm-mobile-header {
