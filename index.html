@@ -259,6 +259,22 @@
       margin-top: 4px;   /* タイトルとサブタイトルの間隔（唯一の制御点） */
     }
 
+    /* サブタイトル2：説明的な小さめの一文（サブタイトル1の下） */
+    .slide-title-sub2 {
+      font-family: "Inter", "Zen Kaku Gothic New", sans-serif;
+      font-weight: 300;
+      font-size: clamp(0.8rem, 2.5vw, 0.95rem);
+      display: block;
+      color: rgba(255, 253, 247, 0.82);
+      letter-spacing: 0.08em;
+      line-height: 1.7;
+      text-shadow: 0 1px 10px rgba(0, 0, 0, 0.45);
+    }
+    .slide-title-sub2-block {
+      display: block;
+      margin-top: 10px;   /* サブタイトル1との間隔 */
+    }
+
     .slide-lead {
       font-family: "Zen Kaku Gothic New", sans-serif;
       color: rgba(255,255,255,.9);
@@ -646,6 +662,7 @@
         <img class="hero-photo hp-active" src="./photos/IMG_8852.jpg" alt="BLUE MOUSE"
           data-kicker="PHILOSOPHY"
           data-title="主体性療育から<br>IT療育へ<br><span class='slide-title-sub'>From Autonomy<br>To IT-Driven Developmental Support</span>"
+          data-sub2="経済的自立から逆算した、10年後のロードマップ。"
           data-btn-text="MORE <span class='btn-arrow'>›</span>" data-btn-href="./philosophy.html" data-anim="kb-pan" />
         <img class="hero-photo" src="./photos/IMG_8852.jpg" alt="児童発達支援事業" loading="lazy"
           data-title="児童発達支援<br><span class='slide-title-sub'>土台となる「見えない力」は、<br>こどもが自ら育む</span>"
@@ -675,6 +692,9 @@
         </div>
         <div class="slide-title-sub-block">
           <span class="slide-title-sub"><span class="tl-line">From Autonomy</span><span class="tl-line">To IT-Driven Developmental Support</span></span>
+        </div>
+        <div class="slide-title-sub2-block">
+          <span class="slide-title-sub2">経済的自立から逆算した、10年後のロードマップ。</span>
         </div>
         <a class="slide-btn js-slide-btn" href="" style="display:none">MORE <span class="btn-arrow">›</span></a>
       </div>
@@ -890,6 +910,14 @@ document.querySelectorAll('.side-loc-tab').forEach(function(btn) {
       var subSpan = subBlock.querySelector('.slide-title-sub');
       if (subSpan) subSpan.innerHTML = wrapLines(subHtml);
       subBlock.style.display = subHtml ? '' : 'none';
+    }
+    /* サブタイトル2（data-sub2 がある時だけ表示） */
+    var sub2      = photos[idx].getAttribute('data-sub2') || '';
+    var sub2Block = parent.querySelector('.slide-title-sub2-block');
+    if (sub2Block) {
+      var sub2Span = sub2Block.querySelector('.slide-title-sub2');
+      if (sub2Span) sub2Span.textContent = sub2;
+      sub2Block.style.display = sub2 ? '' : 'none';
     }
     if (btnEl) {
       if (btnText) {
