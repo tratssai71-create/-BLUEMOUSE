@@ -149,8 +149,8 @@
       display: flex;
       flex-direction: column;
       justify-content: flex-end;
-      /* 左に溜め(44px)・底から少し浮かせる(56px)＝端貼り付き/底ベタを解消 */
-      padding: 20px 20px 56px 44px;
+      /* 左に溜め(44px)・底から浮かせる(72px)＝文字組みを気持ち上へ */
+      padding: 20px 20px 72px 44px;
     }
     #box-1 .slide-overlay::before { display: none; }
     #box-1 .slide-overlay > * { position: relative; z-index: 1; }
@@ -479,7 +479,7 @@
       /* スマホ：タイトルサイズ */
       #box-1 .slide-title { font-size: clamp(1.1rem, 5.0vw, 1.8rem); word-break: normal; }
       /* 横パディングを狭めて文字が収まるように／テキストを上に */
-      #box-1 .slide-overlay { padding: 48px 20px 52px; justify-content: flex-end; }
+      #box-1 .slide-overlay { padding: 48px 20px 68px; justify-content: flex-end; }
       #box-1 .slide-overlay::before { display: none; }
       /* スマホ：MOREボタン（高さそのまま、少し横長に） */
       #box-1 .slide-btn { font-size: 0.95rem; padding: 6px 38px; margin-top: 18px; }
