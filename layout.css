@@ -944,7 +944,7 @@ h2 { letter-spacing: .12em; }
     right: 0;
     bottom: auto;
     width: 100%; max-width: 100%;
-    height: 100vh;
+    height: 100vh; height: 100dvh;   /* iOSのアドレスバーで下端が隠れないよう dvh */
     z-index: 998;
     transform: translateX(100%);
     transition: transform .3s cubic-bezier(.4,0,.2,1);
@@ -955,6 +955,8 @@ h2 { letter-spacing: .12em; }
     justify-content: flex-end;
     padding: 64px 24px calc(env(safe-area-inset-bottom, 0px) + 44px) 24px;
   }
+  /* flexでの下寄せを確実に（justify-content補強） */
+  .bm-left .bm-nav { margin-top: auto; }
   .bm-left.is-open {
     transform: translateX(0);
   }
