@@ -951,7 +951,9 @@ h2 { letter-spacing: .12em; }
     background: #FFFEFB;
     box-shadow: -8px 0 32px rgba(0,0,0,.18);
     overflow-y: auto;
-    padding-top: 64px;
+    /* メニューを左下に寄せる：下揃え＋左に溜め（項目はフル幅・テキスト左寄せ） */
+    justify-content: flex-end;
+    padding: 64px 24px calc(env(safe-area-inset-bottom, 0px) + 44px) 24px;
   }
   .bm-left.is-open {
     transform: translateX(0);
