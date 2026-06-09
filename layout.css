@@ -92,6 +92,9 @@ h2 { letter-spacing: .12em; }
   font-weight: 700;
 }
 
+/* ドロワー下部のInstagramリンク（スマホのみ表示・既定は非表示） */
+.bm-drawer-sns { display: none; }
+
 /* グループヘッダー（リンク＋矢印ボタン） */
 .bm-nav__group-header {
   display: flex;
@@ -957,6 +960,29 @@ h2 { letter-spacing: .12em; }
   }
   /* flexでの下寄せを確実に（justify-content補強） */
   .bm-left .bm-nav { margin-top: auto; }
+
+  /* Instagramリンク：正方形・ドロワー下部中央 */
+  .bm-drawer-sns {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    align-self: center;          /* 下部中央に配置 */
+    width: 50px;
+    height: 50px;                /* 正方形 */
+    margin-top: 28px;
+    border: 1.5px solid #33251a;
+    border-radius: 8px;          /* 角を少し丸めた正方形 */
+    color: #33251a;
+    text-decoration: none;
+    transition: background .2s ease, color .2s ease, transform .2s ease;
+  }
+  .bm-drawer-sns svg { width: 24px; height: 24px; display: block; }
+  .bm-drawer-sns:hover,
+  .bm-drawer-sns:active {
+    background: #33251a;
+    color: #FFFEFB;
+    transform: translateY(-1px);
+  }
   .bm-left.is-open {
     transform: translateX(0);
   }
