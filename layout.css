@@ -961,22 +961,29 @@ h2 { letter-spacing: .12em; }
   /* flexでの下寄せを確実に（justify-content補強） */
   .bm-left .bm-nav { margin-top: auto; }
 
-  /* Instagramリンク：正方形・ドロワー下部中央 */
+  /* Instagramリンク：横長ボタン・ドロワー下部（アイコン＋ラベル） */
   .bm-drawer-sns {
     display: flex;
     align-items: center;
     justify-content: center;
-    align-self: center;          /* 下部中央に配置 */
-    width: 50px;
-    height: 50px;                /* 正方形 */
+    gap: 10px;
+    align-self: stretch;          /* 横幅いっぱいの横長ボタン */
+    height: 52px;
     margin-top: 28px;
     border: 1.5px solid #33251a;
-    border-radius: 8px;          /* 角を少し丸めた正方形 */
+    border-radius: 12px;
     color: #33251a;
     text-decoration: none;
     transition: background .2s ease, color .2s ease, transform .2s ease;
   }
-  .bm-drawer-sns svg { width: 24px; height: 24px; display: block; }
+  .bm-drawer-sns svg { width: 22px; height: 22px; display: block; }
+  .bm-drawer-sns::after {
+    content: "Instagram";
+    font-family: "Inter", "Zen Kaku Gothic New", sans-serif;
+    font-size: 15px;
+    font-weight: 500;
+    letter-spacing: .08em;
+  }
   .bm-drawer-sns:hover,
   .bm-drawer-sns:active {
     background: #33251a;
