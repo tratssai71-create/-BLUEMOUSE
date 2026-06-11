@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="theme-color" content="#FFFEFB" />
   <title>採用情報 | BLUE MOUSE — 自分らしく働く</title>
-  <meta name="description" content="合同会社BLUE MOUSE 採用情報。岡山で一番働きやすい職場を目指しています。こどもの10年後を本気で変える、主体性療育・IT療育の現場で、あなたの専門性と想いを活かしませんか。" />
+  <meta name="description" content="合同会社BLUE MOUSE 採用情報。岡山で一番働きやすい職場を目指しています。こどもの10年後を本気で変える現場で、あなたの専門性と想いを活かしませんか。" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Zen+Kaku+Gothic+New:wght@300;400;500;700;900&display=swap" rel="stylesheet" />
@@ -25,7 +25,6 @@
     .pf-section { position: fixed; top: 0; left: 25vw; width: 50vw; height: 100vh; height: 100svh; overflow: hidden; visibility: hidden; }
     .pf-section[data-idx="0"] { visibility: visible; }
 
-    /* タイトル */
     .pf-title { background: var(--pf-paper); }
     .pf-title__inner { position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%); display: flex; flex-direction: column; align-items: center; text-align: center; width: max-content; max-width: calc(100% - 44px); }
     .pf-title__en { font-family: "Inter", sans-serif; font-size: .8rem; font-weight: 600; letter-spacing: .42em; text-transform: uppercase; color: var(--pf-teal); display: inline-flex; align-items: center; gap: 14px; margin: 0 0 26px; }
@@ -33,7 +32,6 @@
     .pf-title__ja { font-family: "Zen Kaku Gothic New", sans-serif; font-size: clamp(2.4rem, 5.6vw, 4rem); font-weight: 700; color: var(--pf-ink); letter-spacing: .05em; line-height: 1.32; margin: 0; }
     .pf-title__sub { font-size: clamp(.86rem, 1.3vw, 1rem); font-weight: 400; color: var(--pf-ink-soft); letter-spacing: .06em; line-height: 1.9; margin: 26px 0 0; }
 
-    /* 写真 */
     .pf-photo { background: #1a130c; }
     .pf-photo__img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: center; display: block; }
     .pf-photo__img.pos-35 { object-position: center 35%; }
@@ -42,38 +40,34 @@
     .pf-photo__copy { position: absolute; left: 0; right: 0; bottom: 0; padding: 56px 52px 60px; display: flex; flex-direction: column; }
     .pf-eyebrow { font-family: "Inter", sans-serif; font-size: .72rem; font-weight: 600; letter-spacing: .3em; text-transform: uppercase; color: var(--pf-teal); display: inline-flex; align-items: center; gap: 12px; margin: 0 0 18px; text-shadow: 0 1px 10px rgba(0,0,0,.4); }
     .pf-eyebrow::before { content: ""; width: 28px; height: 1px; background: currentColor; }
-    .pf-photo__title { font-family: "Zen Kaku Gothic New", sans-serif; font-size: clamp(1.7rem, 3.4vw, 2.7rem); font-weight: 700; color: var(--pf-cream); line-height: 1.55; letter-spacing: .04em; margin: 0; text-shadow: 0 2px 18px rgba(0,0,0,.4); }
+    .pf-photo__title { font-family: "Zen Kaku Gothic New", sans-serif; font-size: clamp(1.9rem, 3.8vw, 3rem); font-weight: 700; color: var(--pf-cream); line-height: 1.5; letter-spacing: .04em; margin: 0; text-shadow: 0 2px 18px rgba(0,0,0,.4); }
 
-    /* テキスト */
     .pf-text { background: var(--pf-paper); display: flex; flex-direction: column; justify-content: center; padding: 0 56px; }
     .pf-text .pf-eyebrow { color: var(--pf-teal); text-shadow: none; }
-    .pf-text__lead { font-family: "Zen Kaku Gothic New", sans-serif; font-size: clamp(1.9rem, 3.6vw, 3.2rem); font-weight: 700; color: var(--pf-ink); line-height: 1.4; letter-spacing: .01em; margin: 0 0 28px; }
+    .pf-text__lead { font-family: "Zen Kaku Gothic New", sans-serif; font-size: clamp(2.1rem, 4.2vw, 3.6rem); font-weight: 700; color: var(--pf-ink); line-height: 1.38; letter-spacing: .01em; margin: 0 0 24px; }
     .pf-text__lead em { font-style: normal; color: var(--pf-coral); }
-    .pf-text__body { font-size: clamp(.94rem, 1.2vw, 1.05rem); font-weight: 400; line-height: 2.05; color: var(--pf-ink-soft); max-width: 520px; letter-spacing: .02em; margin: 0; }
+    .pf-text__body { font-size: clamp(1rem, 1.3vw, 1.15rem); font-weight: 400; line-height: 1.9; color: var(--pf-ink-soft); max-width: 460px; letter-spacing: .02em; margin: 0; }
     .pf-text__body strong { color: var(--pf-ink); font-weight: 700; }
 
-    /* 価値リスト */
-    .pf-list { list-style: none; margin: 6px 0 0; padding: 0; max-width: 480px; }
-    .pf-list li { position: relative; padding: 15px 0 15px 30px; font-size: clamp(1.02rem, 1.45vw, 1.18rem); font-weight: 600; color: var(--pf-ink); border-bottom: 1px solid rgba(42,29,18,.09); letter-spacing: .03em; }
+    .pf-list { list-style: none; margin: 4px 0 0; padding: 0; max-width: 480px; }
+    .pf-list li { position: relative; padding: 16px 0 16px 30px; font-size: clamp(1.1rem, 1.55vw, 1.3rem); font-weight: 600; color: var(--pf-ink); border-bottom: 1px solid rgba(42,29,18,.09); letter-spacing: .03em; }
     .pf-list li:last-child { border-bottom: none; }
-    .pf-list li::before { content: ""; position: absolute; left: 2px; top: 24px; transform: rotate(45deg); width: 8px; height: 8px; border-radius: 2px; background: var(--pf-teal); }
+    .pf-list li::before { content: ""; position: absolute; left: 2px; top: 26px; transform: rotate(45deg); width: 8px; height: 8px; border-radius: 2px; background: var(--pf-teal); }
     .pf-list li span { display: block; font-size: .82rem; font-weight: 400; color: var(--pf-ink-soft); letter-spacing: .02em; margin-top: 4px; }
 
-    /* Creed（暖色ダーク） */
     .pf-creed { background: #241a11; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; padding: 0 56px; }
     .pf-creed .pf-eyebrow { color: var(--pf-teal); justify-content: center; }
-    .pf-creed__quote { font-family: "Zen Kaku Gothic New", sans-serif; font-size: clamp(1.7rem, 3.8vw, 2.9rem); font-weight: 700; color: var(--pf-cream); line-height: 1.55; letter-spacing: .03em; margin: 0 0 26px; }
+    .pf-creed__quote { font-family: "Zen Kaku Gothic New", sans-serif; font-size: clamp(1.8rem, 4vw, 3rem); font-weight: 700; color: var(--pf-cream); line-height: 1.55; letter-spacing: .03em; margin: 0 0 24px; }
     .pf-creed__quote em { font-style: normal; color: var(--pf-coral); }
-    .pf-creed__sub { font-size: clamp(.92rem, 1.3vw, 1.04rem); line-height: 1.95; color: rgba(255,253,247,.78); letter-spacing: .03em; max-width: 480px; margin: 0; }
+    .pf-creed__sub { font-size: clamp(.92rem, 1.3vw, 1.04rem); line-height: 1.9; color: rgba(255,253,247,.78); letter-spacing: .03em; max-width: 460px; margin: 0; }
 
-    /* CTA（写真背景） */
     .pf-cta { background: #1a130c; }
     .pf-cta__img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: center 40%; display: block; opacity: .5; }
     .pf-cta__grad { position: absolute; inset: 0; pointer-events: none; background: linear-gradient(130deg, rgba(var(--pf-scrim),.88) 0%, rgba(var(--pf-scrim),.6) 55%, rgba(var(--pf-scrim),.4) 100%); }
     .pf-cta__inner { position: absolute; inset: 0; z-index: 2; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; padding: 0 52px; }
     .pf-cta .pf-eyebrow { color: var(--pf-teal); justify-content: center; }
-    .pf-cta__title { font-family: "Zen Kaku Gothic New", sans-serif; font-size: clamp(2.2rem, 5.4vw, 3.4rem); font-weight: 700; color: var(--pf-cream); line-height: 1.3; letter-spacing: .05em; margin: 0 0 18px; text-shadow: 0 2px 18px rgba(0,0,0,.4); }
-    .pf-cta__sub { font-size: clamp(.95rem, 1.4vw, 1.08rem); line-height: 1.95; color: rgba(255,253,247,.9); letter-spacing: .03em; max-width: 480px; margin: 0 0 38px; text-shadow: 0 1px 10px rgba(0,0,0,.35); }
+    .pf-cta__title { font-family: "Zen Kaku Gothic New", sans-serif; font-size: clamp(2.2rem, 5vw, 3.2rem); font-weight: 700; color: var(--pf-cream); line-height: 1.32; letter-spacing: .05em; margin: 0 0 18px; text-shadow: 0 2px 18px rgba(0,0,0,.4); }
+    .pf-cta__sub { font-size: clamp(.95rem, 1.4vw, 1.08rem); line-height: 1.9; color: rgba(255,253,247,.9); letter-spacing: .03em; max-width: 480px; margin: 0 0 38px; text-shadow: 0 1px 10px rgba(0,0,0,.35); }
     .pf-btns { display: flex; flex-wrap: wrap; justify-content: center; gap: 14px; }
     .pf-btn { display: inline-flex; align-items: center; gap: 10px; font-family: "Inter","Zen Kaku Gothic New",sans-serif; font-size: 1rem; font-weight: 700; letter-spacing: .08em; padding: 16px 34px; border-radius: 100px; text-decoration: none; transition: transform .22s cubic-bezier(.34,1.56,.64,1), background .2s, box-shadow .25s, color .2s, border-color .2s; }
     .pf-btn__arrow { display: inline-block; transition: transform .25s cubic-bezier(.34,1.56,.64,1); }
@@ -83,13 +77,11 @@
     .pf-btn--ghost { background: transparent; color: var(--pf-cream); border: 1.5px solid rgba(255,253,247,.55); }
     .pf-btn--ghost:hover { background: rgba(255,253,247,.12); border-color: var(--pf-cream); transform: translateY(-2px); }
 
-    /* 入場アニメ */
     .pf-anim { opacity: 0; transform: translateY(30px); transition: opacity .9s cubic-bezier(.22,1,.36,1), transform .9s cubic-bezier(.22,1,.36,1); }
     .pf-anim.is-visible { opacity: 1; transform: none; }
     .pf-title .pf-anim, .pf-photo .pf-anim, .pf-creed .pf-anim, .pf-cta .pf-anim { transform: translateX(40px); }
     .pf-title .pf-anim.is-visible, .pf-photo .pf-anim.is-visible, .pf-creed .pf-anim.is-visible, .pf-cta .pf-anim.is-visible { transform: none; }
 
-    /* 進行ドット */
     .pf-dots { position: fixed; right: calc(12.5vw - 3px); top: 50%; transform: translateY(-50%); z-index: 60; display: flex; flex-direction: column; gap: 14px; }
     .pf-dot { width: 6px; height: 6px; border-radius: 50%; background: rgba(42,29,18,.20); transition: background .35s, transform .35s; }
     .pf-dot.active { background: var(--pf-teal); transform: scale(1.9); }
@@ -132,11 +124,11 @@
       <div class="pf-title__inner">
         <p class="pf-title__en pf-anim">Recruit</p>
         <h1 class="pf-title__ja pf-anim">自分らしく、<br>働く。</h1>
-        <p class="pf-title__sub pf-anim">岡山で一番働きやすい職場を、目指しています。</p>
+        <p class="pf-title__sub pf-anim">岡山で一番働きやすい職場を。</p>
       </div>
     </section>
 
-    <!-- [1] 写真：導入 -->
+    <!-- [1] 写真＋一言 -->
     <section class="pf-section pf-photo" style="z-index:2" data-idx="1" data-dark="1">
       <img class="pf-photo__img pos-40" src="./photos/recruit_opt.jpg" alt="BLUE MOUSEで働くスタッフ" loading="lazy" />
       <div class="pf-photo__grad"></div>
@@ -146,51 +138,56 @@
       </div>
     </section>
 
-    <!-- [2] Creed（最大の訴求） -->
+    <!-- [2] Creed -->
     <section class="pf-section pf-creed" style="z-index:3" data-idx="2" data-dark="1">
       <p class="pf-eyebrow pf-anim">Our Creed</p>
       <p class="pf-creed__quote pf-anim">「支援している」と<br><em>「本当に変えている」</em>は、<br>違う。</p>
-      <p class="pf-creed__sub pf-anim">現場にいる人間なら、分かるはずです。<br>今いる場所との違いも、ここにあるかもしれません。</p>
+      <p class="pf-creed__sub pf-anim">現場にいる人間なら、分かるはずです。</p>
     </section>
 
-    <!-- [3] 仕事の意味（求職者視点） -->
-    <section class="pf-section pf-text" style="z-index:4" data-idx="3">
-      <p class="pf-eyebrow pf-anim">Your Impact</p>
-      <p class="pf-text__lead pf-anim">あなたの関わりが、<br>10年後を<em>変える</em>。</p>
-      <p class="pf-text__body pf-anim">ここでの一日一日が、その子の10年後の選択肢を、確かに増やしていく。子どもの将来に、本気で踏み込む。<strong>これは、人生に関わる仕事です。</strong>私たちが何を信じて事業を営んでいるかは、ぜひ「想い」のページで。</p>
+    <!-- [3] 画像のみ -->
+    <section class="pf-section pf-photo" style="z-index:4" data-idx="3" data-dark="1">
+      <img class="pf-photo__img pos-35" src="./photos/yoshie.jpg" alt="" loading="lazy" />
+      <div class="pf-photo__grad"></div>
     </section>
 
-    <!-- [4] 写真：役割 -->
+    <!-- [4] 写真＋一言：役割 -->
     <section class="pf-section pf-photo" style="z-index:5" data-idx="4" data-dark="1">
       <img class="pf-photo__img pos-35" src="./photos/riku_opt.jpg" alt="こどもに伴走するスタッフ" loading="lazy" />
       <div class="pf-photo__grad"></div>
       <div class="pf-photo__copy">
         <p class="pf-eyebrow pf-anim">Your Role</p>
-        <h2 class="pf-photo__title pf-anim">「観察者」であり、<br>「伴走者」である仕事。</h2>
+        <h2 class="pf-photo__title pf-anim">「観察者」であり、<br>「伴走者」。</h2>
       </div>
     </section>
 
-    <!-- [5] 専門性・誇り -->
+    <!-- [5] 誇り（最小限） -->
     <section class="pf-section pf-text" style="z-index:6" data-idx="5">
       <p class="pf-eyebrow pf-anim">Professional</p>
       <p class="pf-text__lead pf-anim">預かるのではなく、<br><em>育てる</em>。</p>
-      <p class="pf-text__body pf-anim">表面的な行動の奥にある本質を汲み取れるか。助けたくなっても、自ら育つ力を信じて待てるか。<strong>むやみに干渉しない</strong>という専門性。これは、誰にでもできる仕事ではありません。だからこそ、胸を張れる仕事です。</p>
+      <p class="pf-text__body pf-anim">誰にでもできる仕事じゃない。<strong>だから、胸を張れる。</strong></p>
     </section>
 
-    <!-- [6] 働きやすさ -->
-    <section class="pf-section pf-text" style="z-index:7" data-idx="6">
+    <!-- [6] 画像のみ（仮画像） -->
+    <section class="pf-section pf-photo" style="z-index:7" data-idx="6" data-dark="1">
+      <img class="pf-photo__img" src="./photos/ph/ph-7.svg" alt="" loading="lazy" />
+      <div class="pf-photo__grad"></div>
+    </section>
+
+    <!-- [7] 働きやすさ -->
+    <section class="pf-section pf-text" style="z-index:8" data-idx="7">
       <p class="pf-eyebrow pf-anim">Why Here</p>
       <p class="pf-text__lead pf-anim">自分らしく、<br>働ける理由。</p>
       <ul class="pf-list pf-anim">
         <li>主体性を尊重する文化<span>子どもにも、スタッフにも。</span></li>
-        <li>チームで一人の子を観る<span>抱え込まず、観察を共有する。</span></li>
-        <li>IT療育という新しい領域<span>前例のない挑戦に、関われる。</span></li>
-        <li>学び続けられる環境<span>専門性を、伸ばし続けられる。</span></li>
+        <li>チームで一人の子を観る<span>抱え込まない。</span></li>
+        <li>IT療育という新しい領域<span>前例のない挑戦に。</span></li>
+        <li>学び続けられる環境<span>専門性を、伸ばす。</span></li>
       </ul>
     </section>
 
-    <!-- [7] 写真：メッセージ -->
-    <section class="pf-section pf-photo" style="z-index:8" data-idx="7" data-dark="1">
+    <!-- [8] 写真＋一言：メッセージ -->
+    <section class="pf-section pf-photo" style="z-index:9" data-idx="8" data-dark="1">
       <img class="pf-photo__img pos-40" src="./1.webp" alt="BLUE MOUSEのこどもとスタッフ" loading="lazy" />
       <div class="pf-photo__grad"></div>
       <div class="pf-photo__copy">
@@ -199,14 +196,14 @@
       </div>
     </section>
 
-    <!-- [8] CTA -->
-    <section class="pf-section pf-cta" style="z-index:9" data-idx="8" data-dark="1">
+    <!-- [9] CTA -->
+    <section class="pf-section pf-cta" style="z-index:10" data-idx="9" data-dark="1">
       <img class="pf-cta__img" src="./photos/recruit_opt.jpg" alt="" loading="lazy" />
       <div class="pf-cta__grad"></div>
       <div class="pf-cta__inner">
         <p class="pf-eyebrow pf-anim">Apply</p>
-        <h2 class="pf-cta__title pf-anim">まずは、<br>話を聞きに来ませんか。</h2>
-        <p class="pf-cta__sub pf-anim">見学も歓迎です。あなたの専門性と想いを、ここで活かしてください。</p>
+        <h2 class="pf-cta__title pf-anim">まずは、<br>話を聞きに。</h2>
+        <p class="pf-cta__sub pf-anim">見学も歓迎です。あなたの専門性と想いを、ここで。</p>
         <div class="pf-btns pf-anim">
           <a href="./contact.html" class="pf-btn pf-btn--primary">応募・お問い合わせ <span class="pf-btn__arrow">›</span></a>
           <a href="./philosophy.html" class="pf-btn pf-btn--ghost">私たちの想いを読む</a>
@@ -232,9 +229,8 @@
 </div>
 
 <div class="pf-dots" id="pf-dots">
-  <span class="pf-dot active"></span><span class="pf-dot"></span><span class="pf-dot"></span>
-  <span class="pf-dot"></span><span class="pf-dot"></span><span class="pf-dot"></span>
-  <span class="pf-dot"></span><span class="pf-dot"></span><span class="pf-dot"></span>
+  <span class="pf-dot active"></span><span class="pf-dot"></span><span class="pf-dot"></span><span class="pf-dot"></span><span class="pf-dot"></span>
+  <span class="pf-dot"></span><span class="pf-dot"></span><span class="pf-dot"></span><span class="pf-dot"></span><span class="pf-dot"></span>
 </div>
 
 <script src="./layout.js"></script>
