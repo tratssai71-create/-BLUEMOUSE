@@ -5,22 +5,16 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="theme-color" content="#FFFEFB" />
   <title>BLUE MOUSEの想い | 主体性療育からIT療育へ</title>
-  <meta name="description" content="主体性療育から、IT療育へ。経済的自立から逆算した、10年後のロードマップ。岡山で一番働きやすい職場を目指す、合同会社BLUE MOUSEの想い。" />
+  <meta name="description" content="主体性療育から、IT療育へ。経済的自立から逆算した、10年後のロードマップ。合同会社BLUE MOUSEが事業に込めた想いと全体像。" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Zen+Kaku+Gothic+New:wght@300;400;500;700;900&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="./layout.css?v=45" />
   <style>
-    /* ===== ベース：トップの色/フォントを継承 ===== */
     :root {
-      --pf-coral: #f2906c;
-      --pf-coral-dark: #e87e59;
-      --pf-teal: #5fc1c7;          /* ロゴカラー */
-      --pf-cream: #fffdf7;
-      --pf-paper: #FFFEFB;
-      --pf-ink: #2a1d12;
-      --pf-ink-soft: #6b5a4c;
-      --pf-scrim: 40, 30, 24;      /* 暖色ダーク（rgb） */
+      --pf-coral: #f2906c; --pf-coral-dark: #e87e59; --pf-teal: #5fc1c7;
+      --pf-cream: #fffdf7; --pf-paper: #FFFEFB; --pf-ink: #2a1d12; --pf-ink-soft: #6b5a4c;
+      --pf-scrim: 40, 30, 24;
     }
     .bm-layout { animation: none !important; }
     .bm-main { padding: 0 !important; }
@@ -28,203 +22,65 @@
       font-family: "Inter", "Zen Kaku Gothic New", sans-serif !important;
     }
 
-    /* ===== 全セクション共通（fixedスタック） ===== */
-    .pf-section {
-      position: fixed;
-      top: 0; left: 25vw;
-      width: 50vw; height: 100vh; height: 100svh;
-      overflow: hidden; visibility: hidden;
-    }
+    .pf-section { position: fixed; top: 0; left: 25vw; width: 50vw; height: 100vh; height: 100svh; overflow: hidden; visibility: hidden; }
     .pf-section[data-idx="0"] { visibility: visible; }
 
-    /* ===== タイトル ===== */
-    .pf-title {
-      background: var(--pf-paper);
-      display: flex; align-items: center; justify-content: center;
-      padding: 56px 52px;
-    }
-    .pf-title__inner {
-      position: absolute; top: 50%; left: 50%;
-      transform: translate(-50%, -50%);
-      display: flex; flex-direction: column; align-items: center; text-align: center;
-      width: max-content; max-width: calc(100% - 44px);
-    }
-    .pf-title__en {
-      font-family: "Inter", sans-serif;
-      font-size: .8rem; font-weight: 600; letter-spacing: .42em;
-      text-transform: uppercase; color: var(--pf-teal);
-      display: inline-flex; align-items: center; gap: 14px; margin: 0 0 26px;
-    }
-    .pf-title__en::before, .pf-title__en::after {
-      content: ""; width: 28px; height: 1px; background: currentColor; opacity: .85;
-    }
-    .pf-title__ja {
-      font-family: "Zen Kaku Gothic New", sans-serif;
-      font-size: clamp(2.1rem, 5vw, 3.6rem); font-weight: 700;
-      color: var(--pf-ink); letter-spacing: .06em; line-height: 1.42; margin: 0;
-    }
-    .pf-title__sub {
-      font-size: clamp(.86rem, 1.3vw, 1rem); font-weight: 400;
-      color: var(--pf-ink-soft); letter-spacing: .06em; line-height: 1.9;
-      margin: 28px 0 0;
-    }
+    .pf-title { background: var(--pf-paper); }
+    .pf-title__inner { position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%); display: flex; flex-direction: column; align-items: center; text-align: center; width: max-content; max-width: calc(100% - 44px); }
+    .pf-title__en { font-family: "Inter", sans-serif; font-size: .8rem; font-weight: 600; letter-spacing: .42em; text-transform: uppercase; color: var(--pf-teal); display: inline-flex; align-items: center; gap: 14px; margin: 0 0 26px; }
+    .pf-title__en::before, .pf-title__en::after { content: ""; width: 28px; height: 1px; background: currentColor; opacity: .85; }
+    .pf-title__ja { font-family: "Zen Kaku Gothic New", sans-serif; font-size: clamp(2.1rem, 5vw, 3.6rem); font-weight: 700; color: var(--pf-ink); letter-spacing: .06em; line-height: 1.42; margin: 0; }
+    .pf-title__sub { font-size: clamp(.86rem, 1.3vw, 1rem); font-weight: 400; color: var(--pf-ink-soft); letter-spacing: .06em; line-height: 1.9; margin: 28px 0 0; }
 
-    /* ===== 写真セクション ===== */
     .pf-photo { background: #1a130c; }
-    .pf-photo__img {
-      position: absolute; inset: 0; width: 100%; height: 100%;
-      object-fit: cover; object-position: center; display: block;
-    }
+    .pf-photo__img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: center; display: block; }
     .pf-photo__img.pos-35 { object-position: center 35%; }
     .pf-photo__img.pos-40 { object-position: center 40%; }
-    .pf-photo__grad {
-      position: absolute; inset: 0; pointer-events: none;
-      background: linear-gradient(to top,
-        rgba(var(--pf-scrim),.80) 0%,
-        rgba(var(--pf-scrim),.42) 38%,
-        rgba(var(--pf-scrim),.12) 66%,
-        rgba(var(--pf-scrim),.04) 100%);
-    }
-    .pf-photo__copy {
-      position: absolute; left: 0; right: 0; bottom: 0;
-      padding: 56px 52px 60px;
-      display: flex; flex-direction: column;
-    }
-    .pf-eyebrow {
-      font-family: "Inter", sans-serif;
-      font-size: .72rem; font-weight: 600; letter-spacing: .3em;
-      text-transform: uppercase; color: var(--pf-teal);
-      display: inline-flex; align-items: center; gap: 12px; margin: 0 0 18px;
-      text-shadow: 0 1px 10px rgba(0,0,0,.4);
-    }
+    .pf-photo__grad { position: absolute; inset: 0; pointer-events: none; background: linear-gradient(to top, rgba(var(--pf-scrim),.80) 0%, rgba(var(--pf-scrim),.42) 38%, rgba(var(--pf-scrim),.12) 66%, rgba(var(--pf-scrim),.04) 100%); }
+    .pf-photo__copy { position: absolute; left: 0; right: 0; bottom: 0; padding: 56px 52px 60px; display: flex; flex-direction: column; }
+    .pf-eyebrow { font-family: "Inter", sans-serif; font-size: .72rem; font-weight: 600; letter-spacing: .3em; text-transform: uppercase; color: var(--pf-teal); display: inline-flex; align-items: center; gap: 12px; margin: 0 0 18px; text-shadow: 0 1px 10px rgba(0,0,0,.4); }
     .pf-eyebrow::before { content: ""; width: 28px; height: 1px; background: currentColor; }
-    .pf-photo__title {
-      font-family: "Zen Kaku Gothic New", sans-serif;
-      font-size: clamp(1.7rem, 3.4vw, 2.7rem); font-weight: 700;
-      color: var(--pf-cream); line-height: 1.55; letter-spacing: .04em; margin: 0;
-      text-shadow: 0 2px 18px rgba(0,0,0,.4);
-    }
+    .pf-photo__title { font-family: "Zen Kaku Gothic New", sans-serif; font-size: clamp(1.7rem, 3.4vw, 2.7rem); font-weight: 700; color: var(--pf-cream); line-height: 1.55; letter-spacing: .04em; margin: 0; text-shadow: 0 2px 18px rgba(0,0,0,.4); }
+    .pf-photo__note { font-size: .82rem; font-weight: 500; color: rgba(255,253,247,.66); letter-spacing: .14em; margin: 16px 0 0; }
 
-    /* ===== テキストセクション ===== */
-    .pf-text {
-      background: var(--pf-paper);
-      display: flex; flex-direction: column; justify-content: center;
-      padding: 0 56px;
-    }
+    .pf-text { background: var(--pf-paper); display: flex; flex-direction: column; justify-content: center; padding: 0 56px; }
     .pf-text .pf-eyebrow { color: var(--pf-teal); text-shadow: none; }
-    .pf-text--it .pf-eyebrow { color: var(--pf-coral); }
-    .pf-text__lead {
-      font-family: "Zen Kaku Gothic New", sans-serif;
-      font-size: clamp(1.9rem, 3.6vw, 3.2rem); font-weight: 700;
-      color: var(--pf-ink); line-height: 1.4; letter-spacing: .01em; margin: 0 0 28px;
-    }
+    .pf-text__lead { font-family: "Zen Kaku Gothic New", sans-serif; font-size: clamp(1.9rem, 3.6vw, 3.2rem); font-weight: 700; color: var(--pf-ink); line-height: 1.4; letter-spacing: .01em; margin: 0 0 28px; }
     .pf-text__lead em { font-style: normal; color: var(--pf-coral); }
-    .pf-text--found .pf-text__lead em { color: var(--pf-teal); }
-    .pf-text__body {
-      font-size: clamp(.94rem, 1.2vw, 1.05rem); font-weight: 400;
-      line-height: 2.05; color: var(--pf-ink-soft); max-width: 520px; letter-spacing: .02em;
-      margin: 0;
-    }
+    .pf-text__body { font-size: clamp(.94rem, 1.2vw, 1.05rem); font-weight: 400; line-height: 2.05; color: var(--pf-ink-soft); max-width: 520px; letter-spacing: .02em; margin: 0; }
     .pf-text__body strong { color: var(--pf-ink); font-weight: 700; }
-    /* 大きな数字（収入データ） */
-    .pf-fignum {
-      font-family: "Inter", sans-serif; font-weight: 700;
-      font-size: clamp(2.6rem, 6vw, 4.4rem); color: var(--pf-coral);
-      line-height: 1; letter-spacing: .01em; margin: 0 0 18px;
-    }
-    .pf-fignum small { font-size: .35em; font-weight: 600; letter-spacing: .04em; }
+    .pf-fignum { font-family: "Inter", sans-serif; font-weight: 700; font-size: clamp(2.6rem, 6vw, 4.4rem); color: var(--pf-coral); line-height: 1; margin: 0 0 18px; }
+    .pf-fignum small { font-size: .32em; font-weight: 600; letter-spacing: .04em; }
 
-    /* ===== Creed（暖色ダーク・転換点） ===== */
-    .pf-creed {
-      background: #241a11;
-      display: flex; flex-direction: column; justify-content: center; align-items: center;
-      text-align: center; padding: 0 56px;
-    }
-    .pf-creed .pf-eyebrow { color: var(--pf-teal); justify-content: center; }
-    .pf-creed__quote {
-      font-family: "Zen Kaku Gothic New", sans-serif;
-      font-size: clamp(1.7rem, 3.8vw, 2.9rem); font-weight: 700;
-      color: var(--pf-cream); line-height: 1.55; letter-spacing: .03em; margin: 0 0 26px;
-    }
-    .pf-creed__quote em { font-style: normal; color: var(--pf-coral); }
-    .pf-creed__sub {
-      font-size: clamp(.92rem, 1.3vw, 1.04rem); line-height: 1.95;
-      color: rgba(255,253,247,.75); letter-spacing: .03em; max-width: 460px; margin: 0;
-    }
-
-    /* ===== 採用セクション（写真＋CTA・裏テーマ最優先） ===== */
-    .pf-recruit { background: #1a130c; }
-    .pf-recruit__img {
-      position: absolute; inset: 0; width: 100%; height: 100%;
-      object-fit: cover; object-position: center 40%; display: block; opacity: .55;
-    }
-    .pf-recruit__grad {
-      position: absolute; inset: 0; pointer-events: none;
-      background: linear-gradient(130deg, rgba(var(--pf-scrim),.88) 0%, rgba(var(--pf-scrim),.6) 55%, rgba(var(--pf-scrim),.4) 100%);
-    }
-    .pf-recruit__inner {
-      position: absolute; inset: 0; z-index: 2;
-      display: flex; flex-direction: column; justify-content: center; align-items: center;
-      text-align: center; padding: 0 52px;
-    }
-    .pf-recruit .pf-eyebrow { color: var(--pf-teal); justify-content: center; }
-    .pf-recruit__title {
-      font-family: "Zen Kaku Gothic New", sans-serif;
-      font-size: clamp(2.2rem, 5.4vw, 3.4rem); font-weight: 700;
-      color: var(--pf-cream); line-height: 1.3; letter-spacing: .05em; margin: 0 0 18px;
-      text-shadow: 0 2px 18px rgba(0,0,0,.4);
-    }
-    .pf-recruit__sub {
-      font-size: clamp(.95rem, 1.4vw, 1.08rem); line-height: 1.95;
-      color: rgba(255,253,247,.9); letter-spacing: .03em; max-width: 460px; margin: 0 0 38px;
-      text-shadow: 0 1px 10px rgba(0,0,0,.35);
-    }
+    .pf-cta { background: var(--pf-paper); display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; padding: 0 56px; }
+    .pf-cta__lead { font-family: "Zen Kaku Gothic New", sans-serif; font-size: clamp(1.8rem, 3.6vw, 2.8rem); font-weight: 700; color: var(--pf-ink); line-height: 1.45; margin: 0 0 18px; letter-spacing: .03em; }
+    .pf-cta__sub { font-size: clamp(.9rem, 1.3vw, 1.02rem); color: var(--pf-ink-soft); line-height: 1.9; margin: 0 0 38px; }
     .pf-btns { display: flex; flex-wrap: wrap; justify-content: center; gap: 14px; }
-    .pf-btn {
-      display: inline-flex; align-items: center; gap: 10px;
-      font-family: "Inter", "Zen Kaku Gothic New", sans-serif;
-      font-size: 1rem; font-weight: 700; letter-spacing: .08em;
-      padding: 16px 34px; border-radius: 100px; text-decoration: none;
-      transition: transform .22s cubic-bezier(.34,1.56,.64,1), background .2s, box-shadow .25s, color .2s, border-color .2s;
-    }
+    .pf-btn { display: inline-flex; align-items: center; gap: 10px; font-family: "Inter","Zen Kaku Gothic New",sans-serif; font-size: 1rem; font-weight: 700; letter-spacing: .08em; padding: 16px 34px; border-radius: 100px; text-decoration: none; transition: transform .22s cubic-bezier(.34,1.56,.64,1), background .2s, box-shadow .25s, color .2s, border-color .2s; }
     .pf-btn__arrow { display: inline-block; transition: transform .25s cubic-bezier(.34,1.56,.64,1); }
     .pf-btn--primary { background: var(--pf-coral); color: #fff; box-shadow: 0 6px 18px rgba(242,144,108,.42); }
     .pf-btn--primary:hover { background: var(--pf-coral-dark); transform: scale(1.04); box-shadow: 0 10px 26px rgba(242,144,108,.54); }
     .pf-btn--primary:hover .pf-btn__arrow { transform: translateX(5px); }
-    .pf-btn--ghost { background: transparent; color: var(--pf-cream); border: 1.5px solid rgba(255,253,247,.55); }
-    .pf-btn--ghost:hover { background: rgba(255,253,247,.12); border-color: var(--pf-cream); transform: translateY(-2px); }
+    .pf-btn--ink { background: transparent; color: var(--pf-ink); border: 1.5px solid rgba(42,29,18,.3); }
+    .pf-btn--ink:hover { background: rgba(42,29,18,.06); border-color: var(--pf-ink); transform: translateY(-2px); }
 
-    /* ===== 入場アニメ（スライドアップ） ===== */
-    .pf-anim {
-      opacity: 0; transform: translateY(30px);
-      transition: opacity .9s cubic-bezier(.22,1,.36,1), transform .9s cubic-bezier(.22,1,.36,1);
-    }
+    .pf-anim { opacity: 0; transform: translateY(30px); transition: opacity .9s cubic-bezier(.22,1,.36,1), transform .9s cubic-bezier(.22,1,.36,1); }
     .pf-anim.is-visible { opacity: 1; transform: none; }
-    .pf-title .pf-anim, .pf-photo .pf-anim, .pf-creed .pf-anim, .pf-recruit .pf-anim { transform: translateX(40px); }
-    .pf-title .pf-anim.is-visible, .pf-photo .pf-anim.is-visible,
-    .pf-creed .pf-anim.is-visible, .pf-recruit .pf-anim.is-visible { transform: none; }
+    .pf-title .pf-anim, .pf-photo .pf-anim { transform: translateX(40px); }
+    .pf-title .pf-anim.is-visible, .pf-photo .pf-anim.is-visible { transform: none; }
 
-    /* ===== 進行ドット（PCのみ・右端） ===== */
-    .pf-dots {
-      position: fixed; right: calc(12.5vw - 3px); top: 50%; transform: translateY(-50%);
-      z-index: 60; display: flex; flex-direction: column; gap: 14px;
-    }
-    .pf-dot {
-      width: 6px; height: 6px; border-radius: 50%;
-      background: rgba(42,29,18,.20); transition: background .35s, transform .35s;
-    }
+    .pf-dots { position: fixed; right: calc(12.5vw - 3px); top: 50%; transform: translateY(-50%); z-index: 60; display: flex; flex-direction: column; gap: 14px; }
+    .pf-dot { width: 6px; height: 6px; border-radius: 50%; background: rgba(42,29,18,.20); transition: background .35s, transform .35s; }
     .pf-dot.active { background: var(--pf-teal); transform: scale(1.9); }
     .pf-dots.dark .pf-dot { background: rgba(255,253,247,.30); }
     .pf-dots.dark .pf-dot.active { background: var(--pf-cream); }
 
-    /* ===== モバイル ===== */
     @media (max-width: 780px) {
       .pf-section { left: 0 !important; width: 100vw !important; }
       .pf-title { padding: 0 24px; }
       .pf-photo__copy { padding: 40px 24px 48px; }
       .pf-text { padding: 0 24px; }
-      .pf-creed { padding: 0 24px; }
-      .pf-recruit__inner { padding: 0 24px; }
+      .pf-cta { padding: 0 24px; }
       .pf-text__body { max-width: none; }
       .pf-btn { width: 100%; max-width: 320px; justify-content: center; }
       .pf-dots { display: none; }
@@ -234,23 +90,19 @@
 <body>
 <div class="bm-layout">
 
-  <!-- ===== 左サイドバー（共通ドロワー） ===== -->
   <aside class="bm-left">
-    <a class="bm-logo" href="./index.html">
-      <img src="./logo.png" alt="BLUE MOUSE" />
-    </a>
+    <a class="bm-logo" href="./index.html"><img src="./logo.png" alt="BLUE MOUSE" /></a>
     <nav class="bm-nav">
       <a href="./index.html"       class="bm-nav__item" data-page="index">トップページ</a>
       <a href="./child.html"       class="bm-nav__item" data-page="child">児童発達支援</a>
       <a href="./afterschool.html" class="bm-nav__item" data-page="afterschool">放課後等デイサービス</a>
       <a href="./philosophy.html"  class="bm-nav__item is-active" data-page="philosophy">BLUE MOUSEの想い</a>
       <a href="./contact.html"     class="bm-nav__item" data-page="contact">お問い合わせ</a>
-      <a href="./recruit.html" class="bm-nav__item" data-page="recruit">採用情報</a>
+      <a href="./recruit.html"     class="bm-nav__item" data-page="recruit">採用情報</a>
     </nav>
     <a class="bm-drawer-sns" href="https://www.instagram.com/blue_mouse_okayama/" target="_blank" rel="noopener" aria-label="Instagram"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2.5" y="2.5" width="19" height="19" rx="5"/><circle cx="12" cy="12" r="4.2"/><circle cx="17.3" cy="6.7" r="1.1" fill="currentColor" stroke="none"/></svg></a>
   </aside>
 
-  <!-- ===== メイン（全画面ストーリー） ===== -->
   <main class="bm-main">
 
     <!-- [0] タイトル -->
@@ -262,7 +114,7 @@
       </div>
     </section>
 
-    <!-- [1] 写真：出発点 -->
+    <!-- [1] 出発点 -->
     <section class="pf-section pf-photo" style="z-index:2" data-idx="1" data-dark="1">
       <img class="pf-photo__img pos-40" src="./1.webp" alt="BLUE MOUSEで過ごすこども" loading="lazy" />
       <div class="pf-photo__grad"></div>
@@ -272,83 +124,64 @@
       </div>
     </section>
 
-    <!-- [2] テキスト：現実の数字 -->
+    <!-- [2] 現実（このページの出発点・固有） -->
     <section class="pf-section pf-text" style="z-index:3" data-idx="2">
       <p class="pf-eyebrow pf-anim">Reality</p>
       <p class="pf-fignum pf-anim">13<small>万円</small></p>
       <p class="pf-text__lead pf-anim">発達障害者の、<br>平均月収。</p>
-      <p class="pf-text__body pf-anim">一般労働者の約4割にとどまり、この5年間ほぼ改善されていません。<strong>「この子は将来、自分の力で生きていけるのか。」</strong>——その問いに正面から向き合うことが、私たちの出発点です。</p>
+      <p class="pf-text__body pf-anim">一般労働者の約4割にとどまり、この5年間ほぼ改善されていません。<strong>「この子は将来、自分の力で生きていけるのか。」</strong>——この問いに正面から向き合うことが、私たちのすべての出発点です。</p>
     </section>
 
-    <!-- [3] テキスト：ロードマップ -->
+    <!-- [3] 私たちの答え（確信・固有） -->
     <section class="pf-section pf-text" style="z-index:4" data-idx="3">
+      <p class="pf-eyebrow pf-anim">Our Answer</p>
+      <p class="pf-text__lead pf-anim">既存の療育では、<br>拭えなかった不安。</p>
+      <p class="pf-text__body pf-anim">「がんばって、みんなと同じに近づける」だけでは、その先の自立は約束されません。だから私たちは、<strong>経済的自立から逆算する</strong>という、まったく別の道を選びました。それが「主体性療育から、IT療育へ」という10年の道筋です。</p>
+    </section>
+
+    <!-- [4] ロードマップ（思想・固有） -->
+    <section class="pf-section pf-text" style="z-index:5" data-idx="4">
       <p class="pf-eyebrow pf-anim">Roadmap</p>
       <p class="pf-text__lead pf-anim">まず<em>土台</em>を育て、<br>次に<em>武器</em>を手にする。</p>
-      <p class="pf-text__body pf-anim">主体性療育から、IT療育へ。経済的自立から逆算した、10年後のロードマップ。<strong>まず「主体性」という土台を育て、そして「IT」という武器を手にします。</strong></p>
+      <p class="pf-text__body pf-anim">未就学期に「主体性」という土台（見えない力）を育み、就学期に「IT」という武器（見える力）を手にする。この2段階が、10年後の経済的自立へとつながります。<strong>その実践が、二つの事業です。</strong></p>
     </section>
 
-    <!-- [4] 写真：児童発達支援 -->
-    <section class="pf-section pf-photo" style="z-index:5" data-idx="4" data-dark="1">
+    <!-- [5] フェーズ1 概観（詳細は児童発達支援へ） -->
+    <section class="pf-section pf-photo" style="z-index:6" data-idx="5" data-dark="1">
       <img class="pf-photo__img pos-35" src="./photos/jidou_opt.jpg" alt="児童発達支援の様子" loading="lazy" />
       <div class="pf-photo__grad"></div>
       <div class="pf-photo__copy">
         <p class="pf-eyebrow pf-anim">Phase 01 — 児童発達支援（未就学期）</p>
         <h2 class="pf-photo__title pf-anim">土台となる「見えない力」は、<br>こどもが自ら育む。</h2>
+        <p class="pf-photo__note pf-anim">詳しくは「児童発達支援」のページへ。</p>
       </div>
     </section>
 
-    <!-- [5] テキスト：主体性という土台 -->
-    <section class="pf-section pf-text pf-text--found" style="z-index:6" data-idx="5">
-      <p class="pf-eyebrow pf-anim">The Foundation</p>
-      <p class="pf-text__lead pf-anim">主体性という、<br><em>土台</em>を育てる。</p>
-      <p class="pf-text__body pf-anim">「自分ならできる」という自己効力感、思いを言葉にする力。目に見えるスキル以前の<strong>「見えない力」</strong>こそ、10年後の自立を支える根っこです。私たちは秩序ある環境で、むやみに干渉しない専門的な「観察者」として、こどもが自ら育つ力を引き出します。</p>
-    </section>
-
-    <!-- [6] 写真：放課後等デイ -->
+    <!-- [6] フェーズ2 概観（詳細は放課後等デイへ） -->
     <section class="pf-section pf-photo" style="z-index:7" data-idx="6" data-dark="1">
       <img class="pf-photo__img pos-35" src="./photos/hokago_opt.jpg" alt="放課後等デイサービスの様子" loading="lazy" />
       <div class="pf-photo__grad"></div>
       <div class="pf-photo__copy">
         <p class="pf-eyebrow pf-anim">Phase 02 — 放課後等デイサービス（就学期）</p>
         <h2 class="pf-photo__title pf-anim">強みとなる「見える力」は、<br>伴走者と共に育む。</h2>
+        <p class="pf-photo__note pf-anim">詳しくは「放課後等デイサービス」のページへ。</p>
       </div>
     </section>
 
-    <!-- [7] テキスト：ITという武器 -->
-    <section class="pf-section pf-text pf-text--it" style="z-index:8" data-idx="7">
-      <p class="pf-eyebrow pf-anim">The Weapon</p>
-      <p class="pf-text__lead pf-anim">ITという、<br><em>武器</em>を手にする。</p>
-      <p class="pf-text__body pf-anim">特性のある成人とそうでない成人の収入格差は、約50%。苦手をゼロにするだけでなく、その子の<strong>「強み」を社会で生き抜く武器へ</strong>。AI時代に逆算して辿り着いた答えが、小学生からのITスキル獲得です。専門的な「伴走者」と共に、対処法と社会性を学びます。</p>
-    </section>
-
-    <!-- [8] Creed（転換点・採用への橋渡し） -->
-    <section class="pf-section pf-creed" style="z-index:9" data-idx="8" data-dark="1">
-      <p class="pf-eyebrow pf-anim">Our Creed</p>
-      <p class="pf-creed__quote pf-anim">「支援している」と<br><em>「本当に変えている」</em>は、<br>違う。</p>
-      <p class="pf-creed__sub pf-anim">現場にいる人間なら、分かるはずです。<br>今いる場所との違いも、ここにあるかもしれません。</p>
-    </section>
-
-    <!-- [9] 採用CTA（裏テーマ＝最優先） -->
-    <section class="pf-section pf-recruit" style="z-index:10" data-idx="9" data-dark="1">
-      <img class="pf-recruit__img" src="./photos/recruit_opt.jpg" alt="BLUE MOUSEで働くスタッフ" loading="lazy" />
-      <div class="pf-recruit__grad"></div>
-      <div class="pf-recruit__inner">
-        <p class="pf-eyebrow pf-anim">Recruit</p>
-        <h2 class="pf-recruit__title pf-anim">自分らしく働く。</h2>
-        <p class="pf-recruit__sub pf-anim">岡山で一番働きやすい職場を目指しています。こどもの10年後を本気で変える現場で、あなたの専門性と想いを活かしませんか。</p>
-        <div class="pf-btns pf-anim">
-          <a href="./recruit.html" class="pf-btn pf-btn--primary">採用情報を見る <span class="pf-btn__arrow">›</span></a>
-          <a href="./contact.html" class="pf-btn pf-btn--ghost">見学・お問い合わせ</a>
-        </div>
+    <!-- [7] 事業への導線 -->
+    <section class="pf-section pf-cta" style="z-index:8" data-idx="7">
+      <p class="pf-cta__lead pf-anim">この想いを、<br>二つの現場で。</p>
+      <p class="pf-cta__sub pf-anim">それぞれの事業が、10年後のロードマップを形にします。</p>
+      <div class="pf-btns pf-anim">
+        <a href="./child.html" class="pf-btn pf-btn--primary">児童発達支援を見る <span class="pf-btn__arrow">›</span></a>
+        <a href="./afterschool.html" class="pf-btn pf-btn--ink">放課後等デイサービスを見る</a>
       </div>
     </section>
 
-    <!-- スクロール量確保用スペーサー -->
     <div id="pf-spacer"></div>
 
   </main>
 
-  <!-- ===== 右サイドバー ===== -->
   <aside class="bm-right">
     <p class="side-heading">BLUE MOUSE</p>
     <div class="side-cards">
@@ -365,19 +198,14 @@
         <a href="https://maps.google.com/?q=岡山県岡山市中区徳吉町二丁目11番地25" target="_blank" rel="noopener" class="side-card__link">場所を見る</a>
       </div>
     </div>
-    <a href="./recruit.html" class="side-cta">
-      採用情報を見る
-      <span class="side-cta__icon">›</span>
-    </a>
+    <a href="./recruit.html" class="side-cta">採用情報を見る <span class="side-cta__icon">›</span></a>
     <p class="bm-copy" style="text-align:center; margin-top:14px;">© BLUE MOUSE All Rights Reserved.</p>
   </aside>
 
 </div>
 
-<!-- 進行ドット -->
 <div class="pf-dots" id="pf-dots">
-  <span class="pf-dot active"></span><span class="pf-dot"></span><span class="pf-dot"></span>
-  <span class="pf-dot"></span><span class="pf-dot"></span><span class="pf-dot"></span>
+  <span class="pf-dot active"></span><span class="pf-dot"></span><span class="pf-dot"></span><span class="pf-dot"></span>
   <span class="pf-dot"></span><span class="pf-dot"></span><span class="pf-dot"></span><span class="pf-dot"></span>
 </div>
 
@@ -386,79 +214,57 @@
 (function () {
   'use strict';
   var sections = Array.prototype.slice.call(document.querySelectorAll('.pf-section'));
-  var n        = sections.length;
-  var dotEls   = Array.prototype.slice.call(document.querySelectorAll('.pf-dot'));
+  var n = sections.length;
+  var dotEls = Array.prototype.slice.call(document.querySelectorAll('.pf-dot'));
   var dotsWrap = document.getElementById('pf-dots');
-  var spacer   = document.getElementById('pf-spacer');
+  var spacer = document.getElementById('pf-spacer');
   var titleEls = sections[0] ? Array.prototype.slice.call(sections[0].querySelectorAll('.pf-anim')) : [];
-
   var vh = window.innerHeight, ticking = false, prevBase = -1, prevNext = -1;
   var seen = sections.map(function () { return false; });
 
   function setup () { vh = window.innerHeight; spacer.style.height = (n * vh) + 'px'; }
-
   function animateIn (section) {
     Array.prototype.slice.call(section.querySelectorAll('.pf-anim')).forEach(function (el, i) {
       setTimeout(function () { el.classList.add('is-visible'); }, 80 + i * 120);
     });
   }
-
   function draw () {
     ticking = false;
     var st = window.pageYOffset; vh = window.innerHeight;
     var base = 0;
     for (var i = n - 2; i >= 0; i--) { if (st >= i * vh) { base = i; break; } }
     var next = Math.min(base + 1, n - 1);
-    var secSpan = vh;
-    var stRel = st - base * vh;
-
+    var secSpan = vh, stRel = st - base * vh;
     sections[base].style.transform = 'translateY(0)';
     sections[base].style.opacity = '';
-
     if (next !== base) {
-      var thr  = base === 0 ? 0.55 : 0.80;
-      var span = base === 0 ? 0.45 : 0.20;
+      var thr = base === 0 ? 0.55 : 0.80, span = base === 0 ? 0.45 : 0.20;
       var fade = stRel < secSpan * thr ? 1 : Math.max(0, 1 - (stRel - secSpan * thr) / (secSpan * span));
       sections[next].style.transform = 'translateY(0)';
       sections[next].style.opacity = String(1 - fade);
       if (!seen[next] && fade < 1) { seen[next] = true; animateIn(sections[next]); }
     }
-
-    /* タイトル（idx0）：スクロールでゆっくりフェードアウト */
     var tp = Math.min(1, Math.max(0, (st - vh * 0.05) / (vh * 0.85)));
     titleEls.forEach(function (el) {
-      if (tp > 0) {
-        el.style.transition = 'none';
-        el.style.opacity = String(Math.max(0, 1 - tp));
-        el.style.transform = 'translateX(' + Math.round(-tp * 16) + 'px)';
-      } else { el.style.transition = ''; el.style.opacity = ''; el.style.transform = ''; }
+      if (tp > 0) { el.style.transition = 'none'; el.style.opacity = String(Math.max(0, 1 - tp)); el.style.transform = 'translateX(' + Math.round(-tp * 16) + 'px)'; }
+      else { el.style.transition = ''; el.style.opacity = ''; el.style.transform = ''; }
     });
-
     if (base !== prevBase || next !== prevNext) {
       if (prevBase >= 0 && prevBase !== base && prevBase !== next) sections[prevBase].style.visibility = 'hidden';
       if (prevNext >= 0 && prevNext !== base && prevNext !== next) sections[prevNext].style.visibility = 'hidden';
-      sections[base].style.visibility = 'visible';
-      sections[next].style.visibility = 'visible';
+      sections[base].style.visibility = 'visible'; sections[next].style.visibility = 'visible';
       prevBase = base; prevNext = next;
     }
-
     if (!seen[base]) { seen[base] = true; animateIn(sections[base]); }
-
     var ty = Math.round(vh * Math.max(0, 1 - stRel / secSpan));
     var ai = ty < vh * 0.5 ? next : base;
     dotEls.forEach(function (d, j) { d.classList.toggle('active', j === ai); });
     if (dotsWrap) dotsWrap.classList.toggle('dark', !!sections[ai].getAttribute('data-dark'));
   }
-
   function onScroll () { if (!ticking) { requestAnimationFrame(draw); ticking = true; } }
 
-  /* ===== 1セクション単位のスクロールジャック ===== */
   var scrollLocked = false, touchStartY = 0;
-  function currentBase () {
-    var st = window.pageYOffset, b = 0;
-    for (var i = n - 2; i >= 0; i--) { if (st >= i * window.innerHeight) { b = i; break; } }
-    return b;
-  }
+  function currentBase () { var st = window.pageYOffset, b = 0; for (var i = n - 2; i >= 0; i--) { if (st >= i * window.innerHeight) { b = i; break; } } return b; }
   function goToSection (idx) {
     if (idx < 0 || idx > n - 1 || scrollLocked) return;
     scrollLocked = true;
@@ -466,31 +272,14 @@
     if (startY === targetY) { scrollLocked = false; return; }
     var startT = null, dur = 1000;
     function ease (t) { return t < .5 ? 2 * t * t : -1 + (4 - 2 * t) * t; }
-    function step (ts) {
-      if (!startT) startT = ts;
-      var p = Math.min((ts - startT) / dur, 1);
-      window.scrollTo(0, startY + (targetY - startY) * ease(p));
-      if (p < 1) requestAnimationFrame(step); else scrollLocked = false;
-    }
+    function step (ts) { if (!startT) startT = ts; var p = Math.min((ts - startT) / dur, 1); window.scrollTo(0, startY + (targetY - startY) * ease(p)); if (p < 1) requestAnimationFrame(step); else scrollLocked = false; }
     requestAnimationFrame(step);
   }
-  window.addEventListener('wheel', function (e) {
-    e.preventDefault();
-    if (scrollLocked) return;
-    goToSection(e.deltaY > 0 ? currentBase() + 1 : currentBase() - 1);
-  }, { passive: false });
+  window.addEventListener('wheel', function (e) { e.preventDefault(); if (scrollLocked) return; goToSection(e.deltaY > 0 ? currentBase() + 1 : currentBase() - 1); }, { passive: false });
   window.addEventListener('touchstart', function (e) { touchStartY = e.touches[0].clientY; }, { passive: true });
   window.addEventListener('touchmove', function (e) { e.preventDefault(); }, { passive: false });
-  window.addEventListener('touchend', function (e) {
-    if (scrollLocked) return;
-    var dy = touchStartY - e.changedTouches[0].clientY;
-    if (Math.abs(dy) < 5) return;
-    goToSection(dy > 0 ? currentBase() + 1 : currentBase() - 1);
-  }, { passive: true });
-  window.addEventListener('keydown', function (e) {
-    if (e.key === 'ArrowDown' || e.key === ' ') { e.preventDefault(); if (!scrollLocked) goToSection(currentBase() + 1); }
-    else if (e.key === 'ArrowUp') { e.preventDefault(); if (!scrollLocked) goToSection(currentBase() - 1); }
-  });
+  window.addEventListener('touchend', function (e) { if (scrollLocked) return; var dy = touchStartY - e.changedTouches[0].clientY; if (Math.abs(dy) < 5) return; goToSection(dy > 0 ? currentBase() + 1 : currentBase() - 1); }, { passive: true });
+  window.addEventListener('keydown', function (e) { if (e.key === 'ArrowDown' || e.key === ' ') { e.preventDefault(); if (!scrollLocked) goToSection(currentBase() + 1); } else if (e.key === 'ArrowUp') { e.preventDefault(); if (!scrollLocked) goToSection(currentBase() - 1); } });
 
   setup(); draw();
   setTimeout(function () { seen[0] = true; animateIn(sections[0]); }, 240);
