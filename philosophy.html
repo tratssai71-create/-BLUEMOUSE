@@ -2,7 +2,7 @@
 <html lang="ja">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="theme-color" content="#FFFEFB" />
   <title>BLUE MOUSEの想い | 主体性療育からIT療育へ</title>
   <meta name="description" content="主体性療育から、IT療育へ。経済的自立から逆算した、10年後のロードマップ。合同会社BLUE MOUSEが事業に込めた想いと全体像。" />
@@ -22,7 +22,7 @@
       font-family: "Inter", "Zen Kaku Gothic New", sans-serif !important;
     }
 
-    .pf-section { position: fixed; top: 0; left: 25vw; width: 50vw; height: 100vh; height: 100dvh; overflow: hidden; visibility: hidden; }
+    .pf-section { position: fixed; top: 0; left: 25vw; width: 50vw; height: 100vh; height: 100svh; overflow: hidden; visibility: hidden; }
     .pf-section[data-idx="0"] { visibility: visible; }
 
     .pf-title { background: var(--pf-paper); }
@@ -294,7 +294,6 @@
   }
   function draw () {
     ticking = false;
-    if (!primed) return; /* プライミング中（iOSバー縮小待ち）は演出を進めずsection0を固定表示 */
     var st = window.pageYOffset; vh = window.innerHeight;
     var base = 0;
     for (var i = n - 2; i >= 0; i--) { if (st >= i * vh) { base = i; break; } }
@@ -347,7 +346,7 @@
   }
   function onScroll () { if (!ticking) { requestAnimationFrame(draw); ticking = true; } }
 
-  var scrollLocked = false, touchStartY = 0, primed = false;
+  var scrollLocked = false, touchStartY = 0;
   function currentBase () { var st = window.pageYOffset, b = 0; for (var i = n - 2; i >= 0; i--) { if (st >= i * window.innerHeight) { b = i; break; } } return b; }
   function goToSection (idx) {
     if (idx < 0 || idx > n - 1 || scrollLocked) return;
@@ -359,36 +358,15 @@
     function step (ts) { if (!startT) startT = ts; var p = Math.min((ts - startT) / dur, 1); window.scrollTo(0, startY + (targetY - startY) * ease(p)); if (p < 1) requestAnimationFrame(step); else scrollLocked = false; }
     requestAnimationFrame(step);
   }
-  /* プライミング完了：vhを確定し、先頭(section0)には戻さず＝バー縮小を維持。最寄り、ただし最低section1へ */
-  function prime () { if (primed) return; primed = true; setup(); goToSection(Math.max(1, currentBase())); }
-  /* iOS Safari: visualViewportの高さ増加（=アドレスバー縮小）を検知してプライミング完了 */
-  if (window.visualViewport) {
-    var vvBase = window.visualViewport.height, vvTimer = null;
-    window.visualViewport.addEventListener('resize', function () {
-      var h = window.visualViewport.height;
-      if (!primed && h > vvBase + 16) prime();
-      vvBase = Math.max(vvBase, h);
-      /* バー変動中の連続resizeでsetup/drawを連発しない（重さ・がたつき防止）。落ち着いてから1回だけ */
-      if (primed) { clearTimeout(vvTimer); vvTimer = setTimeout(function () { setup(); draw(); }, 160); }
-    });
-  }
-
-  window.addEventListener('wheel', function (e) { primed = true; e.preventDefault(); if (scrollLocked) return; goToSection(e.deltaY > 0 ? currentBase() + 1 : currentBase() - 1); }, { passive: false });
+  window.addEventListener('wheel', function (e) { e.preventDefault(); if (scrollLocked) return; goToSection(e.deltaY > 0 ? currentBase() + 1 : currentBase() - 1); }, { passive: false });
   window.addEventListener('touchstart', function (e) { touchStartY = e.touches[0].clientY; }, { passive: true });
-  /* プライミング前はネイティブスクロールを通してバーを縮小させ、完了後はジャック */
-  window.addEventListener('touchmove', function (e) { if (primed) e.preventDefault(); }, { passive: false });
-  window.addEventListener('touchend', function (e) {
-    if (!primed) { if (window.pageYOffset > 4) prime(); return; }
-    if (scrollLocked) return;
-    var dy = touchStartY - e.changedTouches[0].clientY;
-    if (Math.abs(dy) < 5) return;
-    goToSection(dy > 0 ? currentBase() + 1 : currentBase() - 1);
-  }, { passive: true });
-  window.addEventListener('keydown', function (e) { if (e.key === 'ArrowDown' || e.key === ' ') { e.preventDefault(); primed = true; if (!scrollLocked) goToSection(currentBase() + 1); } else if (e.key === 'ArrowUp') { e.preventDefault(); primed = true; if (!scrollLocked) goToSection(currentBase() - 1); } });
+  window.addEventListener('touchmove', function (e) { e.preventDefault(); }, { passive: false });
+  window.addEventListener('touchend', function (e) { if (scrollLocked) return; var dy = touchStartY - e.changedTouches[0].clientY; if (Math.abs(dy) < 5) return; goToSection(dy > 0 ? currentBase() + 1 : currentBase() - 1); }, { passive: true });
+  window.addEventListener('keydown', function (e) { if (e.key === 'ArrowDown' || e.key === ' ') { e.preventDefault(); if (!scrollLocked) goToSection(currentBase() + 1); } else if (e.key === 'ArrowUp') { e.preventDefault(); if (!scrollLocked) goToSection(currentBase() - 1); } });
 
   setup(); draw();
   setTimeout(function () { seen[0] = true; animateIn(sections[0]); }, 240);
-  window.addEventListener('scroll', function () { if (!primed && window.pageYOffset > window.innerHeight * 0.5) prime(); onScroll(); }, { passive: true });
+  window.addEventListener('scroll', onScroll, { passive: true });
   window.addEventListener('resize', function () { setup(); draw(); });
 })();
 </script>
