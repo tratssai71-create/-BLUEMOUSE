@@ -286,6 +286,7 @@
     locked = true;
   }
   function animateIn (section) {
+    section.style.visibility = 'visible'; /* hidden状態でis-visibleが付くとフェードがスキップされるため必ずvisibleに */
     var sIdx = +section.getAttribute('data-idx');
     var els = Array.prototype.slice.call(section.querySelectorAll('.pf-anim'));
     /* section3（13万円）: キッカーとオレンジ数字を先に出し、本文との間に「間」を作って強調 */
@@ -424,8 +425,8 @@
   window.addEventListener('touchend', function (e) {
     var dy = touchStartY - e.changedTouches[0].clientY;
     if (inPrologue()) {
-      if (window.pageYOffset >= PRO * 0.3) goToSection(0); /* 十分スクロール後にジャックへ（バー縮小済みでlock） */
-      else if (window.pageYOffset > 0) window.scrollTo(0, 0); /* 中途半端なら先頭へ戻す */
+      if (window.pageYOffset >= PRO * 0.12) goToSection(0); /* 少しスクロールでジャックへ（バー縮小には十分） */
+      else if (window.pageYOffset > 0) window.scrollTo(0, 0); /* ごく僅かなら先頭へ戻す */
       return;
     }
     if (scrollLocked) return;
@@ -440,7 +441,7 @@
   setup(); draw();
   /* プロローグを半分以上ネイティブスクロールしたらsection0へスナップ（慣性での飛びすぎ防止） */
   window.addEventListener('scroll', function () {
-    if (!scrollLocked && window.pageYOffset > 0 && window.pageYOffset < PRO && window.pageYOffset >= PRO * 0.5) goToSection(0);
+    if (!scrollLocked && window.pageYOffset > 0 && window.pageYOffset < PRO && window.pageYOffset >= PRO * 0.25) goToSection(0);
     onScroll();
   }, { passive: true });
   function relayout () {
