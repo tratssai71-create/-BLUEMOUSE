@@ -222,8 +222,7 @@
                   transform .9s cubic-bezier(.22,1,.36,1);
     }
     .ch-anim.is-visible { opacity: 1; transform: none; }
-    .ch-title .ch-anim { transform: translateX(40px); }
-    .ch-title .ch-anim.is-visible { opacity: 1; transform: none; }
+    .ch-title .ch-anim { transform: translateY(30px); }
     .ch-hero .ch-anim { opacity: 0; transform: translateX(48px); }
     .ch-hero .ch-anim.is-visible { opacity: 1; transform: none; }
     .ch-section[data-idx="3"] .ch-anim { transform: translateX(40px); }
@@ -638,8 +637,10 @@
       rafSlideInEl(s2LeadEl, 60);                                    /* タイトルと同じ初動60ms */
       rafSlideInEl(s2BodyEl, 60 + 110, function () { s3Anim = false; }); /* 110msずらし */
     } else {
+      var baseDelay = sIdx === 0 ? 80 : 60;
+      var step      = sIdx === 0 ? 120 : interval;
       Array.from(section.querySelectorAll('.ch-anim')).forEach(function (el, i) {
-        setTimeout(function () { el.classList.add('is-visible'); }, 60 + i * interval);
+        setTimeout(function () { el.classList.add('is-visible'); }, baseDelay + i * step);
       });
     }
     /* section5: clip-path ワイプ起動 */
