@@ -276,12 +276,12 @@
   var vh = window.innerHeight, ticking = false, prevBase = -1, prevNext = -1, locked = false, lockedVh = 0;
   var seen = sections.map(function () { return false; });
 
-  function setup () { if (locked) return; vh = window.innerHeight; PRO = prologue ? prologue.offsetHeight : 0; spacer.style.height = (n * vh) + 'px'; }
+  function setup () { if (locked) return; vh = window.innerHeight; PRO = prologue ? Math.round(prologue.offsetHeight) : 0; spacer.style.height = (n * vh) + 'px'; }
   /* プロローグを抜けてジャックに入る瞬間にvh/レイアウトを確定。以降バー変動を無視して演出を安定させる。
      ※section高さはpx固定しない（reflowで初回遷移・フェードが乱れるため）。CSSの100dvh＝確定vhに任せる */
   function lockLayout () {
     vh = window.innerHeight; lockedVh = vh;
-    PRO = prologue ? prologue.offsetHeight : 0;
+    PRO = prologue ? Math.round(prologue.offsetHeight) : 0;
     spacer.style.height = (n * vh) + 'px';
     locked = true;
   }
@@ -343,11 +343,12 @@
   function draw () {
     ticking = false;
     var st = window.pageYOffset - PRO; /* プロローグ分を引いたジャック領域内の相対スクロール（vhはlock済み固定値） */
-    if (st < 0) { /* プロローグ領域：ジャック演出は開始前。進行ドットだけ先頭に */
+    if (st < -2) { /* プロローグ領域：ジャック演出は開始前。進行ドットだけ先頭に（-2pxは丸め誤差マージン） */
       dotEls.forEach(function (d, j) { d.classList.toggle('active', j === 0); });
       if (dotsWrap) dotsWrap.classList.remove('dark');
       return;
     }
+    if (st < 0) st = 0; /* 丸め誤差で僅かに負のときは0扱い（section0のフェードを確実に発火） */
     var base = 0;
     for (var i = n - 2; i >= 0; i--) { if (st >= i * vh) { base = i; break; } }
     var next = Math.min(base + 1, n - 1);
@@ -359,8 +360,8 @@
       var fade = stRel < secSpan * thr ? 1 : Math.max(0, 1 - (stRel - secSpan * thr) / (secSpan * span));
       sections[next].style.transform = 'translateY(0)';
       sections[next].style.opacity = String(1 - fade);
-      /* 子テキストのフェードはbase到達時に統一（next先行だと全体opacityと二重になり初回が潰れるため）。ここではセクション全体のクロスフェードのみ */
-      if (fade >= 1 && seen[next]) { seen[next] = false; resetAnim(sections[next]); }
+      if (fade < 1) { if (!seen[next] && next !== 3) { seen[next] = true; animateIn(sections[next]); } }
+      else if (seen[next]) { seen[next] = false; resetAnim(sections[next]); }
     }
     var tp = Math.min(1, Math.max(0, (st - vh * 0.05) / (vh * 0.85)));
     titleEls.forEach(function (el) {
