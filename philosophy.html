@@ -260,8 +260,8 @@
         var d;
         if (el.classList.contains('pf-eyebrow'))         d = 40;   /* Reality（キッカー）を最速 */
         else if (el.classList.contains('pf-fignum'))     d = 160;  /* 13万円（オレンジ）を続けて */
-        else if (el.classList.contains('pf-text__lead')) d = 760;  /* たっぷり間を空けて本文 */
-        else                                             d = 920;
+        else if (el.classList.contains('pf-text__lead')) d = 1000;  /* たっぷり間を空けて本文 */
+        else                                             d = 1180;
         setTimeout(function () { el.classList.add('is-visible'); }, d);
       });
       return;
@@ -303,8 +303,8 @@
         var off;
         if (el.classList.contains('pf-eyebrow'))         off = 0;
         else if (el.classList.contains('pf-fignum'))     off = 0.05;
-        else if (el.classList.contains('pf-text__lead')) off = 0.22;
-        else                                             off = 0.30;
+        else if (el.classList.contains('pf-text__lead')) off = 0.32;
+        else                                             off = 0.42;
         var sp = Math.min(1, Math.max(0, (stRel - secSpan * (0.05 + off)) / (secSpan * 0.52)));
         if (sp > 0) { el.style.transition = 'none'; el.style.opacity = String(Math.max(0, 1 - sp)); el.style.transform = 'translateX(' + Math.round(-sp * 16) + 'px)'; }
         else { el.style.transition = ''; el.style.opacity = ''; el.style.transform = ''; }
