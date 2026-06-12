@@ -277,7 +277,7 @@
       var fade = stRel < secSpan * thr ? 1 : Math.max(0, 1 - (stRel - secSpan * thr) / (secSpan * span));
       sections[next].style.transform = 'translateY(0)';
       sections[next].style.opacity = String(1 - fade);
-      if (fade < 1) { if (!seen[next]) { seen[next] = true; animateIn(sections[next]); } }
+      if (fade < 1) { if (!seen[next] && next !== 3) { seen[next] = true; animateIn(sections[next]); } }
       else if (seen[next]) { seen[next] = false; resetAnim(sections[next]); }
     }
     var tp = Math.min(1, Math.max(0, (st - vh * 0.05) / (vh * 0.85)));
