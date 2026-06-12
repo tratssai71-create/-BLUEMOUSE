@@ -263,6 +263,13 @@
 (function () {
   'use strict';
   if ('scrollRestoration' in history) history.scrollRestoration = 'manual'; /* ブラウザの自動スクロール位置復元を無効化（常にプロローグから開始） */
+  /* 和文フォント(Zen Kaku)を積極ロード。初回スクロール時に未ロードだとfont-display:swapの
+     再レンダリングがopacityトランジションを潰し「文章だけパッと表示」になるため */
+  if (document.fonts && document.fonts.load) {
+    document.fonts.load('700 2rem "Zen Kaku Gothic New"');
+    document.fonts.load('400 1rem "Zen Kaku Gothic New"');
+    document.fonts.load('900 2rem "Zen Kaku Gothic New"');
+  }
   var sections = Array.prototype.slice.call(document.querySelectorAll('.pf-section'));
   var n = sections.length;
   var dotEls = Array.prototype.slice.call(document.querySelectorAll('.pf-dot'));
@@ -444,6 +451,8 @@
   });
 
   setup(); draw();
+  /* フォント読込完了後に再レイアウト（プロローグ表示中＝lock前のみ）。スクロール演出開始時にフォント確定済みに */
+  if (document.fonts && document.fonts.ready) { document.fonts.ready.then(function () { if (!locked) { setup(); draw(); } }); }
   /* プロローグを半分以上ネイティブスクロールしたらsection0へスナップ（慣性での飛びすぎ防止） */
   window.addEventListener('scroll', function () {
     if (!scrollLocked && window.pageYOffset > 0 && window.pageYOffset < PRO && window.pageYOffset >= PRO * 0.08) goToSection(0, 420);
