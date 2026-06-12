@@ -273,9 +273,9 @@
       els.forEach(function (el) {
         var d;
         if (el.classList.contains('pf-eyebrow'))      d = 40;    /* Roadmap（キッカー）を最速 */
-        else if (el.classList.contains('pf-lead-em')) d = 160;   /* オレンジの「土台」「武器」を先行強調 */
-        else if (el.classList.contains('pf-lead-tx')) d = 720;   /* 文章の通常部分 */
-        else                                          d = 1300;  /* たっぷり間を空けて補足body */
+        else if (el.classList.contains('pf-lead-em')) d = 160;   /* オレンジの「土台」「武器」を先行強調（13万円の数字と同位置） */
+        else if (el.classList.contains('pf-lead-tx')) d = 1300;  /* 通常文（13万円のleadと同位置） */
+        else                                          d = 1500;  /* 補足body（13万円のbodyと同位置） */
         setTimeout(function () { el.classList.add('is-visible'); }, d);
       });
       return;
@@ -318,8 +318,8 @@
         var off;
         if (el.classList.contains('pf-eyebrow'))         off = 0;
         else if (el.classList.contains('pf-fignum'))     off = 0.05;
-        else if (el.classList.contains('pf-lead-em'))    off = 0.05; /* section7: オレンジを先行退出 */
-        else if (el.classList.contains('pf-lead-tx'))    off = 0.30; /* section7: 通常文 */
+        else if (el.classList.contains('pf-lead-em'))    off = 0.05; /* section7: オレンジを先行退出（13万円の数字と同） */
+        else if (el.classList.contains('pf-lead-tx'))    off = 0.40; /* section7: 通常文（13万円のleadと同） */
         else if (el.classList.contains('pf-text__lead')) off = 0.40; /* section3: lead */
         else                                             off = 0.50; /* body */
         var sp = Math.min(1, Math.max(0, (stRel - secSpan * (0.05 + off)) / (secSpan * 0.45)));
