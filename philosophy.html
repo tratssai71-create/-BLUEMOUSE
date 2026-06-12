@@ -252,9 +252,9 @@
   function setup () { vh = window.innerHeight; spacer.style.height = (n * vh) + 'px'; }
   function animateIn (section) {
     var sIdx = +section.getAttribute('data-idx');
-    /* section3（13万円）は child.html タイトルと同じ stagger 値 */
-    var base = sIdx === 3 ? 60 : 80;
-    var step = sIdx === 3 ? 110 : 120;
+    /* section3（13万円）は section0（タイトル）と同じ stagger 値 */
+    var base = 80;
+    var step = 120;
     Array.prototype.slice.call(section.querySelectorAll('.pf-anim')).forEach(function (el, i) {
       setTimeout(function () { el.classList.add('is-visible'); }, base + i * step);
     });
