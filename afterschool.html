@@ -12,7 +12,7 @@
   <link rel="stylesheet" href="./layout.css?v=45" />
   <style>
     :root {
-      --pf-coral: #f2906c; --pf-coral-dark: #e87e59; --pf-teal: #5fc1c7;
+      --pf-coral: #f2906c; --pf-coral-dark: #e87e59; --pf-teal: #5fc1c7; --pf-yellow: #f5d24a;
       --pf-cream: #fffdf7; --pf-paper: #FFFEFB; --pf-ink: #2a1d12; --pf-ink-soft: #6b5a4c;
       --pf-scrim: 40, 30, 24;
     }
@@ -30,7 +30,8 @@
     .pf-title__en { font-family: "Inter", sans-serif; font-size: .8rem; font-weight: 600; letter-spacing: .42em; text-transform: uppercase; color: var(--pf-teal); display: inline-flex; align-items: center; gap: 14px; margin: 0 0 26px; }
     .pf-title__en::before, .pf-title__en::after { content: ""; width: 28px; height: 1px; background: currentColor; opacity: .85; }
     .pf-title__ja { font-family: "Zen Kaku Gothic New", sans-serif; font-size: clamp(2rem, 4.8vw, 3.4rem); font-weight: 700; color: var(--pf-ink); letter-spacing: .06em; line-height: 1.4; margin: 0; }
-    .pf-title__sub { font-size: clamp(.86rem, 1.3vw, 1rem); font-weight: 400; color: var(--pf-ink-soft); letter-spacing: .06em; line-height: 1.9; margin: 26px 0 0; }
+    .pf-title__spark { display: block; width: 44px; height: 4px; border-radius: 4px; background: var(--pf-yellow); margin: 24px 0 0; }
+    .pf-title__sub { font-size: clamp(.86rem, 1.3vw, 1rem); font-weight: 400; color: var(--pf-ink-soft); letter-spacing: .06em; line-height: 1.9; margin: 22px 0 0; }
 
     .pf-photo { background: #1a130c; }
     .pf-photo__img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: center; display: block; }
@@ -113,6 +114,7 @@
       <div class="pf-title__inner">
         <p class="pf-title__en pf-anim">After School</p>
         <h1 class="pf-title__ja pf-anim">放課後等<br>デイサービス</h1>
+        <span class="pf-title__spark pf-anim" aria-hidden="true"></span>
         <p class="pf-title__sub pf-anim">強みとなる「見える力」を、武器に。</p>
       </div>
     </section>
