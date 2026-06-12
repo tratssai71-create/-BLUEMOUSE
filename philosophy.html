@@ -71,6 +71,7 @@
     .pf-title .pf-anim.is-visible, .pf-photo .pf-anim.is-visible { transform: none; }
     .pf-section[data-idx="3"] .pf-anim, .pf-section[data-idx="7"] .pf-anim { transform: translateX(40px); }
     .pf-section[data-idx="3"] .pf-anim.is-visible, .pf-section[data-idx="7"] .pf-anim.is-visible { transform: none; }
+    .pf-section[data-idx="7"] .pf-text__lead .pf-anim { display: inline-block; } /* transformを効かせる */
 
     .pf-dots { position: fixed; right: calc(12.5vw - 3px); top: 50%; transform: translateY(-50%); z-index: 60; display: flex; flex-direction: column; gap: 14px; }
     .pf-dot { width: 6px; height: 6px; border-radius: 50%; background: rgba(42,29,18,.20); transition: background .35s, transform .35s; }
@@ -162,7 +163,7 @@
     <!-- [7] ロードマップ（リードのみ） -->
     <section class="pf-section pf-text" style="z-index:8" data-idx="7">
       <p class="pf-eyebrow pf-anim">Roadmap</p>
-      <p class="pf-text__lead pf-anim">まず<em>土台</em>を育て、<br>次に<em>武器</em>を手にする。</p>
+      <p class="pf-text__lead"><span class="pf-anim pf-lead-tx">まず</span><em class="pf-anim pf-lead-em">土台</em><span class="pf-anim pf-lead-tx">を育て、</span><br><span class="pf-anim pf-lead-tx">次に</span><em class="pf-anim pf-lead-em">武器</em><span class="pf-anim pf-lead-tx">を手にする。</span></p>
       <p class="pf-text__body pf-anim">その実践が、二つの事業です。</p>
     </section>
 
@@ -267,13 +268,14 @@
       });
       return;
     }
-    /* section7（Roadmap）: キッカー→主役lead（コーラルのem）を先行、補足bodyを遅らせて強調 */
+    /* section7（Roadmap）: キッカー→オレンジの「土台」「武器」を先行強調→通常文→補足の順 */
     if (sIdx === 7) {
       els.forEach(function (el) {
         var d;
-        if (el.classList.contains('pf-eyebrow'))         d = 40;   /* Roadmap（キッカー）を最速 */
-        else if (el.classList.contains('pf-text__lead')) d = 160;  /* 「まず土台を育て…」を続けて */
-        else                                             d = 1300; /* たっぷり間を空けて補足 */
+        if (el.classList.contains('pf-eyebrow'))      d = 40;    /* Roadmap（キッカー）を最速 */
+        else if (el.classList.contains('pf-lead-em')) d = 160;   /* オレンジの「土台」「武器」を先行強調 */
+        else if (el.classList.contains('pf-lead-tx')) d = 720;   /* 文章の通常部分 */
+        else                                          d = 1300;  /* たっぷり間を空けて補足body */
         setTimeout(function () { el.classList.add('is-visible'); }, d);
       });
       return;
@@ -316,8 +318,10 @@
         var off;
         if (el.classList.contains('pf-eyebrow'))         off = 0;
         else if (el.classList.contains('pf-fignum'))     off = 0.05;
-        else if (el.classList.contains('pf-text__lead')) off = (base === 7 ? 0.05 : 0.40); /* section7はleadが主役なので先行退出 */
-        else                                             off = 0.50;
+        else if (el.classList.contains('pf-lead-em'))    off = 0.05; /* section7: オレンジを先行退出 */
+        else if (el.classList.contains('pf-lead-tx'))    off = 0.30; /* section7: 通常文 */
+        else if (el.classList.contains('pf-text__lead')) off = 0.40; /* section3: lead */
+        else                                             off = 0.50; /* body */
         var sp = Math.min(1, Math.max(0, (stRel - secSpan * (0.05 + off)) / (secSpan * 0.45)));
         if (sp > 0) { el.style.transition = 'none'; el.style.opacity = String(Math.max(0, 1 - sp)); el.style.transform = 'translateX(' + Math.round(-sp * 16) + 'px)'; }
         else { el.style.transition = ''; el.style.opacity = ''; el.style.transform = ''; }
