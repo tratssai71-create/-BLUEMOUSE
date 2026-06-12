@@ -259,9 +259,9 @@
       els.forEach(function (el) {
         var d;
         if (el.classList.contains('pf-eyebrow'))         d = 40;   /* Reality（キッカー）を最速 */
-        else if (el.classList.contains('pf-fignum'))     d = 150;  /* 13万円（オレンジ）を続けて */
-        else if (el.classList.contains('pf-text__lead')) d = 480;  /* 間を空けて本文 */
-        else                                             d = 600;
+        else if (el.classList.contains('pf-fignum'))     d = 160;  /* 13万円（オレンジ）を続けて */
+        else if (el.classList.contains('pf-text__lead')) d = 760;  /* たっぷり間を空けて本文 */
+        else                                             d = 920;
         setTimeout(function () { el.classList.add('is-visible'); }, d);
       });
       return;
@@ -297,11 +297,16 @@
       if (tp > 0) { el.style.transition = 'none'; el.style.opacity = String(Math.max(0, 1 - tp)); el.style.transform = 'translateX(' + Math.round(-tp * 16) + 'px)'; }
       else { el.style.transition = ''; el.style.opacity = ''; el.style.transform = ''; }
     });
-    /* section3（13万円）フェードアウト: child タイトルと同じ距離・タイミング */
+    /* section3（13万円）フェードアウト: フェードインと同様にキッカー・数字を先に、本文を遅らせて退出 */
     if (base === 3) {
-      var s3p = Math.min(1, Math.max(0, (stRel - secSpan * 0.05) / (secSpan * 0.85)));
       s3Els.forEach(function (el) {
-        if (s3p > 0) { el.style.transition = 'none'; el.style.opacity = String(Math.max(0, 1 - s3p)); el.style.transform = 'translateX(' + Math.round(-s3p * 16) + 'px)'; }
+        var off;
+        if (el.classList.contains('pf-eyebrow'))         off = 0;
+        else if (el.classList.contains('pf-fignum'))     off = 0.05;
+        else if (el.classList.contains('pf-text__lead')) off = 0.22;
+        else                                             off = 0.30;
+        var sp = Math.min(1, Math.max(0, (stRel - secSpan * (0.05 + off)) / (secSpan * 0.52)));
+        if (sp > 0) { el.style.transition = 'none'; el.style.opacity = String(Math.max(0, 1 - sp)); el.style.transform = 'translateX(' + Math.round(-sp * 16) + 'px)'; }
         else { el.style.transition = ''; el.style.opacity = ''; el.style.transform = ''; }
       });
     } else {
