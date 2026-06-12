@@ -262,6 +262,7 @@
 <script>
 (function () {
   'use strict';
+  if ('scrollRestoration' in history) history.scrollRestoration = 'manual'; /* ブラウザの自動スクロール位置復元を無効化（常にプロローグから開始） */
   var sections = Array.prototype.slice.call(document.querySelectorAll('.pf-section'));
   var n = sections.length;
   var dotEls = Array.prototype.slice.call(document.querySelectorAll('.pf-dot'));
@@ -311,6 +312,21 @@
   /* 画面外に出たセクションはアニメをリセット（再訪のたびに再生されるように） */
   function resetAnim (section) {
     Array.prototype.slice.call(section.querySelectorAll('.pf-anim')).forEach(function (el) { el.classList.remove('is-visible'); });
+  }
+  /* Safari再起動・タブ復元などで途中位置から開かれた時、プロローグに戻してバー縮小の導線を再提供 */
+  function resetToPrologue () {
+    window.scrollTo(0, 0);
+    prevBase = -1; prevNext = -1;
+    seen = sections.map(function () { return false; });
+    sections.forEach(function (sec, i) {
+      sec.style.visibility = i === 0 ? 'visible' : 'hidden';
+      sec.style.opacity = ''; sec.style.transform = '';
+      resetAnim(sec);
+    });
+    titleEls.forEach(function (el) { el.style.transition = ''; el.style.opacity = ''; el.style.transform = ''; });
+    s3Els.forEach(function (el) { el.style.transition = ''; el.style.opacity = ''; el.style.transform = ''; });
+    s7Els.forEach(function (el) { el.style.transition = ''; el.style.opacity = ''; el.style.transform = ''; });
+    draw();
   }
   function draw () {
     ticking = false;
@@ -416,6 +432,8 @@
   function relayout () { setup(); draw(); }
   window.addEventListener('resize', relayout);
   if (window.visualViewport) window.visualViewport.addEventListener('resize', relayout);
+  /* Safari再起動・タブ復元で途中位置から開かれた時、プロローグへ戻す（次のスワイプでバー再縮小） */
+  window.addEventListener('pageshow', function () { setup(); if (window.pageYOffset > 4) resetToPrologue(); });
 })();
 </script>
 </body>
