@@ -277,11 +277,11 @@
   var seen = sections.map(function () { return false; });
 
   function setup () { if (locked) return; vh = window.innerHeight; PRO = prologue ? prologue.offsetHeight : 0; spacer.style.height = (n * vh) + 'px'; }
-  /* プロローグを抜けてジャックに入る瞬間にvh/レイアウトを確定。以降バー変動を無視して演出を安定させる */
+  /* プロローグを抜けてジャックに入る瞬間にvh/レイアウトを確定。以降バー変動を無視して演出を安定させる。
+     ※section高さはpx固定しない（reflowで初回遷移・フェードが乱れるため）。CSSの100dvh＝確定vhに任せる */
   function lockLayout () {
     vh = window.innerHeight; lockedVh = vh;
     PRO = prologue ? prologue.offsetHeight : 0;
-    sections.forEach(function (s) { s.style.height = vh + 'px'; });
     spacer.style.height = (n * vh) + 'px';
     locked = true;
   }
