@@ -312,13 +312,20 @@
     } else {
       s3Els.forEach(function (el) { el.style.transition = ''; el.style.opacity = ''; el.style.transform = ''; });
     }
+    var enterFromAbove = false;
     if (base !== prevBase || next !== prevNext) {
+      if (base === 3 && prevBase > 3) enterFromAbove = true; /* section4側から逆スクロールで戻ってきた */
       if (prevBase >= 0 && prevBase !== base && prevBase !== next) { sections[prevBase].style.visibility = 'hidden'; seen[prevBase] = false; resetAnim(sections[prevBase]); }
       if (prevNext >= 0 && prevNext !== base && prevNext !== next) { sections[prevNext].style.visibility = 'hidden'; seen[prevNext] = false; resetAnim(sections[prevNext]); }
       sections[base].style.visibility = 'visible'; sections[next].style.visibility = 'visible';
       prevBase = base; prevNext = next;
     }
-    if (!seen[base]) { seen[base] = true; animateIn(sections[base]); }
+    if (!seen[base]) {
+      seen[base] = true;
+      /* section3に逆スクロールで戻った時はanimateInのタイマーを使わず、is-visibleを即付与してフェードアウトの逆再生に委ねる（チラつき防止） */
+      if (base === 3 && enterFromAbove) { s3Els.forEach(function (el) { el.classList.add('is-visible'); }); }
+      else { animateIn(sections[base]); }
+    }
     var ty = Math.round(vh * Math.max(0, 1 - stRel / secSpan));
     var ai = ty < vh * 0.5 ? next : base;
     dotEls.forEach(function (d, j) { d.classList.toggle('active', j === ai); });
