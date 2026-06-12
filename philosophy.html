@@ -294,6 +294,7 @@
   }
   function draw () {
     ticking = false;
+    if (!primed) return; /* プライミング中（iOSバー縮小待ち）は演出を進めずsection0を固定表示 */
     var st = window.pageYOffset; vh = window.innerHeight;
     var base = 0;
     for (var i = n - 2; i >= 0; i--) { if (st >= i * vh) { base = i; break; } }
@@ -358,16 +359,17 @@
     function step (ts) { if (!startT) startT = ts; var p = Math.min((ts - startT) / dur, 1); window.scrollTo(0, startY + (targetY - startY) * ease(p)); if (p < 1) requestAnimationFrame(step); else scrollLocked = false; }
     requestAnimationFrame(step);
   }
-  /* プライミング完了：先頭(section0)には戻さず＝バー縮小を維持。最寄り、ただし最低section1へ */
-  function prime () { if (primed) return; primed = true; goToSection(Math.max(1, currentBase())); }
+  /* プライミング完了：vhを確定し、先頭(section0)には戻さず＝バー縮小を維持。最寄り、ただし最低section1へ */
+  function prime () { if (primed) return; primed = true; setup(); goToSection(Math.max(1, currentBase())); }
   /* iOS Safari: visualViewportの高さ増加（=アドレスバー縮小）を検知してプライミング完了 */
   if (window.visualViewport) {
-    var vvBase = window.visualViewport.height;
+    var vvBase = window.visualViewport.height, vvTimer = null;
     window.visualViewport.addEventListener('resize', function () {
       var h = window.visualViewport.height;
       if (!primed && h > vvBase + 16) prime();
       vvBase = Math.max(vvBase, h);
-      setup(); draw();
+      /* バー変動中の連続resizeでsetup/drawを連発しない（重さ・がたつき防止）。落ち着いてから1回だけ */
+      if (primed) { clearTimeout(vvTimer); vvTimer = setTimeout(function () { setup(); draw(); }, 160); }
     });
   }
 
@@ -386,7 +388,7 @@
 
   setup(); draw();
   setTimeout(function () { seen[0] = true; animateIn(sections[0]); }, 240);
-  window.addEventListener('scroll', onScroll, { passive: true });
+  window.addEventListener('scroll', function () { if (!primed && window.pageYOffset > window.innerHeight * 0.5) prime(); onScroll(); }, { passive: true });
   window.addEventListener('resize', function () { setup(); draw(); });
 })();
 </script>
