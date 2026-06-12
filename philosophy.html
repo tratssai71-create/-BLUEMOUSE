@@ -253,10 +253,21 @@
   function setup () { vh = window.innerHeight; spacer.style.height = (n * vh) + 'px'; }
   function animateIn (section) {
     var sIdx = +section.getAttribute('data-idx');
-    /* section3（13万円）は section0（タイトル）と同じ stagger 値 */
-    var base = 80;
-    var step = 120;
-    Array.prototype.slice.call(section.querySelectorAll('.pf-anim')).forEach(function (el, i) {
+    var els = Array.prototype.slice.call(section.querySelectorAll('.pf-anim'));
+    /* section3（13万円）: キッカーとオレンジ数字を先に出し、本文との間に「間」を作って強調 */
+    if (sIdx === 3) {
+      els.forEach(function (el) {
+        var d;
+        if (el.classList.contains('pf-eyebrow'))         d = 40;   /* Reality（キッカー）を最速 */
+        else if (el.classList.contains('pf-fignum'))     d = 150;  /* 13万円（オレンジ）を続けて */
+        else if (el.classList.contains('pf-text__lead')) d = 480;  /* 間を空けて本文 */
+        else                                             d = 600;
+        setTimeout(function () { el.classList.add('is-visible'); }, d);
+      });
+      return;
+    }
+    var base = 80, step = 120;
+    els.forEach(function (el, i) {
       setTimeout(function () { el.classList.add('is-visible'); }, base + i * step);
     });
   }
