@@ -593,7 +593,38 @@
     drawer.querySelector('.bm-drawer-close').addEventListener('click', closeDrawer);
   }
 
+  /* ---- PWA メタタグ / manifest を全ページに注入 ---- */
+  function setupPWA() {
+    var head = document.head;
+    var base = (function() {
+      var p = window.location.pathname;
+      var m = p.match(/^\/([-\w]+)\//);
+      return m ? '/' + m[1] + '/' : '/';
+    })();
+
+    function addMeta(name, content) {
+      if (document.querySelector('meta[name="' + name + '"]')) return;
+      var m = document.createElement('meta');
+      m.name = name; m.content = content;
+      head.appendChild(m);
+    }
+    function addLink(rel, href, extra) {
+      if (document.querySelector('link[rel="' + rel + '"]')) return;
+      var l = document.createElement('link');
+      l.rel = rel; l.href = href;
+      if (extra) Object.keys(extra).forEach(function(k){ l[k] = extra[k]; });
+      head.appendChild(l);
+    }
+
+    addLink('manifest', base + 'manifest.json');
+    addMeta('apple-mobile-web-app-capable', 'yes');
+    addMeta('apple-mobile-web-app-status-bar-style', 'default');
+    addMeta('apple-mobile-web-app-title', 'BLUE MOUSE');
+    addLink('apple-touch-icon', base + 'logo.png');
+  }
+
   function init() {
+    setupPWA();
     setActive();
     setupToggle();
     setupObserver();

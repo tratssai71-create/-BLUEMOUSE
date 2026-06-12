@@ -1,0 +1,22 @@
+{
+  "name": "BLUE MOUSE",
+  "short_name": "BLUE MOUSE",
+  "description": "放課後等デイサービス・児童発達支援 | 合同会社BLUEMOUSE",
+  "start_url": "/-BLUEMOUSE/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#FFFEFB",
+  "theme_color": "#5fc1c7",
+  "icons": [
+    {
+      "src": "./logo.webp",
+      "sizes": "192x192",
+      "type": "image/webp"
+    },
+    {
+      "src": "./logo.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
