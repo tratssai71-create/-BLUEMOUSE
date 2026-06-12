@@ -359,8 +359,8 @@
       var fade = stRel < secSpan * thr ? 1 : Math.max(0, 1 - (stRel - secSpan * thr) / (secSpan * span));
       sections[next].style.transform = 'translateY(0)';
       sections[next].style.opacity = String(1 - fade);
-      if (fade < 1) { if (!seen[next] && next !== 3) { seen[next] = true; animateIn(sections[next]); } }
-      else if (seen[next]) { seen[next] = false; resetAnim(sections[next]); }
+      /* 子テキストのフェードはbase到達時に統一（next先行だと全体opacityと二重になり初回が潰れるため）。ここではセクション全体のクロスフェードのみ */
+      if (fade >= 1 && seen[next]) { seen[next] = false; resetAnim(sections[next]); }
     }
     var tp = Math.min(1, Math.max(0, (st - vh * 0.05) / (vh * 0.85)));
     titleEls.forEach(function (el) {
@@ -401,13 +401,13 @@
 
   var scrollLocked = false, touchStartY = 0;
   function currentBase () { var st = window.pageYOffset - PRO, b = 0; for (var i = n - 2; i >= 0; i--) { if (st >= i * vh) { b = i; break; } } return Math.max(0, b); }
-  function goToSection (idx) {
+  function goToSection (idx, dur) {
     if (idx < 0 || idx > n - 1 || scrollLocked) return;
     if (!locked) lockLayout(); /* プロローグ→ジャック移行時にレイアウトを確定 */
     scrollLocked = true;
     var startY = window.pageYOffset, targetY = PRO + idx * vh;
     if (startY === targetY) { scrollLocked = false; return; }
-    var startT = null, dur = 1000;
+    var startT = null; dur = dur || 1000;
     function ease (t) { return t < .5 ? 2 * t * t : -1 + (4 - 2 * t) * t; }
     function step (ts) { if (!startT) startT = ts; var p = Math.min((ts - startT) / dur, 1); window.scrollTo(0, startY + (targetY - startY) * ease(p)); if (p < 1) requestAnimationFrame(step); else scrollLocked = false; }
     requestAnimationFrame(step);
@@ -417,7 +417,7 @@
 
   window.addEventListener('wheel', function (e) {
     e.preventDefault(); if (scrollLocked) return;
-    if (inPrologue()) { goToSection(0); return; } /* プロローグ→ジャック開始 */
+    if (inPrologue()) { goToSection(0, 420); return; } /* プロローグ→ジャック開始（短め遷移でもたつき防止） */
     goToSection(e.deltaY > 0 ? currentBase() + 1 : currentBase() - 1);
   }, { passive: false });
   window.addEventListener('touchstart', function (e) { touchStartY = e.touches[0].clientY; }, { passive: true });
@@ -426,7 +426,7 @@
   window.addEventListener('touchend', function (e) {
     var dy = touchStartY - e.changedTouches[0].clientY;
     if (inPrologue()) {
-      if (window.pageYOffset > 4) goToSection(0); /* ひとスワイプで即ジャックへ */
+      if (window.pageYOffset > 4) goToSection(0, 420); /* ひとスワイプで即ジャックへ（短め遷移） */
       return;
     }
     if (scrollLocked) return;
@@ -434,14 +434,14 @@
     goToSection(dy > 0 ? currentBase() + 1 : currentBase() - 1);
   }, { passive: true });
   window.addEventListener('keydown', function (e) {
-    if (e.key === 'ArrowDown' || e.key === ' ') { e.preventDefault(); if (scrollLocked) return; goToSection(inPrologue() ? 0 : currentBase() + 1); }
+    if (e.key === 'ArrowDown' || e.key === ' ') { e.preventDefault(); if (scrollLocked) return; if (inPrologue()) goToSection(0, 420); else goToSection(currentBase() + 1); }
     else if (e.key === 'ArrowUp') { e.preventDefault(); if (!scrollLocked && !inPrologue()) goToSection(currentBase() - 1); }
   });
 
   setup(); draw();
   /* プロローグを半分以上ネイティブスクロールしたらsection0へスナップ（慣性での飛びすぎ防止） */
   window.addEventListener('scroll', function () {
-    if (!scrollLocked && window.pageYOffset > 0 && window.pageYOffset < PRO && window.pageYOffset >= PRO * 0.08) goToSection(0);
+    if (!scrollLocked && window.pageYOffset > 0 && window.pageYOffset < PRO && window.pageYOffset >= PRO * 0.08) goToSection(0, 420);
     onScroll();
   }, { passive: true });
   function relayout () {
