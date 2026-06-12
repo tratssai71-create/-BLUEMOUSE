@@ -72,6 +72,9 @@
     .pf-section[data-idx="3"] .pf-anim, .pf-section[data-idx="7"] .pf-anim { transform: translateX(40px); }
     .pf-section[data-idx="3"] .pf-anim.is-visible, .pf-section[data-idx="7"] .pf-anim.is-visible { transform: none; }
     .pf-section[data-idx="7"] .pf-text__lead .pf-anim { display: inline-block; } /* transformを効かせる */
+    /* オレンジ（13万円の数字／土台・武器）だけ横スライドさせず、その場でフェードイン */
+    .pf-section[data-idx="3"] .pf-fignum, .pf-section[data-idx="7"] .pf-lead-em,
+    .pf-section[data-idx="3"] .pf-fignum.is-visible, .pf-section[data-idx="7"] .pf-lead-em.is-visible { transform: none; }
 
     .pf-dots { position: fixed; right: calc(12.5vw - 3px); top: 50%; transform: translateY(-50%); z-index: 60; display: flex; flex-direction: column; gap: 14px; }
     .pf-dot { width: 6px; height: 6px; border-radius: 50%; background: rgba(42,29,18,.20); transition: background .35s, transform .35s; }
@@ -322,8 +325,9 @@
         else if (el.classList.contains('pf-lead-tx'))    off = 0.40; /* section7: 通常文（13万円のleadと同） */
         else if (el.classList.contains('pf-text__lead')) off = 0.40; /* section3: lead */
         else                                             off = 0.50; /* body */
+        var isEm = el.classList.contains('pf-fignum') || el.classList.contains('pf-lead-em');
         var sp = Math.min(1, Math.max(0, (stRel - secSpan * (0.05 + off)) / (secSpan * 0.45)));
-        if (sp > 0) { el.style.transition = 'none'; el.style.opacity = String(Math.max(0, 1 - sp)); el.style.transform = 'translateX(' + Math.round(-sp * 16) + 'px)'; }
+        if (sp > 0) { el.style.transition = 'none'; el.style.opacity = String(Math.max(0, 1 - sp)); el.style.transform = isEm ? 'none' : 'translateX(' + Math.round(-sp * 16) + 'px)'; }
         else { el.style.transition = ''; el.style.opacity = ''; el.style.transform = ''; }
       });
     }
