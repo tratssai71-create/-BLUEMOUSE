@@ -339,9 +339,10 @@
   /* 要素1つをフェードイン。forceX=trueで右からスライド（translateX）、falseで下からフェード（translateY） */
   function showEl (el, forceX) {
     var noMove = el.classList.contains('pf-fignum') || el.classList.contains('pf-lead-em');
-    var useX = forceX && !noMove;
+    var isEyebrow = el.classList.contains('pf-eyebrow'); /* ③ ライン演出がモーションを担う→translateなし */
+    var useX = !isEyebrow && forceX && !noMove;
     var fx = useX ? 40 : 0;
-    var fy = (!noMove && !useX) ? 26 : 0;
+    var fy = (!noMove && !useX && !isEyebrow) ? 26 : 0;
     var isPunch = el.classList.contains('pf-fignum'); /* ② 数字ドン: scaleパンチ */
     var countSpan = isPunch ? el.querySelector('.pf-count') : null; /* ① カウントアップ */
     var countTarget = countSpan ? parseInt(countSpan.getAttribute('data-target'), 10) : 0;
