@@ -76,16 +76,16 @@
 
     .pf-anim { transform: translateY(30px); transition: transform .9s cubic-bezier(.22,1,.36,1); will-change: opacity, transform; -webkit-backface-visibility: hidden; backface-visibility: hidden; }
     .pf-anim:not(.is-visible) { opacity: 0 !important; } /* 初期は確実に非表示（他CSSのopacity:1に負けないよう!important） */
-    .pf-anim.is-visible { opacity: 1; transform: none; animation: pf-fade-in .9s cubic-bezier(.22,1,.36,1) both; }
+    .pf-anim.is-visible { opacity: 1; transform: translateZ(0); animation: pf-fade-in .9s cubic-bezier(.22,1,.36,1) both; }
     @keyframes pf-fade-in { from { opacity: 0; } to { opacity: 1; } }
     .pf-title .pf-anim, .pf-photo .pf-anim { transform: translateX(40px); }
-    .pf-title .pf-anim.is-visible, .pf-photo .pf-anim.is-visible { transform: none; }
+    .pf-title .pf-anim.is-visible, .pf-photo .pf-anim.is-visible { transform: translateZ(0); }
     .pf-section[data-idx="3"] .pf-anim, .pf-section[data-idx="7"] .pf-anim { transform: translateX(40px); }
-    .pf-section[data-idx="3"] .pf-anim.is-visible, .pf-section[data-idx="7"] .pf-anim.is-visible { transform: none; }
+    .pf-section[data-idx="3"] .pf-anim.is-visible, .pf-section[data-idx="7"] .pf-anim.is-visible { transform: translateZ(0); }
     .pf-section[data-idx="7"] .pf-text__lead .pf-anim { display: inline-block; } /* transformを効かせる */
     /* オレンジ（13万円の数字／土台・武器）だけ横スライドさせず、その場でフェードイン */
     .pf-section[data-idx="3"] .pf-fignum, .pf-section[data-idx="7"] .pf-lead-em,
-    .pf-section[data-idx="3"] .pf-fignum.is-visible, .pf-section[data-idx="7"] .pf-lead-em.is-visible { transform: none; }
+    .pf-section[data-idx="3"] .pf-fignum.is-visible, .pf-section[data-idx="7"] .pf-lead-em.is-visible { transform: translateZ(0); }
 
     .pf-dots { position: fixed; right: calc(12.5vw - 3px); top: 50%; transform: translateY(-50%); z-index: 60; display: flex; flex-direction: column; gap: 14px; }
     .pf-dot { width: 6px; height: 6px; border-radius: 50%; background: rgba(42,29,18,.20); transition: background .35s, transform .35s; }
