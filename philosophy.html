@@ -43,24 +43,26 @@
     .pf-title__sub { font-size: clamp(.86rem, 1.3vw, 1rem); font-weight: 400; color: var(--pf-ink-soft); letter-spacing: .06em; line-height: 1.9; margin: 22px 0 0; }
 
     .pf-photo { background: #1a130c; }
-    .pf-photo__img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: center; display: block; }
+    .pf-photo__img { position: absolute; left: 0; right: 0; top: -5%; width: 100%; height: 110%; object-fit: cover; object-position: center; display: block; will-change: transform; }
     .pf-photo__img.pos-35 { object-position: center 35%; }
     .pf-photo__img.pos-40 { object-position: center 40%; }
     .pf-photo__grad { position: absolute; inset: 0; pointer-events: none; background: linear-gradient(to top, rgba(var(--pf-scrim),.80) 0%, rgba(var(--pf-scrim),.42) 38%, rgba(var(--pf-scrim),.12) 66%, rgba(var(--pf-scrim),.04) 100%); }
     .pf-photo__copy { position: absolute; left: 0; right: 0; bottom: 0; padding: 56px 52px 60px; display: flex; flex-direction: column; }
     .pf-eyebrow { font-family: "Inter", sans-serif; font-size: .72rem; font-weight: 600; letter-spacing: .3em; text-transform: uppercase; color: var(--pf-teal); display: inline-flex; align-items: center; gap: 12px; margin: 0 0 18px; text-shadow: 0 1px 10px rgba(0,0,0,.4); }
-    .pf-eyebrow::before { content: ""; width: 28px; height: 1px; background: currentColor; transform: scaleX(0); transform-origin: right center; transition: transform 0.5s cubic-bezier(.22,1,.36,1) 0.1s; }
-    .pf-eyebrow.is-visible::before { transform: scaleX(1); }
+    .pf-eyebrow::before { content: ""; width: 28px; height: 1px; background: currentColor; }
     .pf-photo__title { font-family: "Zen Kaku Gothic New", sans-serif; font-size: clamp(1.7rem, 3.4vw, 2.7rem); font-weight: 700; color: var(--pf-cream); line-height: 1.55; letter-spacing: .04em; margin: 0; text-shadow: 0 2px 18px rgba(0,0,0,.4); }
     .pf-photo__note { font-size: .82rem; font-weight: 500; color: rgba(255,253,247,.66); letter-spacing: .14em; margin: 16px 0 0; }
 
     .pf-text { background: var(--pf-paper); display: flex; flex-direction: column; justify-content: center; padding: 0 56px; }
     .pf-text .pf-eyebrow { color: var(--pf-teal); text-shadow: none; }
+    /* 問いのセクション: 暗転で一文を際立たせる */
+    .pf-text--dark { background: #1a130c; align-items: center; text-align: center; }
+    .pf-text--dark .pf-text__lead { color: var(--pf-cream); }
     .pf-text__lead { font-family: "Zen Kaku Gothic New", sans-serif; font-size: clamp(1.9rem, 3.6vw, 3.2rem); font-weight: 700; color: var(--pf-ink); line-height: 1.4; letter-spacing: .01em; margin: 0 0 28px; }
     .pf-text__lead em { font-style: normal; color: var(--pf-coral); }
     .pf-text__body { font-size: clamp(.94rem, 1.2vw, 1.05rem); font-weight: 400; line-height: 2.05; color: var(--pf-ink-soft); max-width: 520px; letter-spacing: .02em; margin: 0; }
     .pf-text__body strong { color: var(--pf-ink); font-weight: 700; }
-    .pf-fignum { font-family: "Inter", sans-serif; font-weight: 700; font-size: clamp(2.6rem, 6vw, 4.4rem); color: var(--pf-coral); line-height: 1; margin: 0 0 18px; }
+    .pf-fignum { font-family: "Inter", sans-serif; font-weight: 700; font-size: clamp(3.4rem, 9vw, 6rem); color: var(--pf-coral); line-height: 1; margin: 0 0 18px; }
     .pf-fignum small { font-size: .32em; font-weight: 600; letter-spacing: .04em; }
 
     .pf-cta { background: var(--pf-paper); display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; padding: 0 56px; }
@@ -203,8 +205,8 @@
       </div>
     </section>
 
-    <!-- [4] 問い（リードのみ） -->
-    <section class="pf-section pf-text" style="z-index:5" data-idx="4">
+    <!-- [4] 問い（リードのみ）: 暗転で一文を際立たせる -->
+    <section class="pf-section pf-text pf-text--dark" style="z-index:5" data-idx="4" data-dark="1">
       <p class="pf-text__lead pf-anim">自分の力で、<br>生きていけるのか。</p>
     </section>
 
@@ -338,10 +340,9 @@
   /* 要素1つをフェードイン。forceX=trueで右からスライド（translateX）、falseで下からフェード（translateY） */
   function showEl (el, forceX) {
     var noMove = el.classList.contains('pf-fignum') || el.classList.contains('pf-lead-em');
-    var isEyebrow = el.classList.contains('pf-eyebrow'); /* ラインdraw-inがモーションを担う→translate除外 */
-    var useX = !isEyebrow && forceX && !noMove;
+    var useX = forceX && !noMove;
     var fx = useX ? 40 : 0;
-    var fy = (!noMove && !useX && !isEyebrow) ? 26 : 0;
+    var fy = (!noMove && !useX) ? 26 : 0;
     var isPunch = el.classList.contains('pf-fignum'); /* ② 数字ドン: scaleパンチ */
     var countSpan = isPunch ? el.querySelector('.pf-count') : null; /* ① カウントアップ */
     var countTarget = countSpan ? parseInt(countSpan.getAttribute('data-target'), 10) : 0;
@@ -450,6 +451,7 @@
       sec.style.visibility = i === 0 ? 'visible' : 'hidden';
       sec.style.opacity = ''; sec.style.transform = '';
       resetAnim(sec);
+      var img = sec.querySelector('.pf-photo__img'); if (img) img.style.transform = '';
     });
     titleEls.forEach(function (el) { el.style.transition = ''; el.style.opacity = ''; el.style.transform = ''; });
     s3Els.forEach(function (el) { el.style.transition = ''; el.style.opacity = ''; el.style.transform = ''; });
@@ -482,6 +484,15 @@
     } else {
       sections[base].style.transform = 'translateY(0)';
     }
+    /* 写真パララックス: スクロールに対して写真が逆方向にゆっくり流れる */
+    [base, next].forEach(function (si) {
+      if (si < 0 || si >= n) return;
+      var sec = sections[si];
+      if (!sec.classList.contains('pf-photo')) return;
+      var img = sec.querySelector('.pf-photo__img');
+      if (!img) return;
+      img.style.transform = 'translateY(' + (((st - si * vh) / vh) * 40).toFixed(1) + 'px)';
+    });
     var tp = Math.min(1, Math.max(0, (st - vh * 0.05) / (vh * 0.85)));
     titleEls.forEach(function (el) {
       if (tp > 0) { el.style.animation = 'none'; el.style.transition = 'none'; el.style.opacity = String(Math.max(0, 1 - tp)); el.style.transform = 'translateX(' + Math.round(-tp * 16) + 'px)'; }
