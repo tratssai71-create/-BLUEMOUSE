@@ -49,7 +49,9 @@
     .pf-photo__grad { position: absolute; inset: 0; pointer-events: none; background: linear-gradient(to top, rgba(var(--pf-scrim),.80) 0%, rgba(var(--pf-scrim),.42) 38%, rgba(var(--pf-scrim),.12) 66%, rgba(var(--pf-scrim),.04) 100%); }
     .pf-photo__copy { position: absolute; left: 0; right: 0; bottom: 0; padding: 56px 52px 60px; display: flex; flex-direction: column; }
     .pf-eyebrow { font-family: "Inter", sans-serif; font-size: .72rem; font-weight: 600; letter-spacing: .3em; text-transform: uppercase; color: var(--pf-teal); display: inline-flex; align-items: center; gap: 12px; margin: 0 0 18px; text-shadow: 0 1px 10px rgba(0,0,0,.4); }
-    .pf-eyebrow::before { content: ""; width: 28px; height: 1px; background: currentColor; }
+    /* ③ eyebrowライン draw-in: is-visible追加時に左から伸びる */
+    .pf-eyebrow::before { content: ""; width: 0; height: 1px; background: currentColor; transition: width 0.5s cubic-bezier(.22,1,.36,1) 0.1s; }
+    .pf-eyebrow.is-visible::before { width: 28px; }
     .pf-photo__title { font-family: "Zen Kaku Gothic New", sans-serif; font-size: clamp(1.7rem, 3.4vw, 2.7rem); font-weight: 700; color: var(--pf-cream); line-height: 1.55; letter-spacing: .04em; margin: 0; text-shadow: 0 2px 18px rgba(0,0,0,.4); }
     .pf-photo__note { font-size: .82rem; font-weight: 500; color: rgba(255,253,247,.66); letter-spacing: .14em; margin: 16px 0 0; }
 
@@ -88,6 +90,9 @@
     .pf-section[data-idx="3"] .pf-fignum.is-visible, .pf-section[data-idx="7"] .pf-lead-em.is-visible { transform: translateZ(0); }
     /* section3: 13万円＋5年間の二段構成（flex流しで全体を中央寄せ） */
     .pf-s3b { margin-top: clamp(60px, 12vh, 100px); }
+    /* ④ コーラルグロウ: 13万円登場時に背景が淡くウォームアップ */
+    .pf-s3-wash { position: absolute; inset: 0; background: radial-gradient(ellipse at 28% 46%, rgba(242,144,108,0.09) 0%, transparent 60%); opacity: 0; pointer-events: none; transition: opacity 2s ease; }
+    .pf-s3-wash.is-on { opacity: 1; }
 
     .pf-dots { position: fixed; right: calc(12.5vw - 3px); top: 50%; transform: translateY(-50%); z-index: 60; display: flex; flex-direction: column; gap: 14px; }
     .pf-dot { width: 6px; height: 6px; border-radius: 50%; background: rgba(42,29,18,.20); transition: background .35s, transform .35s; }
@@ -185,14 +190,15 @@
 
     <!-- [3] 数字（13万円）＋5年間 stagnation: Phase A→Phase B の順に自動進行 -->
     <section class="pf-section pf-text" style="z-index:4" data-idx="3">
+      <div class="pf-s3-wash" aria-hidden="true"></div><!-- ④ コーラルグロウ背景 -->
       <!-- Phase A: 13万円 Reality -->
       <p class="pf-eyebrow pf-anim">Reality</p>
-      <p class="pf-fignum pf-anim">13<small>万円</small></p>
+      <p class="pf-fignum pf-anim"><span class="pf-count" data-target="13">13</span><small>万円</small></p>
       <p class="pf-text__lead pf-anim">発達障害者の、<br>平均月収。</p>
       <p class="pf-text__body pf-anim">一般労働者の、約4割。</p>
       <!-- Phase B: 5年間 Stagnation（JSが自動で遅延表示） -->
       <div class="pf-s3b">
-        <p class="pf-fignum pf-anim pf-s3b-el">5<small>年間</small></p>
+        <p class="pf-fignum pf-anim pf-s3b-el"><span class="pf-count" data-target="5">5</span><small>年間</small></p>
         <p class="pf-text__lead pf-anim pf-s3b-el">改善されていない。</p>
         <p class="pf-text__body pf-anim pf-s3b-el">2019年から変わらない、現実。</p>
       </div>
@@ -336,10 +342,15 @@
     var useX = forceX && !noMove;
     var fx = useX ? 40 : 0;
     var fy = (!noMove && !useX) ? 26 : 0;
+    var isPunch = el.classList.contains('pf-fignum'); /* ② 数字ドン: scaleパンチ */
+    var countSpan = isPunch ? el.querySelector('.pf-count') : null; /* ① カウントアップ */
+    var countTarget = countSpan ? parseInt(countSpan.getAttribute('data-target'), 10) : 0;
+    if (countSpan) countSpan.textContent = '0';
     el.style.transition = 'none'; el.style.webkitTransition = 'none'; el.style.animation = 'none';
     el.style.opacity = '0';
     if (fx) setTf(el, 'translate3d(' + fx + 'px, 0, 0)');
     else if (fy) setTf(el, 'translate3d(0, ' + fy + 'px, 0)');
+    else if (isPunch) setTf(el, 'scale(1.08)');
     el.classList.add('is-visible');
     void el.offsetWidth;
     var dur = 900, startT = null;
@@ -350,8 +361,10 @@
       el.style.opacity = String(e);
       if (fx) setTf(el, 'translate3d(' + (fx * (1 - e)).toFixed(1) + 'px, 0, 0)');
       else if (fy) setTf(el, 'translate3d(0, ' + (fy * (1 - e)).toFixed(1) + 'px, 0)');
+      else if (isPunch) setTf(el, 'scale(' + (1 + 0.08 * (1 - e)).toFixed(4) + ')');
+      if (countSpan) countSpan.textContent = p < 0.98 ? String(Math.round((1 - Math.pow(1 - p, 2)) * countTarget)) : String(countTarget);
       if (p < 1) requestAnimationFrame(stp);
-      else { el.style.opacity = ''; setTf(el, ''); el.style.transition = ''; el.style.webkitTransition = ''; el.style.animation = ''; }
+      else { el.style.opacity = ''; setTf(el, ''); el.style.transition = ''; el.style.webkitTransition = ''; el.style.animation = ''; if (countSpan) countSpan.textContent = String(countTarget); }
     }
     requestAnimationFrame(stp);
   }
@@ -391,6 +404,9 @@
         else                                             d = 1500;
         setTimeout(function () { if (s3Gen !== gen) return; showEl(el, false); }, d);
       });
+      /* ④ 背景コーラルグロウ: 13万円が現れ始める頃に起動 */
+      var washEl = sections[3].querySelector('.pf-s3-wash');
+      if (washEl) setTimeout(function () { if (s3Gen !== gen) return; washEl.classList.add('is-on'); }, 600);
       return;
     }
     /* section1（Our Starting Point 写真）: 右からスライドイン */
@@ -421,6 +437,7 @@
   /* 画面外に出たセクションはアニメをリセット（再訪のたびに再生されるように） */
   function resetAnim (section) {
     Array.prototype.slice.call(section.querySelectorAll('.pf-anim')).forEach(function (el) { el.classList.remove('is-visible'); el.style.opacity = ''; el.style.transform = ''; el.style.webkitTransform = ''; el.style.transition = ''; el.style.webkitTransition = ''; el.style.animation = ''; });
+    var wash = section.querySelector('.pf-s3-wash'); if (wash) wash.classList.remove('is-on');
   }
   /* Safari再起動・タブ復元などで途中位置から開かれた時、プロローグに戻してバー縮小の導線を再提供 */
   function resetToPrologue () {
@@ -453,14 +470,17 @@
     for (var i = n - 2; i >= 0; i--) { if (st >= i * vh) { base = i; break; } }
     var next = Math.min(base + 1, n - 1);
     var secSpan = vh, stRel = st - base * vh;
-    sections[base].style.transform = 'translateY(0)';
     sections[base].style.opacity = '';
     if (next !== base) {
       var thr = base === 0 ? 0.55 : 0.80, span = base === 0 ? 0.45 : 0.20;
       var fade = stRel < secSpan * thr ? 1 : Math.max(0, 1 - (stRel - secSpan * thr) / (secSpan * span));
+      var exitP = 1 - fade;
       sections[next].style.transform = 'translateY(0)';
       sections[next].style.opacity = String(1 - fade);
-      /* animateInはスクロール中(draw)では呼ばない。完了後にgoToSectionが呼ぶ（rAF競合でフェードインが潰れるのを防ぐ） */
+      /* ⑤ scale exit: 退場セクションを軽くスケールダウン（0.97まで）*/
+      sections[base].style.transform = exitP > 0.001 ? 'scale(' + (1 - exitP * 0.03).toFixed(4) + ')' : 'translateY(0)';
+    } else {
+      sections[base].style.transform = 'translateY(0)';
     }
     var tp = Math.min(1, Math.max(0, (st - vh * 0.05) / (vh * 0.85)));
     titleEls.forEach(function (el) {
@@ -479,8 +499,8 @@
     if (base !== 3) { s3Els.forEach(function (el) { el.style.animation = ''; el.style.transition = ''; el.style.opacity = ''; el.style.transform = ''; }); }
     if (base !== 7) { s7Els.forEach(function (el) { el.style.animation = ''; el.style.transition = ''; el.style.opacity = ''; el.style.transform = ''; }); }
     if (base !== prevBase || next !== prevNext) {
-      if (prevBase >= 0 && prevBase !== base && prevBase !== next) { sections[prevBase].style.visibility = 'hidden'; seen[prevBase] = false; resetAnim(sections[prevBase]); if (prevBase === 3) { s3Gen++; s3Step = 0; if (s3PhaseTimer) { clearTimeout(s3PhaseTimer); s3PhaseTimer = null; } } }
-      if (prevNext >= 0 && prevNext !== base && prevNext !== next) { sections[prevNext].style.visibility = 'hidden'; seen[prevNext] = false; resetAnim(sections[prevNext]); if (prevNext === 3) { s3Gen++; s3Step = 0; if (s3PhaseTimer) { clearTimeout(s3PhaseTimer); s3PhaseTimer = null; } } }
+      if (prevBase >= 0 && prevBase !== base && prevBase !== next) { sections[prevBase].style.visibility = 'hidden'; sections[prevBase].style.transform = ''; seen[prevBase] = false; resetAnim(sections[prevBase]); if (prevBase === 3) { s3Gen++; s3Step = 0; if (s3PhaseTimer) { clearTimeout(s3PhaseTimer); s3PhaseTimer = null; } } }
+      if (prevNext >= 0 && prevNext !== base && prevNext !== next) { sections[prevNext].style.visibility = 'hidden'; sections[prevNext].style.transform = ''; seen[prevNext] = false; resetAnim(sections[prevNext]); if (prevNext === 3) { s3Gen++; s3Step = 0; if (s3PhaseTimer) { clearTimeout(s3PhaseTimer); s3PhaseTimer = null; } } }
       sections[base].style.visibility = 'visible'; sections[next].style.visibility = 'visible';
       prevBase = base; prevNext = next;
     }
