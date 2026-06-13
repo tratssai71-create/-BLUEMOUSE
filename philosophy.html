@@ -86,12 +86,12 @@
     .pf-anim.is-visible { opacity: 1; transform: translateZ(0); }
     .pf-title .pf-anim, .pf-photo .pf-anim { transform: translateX(40px); }
     .pf-title .pf-anim.is-visible, .pf-photo .pf-anim.is-visible { transform: translateZ(0); }
-    .pf-section[data-idx="3"] .pf-anim, .pf-section[data-idx="7"] .pf-anim { transform: translateX(40px); }
-    .pf-section[data-idx="3"] .pf-anim.is-visible, .pf-section[data-idx="7"] .pf-anim.is-visible { transform: translateZ(0); }
-    .pf-section[data-idx="7"] .pf-text__lead .pf-anim { display: inline-block; } /* transformを効かせる */
+    .pf-section[data-idx="3"] .pf-anim, .pf-section[data-idx="8"] .pf-anim { transform: translateX(40px); }
+    .pf-section[data-idx="3"] .pf-anim.is-visible, .pf-section[data-idx="8"] .pf-anim.is-visible { transform: translateZ(0); }
+    .pf-section[data-idx="8"] .pf-text__lead .pf-anim { display: inline-block; } /* transformを効かせる */
     /* オレンジ（13万円の数字／土台・武器）だけ横スライドさせず、その場でフェードイン */
-    .pf-section[data-idx="3"] .pf-fignum, .pf-section[data-idx="7"] .pf-lead-em,
-    .pf-section[data-idx="3"] .pf-fignum.is-visible, .pf-section[data-idx="7"] .pf-lead-em.is-visible { transform: translateZ(0); }
+    .pf-section[data-idx="3"] .pf-fignum, .pf-section[data-idx="8"] .pf-lead-em,
+    .pf-section[data-idx="3"] .pf-fignum.is-visible, .pf-section[data-idx="8"] .pf-lead-em.is-visible { transform: translateZ(0); }
     /* section3: 13万円＋5年間の二段構成（flex流しで全体を中央寄せ） */
     .pf-s3b { margin-top: clamp(60px, 12vh, 100px); }
     /* ④ コーラルグロウ: 13万円登場時に背景が淡くウォームアップ */
@@ -103,10 +103,10 @@
     @media (min-width: 781px) { .pf-progress { display: none; } }
     /* Section4/6: 2フレーズを block 表示してそれぞれ独立アニメ */
     .pf-s4-line, .pf-s6-line { display: block; }
-    /* Section6「答え」: リードを大きく——これがページの核心の一文 */
-    .pf-section[data-idx="6"] .pf-text__lead { font-size: clamp(2.4rem, 5.2vw, 4.4rem); line-height: 1.35; }
-    /* Section7「ロードマップ」: 中央揃えで宣言・マニフェスト感。section6の左揃え告白との対比 */
-    .pf-section[data-idx="7"] { align-items: center; text-align: center; }
+    /* Section7「答え」: リードを大きく——これがページの核心の一文 */
+    .pf-section[data-idx="7"] .pf-text__lead { font-size: clamp(2.4rem, 5.2vw, 4.4rem); line-height: 1.35; }
+    /* Section8「ロードマップ」: 中央揃えで宣言・マニフェスト感。section7の左揃え告白との対比 */
+    .pf-section[data-idx="8"] { align-items: center; text-align: center; }
     /* Section4: 暗転時の極薄ウォームグロウ */
     .pf-s4-wash { position: absolute; inset: 0; background: radial-gradient(ellipse at 50% 52%, rgba(255,160,100,0.055) 0%, transparent 58%); opacity: 0; pointer-events: none; transition: opacity 2.8s ease; }
     .pf-s4-wash.is-on { opacity: 1; }
@@ -235,24 +235,33 @@
       <div class="pf-photo__grad"></div>
     </section>
 
-    <!-- [6] 答え（文脈→結論→補足の3段）: 元コンテンツの論理構造を復元 -->
-    <section class="pf-section pf-text" style="z-index:7" data-idx="6">
+    <!-- [6] 壁（暗転・告白）: 既存の療育に答えはなかった -->
+    <section class="pf-section pf-text pf-text--dark" style="z-index:7" data-idx="6" data-dark="1">
+      <div class="pf-s4-wash" aria-hidden="true"></div>
       <p class="pf-text__lead">
-        <span class="pf-anim pf-s6-line">既存の療育に、<br>答えはなかった。</span>
-        <span class="pf-anim pf-s6-line">だから私たちは、<br>別の道を選んだ。</span>
+        <span class="pf-anim pf-s4-line">既存の療育に、</span>
+        <span class="pf-anim pf-s4-line">答えはなかった。</span>
+      </p>
+    </section>
+
+    <!-- [7] 答え（文脈→結論→補足の3段）: 暗転を抜けて白へ、前進の宣言 -->
+    <section class="pf-section pf-text" style="z-index:8" data-idx="7">
+      <p class="pf-text__lead">
+        <span class="pf-anim pf-s6-line">だから私たちは、</span>
+        <span class="pf-anim pf-s6-line">別の道を選んだ。</span>
       </p>
       <p class="pf-text__body pf-anim">経済的自立から逆算した、10年のロードマップ。</p>
     </section>
 
-    <!-- [7] ロードマップ（リードのみ） -->
-    <section class="pf-section pf-text" style="z-index:8" data-idx="7">
+    <!-- [8] ロードマップ（リードのみ） -->
+    <section class="pf-section pf-text" style="z-index:9" data-idx="8">
       <p class="pf-eyebrow pf-anim">Roadmap</p>
       <p class="pf-text__lead"><span class="pf-anim pf-lead-tx">まず</span><em class="pf-anim pf-lead-em">土台</em><span class="pf-anim pf-lead-tx">を育て、</span><br><span class="pf-anim pf-lead-tx">次に</span><em class="pf-anim pf-lead-em">武器</em><span class="pf-anim pf-lead-tx">を手にする。</span></p>
       <p class="pf-text__body pf-anim">その実践が、二つの事業です。</p>
     </section>
 
-    <!-- [8] フェーズ1（写真＋一言） -->
-    <section class="pf-section pf-photo" style="z-index:9" data-idx="8" data-dark="1">
+    <!-- [9] フェーズ1（写真＋一言） -->
+    <section class="pf-section pf-photo" style="z-index:10" data-idx="9" data-dark="1">
       <img class="pf-photo__img pos-35" src="./photos/jidou_opt.jpg" alt="児童発達支援の様子" loading="lazy" />
       <div class="pf-photo__grad"></div>
       <div class="pf-photo__copy">
@@ -262,14 +271,14 @@
       </div>
     </section>
 
-    <!-- [9] 画像のみ -->
-    <section class="pf-section pf-photo" style="z-index:10" data-idx="9" data-dark="1">
+    <!-- [10] 画像のみ -->
+    <section class="pf-section pf-photo" style="z-index:11" data-idx="10" data-dark="1">
       <img class="pf-photo__img pos-35" src="./momose_opt.jpg" alt="" loading="lazy" />
       <div class="pf-photo__grad"></div>
     </section>
 
-    <!-- [10] フェーズ2（写真＋一言） -->
-    <section class="pf-section pf-photo" style="z-index:11" data-idx="10" data-dark="1">
+    <!-- [11] フェーズ2（写真＋一言） -->
+    <section class="pf-section pf-photo" style="z-index:12" data-idx="11" data-dark="1">
       <img class="pf-photo__img pos-35" src="./photos/hokago_opt.jpg" alt="放課後等デイサービスの様子" loading="lazy" />
       <div class="pf-photo__grad"></div>
       <div class="pf-photo__copy">
@@ -279,8 +288,8 @@
       </div>
     </section>
 
-    <!-- [11] 事業への導線 -->
-    <section class="pf-section pf-cta" style="z-index:12" data-idx="11">
+    <!-- [12] 事業への導線 -->
+    <section class="pf-section pf-cta" style="z-index:13" data-idx="12">
       <p class="pf-cta__lead pf-anim">この想いを、<br>二つの現場で。</p>
       <p class="pf-cta__sub pf-anim">それぞれの事業が、ロードマップを形にします。</p>
       <div class="pf-btns">
@@ -320,6 +329,7 @@
   <span class="pf-dot active"></span><span class="pf-dot"></span><span class="pf-dot"></span><span class="pf-dot"></span>
   <span class="pf-dot"></span><span class="pf-dot"></span><span class="pf-dot"></span><span class="pf-dot"></span>
   <span class="pf-dot"></span><span class="pf-dot"></span><span class="pf-dot"></span><span class="pf-dot"></span>
+  <span class="pf-dot"></span>
 </div>
 
 <script src="./layout.js"></script>
@@ -345,7 +355,7 @@
   var PRO = 0; /* プロローグ画面の高さ。ジャックのスクロール基準オフセット */
   var titleEls = sections[0] ? Array.prototype.slice.call(sections[0].querySelectorAll('.pf-anim')) : [];
   var s3Els    = sections[3] ? Array.prototype.slice.call(sections[3].querySelectorAll('.pf-anim')) : [];
-  var s7Els    = sections[7] ? Array.prototype.slice.call(sections[7].querySelectorAll('.pf-anim')) : [];
+  var s7Els    = sections[8] ? Array.prototype.slice.call(sections[8].querySelectorAll('.pf-anim')) : [];
   var s3Gen = 0, s3PhaseTimer = null, s3Step = 0; /* section3の二段スクロール制御 */
   var vh = window.innerHeight, ticking = false, prevBase = -1, prevNext = -1, locked = false, lockedVh = 0;
   var seen = sections.map(function () { return false; });
@@ -418,24 +428,33 @@
     var els = Array.prototype.slice.call(section.querySelectorAll('.pf-anim'));
     els.forEach(function (el) { el.classList.remove('is-visible'); el.style.opacity = ''; el.style.transition = ''; el.style.webkitTransition = ''; el.style.transform = ''; el.style.webkitTransform = ''; el.style.animation = ''; });
     void section.offsetHeight;
-    /* section4（暗転の問い）: 2フレーズを台詞として時差フェード */
+    /* section4（暗転の問い）: 1.2秒の「ため」で問いを刻む */
     if (sIdx === 4) {
       var washEl4 = section.querySelector('.pf-s4-wash');
-      if (washEl4) setTimeout(function () { washEl4.classList.add('is-on'); }, 300);
+      if (washEl4) setTimeout(function () { washEl4.classList.add('is-on'); }, 500);
       els.forEach(function (el, i) {
-        setTimeout(function () { showEl(el, false); }, i === 0 ? 100 : 760);
+        setTimeout(function () { showEl(el, false); }, i === 0 ? 300 : 1500);
       });
       return;
     }
-    /* section6（答え）: 問題提起→結論→補足の3段。eyebrowなしで1行目から即スタート */
+    /* section6（暗転・告白）: 既存の療育に答えはなかった——重い告白 */
     if (sIdx === 6) {
+      var washEl6 = section.querySelector('.pf-s4-wash');
+      if (washEl6) setTimeout(function () { washEl6.classList.add('is-on'); }, 400);
+      els.forEach(function (el, i) {
+        setTimeout(function () { showEl(el, false); }, i === 0 ? 80 : 800);
+      });
+      return;
+    }
+    /* section7（答え）: 暗転を抜けて白へ、前進の宣言 */
+    if (sIdx === 7) {
       els.forEach(function (el, i) {
         setTimeout(function () { showEl(el, true); }, i === 0 ? 80 : i === 1 ? 520 : 1100);
       });
       return;
     }
-    /* section11（CTA）: lead→sub→primary→secondaryの順に時差フェードイン */
-    if (sIdx === 11) {
+    /* section12（CTA）: lead→sub→primary→secondaryの順に時差フェードイン */
+    if (sIdx === 12) {
       els.forEach(function (el, i) {
         setTimeout(function () { showEl(el, false); }, 80 + i * 180);
       });
@@ -469,8 +488,8 @@
       });
       return;
     }
-    /* section7（Roadmap）: キッカー→オレンジの「土台」「武器」を先行強調→通常文→補足の順 */
-    if (sIdx === 7) {
+    /* section8（Roadmap）: キッカー→オレンジの「土台」「武器」を先行強調→通常文→補足の順 */
+    if (sIdx === 8) {
       els.forEach(function (el) {
         var d;
         if (el.classList.contains('pf-eyebrow'))      d = 40;
@@ -551,8 +570,8 @@
       if (tp > 0) { el.style.animation = 'none'; el.style.transition = 'none'; el.style.opacity = String(Math.max(0, 1 - tp)); el.style.transform = 'translateX(' + Math.round(-tp * 16) + 'px)'; }
       else { el.style.animation = ''; el.style.transition = ''; el.style.opacity = ''; el.style.transform = ''; }
     });
-    /* section3/7 フェードアウト: タイトル画面と同じく全要素を一斉に左へ退出（位相差なし） */
-    if (base === 3 || base === 7) {
+    /* section3/8 フェードアウト: タイトル画面と同じく全要素を一斉に左へ退出（位相差なし） */
+    if (base === 3 || base === 8) {
       var foEls = base === 3 ? s3Els : s7Els;
       var op = Math.min(1, Math.max(0, (stRel - secSpan * 0.05) / (secSpan * 0.85)));
       foEls.forEach(function (el) {
@@ -561,7 +580,7 @@
       });
     }
     if (base !== 3) { s3Els.forEach(function (el) { el.style.animation = ''; el.style.transition = ''; el.style.opacity = ''; el.style.transform = ''; }); }
-    if (base !== 7) { s7Els.forEach(function (el) { el.style.animation = ''; el.style.transition = ''; el.style.opacity = ''; el.style.transform = ''; }); }
+    if (base !== 8) { s7Els.forEach(function (el) { el.style.animation = ''; el.style.transition = ''; el.style.opacity = ''; el.style.transform = ''; }); }
     if (base !== prevBase || next !== prevNext) {
       if (prevBase >= 0 && prevBase !== base && prevBase !== next) { sections[prevBase].style.visibility = 'hidden'; sections[prevBase].style.transform = ''; seen[prevBase] = false; resetAnim(sections[prevBase]); if (prevBase === 3) { s3Gen++; s3Step = 0; if (s3PhaseTimer) { clearTimeout(s3PhaseTimer); s3PhaseTimer = null; } } }
       if (prevNext >= 0 && prevNext !== base && prevNext !== next) { sections[prevNext].style.visibility = 'hidden'; sections[prevNext].style.transform = ''; seen[prevNext] = false; resetAnim(sections[prevNext]); if (prevNext === 3) { s3Gen++; s3Step = 0; if (s3PhaseTimer) { clearTimeout(s3PhaseTimer); s3PhaseTimer = null; } } }
