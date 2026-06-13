@@ -312,7 +312,7 @@
       /* is-visible付与の前に先にopacity:0と初期位置をインラインで設定（付与直後の一瞬表示を防ぐ） */
       el.style.transition = 'none'; el.style.animation = 'none';
       el.style.opacity = '0';
-      el.style.transform = 'translate(' + fx + 'px,' + fy + 'px) translateZ(0)';
+      el.style.transform = 'translate3d(' + fx + 'px,' + fy + 'px,0)'; /* iOSで複合transformの横成分が無視されるためtranslate3d単一に */
       el.classList.add('is-visible');
       void el.offsetWidth; /* 開始状態(opacity:0/初期位置)を確定 */
       var dur = 900, startT = null;
@@ -321,7 +321,7 @@
         var p = Math.min((ts - startT) / dur, 1);
         var e = 1 - Math.pow(1 - p, 3); /* easeOutCubic */
         el.style.opacity = String(e);
-        el.style.transform = 'translate(' + (fx * (1 - e)).toFixed(1) + 'px,' + (fy * (1 - e)).toFixed(1) + 'px) translateZ(0)';
+        el.style.transform = 'translate3d(' + (fx * (1 - e)).toFixed(1) + 'px,' + (fy * (1 - e)).toFixed(1) + 'px,0)';
         if (p < 1) requestAnimationFrame(stp);
         else { el.style.opacity = ''; el.style.transform = ''; el.style.transition = ''; el.style.animation = ''; }
       }
