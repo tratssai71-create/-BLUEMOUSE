@@ -74,7 +74,7 @@
     .pf-btn--ink { background: transparent; color: var(--pf-ink); border: 1.5px solid rgba(42,29,18,.3); }
     .pf-btn--ink:hover { background: rgba(42,29,18,.06); border-color: var(--pf-ink); transform: translateY(-2px); }
 
-    .pf-anim { transform: translateY(30px); transition: transform .9s cubic-bezier(.22,1,.36,1); }
+    .pf-anim { transform: translateY(30px); transition: transform .9s cubic-bezier(.22,1,.36,1); will-change: opacity, transform; -webkit-backface-visibility: hidden; backface-visibility: hidden; }
     .pf-anim:not(.is-visible) { opacity: 0 !important; } /* 初期は確実に非表示（他CSSのopacity:1に負けないよう!important） */
     .pf-anim.is-visible { opacity: 1; transform: none; animation: pf-fade-in .9s cubic-bezier(.22,1,.36,1) both; }
     @keyframes pf-fade-in { from { opacity: 0; } to { opacity: 1; } }
