@@ -318,6 +318,7 @@
   var dotsWrap = document.getElementById('pf-dots');
   var spacer = document.getElementById('pf-spacer');
   var prologue = document.getElementById('pf-prologue');
+  var proInner = prologue ? prologue.querySelector('.pf-prologue__inner') : null;
   var PRO = 0; /* プロローグ画面の高さ。ジャックのスクロール基準オフセット */
   var titleEls = sections[0] ? Array.prototype.slice.call(sections[0].querySelectorAll('.pf-anim')) : [];
   var s3Els    = sections[3] ? Array.prototype.slice.call(sections[3].querySelectorAll('.pf-anim')) : [];
@@ -459,6 +460,7 @@
     s3Els.forEach(function (el) { el.style.transition = ''; el.style.opacity = ''; el.style.transform = ''; });
     s7Els.forEach(function (el) { el.style.transition = ''; el.style.opacity = ''; el.style.transform = ''; });
     s3Gen++; s3Step = 0; if (s3PhaseTimer) { clearTimeout(s3PhaseTimer); s3PhaseTimer = null; }
+    if (proInner) { proInner.style.opacity = ''; proInner.style.transform = ''; }
     setup(); draw();
   }
   function draw () {
@@ -467,8 +469,15 @@
     if (st < -2) { /* プロローグ領域：ジャック演出は開始前。進行ドットだけ先頭に（-2pxは丸め誤差マージン） */
       dotEls.forEach(function (d, j) { d.classList.toggle('active', j === 0); });
       if (dotsWrap) dotsWrap.classList.remove('dark');
+      /* ロゴフェード: スクロールに比例して上昇しながら消える */
+      if (proInner && PRO > 0) {
+        var proP = Math.min(1, window.pageYOffset / PRO);
+        proInner.style.opacity = String(Math.max(0, 1 - proP * 1.8));
+        proInner.style.transform = 'translateY(' + (proP * -32).toFixed(1) + 'px) scale(' + (1 + proP * 0.06).toFixed(3) + ')';
+      }
       return;
     }
+    if (proInner) { proInner.style.opacity = ''; proInner.style.transform = ''; }
     if (st < 0) st = 0; /* 丸め誤差で僅かに負のときは0扱い（section0のフェードを確実に発火） */
     var base = 0;
     for (var i = n - 2; i >= 0; i--) { if (st >= i * vh) { base = i; break; } }
