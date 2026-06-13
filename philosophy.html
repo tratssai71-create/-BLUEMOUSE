@@ -194,7 +194,6 @@
       <img class="pf-photo__img pos-40" src="./1.webp" alt="BLUE MOUSEで過ごすこども" loading="lazy" />
       <div class="pf-photo__grad"></div>
       <div class="pf-photo__copy">
-        <p class="pf-eyebrow pf-anim">Our Starting Point</p>
         <h2 class="pf-photo__title pf-anim">この子の10年後を、<br>本気で。</h2>
       </div>
     </section>
@@ -236,13 +235,13 @@
       <div class="pf-photo__grad"></div>
     </section>
 
-    <!-- [6] 答え（eyebrow→2フレーズ時差）: 思考が積み上がる演出 -->
+    <!-- [6] 答え（文脈→結論→補足の3段）: 元コンテンツの論理構造を復元 -->
     <section class="pf-section pf-text" style="z-index:7" data-idx="6">
-      <p class="pf-eyebrow pf-anim">Our Answer</p>
       <p class="pf-text__lead">
-        <span class="pf-anim pf-s6-line">だから私たちは、</span>
-        <span class="pf-anim pf-s6-line">別の道を選んだ。</span>
+        <span class="pf-anim pf-s6-line">既存の療育に、<br>答えはなかった。</span>
+        <span class="pf-anim pf-s6-line">だから私たちは、<br>別の道を選んだ。</span>
       </p>
+      <p class="pf-text__body pf-anim">経済的自立から逆算した、10年のロードマップ。</p>
     </section>
 
     <!-- [7] ロードマップ（リードのみ） -->
@@ -259,7 +258,7 @@
       <div class="pf-photo__copy">
         <p class="pf-eyebrow pf-anim">Phase 01 — 児童発達支援</p>
         <h2 class="pf-photo__title pf-anim">見えない力は、<br>こどもが自ら育む。</h2>
-        <p class="pf-photo__note pf-anim">詳しくは「児童発達支援」へ。</p>
+        <p class="pf-photo__note pf-anim">気持ちや意見を言語化する力が、10年後の経済的自立を支える根っこになります。</p>
       </div>
     </section>
 
@@ -276,7 +275,7 @@
       <div class="pf-photo__copy">
         <p class="pf-eyebrow pf-anim">Phase 02 — 放課後等デイ</p>
         <h2 class="pf-photo__title pf-anim">見える力は、<br>伴走者と共に。</h2>
-        <p class="pf-photo__note pf-anim">詳しくは「放課後等デイサービス」へ。</p>
+        <p class="pf-photo__note pf-anim">IT学習で自分の凸凹と向き合い、社会で使える武器を手にします。</p>
       </div>
     </section>
 
@@ -428,10 +427,10 @@
       });
       return;
     }
-    /* section6（Our Answer）: eyebrow→1行目→2行目と思考が積み上がる */
+    /* section6（答え）: 問題提起→結論→補足の3段。eyebrowなしで1行目から即スタート */
     if (sIdx === 6) {
       els.forEach(function (el, i) {
-        setTimeout(function () { showEl(el, true); }, i === 0 ? 40 : i === 1 ? 380 : 1080);
+        setTimeout(function () { showEl(el, true); }, i === 0 ? 80 : i === 1 ? 520 : 1100);
       });
       return;
     }
