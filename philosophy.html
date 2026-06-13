@@ -97,6 +97,15 @@
     /* ④ コーラルグロウ: 13万円登場時に背景が淡くウォームアップ */
     .pf-s3-wash { position: absolute; inset: 0; background: radial-gradient(ellipse at 28% 46%, rgba(242,144,108,0.09) 0%, transparent 60%); opacity: 0; pointer-events: none; transition: opacity 2s ease; }
     .pf-s3-wash.is-on { opacity: 1; }
+    /* ② モバイル進行バー（スマホ最優先・dotsの代替） */
+    .pf-progress { position: fixed; top: 0; left: 0; height: 2px; background: var(--pf-teal); z-index: 200; width: 0%; opacity: 0; pointer-events: none; transition: width 0.7s cubic-bezier(.16,1,.3,1), opacity 0.4s; }
+    .pf-progress.is-active { opacity: 1; }
+    @media (min-width: 781px) { .pf-progress { display: none; } }
+    /* Section4/6: 2フレーズを block 表示してそれぞれ独立アニメ */
+    .pf-s4-line, .pf-s6-line { display: block; }
+    /* Section4: 暗転時の極薄ウォームグロウ */
+    .pf-s4-wash { position: absolute; inset: 0; background: radial-gradient(ellipse at 50% 52%, rgba(255,160,100,0.055) 0%, transparent 58%); opacity: 0; pointer-events: none; transition: opacity 2.8s ease; }
+    .pf-s4-wash.is-on { opacity: 1; }
 
     .pf-dots { position: fixed; right: calc(12.5vw - 3px); top: 50%; transform: translateY(-50%); z-index: 60; display: flex; flex-direction: column; gap: 14px; }
     .pf-dot { width: 6px; height: 6px; border-radius: 50%; background: rgba(42,29,18,.20); transition: background .35s, transform .35s; }
@@ -208,9 +217,13 @@
       </div>
     </section>
 
-    <!-- [4] 問い（リードのみ）: 暗転で一文を際立たせる -->
+    <!-- [4] 問い（2フレーズ時差）: 暗転で台詞として読ませる -->
     <section class="pf-section pf-text pf-text--dark" style="z-index:5" data-idx="4" data-dark="1">
-      <p class="pf-text__lead pf-anim">自分の力で、<br>生きていけるのか。</p>
+      <div class="pf-s4-wash" aria-hidden="true"></div>
+      <p class="pf-text__lead">
+        <span class="pf-anim pf-s4-line">自分の力で、</span>
+        <span class="pf-anim pf-s4-line">生きていけるのか。</span>
+      </p>
     </section>
 
     <!-- [5] 画像のみ -->
@@ -219,10 +232,13 @@
       <div class="pf-photo__grad"></div>
     </section>
 
-    <!-- [6] 答え（リードのみ） -->
+    <!-- [6] 答え（eyebrow→2フレーズ時差）: 思考が積み上がる演出 -->
     <section class="pf-section pf-text" style="z-index:7" data-idx="6">
       <p class="pf-eyebrow pf-anim">Our Answer</p>
-      <p class="pf-text__lead pf-anim">だから私たちは、<br>別の道を選んだ。</p>
+      <p class="pf-text__lead">
+        <span class="pf-anim pf-s6-line">だから私たちは、</span>
+        <span class="pf-anim pf-s6-line">別の道を選んだ。</span>
+      </p>
     </section>
 
     <!-- [7] ロードマップ（リードのみ） -->
@@ -264,9 +280,9 @@
     <section class="pf-section pf-cta" style="z-index:12" data-idx="11">
       <p class="pf-cta__lead pf-anim">この想いを、<br>二つの現場で。</p>
       <p class="pf-cta__sub pf-anim">それぞれの事業が、ロードマップを形にします。</p>
-      <div class="pf-btns pf-anim">
-        <a href="./child.html" class="pf-btn pf-btn--primary">児童発達支援を見る <span class="pf-btn__arrow">›</span></a>
-        <a href="./afterschool.html" class="pf-btn pf-btn--ink">放課後等デイサービスを見る</a>
+      <div class="pf-btns">
+        <a href="./child.html" class="pf-btn pf-btn--primary pf-anim">児童発達支援を見る <span class="pf-btn__arrow">›</span></a>
+        <a href="./afterschool.html" class="pf-btn pf-btn--ink pf-anim">放課後等デイサービスを見る</a>
       </div>
     </section>
 
@@ -296,6 +312,7 @@
 
 </div>
 
+<div class="pf-progress" id="pf-progress"></div>
 <div class="pf-dots" id="pf-dots">
   <span class="pf-dot active"></span><span class="pf-dot"></span><span class="pf-dot"></span><span class="pf-dot"></span>
   <span class="pf-dot"></span><span class="pf-dot"></span><span class="pf-dot"></span><span class="pf-dot"></span>
@@ -321,6 +338,7 @@
   var spacer = document.getElementById('pf-spacer');
   var prologue = document.getElementById('pf-prologue');
   var proInner = prologue ? prologue.querySelector('.pf-prologue__inner') : null;
+  var progressEl = document.getElementById('pf-progress');
   var PRO = 0; /* プロローグ画面の高さ。ジャックのスクロール基準オフセット */
   var titleEls = sections[0] ? Array.prototype.slice.call(sections[0].querySelectorAll('.pf-anim')) : [];
   var s3Els    = sections[3] ? Array.prototype.slice.call(sections[3].querySelectorAll('.pf-anim')) : [];
@@ -397,6 +415,29 @@
     var els = Array.prototype.slice.call(section.querySelectorAll('.pf-anim'));
     els.forEach(function (el) { el.classList.remove('is-visible'); el.style.opacity = ''; el.style.transition = ''; el.style.webkitTransition = ''; el.style.transform = ''; el.style.webkitTransform = ''; el.style.animation = ''; });
     void section.offsetHeight;
+    /* section4（暗転の問い）: 2フレーズを台詞として時差フェード */
+    if (sIdx === 4) {
+      var washEl4 = section.querySelector('.pf-s4-wash');
+      if (washEl4) setTimeout(function () { washEl4.classList.add('is-on'); }, 300);
+      els.forEach(function (el, i) {
+        setTimeout(function () { showEl(el, false); }, i === 0 ? 100 : 760);
+      });
+      return;
+    }
+    /* section6（Our Answer）: eyebrow→1行目→2行目と思考が積み上がる */
+    if (sIdx === 6) {
+      els.forEach(function (el, i) {
+        setTimeout(function () { showEl(el, true); }, i === 0 ? 40 : i === 1 ? 380 : 1080);
+      });
+      return;
+    }
+    /* section11（CTA）: lead→sub→primary→secondaryの順に時差フェードイン */
+    if (sIdx === 11) {
+      els.forEach(function (el, i) {
+        setTimeout(function () { showEl(el, false); }, 80 + i * 180);
+      });
+      return;
+    }
     /* section3（13万円）: Phase Aのみ。Phase Bはユーザーの2回目スクロールで起動 */
     if (sIdx === 3) {
       s3Step = 0; /* ステップリセット */
@@ -445,7 +486,7 @@
   /* 画面外に出たセクションはアニメをリセット（再訪のたびに再生されるように） */
   function resetAnim (section) {
     Array.prototype.slice.call(section.querySelectorAll('.pf-anim')).forEach(function (el) { el.classList.remove('is-visible'); el.style.opacity = ''; el.style.transform = ''; el.style.webkitTransform = ''; el.style.transition = ''; el.style.webkitTransition = ''; el.style.animation = ''; });
-    var wash = section.querySelector('.pf-s3-wash'); if (wash) wash.classList.remove('is-on');
+    section.querySelectorAll('.pf-s3-wash, .pf-s4-wash').forEach(function (w) { w.classList.remove('is-on'); });
   }
   /* Safari再起動・タブ復元などで途中位置から開かれた時、プロローグに戻してバー縮小の導線を再提供 */
   function resetToPrologue () {
@@ -465,6 +506,7 @@
     s7Els.forEach(function (el) { el.style.transition = ''; el.style.opacity = ''; el.style.transform = ''; });
     s3Gen++; s3Step = 0; if (s3PhaseTimer) { clearTimeout(s3PhaseTimer); s3PhaseTimer = null; }
     if (proInner) { proInner.classList.remove('is-leaving'); proInner.style.opacity = ''; proInner.style.transform = ''; }
+    if (progressEl) { progressEl.classList.remove('is-active'); progressEl.style.width = '0%'; }
     setup(); draw();
   }
   function draw () {
@@ -528,6 +570,11 @@
     var ai = ty < vh * 0.5 ? next : base;
     dotEls.forEach(function (d, j) { d.classList.toggle('active', j === ai); });
     if (dotsWrap) dotsWrap.classList.toggle('dark', !!sections[ai].getAttribute('data-dark'));
+    /* ② モバイル進行バー: ジャック開始後にアクティブ化 */
+    if (progressEl) {
+      if (st >= 0) { progressEl.classList.add('is-active'); progressEl.style.width = (n > 1 ? (ai / (n - 1)) * 100 : 0).toFixed(1) + '%'; }
+      else { progressEl.classList.remove('is-active'); progressEl.style.width = '0%'; }
+    }
   }
   function onScroll () { if (!ticking) { requestAnimationFrame(draw); ticking = true; } }
 
