@@ -376,6 +376,7 @@
   function setTf (el, val) { el.style.webkitTransform = val; el.style.transform = val; }
   /* 要素1つをフェードイン。forceX=trueで右からスライド（translateX）、falseで下からフェード（translateY） */
   function showEl (el, forceX) {
+    el._pfCancelled = false; /* 直前のrAFループを無効化（新しいshowEl開始を宣言） */
     var noMove = el.classList.contains('pf-fignum') || el.classList.contains('pf-lead-em');
     var isEyebrow = el.classList.contains('pf-eyebrow'); /* ラインが動く→テキストはopacityのみ */
     var useX = !isEyebrow && forceX && !noMove;
@@ -394,6 +395,7 @@
     void el.offsetWidth;
     var dur = 900, startT = null;
     function stp (ts) {
+      if (el._pfCancelled) return; /* resetAnimによる中断 — クリーンアップはresetAnimが担う */
       if (!startT) startT = ts;
       var p = Math.min((ts - startT) / dur, 1);
       var e = 1 - Math.pow(1 - p, 3);
@@ -430,33 +432,37 @@
     void section.offsetHeight;
     /* section4（暗転の問い）: 1.2秒の「ため」で問いを刻む */
     if (sIdx === 4) {
+      var gen4 = bumpSecGen(4);
       var washEl4 = section.querySelector('.pf-s4-wash');
-      if (washEl4) setTimeout(function () { washEl4.classList.add('is-on'); }, 500);
+      if (washEl4) setTimeout(function () { if (!checkSecGen(4, gen4)) return; washEl4.classList.add('is-on'); }, 500);
       els.forEach(function (el, i) {
-        setTimeout(function () { showEl(el, false); }, i === 0 ? 300 : 1500);
+        setTimeout(function () { if (!checkSecGen(4, gen4)) return; showEl(el, false); }, i === 0 ? 300 : 1500);
       });
       return;
     }
     /* section6（暗転・告白）: 既存の療育に答えはなかった——重い告白 */
     if (sIdx === 6) {
+      var gen6 = bumpSecGen(6);
       var washEl6 = section.querySelector('.pf-s4-wash');
-      if (washEl6) setTimeout(function () { washEl6.classList.add('is-on'); }, 400);
+      if (washEl6) setTimeout(function () { if (!checkSecGen(6, gen6)) return; washEl6.classList.add('is-on'); }, 400);
       els.forEach(function (el, i) {
-        setTimeout(function () { showEl(el, false); }, i === 0 ? 80 : 800);
+        setTimeout(function () { if (!checkSecGen(6, gen6)) return; showEl(el, false); }, i === 0 ? 80 : 800);
       });
       return;
     }
     /* section7（答え）: 暗転を抜けて白へ、前進の宣言 */
     if (sIdx === 7) {
+      var gen7 = bumpSecGen(7);
       els.forEach(function (el, i) {
-        setTimeout(function () { showEl(el, true); }, i === 0 ? 80 : i === 1 ? 520 : 1100);
+        setTimeout(function () { if (!checkSecGen(7, gen7)) return; showEl(el, true); }, i === 0 ? 80 : i === 1 ? 520 : 1100);
       });
       return;
     }
     /* section12（CTA）: lead→sub→primary→secondaryの順に時差フェードイン */
     if (sIdx === 12) {
+      var gen12 = bumpSecGen(12);
       els.forEach(function (el, i) {
-        setTimeout(function () { showEl(el, false); }, 80 + i * 180);
+        setTimeout(function () { if (!checkSecGen(12, gen12)) return; showEl(el, false); }, 80 + i * 180);
       });
       return;
     }
@@ -480,34 +486,43 @@
       if (washEl) setTimeout(function () { if (s3Gen !== gen) return; washEl.classList.add('is-on'); }, 600);
       return;
     }
-    /* section1（Our Starting Point 写真）: 右からスライドイン */
+    /* section1（写真）: 右からスライドイン */
     if (sIdx === 1) {
+      var gen1 = bumpSecGen(1);
       var base1 = 80, step1 = 120;
       els.forEach(function (el, i) {
-        setTimeout(function () { showEl(el, true); }, base1 + i * step1);
+        setTimeout(function () { if (!checkSecGen(1, gen1)) return; showEl(el, true); }, base1 + i * step1);
       });
       return;
     }
     /* section8（Roadmap）: キッカー→オレンジの「土台」「武器」を先行強調→通常文→補足の順 */
     if (sIdx === 8) {
+      var gen8 = bumpSecGen(8);
       els.forEach(function (el) {
         var d;
         if (el.classList.contains('pf-eyebrow'))      d = 40;
         else if (el.classList.contains('pf-lead-em')) d = 160;
         else if (el.classList.contains('pf-lead-tx')) d = 1300;
         else                                          d = 1500;
-        setTimeout(function () { showEl(el, true); }, d);
+        setTimeout(function () { if (!checkSecGen(8, gen8)) return; showEl(el, true); }, d);
       });
       return;
     }
+    /* デフォルト: 右からスライドイン（section0/2/5/9/10/11など） */
+    var genD = bumpSecGen(sIdx);
     var base = 80, step = 120;
     els.forEach(function (el, i) {
-      setTimeout(function () { showEl(el, true); }, base + i * step);
+      setTimeout(function () { if (!checkSecGen(sIdx, genD)) return; showEl(el, true); }, base + i * step);
     });
   }
   /* 画面外に出たセクションはアニメをリセット（再訪のたびに再生されるように） */
   function resetAnim (section) {
-    Array.prototype.slice.call(section.querySelectorAll('.pf-anim')).forEach(function (el) { el.classList.remove('is-visible'); el.style.opacity = ''; el.style.transform = ''; el.style.webkitTransform = ''; el.style.transition = ''; el.style.webkitTransition = ''; el.style.animation = ''; });
+    var si = +section.getAttribute('data-idx');
+    if (!isNaN(si)) bumpSecGen(si); /* 世代を進めて古いsetTimeoutコールバックを無効化 */
+    Array.prototype.slice.call(section.querySelectorAll('.pf-anim')).forEach(function (el) {
+      el._pfCancelled = true; /* showElのrAFループを次フレームで停止 */
+      el.classList.remove('is-visible'); el.style.opacity = ''; el.style.transform = ''; el.style.webkitTransform = ''; el.style.transition = ''; el.style.webkitTransition = ''; el.style.animation = '';
+    });
     section.querySelectorAll('.pf-s3-wash, .pf-s4-wash').forEach(function (w) { w.classList.remove('is-on'); });
   }
   /* Safari再起動・タブ復元などで途中位置から開かれた時、プロローグに戻してバー縮小の導線を再提供 */
@@ -601,6 +616,10 @@
   function onScroll () { if (!ticking) { requestAnimationFrame(draw); ticking = true; } }
 
   var scrollLocked = false, touchStartY = 0;
+  /* セクションごとのアニメ世代管理: bumpで古いsetTimeout/rAFを一括無効化 */
+  var secGen = {};
+  function bumpSecGen (si) { secGen[si] = (secGen[si] || 0) + 1; return secGen[si]; }
+  function checkSecGen (si, g) { return (secGen[si] || 0) === g; }
   function currentBase () { var st = window.pageYOffset - PRO, b = 0; for (var i = n - 2; i >= 0; i--) { if (st >= i * vh) { b = i; break; } } return Math.max(0, b); }
   function goToSection (idx, dur) {
     if (idx < 0 || idx > n - 1 || scrollLocked) return;
