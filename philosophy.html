@@ -309,8 +309,11 @@
       var noMove = el.classList.contains('pf-fignum') || el.classList.contains('pf-lead-em');
       var fx = noMove ? 0 : (slideX ? 40 : 0);
       var fy = noMove ? 0 : (slideX ? 0 : 30);
-      el.classList.add('is-visible');
+      /* is-visible付与の前に先にopacity:0と初期位置をインラインで設定（付与直後の一瞬表示を防ぐ） */
       el.style.transition = 'none'; el.style.animation = 'none';
+      el.style.opacity = '0';
+      el.style.transform = 'translate(' + fx + 'px,' + fy + 'px) translateZ(0)';
+      el.classList.add('is-visible');
       var dur = 900, startT = null;
       function stp (ts) {
         if (!startT) startT = ts;
