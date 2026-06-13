@@ -103,6 +103,10 @@
     @media (min-width: 781px) { .pf-progress { display: none; } }
     /* Section4/6: 2フレーズを block 表示してそれぞれ独立アニメ */
     .pf-s4-line, .pf-s6-line { display: block; }
+    /* Section6「答え」: リードを大きく——これがページの核心の一文 */
+    .pf-section[data-idx="6"] .pf-text__lead { font-size: clamp(2.4rem, 5.2vw, 4.4rem); line-height: 1.35; }
+    /* Section7「ロードマップ」: 中央揃えで宣言・マニフェスト感。section6の左揃え告白との対比 */
+    .pf-section[data-idx="7"] { align-items: center; text-align: center; }
     /* Section4: 暗転時の極薄ウォームグロウ */
     .pf-s4-wash { position: absolute; inset: 0; background: radial-gradient(ellipse at 50% 52%, rgba(255,160,100,0.055) 0%, transparent 58%); opacity: 0; pointer-events: none; transition: opacity 2.8s ease; }
     .pf-s4-wash.is-on { opacity: 1; }
