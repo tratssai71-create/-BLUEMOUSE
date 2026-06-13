@@ -305,16 +305,17 @@
     void section.offsetHeight;
     /* iOS Safari対策：CSSのtransition/animationはfixed内の大きい要素で描画されないため、
        フェードイン(opacity+transform)をJSのrAFで直接補間する（効いているフェードアウトと同じ確実な方式） */
-    /* forceX=true のとき: noMove要素以外は右から左へスライドイン（translate3dでiOSのGPUレイヤーを強制） */
+    /* forceX=true のとき: noMove要素以外は右から左へスライドイン（translate3d+webkit接頭辞でiOS/Androidに対応） */
+    function setTf (el, val) { el.style.webkitTransform = val; el.style.transform = val; }
     function show (el, forceX) {
       var noMove = el.classList.contains('pf-fignum') || el.classList.contains('pf-lead-em');
       var useX = forceX && !noMove;
       var fx = useX ? 40 : 0;
       var fy = (!noMove && !useX) ? 26 : 0;
-      el.style.transition = 'none'; el.style.animation = 'none';
+      el.style.transition = 'none'; el.style.webkitTransition = 'none'; el.style.animation = 'none';
       el.style.opacity = '0';
-      if (fx) el.style.transform = 'translate3d(' + fx + 'px, 0, 0)';
-      else if (fy) el.style.transform = 'translate3d(0, ' + fy + 'px, 0)';
+      if (fx) setTf(el, 'translate3d(' + fx + 'px, 0, 0)');
+      else if (fy) setTf(el, 'translate3d(0, ' + fy + 'px, 0)');
       el.classList.add('is-visible');
       void el.offsetWidth; /* 開始状態(opacity:0/初期位置)を確定 */
       var dur = 900, startT = null;
@@ -323,10 +324,10 @@
         var p = Math.min((ts - startT) / dur, 1);
         var e = 1 - Math.pow(1 - p, 3); /* easeOutCubic */
         el.style.opacity = String(e);
-        if (fx) el.style.transform = 'translate3d(' + (fx * (1 - e)).toFixed(1) + 'px, 0, 0)';
-        else if (fy) el.style.transform = 'translate3d(0, ' + (fy * (1 - e)).toFixed(1) + 'px, 0)';
+        if (fx) setTf(el, 'translate3d(' + (fx * (1 - e)).toFixed(1) + 'px, 0, 0)');
+        else if (fy) setTf(el, 'translate3d(0, ' + (fy * (1 - e)).toFixed(1) + 'px, 0)');
         if (p < 1) requestAnimationFrame(stp);
-        else { el.style.opacity = ''; el.style.transform = ''; el.style.transition = ''; el.style.animation = ''; }
+        else { el.style.opacity = ''; setTf(el, ''); el.style.transition = ''; el.style.webkitTransition = ''; el.style.animation = ''; }
       }
       requestAnimationFrame(stp);
     }
@@ -342,6 +343,14 @@
       });
       return;
     }
+    /* section1（Our Starting Point 写真）: 右からスライドイン */
+    if (sIdx === 1) {
+      var base1 = 80, step1 = 120;
+      els.forEach(function (el, i) {
+        setTimeout(function () { show(el, true); }, base1 + i * step1);
+      });
+      return;
+    }
     /* section7（Roadmap）: キッカー→オレンジの「土台」「武器」を先行強調→通常文→補足の順 */
     if (sIdx === 7) {
       els.forEach(function (el) {
@@ -350,7 +359,7 @@
         else if (el.classList.contains('pf-lead-em')) d = 160;   /* オレンジの「土台」「武器」を先行強調（13万円の数字と同位置） */
         else if (el.classList.contains('pf-lead-tx')) d = 1300;  /* 通常文（13万円のleadと同位置） */
         else                                          d = 1500;  /* 補足body（13万円のbodyと同位置） */
-        setTimeout(function () { show(el); }, d);
+        setTimeout(function () { show(el, true); }, d);
       });
       return;
     }
@@ -361,7 +370,7 @@
   }
   /* 画面外に出たセクションはアニメをリセット（再訪のたびに再生されるように） */
   function resetAnim (section) {
-    Array.prototype.slice.call(section.querySelectorAll('.pf-anim')).forEach(function (el) { el.classList.remove('is-visible'); el.style.opacity = ''; el.style.transform = ''; el.style.transition = ''; el.style.animation = ''; });
+    Array.prototype.slice.call(section.querySelectorAll('.pf-anim')).forEach(function (el) { el.classList.remove('is-visible'); el.style.opacity = ''; el.style.transform = ''; el.style.webkitTransform = ''; el.style.transition = ''; el.style.webkitTransition = ''; el.style.animation = ''; });
   }
   /* Safari再起動・タブ復元などで途中位置から開かれた時、プロローグに戻してバー縮小の導線を再提供 */
   function resetToPrologue () {
