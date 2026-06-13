@@ -86,6 +86,9 @@
     /* オレンジ（13万円の数字／土台・武器）だけ横スライドさせず、その場でフェードイン */
     .pf-section[data-idx="3"] .pf-fignum, .pf-section[data-idx="7"] .pf-lead-em,
     .pf-section[data-idx="3"] .pf-fignum.is-visible, .pf-section[data-idx="7"] .pf-lead-em.is-visible { transform: translateZ(0); }
+    /* section3: 13万円＋5年間の二段構成 → 上寄せレイアウト */
+    .pf-section[data-idx="3"].pf-text { justify-content: flex-start; padding-top: clamp(36px, 7vh, 72px); }
+    .pf-s3b { margin-top: clamp(20px, 3.5vh, 40px); }
 
     .pf-dots { position: fixed; right: calc(12.5vw - 3px); top: 50%; transform: translateY(-50%); z-index: 60; display: flex; flex-direction: column; gap: 14px; }
     .pf-dot { width: 6px; height: 6px; border-radius: 50%; background: rgba(42,29,18,.20); transition: background .35s, transform .35s; }
@@ -103,6 +106,8 @@
       .pf-text__body { max-width: none; }
       .pf-btn { width: 100%; max-width: 320px; justify-content: center; }
       .pf-dots { display: none; }
+      .pf-section[data-idx="3"].pf-text { padding-top: 28px; }
+      .pf-s3b { margin-top: 18px; }
     }
   </style>
 </head>
@@ -180,12 +185,20 @@
       <div class="pf-photo__grad"></div>
     </section>
 
-    <!-- [3] 数字（最小限） -->
+    <!-- [3] 数字（13万円）＋5年間 stagnation: Phase A→Phase B の順に自動進行 -->
     <section class="pf-section pf-text" style="z-index:4" data-idx="3">
+      <!-- Phase A: 13万円 Reality -->
       <p class="pf-eyebrow pf-anim">Reality</p>
       <p class="pf-fignum pf-anim">13<small>万円</small></p>
       <p class="pf-text__lead pf-anim">発達障害者の、<br>平均月収。</p>
       <p class="pf-text__body pf-anim">一般労働者の、約4割。</p>
+      <!-- Phase B: 5年間 Stagnation（JSが自動で遅延表示） -->
+      <div class="pf-s3b">
+        <p class="pf-eyebrow pf-anim pf-s3b-el">Stagnation</p>
+        <p class="pf-fignum pf-anim pf-s3b-el">5<small>年間</small></p>
+        <p class="pf-text__lead pf-anim pf-s3b-el">改善されていない。</p>
+        <p class="pf-text__body pf-anim pf-s3b-el">2019年から変わらない、現実。</p>
+      </div>
     </section>
 
     <!-- [4] 問い（リードのみ） -->
@@ -304,6 +317,7 @@
   var titleEls = sections[0] ? Array.prototype.slice.call(sections[0].querySelectorAll('.pf-anim')) : [];
   var s3Els    = sections[3] ? Array.prototype.slice.call(sections[3].querySelectorAll('.pf-anim')) : [];
   var s7Els    = sections[7] ? Array.prototype.slice.call(sections[7].querySelectorAll('.pf-anim')) : [];
+  var s3Gen = 0, s3PhaseTimer = null; /* section3の二段アニメ制御（古いタイマーをgeneration IDで無効化） */
   var vh = window.innerHeight, ticking = false, prevBase = -1, prevNext = -1, locked = false, lockedVh = 0;
   var seen = sections.map(function () { return false; });
   var isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
@@ -353,16 +367,40 @@
       }
       requestAnimationFrame(stp);
     }
-    /* section3（13万円）: キッカーとオレンジ数字を先に出し、本文との間に「間」を作って強調 */
+    /* section3（13万円＋5年間）: Phase A → Phase B の順に同リズムで出現 → Phase B完了後section4へ自動進行 */
     if (sIdx === 3) {
-      els.forEach(function (el) {
+      var gen = ++s3Gen; /* generation ID: スクロールで離脱したときに古いタイマーをキャンセル */
+      if (s3PhaseTimer) { clearTimeout(s3PhaseTimer); s3PhaseTimer = null; }
+      var aEls = els.filter(function (el) { return !el.classList.contains('pf-s3b-el'); }); /* Phase A: 13万円 */
+      var bEls = els.filter(function (el) { return  el.classList.contains('pf-s3b-el'); }); /* Phase B: 5年間 */
+
+      /* Phase A: iOS対応のためtranslateY(縦)を使用（translateXはiOS Safariで描画されない場合がある） */
+      aEls.forEach(function (el) {
         var d;
-        if (el.classList.contains('pf-eyebrow'))         d = 40;   /* Reality（キッカー）を最速 */
-        else if (el.classList.contains('pf-fignum'))     d = 160;  /* 13万円（オレンジ）を続けて */
-        else if (el.classList.contains('pf-text__lead')) d = 1300;  /* たっぷり間を空けて本文 */
+        if (el.classList.contains('pf-eyebrow'))         d = 40;   /* Reality（キッカー） */
+        else if (el.classList.contains('pf-fignum'))     d = 160;  /* 13万円（オレンジ数字） */
+        else if (el.classList.contains('pf-text__lead')) d = 1300; /* 本文 */
         else                                             d = 1500;
-        setTimeout(function () { show(el, true); }, d);
+        setTimeout(function () { if (s3Gen !== gen) return; show(el, false); }, d);
       });
+
+      /* Phase B: Phase A最終要素(1500ms)＋900msアニメ＋700ms読む間 = 3100ms後に同リズムで出現 */
+      var B = 1500 + 900 + 700; /* 3100ms: Phase B開始基準 */
+      bEls.forEach(function (el) {
+        var d;
+        if (el.classList.contains('pf-eyebrow'))         d = B + 40;
+        else if (el.classList.contains('pf-fignum'))     d = B + 160;
+        else if (el.classList.contains('pf-text__lead')) d = B + 1300;
+        else                                             d = B + 1500;
+        setTimeout(function () { if (s3Gen !== gen) return; show(el, false); }, d);
+      });
+
+      /* Phase B完了(B+1500+900ms)後、900ms待ってsection4へ自動進行 */
+      s3PhaseTimer = setTimeout(function () {
+        if (s3Gen !== gen) return;
+        if (currentBase() === 3) goToSection(4);
+      }, B + 1500 + 900 + 900); /* 3100+1500+900+900 = 6400ms */
+
       return;
     }
     /* section1（Our Starting Point 写真）: 右からスライドイン */
@@ -409,6 +447,7 @@
     titleEls.forEach(function (el) { el.style.transition = ''; el.style.opacity = ''; el.style.transform = ''; });
     s3Els.forEach(function (el) { el.style.transition = ''; el.style.opacity = ''; el.style.transform = ''; });
     s7Els.forEach(function (el) { el.style.transition = ''; el.style.opacity = ''; el.style.transform = ''; });
+    s3Gen++; if (s3PhaseTimer) { clearTimeout(s3PhaseTimer); s3PhaseTimer = null; } /* section3二段アニメのタイマーをリセット */
     setup(); draw();
   }
   function draw () {
@@ -450,8 +489,8 @@
     if (base !== 3) { s3Els.forEach(function (el) { el.style.animation = ''; el.style.transition = ''; el.style.opacity = ''; el.style.transform = ''; }); }
     if (base !== 7) { s7Els.forEach(function (el) { el.style.animation = ''; el.style.transition = ''; el.style.opacity = ''; el.style.transform = ''; }); }
     if (base !== prevBase || next !== prevNext) {
-      if (prevBase >= 0 && prevBase !== base && prevBase !== next) { sections[prevBase].style.visibility = 'hidden'; seen[prevBase] = false; resetAnim(sections[prevBase]); }
-      if (prevNext >= 0 && prevNext !== base && prevNext !== next) { sections[prevNext].style.visibility = 'hidden'; seen[prevNext] = false; resetAnim(sections[prevNext]); }
+      if (prevBase >= 0 && prevBase !== base && prevBase !== next) { sections[prevBase].style.visibility = 'hidden'; seen[prevBase] = false; resetAnim(sections[prevBase]); if (prevBase === 3) { s3Gen++; if (s3PhaseTimer) { clearTimeout(s3PhaseTimer); s3PhaseTimer = null; } } }
+      if (prevNext >= 0 && prevNext !== base && prevNext !== next) { sections[prevNext].style.visibility = 'hidden'; seen[prevNext] = false; resetAnim(sections[prevNext]); if (prevNext === 3) { s3Gen++; if (s3PhaseTimer) { clearTimeout(s3PhaseTimer); s3PhaseTimer = null; } } }
       sections[base].style.visibility = 'visible'; sections[next].style.visibility = 'visible';
       prevBase = base; prevNext = next;
     }
