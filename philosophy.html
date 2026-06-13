@@ -74,10 +74,10 @@
     .pf-btn--ink { background: transparent; color: var(--pf-ink); border: 1.5px solid rgba(42,29,18,.3); }
     .pf-btn--ink:hover { background: rgba(42,29,18,.06); border-color: var(--pf-ink); transform: translateY(-2px); }
 
-    .pf-anim { transform: translateY(30px); transition: transform .9s cubic-bezier(.22,1,.36,1); will-change: opacity, transform; -webkit-backface-visibility: hidden; backface-visibility: hidden; }
+    /* opacity/transformのアニメーションはJSのrAFで一括制御（CSS transition/animationは競合するので使わない） */
+    .pf-anim { will-change: opacity, transform; -webkit-backface-visibility: hidden; backface-visibility: hidden; }
     .pf-anim:not(.is-visible) { opacity: 0 !important; } /* 初期は確実に非表示（他CSSのopacity:1に負けないよう!important） */
-    .pf-anim.is-visible { opacity: 1; transform: translateZ(0); animation: pf-fade-in .9s cubic-bezier(.22,1,.36,1) both; }
-    @keyframes pf-fade-in { from { opacity: 0; } to { opacity: 1; } }
+    .pf-anim.is-visible { opacity: 1; transform: translateZ(0); }
     .pf-title .pf-anim, .pf-photo .pf-anim { transform: translateX(40px); }
     .pf-title .pf-anim.is-visible, .pf-photo .pf-anim.is-visible { transform: translateZ(0); }
     .pf-section[data-idx="3"] .pf-anim, .pf-section[data-idx="7"] .pf-anim { transform: translateX(40px); }
@@ -314,6 +314,7 @@
       el.style.opacity = '0';
       el.style.transform = 'translate(' + fx + 'px,' + fy + 'px) translateZ(0)';
       el.classList.add('is-visible');
+      void el.offsetWidth; /* 開始状態(opacity:0/初期位置)を確定 */
       var dur = 900, startT = null;
       function stp (ts) {
         if (!startT) startT = ts;
