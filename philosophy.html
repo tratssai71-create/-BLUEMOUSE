@@ -302,8 +302,8 @@
     /* is-visibleを一旦外しreflowでanimation状態をリセット→再付与で@keyframes(opacity 0→1)が確実に再生 */
     els.forEach(function (el) { el.classList.remove('is-visible'); el.style.opacity = ''; el.style.transition = ''; el.style.transform = ''; el.style.animation = ''; });
     void section.offsetHeight;
-    /* 表示：is-visible付与でCSS @keyframesがopacityを強制再生（要素状態に依存せず確実にフェード） */
-    function show (el) { el.classList.add('is-visible'); }
+    /* 表示：is-visible付与の直前にその要素をreflowし開始状態(opacity:0/translateX)を確定→transition/animationを確実に再生 */
+    function show (el) { void el.offsetHeight; el.classList.add('is-visible'); }
     /* section3（13万円）: キッカーとオレンジ数字を先に出し、本文との間に「間」を作って強調 */
     if (sIdx === 3) {
       els.forEach(function (el) {

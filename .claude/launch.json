@@ -6,6 +6,12 @@
       "runtimeExecutable": "npx",
       "runtimeArgs": ["serve", "-l", "3900", "."],
       "port": 3900
+    },
+    {
+      "name": "bm2",
+      "runtimeExecutable": "python3",
+      "runtimeArgs": ["-c", "import http.server,functools,socketserver; socketserver.TCPServer(('',8142), functools.partial(http.server.SimpleHTTPRequestHandler, directory='/Users/c80percent/Desktop/ホームページ/-BLUEMOUSE')).serve_forever()"],
+      "port": 8142
     }
   ]
 }
