@@ -301,7 +301,7 @@
     var els = Array.prototype.slice.call(section.querySelectorAll('.pf-anim'));
     /* opacity:0をインラインで強制保持（CSSルールに関わらず確実に0から）。reflowで確定 */
     /* is-visibleを一旦外しreflowでanimation状態をリセット→再付与で@keyframes(opacity 0→1)が確実に再生 */
-    els.forEach(function (el) { el.classList.remove('is-visible'); el.style.opacity = ''; el.style.transition = ''; el.style.transform = ''; el.style.animation = ''; });
+    els.forEach(function (el) { el.classList.remove('is-visible'); el.style.opacity = ''; el.style.transition = ''; el.style.webkitTransition = ''; el.style.transform = ''; el.style.webkitTransform = ''; el.style.animation = ''; });
     void section.offsetHeight;
     /* iOS Safari対策：CSSのtransition/animationはfixed内の大きい要素で描画されないため、
        フェードイン(opacity+transform)をJSのrAFで直接補間する（効いているフェードアウトと同じ確実な方式） */
@@ -365,7 +365,7 @@
     }
     var base = 80, step = 120;
     els.forEach(function (el, i) {
-      setTimeout(function () { show(el); }, base + i * step);
+      setTimeout(function () { show(el, true); }, base + i * step);
     });
   }
   /* 画面外に出たセクションはアニメをリセット（再訪のたびに再生されるように） */
