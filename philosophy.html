@@ -74,8 +74,9 @@
     .pf-btn--ink { background: transparent; color: var(--pf-ink); border: 1.5px solid rgba(42,29,18,.3); }
     .pf-btn--ink:hover { background: rgba(42,29,18,.06); border-color: var(--pf-ink); transform: translateY(-2px); }
 
-    .pf-anim { opacity: 0; transform: translateY(30px); transition: opacity .9s cubic-bezier(.22,1,.36,1), transform .9s cubic-bezier(.22,1,.36,1); }
-    .pf-anim.is-visible { opacity: 1; transform: none; }
+    .pf-anim { opacity: 0; transform: translateY(30px); transition: transform .9s cubic-bezier(.22,1,.36,1); }
+    .pf-anim.is-visible { opacity: 1; transform: none; animation: pf-fade-in .9s cubic-bezier(.22,1,.36,1) both; }
+    @keyframes pf-fade-in { from { opacity: 0; } to { opacity: 1; } }
     .pf-title .pf-anim, .pf-photo .pf-anim { transform: translateX(40px); }
     .pf-title .pf-anim.is-visible, .pf-photo .pf-anim.is-visible { transform: none; }
     .pf-section[data-idx="3"] .pf-anim, .pf-section[data-idx="7"] .pf-anim { transform: translateX(40px); }
@@ -297,23 +298,11 @@
     var sIdx = +section.getAttribute('data-idx');
     var els = Array.prototype.slice.call(section.querySelectorAll('.pf-anim'));
     /* opacity:0をインラインで強制保持（CSSルールに関わらず確実に0から）。reflowで確定 */
-    els.forEach(function (el) { el.classList.remove('is-visible'); el.style.transition = 'none'; el.style.opacity = '0'; });
+    /* is-visibleを一旦外しreflowでanimation状態をリセット→再付与で@keyframes(opacity 0→1)が確実に再生 */
+    els.forEach(function (el) { el.classList.remove('is-visible'); el.style.opacity = ''; el.style.transition = ''; el.style.transform = ''; el.style.animation = ''; });
     void section.offsetHeight;
-    els.forEach(function (el) { el.style.transition = ''; }); /* transitionだけ復帰。opacity:0インラインは保持 */
-    /* 表示：transformはis-visible(CSS transition)でnoneへ。opacityはJSで直接補間し確実にフェード
-       （section0のタイトルと同じくCSS transitionに依存しない方式。文章のopacityフェード抜けを根絶） */
-    function show (el) {
-      el.classList.add('is-visible');
-      var dur = 900, startT = null;
-      function step (ts) {
-        if (!startT) startT = ts;
-        var p = Math.min((ts - startT) / dur, 1);
-        el.style.opacity = String(1 - Math.pow(1 - p, 3)); /* easeOutCubicで0→1 */
-        if (p < 1) requestAnimationFrame(step);
-        else el.style.opacity = '';
-      }
-      requestAnimationFrame(step);
-    }
+    /* 表示：is-visible付与でCSS @keyframesがopacityを強制再生（要素状態に依存せず確実にフェード） */
+    function show (el) { el.classList.add('is-visible'); }
     /* section3（13万円）: キッカーとオレンジ数字を先に出し、本文との間に「間」を作って強調 */
     if (sIdx === 3) {
       els.forEach(function (el) {
@@ -345,7 +334,7 @@
   }
   /* 画面外に出たセクションはアニメをリセット（再訪のたびに再生されるように） */
   function resetAnim (section) {
-    Array.prototype.slice.call(section.querySelectorAll('.pf-anim')).forEach(function (el) { el.classList.remove('is-visible'); });
+    Array.prototype.slice.call(section.querySelectorAll('.pf-anim')).forEach(function (el) { el.classList.remove('is-visible'); el.style.opacity = ''; el.style.transform = ''; el.style.transition = ''; el.style.animation = ''; });
   }
   /* Safari再起動・タブ復元などで途中位置から開かれた時、プロローグに戻してバー縮小の導線を再提供 */
   function resetToPrologue () {
@@ -388,20 +377,20 @@
     }
     var tp = Math.min(1, Math.max(0, (st - vh * 0.05) / (vh * 0.85)));
     titleEls.forEach(function (el) {
-      if (tp > 0) { el.style.transition = 'none'; el.style.opacity = String(Math.max(0, 1 - tp)); el.style.transform = 'translateX(' + Math.round(-tp * 16) + 'px)'; }
-      else { el.style.transition = ''; el.style.opacity = ''; el.style.transform = ''; }
+      if (tp > 0) { el.style.animation = 'none'; el.style.transition = 'none'; el.style.opacity = String(Math.max(0, 1 - tp)); el.style.transform = 'translateX(' + Math.round(-tp * 16) + 'px)'; }
+      else { el.style.animation = ''; el.style.transition = ''; el.style.opacity = ''; el.style.transform = ''; }
     });
     /* section3/7 フェードアウト: タイトル画面と同じく全要素を一斉に左へ退出（位相差なし） */
     if (base === 3 || base === 7) {
       var foEls = base === 3 ? s3Els : s7Els;
       var op = Math.min(1, Math.max(0, (stRel - secSpan * 0.05) / (secSpan * 0.85)));
       foEls.forEach(function (el) {
-        if (op > 0) { el.style.transition = 'none'; el.style.opacity = String(Math.max(0, 1 - op)); el.style.transform = 'translateX(' + Math.round(-op * 16) + 'px)'; }
-        else { el.style.transition = ''; el.style.opacity = ''; el.style.transform = ''; }
+        if (op > 0) { el.style.animation = 'none'; el.style.transition = 'none'; el.style.opacity = String(Math.max(0, 1 - op)); el.style.transform = 'translateX(' + Math.round(-op * 16) + 'px)'; }
+        else { el.style.animation = ''; el.style.transition = ''; el.style.opacity = ''; el.style.transform = ''; }
       });
     }
-    if (base !== 3) { s3Els.forEach(function (el) { el.style.transition = ''; el.style.opacity = ''; el.style.transform = ''; }); }
-    if (base !== 7) { s7Els.forEach(function (el) { el.style.transition = ''; el.style.opacity = ''; el.style.transform = ''; }); }
+    if (base !== 3) { s3Els.forEach(function (el) { el.style.animation = ''; el.style.transition = ''; el.style.opacity = ''; el.style.transform = ''; }); }
+    if (base !== 7) { s7Els.forEach(function (el) { el.style.animation = ''; el.style.transition = ''; el.style.opacity = ''; el.style.transform = ''; }); }
     if (base !== prevBase || next !== prevNext) {
       if (prevBase >= 0 && prevBase !== base && prevBase !== next) { sections[prevBase].style.visibility = 'hidden'; seen[prevBase] = false; resetAnim(sections[prevBase]); }
       if (prevNext >= 0 && prevNext !== base && prevNext !== next) { sections[prevNext].style.visibility = 'hidden'; seen[prevNext] = false; resetAnim(sections[prevNext]); }
