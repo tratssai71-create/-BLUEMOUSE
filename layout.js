@@ -184,7 +184,7 @@
         '<div>',
           '<p class="bm-footer__col-title">Pages</p>',
           '<ul class="bm-footer__navlist">',
-            '<li><a href="./index.html">トップページ</a></li>',
+            '<li><a href="./index.html">Top Page</a></li>',
             '<li><a href="./afterschool.html">放課後等デイサービス</a></li>',
             '<li><a href="./child.html">児童発達支援事業</a></li>',
             '<li><a href="./contact.html">お問い合わせ</a></li>',
