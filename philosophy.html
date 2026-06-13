@@ -32,7 +32,9 @@
     .pf-prologue__scroll { font-family: "Inter", sans-serif; font-size: .68rem; font-weight: 600; letter-spacing: .4em; text-transform: uppercase; color: var(--pf-ink-soft); display: flex; flex-direction: column; align-items: center; gap: 12px; }
     .pf-prologue__scroll i { width: 1px; height: 44px; background: currentColor; transform-origin: top; animation: pf-pro-scroll 1.8s ease-in-out infinite; }
     @keyframes pf-pro-in { from { opacity: 0; transform: translateY(22px); } to { opacity: 1; transform: none; } }
+    @keyframes pf-pro-out { to { opacity: 0; transform: translateY(-52px) scale(1.07); } }
     @keyframes pf-pro-scroll { 0%, 100% { transform: scaleY(.25); opacity: .35; } 50% { transform: scaleY(1); opacity: 1; } }
+    .pf-prologue__inner.is-leaving { animation: pf-pro-out 0.45s cubic-bezier(.4,0,1,1) forwards; }
 
     .pf-title { background: var(--pf-paper); }
     .pf-title__inner { position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%); display: flex; flex-direction: column; align-items: center; text-align: center; width: max-content; max-width: calc(100% - 44px); }
@@ -336,6 +338,8 @@
     PRO = prologue ? Math.round(prologue.offsetHeight) : 0;
     spacer.style.height = (n * vh) + 'px';
     locked = true;
+    /* プロローグ→ジャック移行の瞬間にロゴをアニメアウト */
+    if (proInner) proInner.classList.add('is-leaving');
   }
   /* iOS Safari対応: transform設定ヘルパー（webkit接頭辞付き）*/
   function setTf (el, val) { el.style.webkitTransform = val; el.style.transform = val; }
@@ -460,7 +464,7 @@
     s3Els.forEach(function (el) { el.style.transition = ''; el.style.opacity = ''; el.style.transform = ''; });
     s7Els.forEach(function (el) { el.style.transition = ''; el.style.opacity = ''; el.style.transform = ''; });
     s3Gen++; s3Step = 0; if (s3PhaseTimer) { clearTimeout(s3PhaseTimer); s3PhaseTimer = null; }
-    if (proInner) { proInner.style.opacity = ''; proInner.style.transform = ''; }
+    if (proInner) { proInner.classList.remove('is-leaving'); proInner.style.opacity = ''; proInner.style.transform = ''; }
     setup(); draw();
   }
   function draw () {
@@ -469,15 +473,8 @@
     if (st < -2) { /* プロローグ領域：ジャック演出は開始前。進行ドットだけ先頭に（-2pxは丸め誤差マージン） */
       dotEls.forEach(function (d, j) { d.classList.toggle('active', j === 0); });
       if (dotsWrap) dotsWrap.classList.remove('dark');
-      /* ロゴフェード: スクロールに比例して上昇しながら消える */
-      if (proInner && PRO > 0) {
-        var proP = Math.min(1, window.pageYOffset / PRO);
-        proInner.style.opacity = String(Math.max(0, 1 - proP * 1.8));
-        proInner.style.transform = 'translateY(' + (proP * -32).toFixed(1) + 'px) scale(' + (1 + proP * 0.06).toFixed(3) + ')';
-      }
       return;
     }
-    if (proInner) { proInner.style.opacity = ''; proInner.style.transform = ''; }
     if (st < 0) st = 0; /* 丸め誤差で僅かに負のときは0扱い（section0のフェードを確実に発火） */
     var base = 0;
     for (var i = n - 2; i >= 0; i--) { if (st >= i * vh) { base = i; break; } }
