@@ -302,8 +302,27 @@
     /* is-visibleを一旦外しreflowでanimation状態をリセット→再付与で@keyframes(opacity 0→1)が確実に再生 */
     els.forEach(function (el) { el.classList.remove('is-visible'); el.style.opacity = ''; el.style.transition = ''; el.style.transform = ''; el.style.animation = ''; });
     void section.offsetHeight;
-    /* 表示：is-visible付与の直前にその要素をreflowし開始状態(opacity:0/translateX)を確定→transition/animationを確実に再生 */
-    function show (el) { void el.offsetHeight; el.classList.add('is-visible'); }
+    /* iOS Safari対策：CSSのtransition/animationはfixed内の大きい要素で描画されないため、
+       フェードイン(opacity+transform)をJSのrAFで直接補間する（効いているフェードアウトと同じ確実な方式） */
+    var slideX = (section.classList.contains('pf-title') || section.classList.contains('pf-photo') || sIdx === 3 || sIdx === 7);
+    function show (el) {
+      var noMove = el.classList.contains('pf-fignum') || el.classList.contains('pf-lead-em');
+      var fx = noMove ? 0 : (slideX ? 40 : 0);
+      var fy = noMove ? 0 : (slideX ? 0 : 30);
+      el.classList.add('is-visible');
+      el.style.transition = 'none'; el.style.animation = 'none';
+      var dur = 900, startT = null;
+      function stp (ts) {
+        if (!startT) startT = ts;
+        var p = Math.min((ts - startT) / dur, 1);
+        var e = 1 - Math.pow(1 - p, 3); /* easeOutCubic */
+        el.style.opacity = String(e);
+        el.style.transform = 'translate(' + (fx * (1 - e)).toFixed(1) + 'px,' + (fy * (1 - e)).toFixed(1) + 'px) translateZ(0)';
+        if (p < 1) requestAnimationFrame(stp);
+        else { el.style.opacity = ''; el.style.transform = ''; el.style.transition = ''; el.style.animation = ''; }
+      }
+      requestAnimationFrame(stp);
+    }
     /* section3（13万円）: キッカーとオレンジ数字を先に出し、本文との間に「間」を作って強調 */
     if (sIdx === 3) {
       els.forEach(function (el) {
