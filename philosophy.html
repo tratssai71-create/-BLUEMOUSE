@@ -284,6 +284,7 @@
   var s7Els    = sections[7] ? Array.prototype.slice.call(sections[7].querySelectorAll('.pf-anim')) : [];
   var vh = window.innerHeight, ticking = false, prevBase = -1, prevNext = -1, locked = false, lockedVh = 0;
   var seen = sections.map(function () { return false; });
+  var isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
 
   function setup () { if (locked) return; vh = window.innerHeight; PRO = prologue ? Math.round(prologue.offsetHeight) : 0; spacer.style.height = (n * vh) + 'px'; }
   /* プロローグを抜けてジャックに入る瞬間にvh/レイアウトを確定。以降バー変動を無視して演出を安定させる。
@@ -304,13 +305,16 @@
     void section.offsetHeight;
     /* iOS Safari対策：CSSのtransition/animationはfixed内の大きい要素で描画されないため、
        フェードイン(opacity+transform)をJSのrAFで直接補間する（効いているフェードアウトと同じ確実な方式） */
-    function show (el) {
+    /* forceX=true のとき: noMove要素以外は右から左へスライドイン（iOSはtranslateXが描画されないためfallback） */
+    function show (el, forceX) {
       var noMove = el.classList.contains('pf-fignum') || el.classList.contains('pf-lead-em');
-      /* iOS SafariはrAFでのtranslateX(横)が描画されないため、フェードインは全て下から上(translateY)に統一 */
-      var fy = noMove ? 0 : 26;
+      var useX = forceX && !noMove && !isIOS;
+      var fx = useX ? 40 : 0;
+      var fy = (!noMove && !useX) ? 26 : 0;
       el.style.transition = 'none'; el.style.animation = 'none';
       el.style.opacity = '0';
-      if (fy) el.style.transform = 'translateY(' + fy + 'px)';
+      if (fx) el.style.transform = 'translateX(' + fx + 'px)';
+      else if (fy) el.style.transform = 'translateY(' + fy + 'px)';
       el.classList.add('is-visible');
       void el.offsetWidth; /* 開始状態(opacity:0/初期位置)を確定 */
       var dur = 900, startT = null;
@@ -319,7 +323,8 @@
         var p = Math.min((ts - startT) / dur, 1);
         var e = 1 - Math.pow(1 - p, 3); /* easeOutCubic */
         el.style.opacity = String(e);
-        if (fy) el.style.transform = 'translateY(' + (fy * (1 - e)).toFixed(1) + 'px)';
+        if (fx) el.style.transform = 'translateX(' + (fx * (1 - e)).toFixed(1) + 'px)';
+        else if (fy) el.style.transform = 'translateY(' + (fy * (1 - e)).toFixed(1) + 'px)';
         if (p < 1) requestAnimationFrame(stp);
         else { el.style.opacity = ''; el.style.transform = ''; el.style.transition = ''; el.style.animation = ''; }
       }
@@ -333,7 +338,7 @@
         else if (el.classList.contains('pf-fignum'))     d = 160;  /* 13万円（オレンジ）を続けて */
         else if (el.classList.contains('pf-text__lead')) d = 1300;  /* たっぷり間を空けて本文 */
         else                                             d = 1500;
-        setTimeout(function () { show(el); }, d);
+        setTimeout(function () { show(el, true); }, d);
       });
       return;
     }
