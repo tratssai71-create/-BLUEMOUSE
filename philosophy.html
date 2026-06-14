@@ -26,8 +26,10 @@
     .pf-section[data-idx="0"] { visibility: visible; }
 
     /* プロローグ（導入画面）：通常スクロールでiOSバーを縮小→スワイプし切るとジャック演出へ */
-    .pf-prologue { position: relative; z-index: 50; width: 50vw; height: 100vh; height: 100dvh; margin: 0 auto; background: var(--pf-paper); display: flex; align-items: center; justify-content: center; }
-    .pf-prologue__inner { display: flex; flex-direction: column; align-items: center; gap: 44px; animation: pf-pro-in 1.1s cubic-bezier(.22,1,.36,1) both; }
+    .pf-prologue { position: relative; z-index: 50; width: 50vw; height: 100vh; height: 100dvh; margin: 0 auto; background: radial-gradient(ellipse 80% 60% at 50% 30%, rgba(95,193,199,.13) 0%, transparent 70%), var(--pf-paper); display: flex; align-items: center; justify-content: center; }
+    .pf-prologue__inner { display: flex; flex-direction: column; align-items: center; gap: 36px; animation: pf-pro-in 1.1s cubic-bezier(.22,1,.36,1) both; }
+    .pf-prologue__tagline { font-family: "Zen Kaku Gothic New", sans-serif; font-size: .82rem; font-weight: 400; letter-spacing: .1em; color: rgba(42,29,18,.34); text-align: center; line-height: 1.75; margin: 0; }
+    .pf-prologue__accent { position: absolute; bottom: 0; left: 0; right: 0; height: 2px; background: var(--pf-teal); opacity: .45; }
     .pf-prologue__logo { width: clamp(120px, 18vw, 180px); height: auto; }
     .pf-prologue__scroll { font-family: "Inter", sans-serif; font-size: .68rem; font-weight: 600; letter-spacing: .4em; text-transform: uppercase; color: var(--pf-ink-soft); display: flex; flex-direction: column; align-items: center; gap: 12px; }
     .pf-prologue__scroll i { width: 1px; height: 44px; background: currentColor; transform-origin: top; animation: pf-pro-scroll 1.8s ease-in-out infinite; }
@@ -175,8 +177,10 @@
     <div class="pf-prologue" id="pf-prologue">
       <div class="pf-prologue__inner">
         <img class="pf-prologue__logo" src="./logo.png" alt="BLUE MOUSE" />
+        <p class="pf-prologue__tagline">主体性療育から、IT療育へ。</p>
         <span class="pf-prologue__scroll" aria-hidden="true">Scroll<i></i></span>
       </div>
+      <div class="pf-prologue__accent"></div>
     </div>
 
     <!-- [0] タイトル -->
