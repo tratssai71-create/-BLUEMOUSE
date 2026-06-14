@@ -45,6 +45,10 @@
     .pf-title__ja { font-family: "Zen Kaku Gothic New", sans-serif; font-size: clamp(2.1rem, 5vw, 3.6rem); font-weight: 700; color: var(--pf-ink); letter-spacing: .06em; line-height: 1.42; margin: 0; }
     .pf-title__spark { display: block; width: 44px; height: 4px; border-radius: 4px; background: var(--pf-yellow); margin: 24px 0 0; }
     .pf-title__sub { font-size: clamp(.86rem, 1.3vw, 1rem); font-weight: 400; color: var(--pf-ink-soft); letter-spacing: .06em; line-height: 1.9; margin: 22px 0 0; }
+    .pf-title__hint { position: absolute; bottom: 44px; left: 50%; transform: translateX(-50%); opacity: 0; transition: opacity 0.8s cubic-bezier(.22,1,.36,1); pointer-events: none; }
+    .pf-title__hint.is-visible { opacity: 1; }
+    .pf-title__hint svg { display: block; width: 22px; height: 22px; color: var(--pf-ink-soft); animation: hintBob 2.4s ease-in-out infinite; }
+    @keyframes hintBob { 0%, 100% { transform: translateY(0); } 60% { transform: translateY(8px); } }
 
     .pf-photo { background: #1a130c; }
     .pf-photo__img { position: absolute; left: 0; right: 0; top: -5%; width: 100%; height: 110%; object-fit: cover; object-position: center; display: block; will-change: transform; }
@@ -190,6 +194,9 @@
         <h1 class="pf-title__ja pf-anim">主体性療育から、<br>IT療育へ。</h1>
         <span class="pf-title__spark pf-anim" aria-hidden="true"></span>
         <p class="pf-title__sub pf-anim">経済的自立から逆算した、10年後のロードマップ。</p>
+      </div>
+      <div class="pf-title__hint" id="pf-title-hint" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
       </div>
     </section>
 
@@ -363,6 +370,7 @@
   var s3Gen = 0, s3PhaseTimer = null, s3Step = 0; /* section3の二段スクロール制御 */
   var vh = window.innerHeight, ticking = false, prevBase = -1, prevNext = -1, locked = false, lockedVh = 0;
   var seen = sections.map(function () { return false; });
+  var hintEl = document.getElementById('pf-title-hint');
   var isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
 
   function setup () { if (locked) return; vh = window.innerHeight; PRO = prologue ? Math.round(prologue.offsetHeight) : 0; spacer.style.height = (n * vh) + 'px'; }
@@ -518,6 +526,9 @@
     els.forEach(function (el, i) {
       setTimeout(function () { if (!checkSecGen(sIdx, genD)) return; showEl(el, true); }, base + i * step);
     });
+    if (sIdx === 0 && hintEl) {
+      setTimeout(function () { if (!checkSecGen(0, genD)) return; hintEl.classList.add('is-visible'); }, base + (els.length > 0 ? (els.length - 1) * step : 0) + 700);
+    }
   }
   /* 画面外に出たセクションはアニメをリセット（再訪のたびに再生されるように） */
   function resetAnim (section) {
@@ -528,6 +539,7 @@
       el.classList.remove('is-visible'); el.style.opacity = ''; el.style.transform = ''; el.style.webkitTransform = ''; el.style.transition = ''; el.style.webkitTransition = ''; el.style.animation = '';
     });
     section.querySelectorAll('.pf-s3-wash, .pf-s4-wash').forEach(function (w) { w.classList.remove('is-on'); });
+    if (si === 0 && hintEl) hintEl.classList.remove('is-visible');
   }
   /* Safari再起動・タブ復元などで途中位置から開かれた時、プロローグに戻してバー縮小の導線を再提供 */
   function resetToPrologue () {
