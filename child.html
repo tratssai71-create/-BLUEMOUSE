@@ -123,23 +123,6 @@
       .pf-dots { display: none; }
     }
 
-    /* ─── スクロール方向インジケーター（モバイル専用） ─── */
-    .pf-vscroll { position: fixed; right: 18px; top: 50%; transform: translateY(-50%); z-index: 60; display: none; flex-direction: column; align-items: center; opacity: 0; transition: opacity 0.5s; pointer-events: none; }
-    .pf-vscroll.is-active { opacity: 1; }
-    .pf-vscroll__line { width: 1px; height: 32px; background: rgba(42,29,18,.22); transition: background .35s; }
-    .pf-vscroll__icon { font-size: 12px; color: rgba(42,29,18,.40); padding: 5px 0; line-height: 1; }
-    .pf-vscroll.dark .pf-vscroll__line { background: rgba(255,253,247,.28); }
-    .pf-vscroll.dark .pf-vscroll__icon { color: rgba(255,253,247,.55); }
-    @media (max-width: 780px) { .pf-vscroll { display: flex; } }
-    /* ─── セクションカウンター（モバイル右下） ─── */
-    .pf-counter { position: fixed; right: 18px; bottom: 28px; z-index: 60; display: none; flex-direction: column; align-items: center; opacity: 0; transition: opacity 0.5s; pointer-events: none; }
-    .pf-counter.is-active { opacity: 1; }
-    .pf-counter__cur { font-family: "Inter", sans-serif; font-size: 1.0rem; font-weight: 600; line-height: 1; color: var(--pf-teal); letter-spacing: .02em; }
-    .pf-counter__sep { width: 1px; height: 14px; background: rgba(42,29,18,.18); margin: 4px 0; transition: background .35s; }
-    .pf-counter__total { font-family: "Inter", sans-serif; font-size: 0.68rem; font-weight: 400; line-height: 1; color: rgba(42,29,18,.38); letter-spacing: .04em; transition: color .35s; }
-    .pf-counter.dark .pf-counter__sep { background: rgba(255,253,247,.22); }
-    .pf-counter.dark .pf-counter__total { color: rgba(255,253,247,.42); }
-    @media (max-width: 780px) { .pf-counter { display: flex; } }
   </style>
 </head>
 <body>
@@ -302,16 +285,6 @@
   <span class="pf-dot"></span><span class="pf-dot"></span><span class="pf-dot"></span>
   <span class="pf-dot"></span><span class="pf-dot"></span><span class="pf-dot"></span>
 
-<div class="pf-vscroll" id="pf-vscroll">
-  <span class="pf-vscroll__line"></span>
-  <span class="pf-vscroll__icon">&#x2195;</span>
-  <span class="pf-vscroll__line"></span>
-</div>
-<div class="pf-counter" id="pf-counter">
-  <span class="pf-counter__cur" id="pf-counter-cur">01</span>
-  <span class="pf-counter__sep"></span>
-  <span class="pf-counter__total" id="pf-counter-total">--</span>
-</div>
 
 <script src="./layout.js"></script>
 <script>
@@ -331,12 +304,6 @@
   var prologue  = document.getElementById('pf-prologue');
   var proInner  = prologue ? prologue.querySelector('.pf-prologue__inner') : null;
   var progressEl = document.getElementById('pf-progress');
-  var vscrollEl    = document.getElementById('pf-vscroll');
-  var counterEl    = document.getElementById('pf-counter');
-  var counterCurEl = document.getElementById('pf-counter-cur');
-  var counterTotEl = document.getElementById('pf-counter-total');
-  function pad2(x) { return (x < 10 ? '0' : '') + x; }
-  if (counterTotEl) counterTotEl.textContent = pad2(n);
   var PRO       = 0;
   var titleEls  = sections[0] ? Array.prototype.slice.call(sections[0].querySelectorAll('.pf-anim')) : [];
   var vh = window.innerHeight, ticking = false, prevBase = -1, prevNext = -1, locked = false, lockedVh = 0;
@@ -466,8 +433,6 @@
     if (st < -2) {
       dotEls.forEach(function (d, j) { d.classList.toggle('active', j === 0); });
       if (dotsWrap) dotsWrap.classList.remove('dark');
-      if (vscrollEl) { vscrollEl.classList.remove('is-active'); vscrollEl.classList.remove('dark'); }
-      if (counterEl)  { counterEl.classList.remove('is-active');  counterEl.classList.remove('dark'); }
       return;
     }
     if (st < 0) st = 0;
@@ -512,10 +477,6 @@
     var ai = ty < vh * 0.5 ? next : base;
     dotEls.forEach(function (d, j) { d.classList.toggle('active', j === ai); });
     if (dotsWrap)   dotsWrap.classList.toggle('dark', !!sections[ai].getAttribute('data-dark'));
-    var isDark = !!sections[ai].getAttribute('data-dark');
-    if (vscrollEl)    { vscrollEl.classList.toggle('dark', isDark); vscrollEl.classList.add('is-active'); }
-    if (counterEl)    { counterEl.classList.toggle('dark', isDark);  counterEl.classList.add('is-active'); }
-    if (counterCurEl) counterCurEl.textContent = pad2(ai + 1);
     if (progressEl) {
       if (st >= 0) { progressEl.classList.add('is-active'); progressEl.style.width = (n > 1 ? (ai / (n - 1)) * 100 : 0).toFixed(1) + '%'; }
       else         { progressEl.classList.remove('is-active'); progressEl.style.width = '0%'; }
