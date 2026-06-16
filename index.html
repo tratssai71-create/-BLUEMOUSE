@@ -651,8 +651,8 @@ document.querySelectorAll('.side-loc-tab').forEach(function(btn) {
 
   /* 2枚の中間状態を描画（ドラッグ中・スナップ中共用）*/
   function draw2(fi, ti, dir, prog) {
-    /* 退場：20%で30%済み、その後ゆっくり完了 */
-    var fiP = prog <= 0.2 ? prog * 1.5 : 0.3 + (prog - 0.2) * (0.7 / 0.8);
+    /* 退場：スタート位置10%（最初から少し動いた状態）、終始ゆっくり線形 */
+    var fiP = 0.1 + prog * 0.9;
     /* 入場：10%からスタート、20%幅で急加速して30%、その後ゆっくり完了 */
     var tiP = prog < 0.1 ? 0 : (prog < 0.3 ? (prog - 0.1) * 1.5 : 0.3 + (prog - 0.3));
 
