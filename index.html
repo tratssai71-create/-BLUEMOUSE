@@ -690,7 +690,7 @@ document.querySelectorAll('.side-loc-tab').forEach(function(btn) {
     cards[ti].style.transform  =
       'perspective(700px) translateY(' + (dir * vh * tiY).toFixed(1) + 'px)' +
       ' rotateX(' + (dir * (1 - tiTilt) * 80).toFixed(2) + 'deg)' +
-      ' rotateZ(' + ((1 - tiTilt) * 10).toFixed(2) + 'deg)' +
+      ' rotateZ(' + (-(1 - tiTilt) * 10).toFixed(2) + 'deg)' +
       ' scale(' + scl + ')';
   }
 
