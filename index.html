@@ -624,7 +624,7 @@ document.querySelectorAll('.side-loc-tab').forEach(function(btn) {
 
   function setup() {
     vh = window.innerHeight;
-    THRESHOLD = vh * 0.28;
+    THRESHOLD = vh * 0.5;
     if (spacer) spacer.style.height = (n * vh) + 'px';
   }
 
@@ -742,7 +742,7 @@ document.querySelectorAll('.side-loc-tab').forEach(function(btn) {
     wTimer = setTimeout(function () {
       if (locked || pendingIdx === -1) return;
       var fi3=current, ti3=pendingIdx, pd3=pendingDir, dp3=dragProg; pendingIdx=-1; wAcc=0;
-      if (dp3 >= 0.32) snapComplete(fi3, ti3, pd3, dp3);
+      if (dp3 >= 1.0) snapComplete(fi3, ti3, pd3, dp3);
       else             snapBack(fi3, ti3, pd3, dp3);
     }, 200);
   }, { passive: false });
@@ -771,7 +771,7 @@ document.querySelectorAll('.side-loc-tab').forEach(function(btn) {
   window.addEventListener('touchend', function () {
     if (locked || pendingIdx === -1) return;
     var fi=current, ti=pendingIdx, pd=pendingDir, dp=dragProg; pendingIdx=-1;
-    if (dp >= 0.32) snapComplete(fi, ti, pd, dp);
+    if (dp >= 1.0) snapComplete(fi, ti, pd, dp);
     else            snapBack(fi, ti, pd, dp);
     tActive = false;
   });
