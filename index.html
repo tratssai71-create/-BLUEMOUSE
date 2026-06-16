@@ -663,6 +663,9 @@ document.querySelectorAll('.side-loc-tab').forEach(function(btn) {
                : prog <= 0.6 ? 0.15
                : 0.15 + (prog - 0.6) * 2.125;
 
+    /* スケール：0〜60%で10%縮小(0.9)、60〜100%で元に戻す(1.0) */
+    var scl = (prog <= 0.6 ? 1 - prog / 6 : 0.9 + (prog - 0.6) * 0.25).toFixed(4);
+
     /* 40%以降は入場カードを手前に */
     var fiz = prog < 0.4 ? '11' : '10';
     var tiz = prog < 0.4 ? '10' : '11';
@@ -672,16 +675,18 @@ document.querySelectorAll('.side-loc-tab').forEach(function(btn) {
     cards[fi].style.visibility = 'visible';
     cards[fi].style.transform  =
       'perspective(700px) translateY(' + (-dir * fiP * vh * 0.35).toFixed(1) + 'px)' +
-      ' rotateX(' + (-dir * fiTilt * 100).toFixed(2) + 'deg)' +
-      ' rotateZ(' + (-fiTilt * 10).toFixed(2) + 'deg)';
+      ' rotateX(' + (-dir * fiTilt * 80).toFixed(2) + 'deg)' +
+      ' rotateZ(' + (-fiTilt * 10).toFixed(2) + 'deg)' +
+      ' scale(' + scl + ')';
 
     /* 入場 */
     cards[ti].style.zIndex     = tiz;
     cards[ti].style.visibility = 'visible';
     cards[ti].style.transform  =
-      'perspective(700px) translateY(' + (dir * vh * 0.85 * (1 - tiP)).toFixed(1) + 'px)' +
-      ' rotateX(' + (dir * (1 - tiTilt) * 100).toFixed(2) + 'deg)' +
-      ' rotateZ(' + ((1 - tiTilt) * 10).toFixed(2) + 'deg)';
+      'perspective(700px) translateY(' + (dir * vh * 0.80 * (1 - tiP)).toFixed(1) + 'px)' +
+      ' rotateX(' + (dir * (1 - tiTilt) * 80).toFixed(2) + 'deg)' +
+      ' rotateZ(' + ((1 - tiTilt) * 10).toFixed(2) + 'deg)' +
+      ' scale(' + scl + ')';
   }
 
   function startDrag(dir) {
