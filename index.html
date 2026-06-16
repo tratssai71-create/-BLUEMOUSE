@@ -67,7 +67,13 @@
       inset: 0;
       overflow: hidden;
     }
-    .idx-photo::after {
+    /* パララックス用レール：セクションより30%大きく確保 */
+    .idx-photo__rail {
+      position: absolute;
+      inset: -30%;
+      will-change: transform;
+    }
+    .idx-photo__rail::after {
       content: '';
       position: absolute;
       inset: 0;
@@ -88,10 +94,28 @@
       transform-origin: center center;
     }
 
+    /* ===== ベール（非アクティブ時の暗幕 → アクティブで消える） ===== */
+    .idx-veil {
+      position: absolute;
+      inset: 0;
+      background: rgba(20,12,6,0.45);
+      z-index: 2;
+      pointer-events: none;
+      opacity: 1;
+      transition: opacity 0.75s cubic-bezier(0.22,1,0.36,1);
+    }
+    .idx-snap-card.is-active .idx-veil { opacity: 0; }
+
+    /* ===== 写真ランディング（セクション入場時のズームイン→アウト） ===== */
+    @keyframes idx-photo-land {
+      from { transform: scale(1.06); }
+      to   { transform: scale(1.0); }
+    }
+
     /* ===== オーバーレイ（テキストエリア） ===== */
     .idx-overlay {
       position: relative;
-      z-index: 2;
+      z-index: 3;
       height: 100%;
       display: flex;
       flex-direction: column;
@@ -366,8 +390,11 @@
     <!-- ─── Section 0: Philosophy ─── -->
     <section class="idx-snap-card" id="idx-0" data-idx="0">
       <div class="idx-photo">
-        <img class="idx-photo__img" src="./1.webp" alt="BLUE MOUSE" data-anim="kb-pan" />
+        <div class="idx-photo__rail">
+          <img class="idx-photo__img" src="./1.webp" alt="BLUE MOUSE" data-anim="kb-pan" />
+        </div>
       </div>
+      <div class="idx-veil"></div>
       <div class="idx-overlay idx-overlay--bl">
         <p class="idx-kicker">PHILOSOPHY</p>
         <h2 class="idx-title">主体性療育から<br>IT療育へ</h2>
@@ -379,8 +406,11 @@
     <!-- ─── Section 1: Child ─── -->
     <section class="idx-snap-card" id="idx-1" data-idx="1">
       <div class="idx-photo">
-        <img class="idx-photo__img" src="./photos/jidou_opt.jpg" alt="児童発達支援" data-anim="kb-down" />
+        <div class="idx-photo__rail">
+          <img class="idx-photo__img" src="./photos/jidou_opt.jpg" alt="児童発達支援" data-anim="kb-down" />
+        </div>
       </div>
+      <div class="idx-veil"></div>
       <div class="idx-overlay idx-overlay--bl">
         <p class="idx-kicker">EARLY INTERVENTION</p>
         <h2 class="idx-title">こどもが自ら、<br>育む。</h2>
@@ -392,8 +422,11 @@
     <!-- ─── Section 2: After School ─── -->
     <section class="idx-snap-card" id="idx-2" data-idx="2">
       <div class="idx-photo">
-        <img class="idx-photo__img" src="./photos/hokago_opt.jpg" alt="放課後等デイサービス" data-anim="kb-up" />
+        <div class="idx-photo__rail">
+          <img class="idx-photo__img" src="./photos/hokago_opt.jpg" alt="放課後等デイサービス" data-anim="kb-up" />
+        </div>
       </div>
+      <div class="idx-veil"></div>
       <div class="idx-overlay idx-overlay--br">
         <p class="idx-kicker">AFTER SCHOOL</p>
         <h2 class="idx-title">強みとなる<br>「見える力」を、<br>武器に。</h2>
@@ -405,8 +438,11 @@
     <!-- ─── Section 3: Recruit ─── -->
     <section class="idx-snap-card" id="idx-3" data-idx="3">
       <div class="idx-photo">
-        <img class="idx-photo__img" src="./photos/recruit_opt.jpg" alt="採用情報" data-anim="kb-pan-x" />
+        <div class="idx-photo__rail">
+          <img class="idx-photo__img" src="./photos/recruit_opt.jpg" alt="採用情報" data-anim="kb-pan-x" />
+        </div>
       </div>
+      <div class="idx-veil"></div>
       <div class="idx-overlay idx-overlay--bl">
         <p class="idx-kicker">RECRUIT</p>
         <h2 class="idx-title">自分らしく、<br>働く。</h2>
@@ -560,7 +596,8 @@ document.querySelectorAll('.side-loc-tab').forEach(function(btn) {
 <script>
 /* ===== スナップスクロール：セクション追跡 ===== */
 (function () {
-  var ANIM_DUR = '10s ease-out forwards';
+  var KB_DUR   = '10s ease-out forwards';
+  var LAND_DUR = '0.85s cubic-bezier(0.22,1,0.36,1) forwards';
   var cards = Array.from(document.querySelectorAll('.idx-snap-card'));
   var counterCurEl = document.getElementById('idx-counter-cur');
   var sideHeadingEl = document.getElementById('side-heading');
@@ -571,12 +608,22 @@ document.querySelectorAll('.side-loc-tab').forEach(function(btn) {
   function activateCard(card) {
     var idx = parseInt(card.getAttribute('data-idx') || '0', 10);
     card.classList.add('is-active');
+
+    /* 写真ランディング（scale 1.06→1.0）→ Ken Burns へ接続 */
     var img = card.querySelector('.idx-photo__img');
     if (img) {
       img.style.animation = 'none';
-      void img.offsetHeight; /* 強制リフロー */
-      img.style.animation = (img.getAttribute('data-anim') || 'kb-pan') + ' ' + ANIM_DUR;
+      void img.offsetHeight;
+      var kbAnim = (img.getAttribute('data-anim') || 'kb-pan') + ' ' + KB_DUR;
+      img.style.animation = 'idx-photo-land ' + LAND_DUR + ', ' + kbAnim.replace('forwards', '0.85s forwards');
+      /* Ken Burns を0.85s後にスタート */
+      img.style.animation = 'idx-photo-land ' + LAND_DUR;
+      var landTimer = setTimeout(function () {
+        img.style.animation = (img.getAttribute('data-anim') || 'kb-pan') + ' ' + KB_DUR;
+      }, 850);
+      img._landTimer = landTimer;
     }
+
     if (counterCurEl) counterCurEl.textContent = pad2(idx + 1);
     if (sideHeadingEl) sideHeadingEl.textContent = sideLabels[idx] || 'SERVICE INFO';
   }
@@ -584,8 +631,31 @@ document.querySelectorAll('.side-loc-tab').forEach(function(btn) {
   function deactivateCard(card) {
     card.classList.remove('is-active');
     var img = card.querySelector('.idx-photo__img');
-    if (img) img.style.animation = 'none';
+    if (img) {
+      clearTimeout(img._landTimer);
+      img.style.animation = 'none';
+    }
   }
+
+  /* ===== 写真パララックス ===== */
+  var ticking = false;
+  function updateParallax() {
+    var scrollY = window.scrollY;
+    var vh = window.innerHeight;
+    cards.forEach(function (card, i) {
+      var progress = (scrollY - i * vh) / vh; /* -1=下方, 0=正面, +1=上方へ退場 */
+      var rail = card.querySelector('.idx-photo__rail');
+      if (rail) {
+        /* 写真はセクションの28%速度でゆっくり動く → 奥行き感 */
+        rail.style.transform = 'translateY(' + (progress * 0.28 * vh).toFixed(1) + 'px)';
+      }
+    });
+    ticking = false;
+  }
+  window.addEventListener('scroll', function () {
+    if (!ticking) { requestAnimationFrame(updateParallax); ticking = true; }
+  }, { passive: true });
+  updateParallax(); /* 初期化 */
 
   var observer = new IntersectionObserver(function (entries) {
     entries.forEach(function (entry) {
