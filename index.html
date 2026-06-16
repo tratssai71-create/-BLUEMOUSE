@@ -689,11 +689,15 @@ document.querySelectorAll('.side-loc-tab').forEach(function(btn) {
       var p = Math.min((ts - startT) / dur, 1);
       var e = easeOut3(p);
 
-      /* 新セクション：下から（または上から）スライドイン */
+      /* 新セクション：下（or上）からスライドイン */
       cards[idx].style.transform  = 'translateY(' + ((dir * vh) * (1 - e)).toFixed(1) + 'px)';
-      /* 旧セクション：軽くスケールダウン + フェードアウト */
-      cards[prev].style.transform = 'scale(' + (1 - e * 0.03).toFixed(4) + ')';
-      cards[prev].style.opacity   = String((1 - e * 0.3).toFixed(3));
+
+      /* 旧セクション：perspective + rotateX で奥へ倒れ込む 3D退場 */
+      var rotX  = (e * 10).toFixed(2);          /* 0deg → 10deg */
+      var scl   = (1 - e * 0.1).toFixed(4);     /* 1.0  → 0.90  */
+      var alpha = (1 - e * 0.55).toFixed(3);    /* 1.0  → 0.45  */
+      cards[prev].style.transform = 'perspective(900px) rotateX(' + rotX + 'deg) scale(' + scl + ')';
+      cards[prev].style.opacity   = alpha;
 
       if (p < 1) {
         requestAnimationFrame(step);
