@@ -7,16 +7,12 @@
   <title>BLUE MOUSE | 放課後等デイサービス・児童発達支援</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <!-- トップページで実際に使うのは Inter（英字）と Zen Kaku Gothic New（和文）の2種のみ。
-       未使用フォント5種を削除しスマホ読み込みを軽量化 -->
-  <!-- 見出し・本文=Zen Kaku Gothic New(ゴシック) / 英字=Inter。 -->
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Zen+Kaku+Gothic+New:wght@300;400;500;700;900&display=swap" rel="stylesheet" />
-  <link rel="preload" href="./photos/ichigo2.jpg" as="image" />
+  <link rel="preload" href="./1.webp" as="image" />
   <link rel="stylesheet" href="./layout.css?v=45" />
   <style>
-    /* トップページのフォント：Zen Kaku Gothic New に統一（layout.css の変数・直接指定も上書き） */
+    /* ===== フォント変数 ===== */
     :root {
-      /* Inter を先頭に：英字はInter、かな漢字はZen Kakuへ自動フォールバック */
       --font-heading: "Inter", "Zen Kaku Gothic New", sans-serif;
       --font-body:    "Inter", "Zen Kaku Gothic New", sans-serif;
       --font-en:      "Inter", "Zen Kaku Gothic New", sans-serif;
@@ -24,411 +20,229 @@
     .bm-nav__item,
     .bm-nav__group-link { font-family: "Inter", "Zen Kaku Gothic New", sans-serif; }
 
-    /* トップページではINFOボタン非表示 */
+    /* INFOボタン非表示 */
     .bm-info-fab { display: none !important; }
 
-    /* ページ全体にごく薄いダークトーン */
-    body::after {
-      content: '';
-      position: fixed;
-      inset: 0;
-      background: rgba(0,0,0,0);
-      pointer-events: none;
-      z-index: 9998;
-    }
-
-    /* トップページはパディングなし */
-    .bm-main { padding: 0 !important; }
-
-    /* ===== トップページ全体フォント：Zen Kaku Gothic New に統一・細め ===== */
-    .bm-main, .bm-main h1, .bm-main h2, .bm-main h3, .bm-main h4,
-    .bm-main p, .bm-main a, .bm-main span, .bm-main button, .bm-main div {
-      /* Inter（英字）→ Zen Kaku Gothic New（和文）の順。英字専用書体で品を一段上げる */
-      font-family: "Inter", "Zen Kaku Gothic New", sans-serif !important;
-      font-weight: 300 !important;
-    }
-    /* スライドタイトル=太さ400／サブタイトル=350（グローバル300を上書き） */
-    /* ヒーロー見出し=Zen Kaku Gothic New(ゴシック)。英字Interの後ろに置き和文を担当 */
-    .bm-main .slide-title, .bm-main .slide-title .tl-line {
-      font-weight: 700 !important;
-      font-family: "Inter", "Zen Kaku Gothic New", sans-serif !important;
-    }
-    /* サブタイトルは全スライド共通：和文の一文として太さ400でエレガントに */
-    .bm-main .slide-title-sub, .bm-main .slide-title-sub .tl-line,
-    .bm-main .slide-title-sub2, .bm-main .slide-title-sub2 .tl-line { font-weight: 400 !important; }
-    /* bm-layout の transform アニメが fixed の含有ブロックになるのを防ぐ */
-    .bm-layout { animation: none !important; }
-    /* サイドバーロゴ非表示（バッジが代わりに表示） */
+    /* レイアウト上書き */
+    .bm-main  { padding: 0 !important; }
+    .bm-layout { animation: none !important; min-height: 0 !important; }
+    .bm-main * { font-family: "Inter", "Zen Kaku Gothic New", sans-serif !important; }
     .bm-left .bm-logo { display: none !important; }
 
-    /* 各セクション */
-    #box-1, #box-2, #box-3 {
-      height: 100vh;
+    /* ===== ブランドカラー ===== */
+    :root {
+      --bm-coral:      #f2906c;
+      --bm-coral-dark: #e87e59;
+      --bm-teal:       #5fc1c7;
+      --bm-yellow:     #f5d24a;
+      --bm-cream:      #fffdf7;
+      --bm-ink:        40, 30, 24;
+    }
+
+    /* ===== Ken Burns keyframes ===== */
+    @keyframes kb       { from{transform:scale(1.0)}                  to{transform:scale(1.06)} }
+    @keyframes kb-down  { from{transform:scale(1.11) translateY(4%)}  to{transform:scale(1.06) translateY(-4%)} }
+    @keyframes kb-up    { from{transform:scale(1.11) translateY(-4%)} to{transform:scale(1.06) translateY(4%)} }
+    @keyframes kb-pan   { from{transform:scale(1.0) translateY(0%)}   to{transform:scale(1.0) translateY(-2%)} }
+    @keyframes kb-pan-x { from{transform:scale(1.07) translateX(-3%)} to{transform:scale(1.07) translateX(3%)} }
+
+    /* ===== SNAP SCROLL ===== */
+    html { scroll-snap-type: y mandatory; }
+
+    /* ===== スナップカード ===== */
+    .idx-snap-card {
       position: relative;
+      width: 100%;
+      height: 100vh;
       overflow: hidden;
+      scroll-snap-align: start;
+    }
+    @media (max-width: 780px) {
+      .idx-snap-card { height: 100svh; }
     }
 
-    /* ---- ヒーロー写真：Ken Burns ---- */
-    @keyframes kb       { from{transform:scale(1.0)}                           to{transform:scale(1.06)} }
-    @keyframes kb-down  { from{transform:scale(1.11) translateY(4%)}           to{transform:scale(1.06) translateY(-4%)} }
-    @keyframes kb-right { from{transform:scale(1.11) translateX(4%)}           to{transform:scale(1.06) translateX(-4%)} }
-    @keyframes kb-up    { from{transform:scale(1.11) translateY(-4%)}          to{transform:scale(1.06) translateY(4%)} }
-    @keyframes kb-pan   { from{transform:scale(1.0) translateY(0%)}            to{transform:scale(1.0) translateY(-2%)} }
-    @keyframes kb-pan-x { from{transform:scale(1.07) translateX(-3%)}          to{transform:scale(1.07) translateX(3%)} }
-
-    /* 写真エリア：フル表示 */
-    .hero-photos {
+    /* ===== 写真背景 ===== */
+    .idx-photo {
       position: absolute;
-      top: 0; left: 0; right: 0; bottom: 0;
-      z-index: 0;
+      inset: 0;
       overflow: hidden;
     }
-    /* 背景写真のスクリム：フラットに暗くせず「下（テキスト位置）だけ落とす」
-       グラデーション。上は写真を鮮やかに残し、左下の文字に必要なコントラストを与える */
-    .hero-photos::after {
-      content: "";
+    .idx-photo::after {
+      content: '';
       position: absolute;
-      top: 0; left: 0; right: 0; bottom: 0;
+      inset: 0;
       background: linear-gradient(to top,
-        rgba(var(--bm-ink),0.58) 0%,
-        rgba(var(--bm-ink),0.30) 32%,
-        rgba(var(--bm-ink),0.12) 60%,
-        rgba(var(--bm-ink),0.06) 100%);
-      pointer-events: none;
+        rgba(40,30,24,0.66) 0%,
+        rgba(40,30,24,0.28) 38%,
+        rgba(40,30,24,0.10) 68%,
+        rgba(40,30,24,0.04) 100%);
       z-index: 1;
+      pointer-events: none;
     }
-    .hero-photo {
+    .idx-photo__img {
       position: absolute;
-      top: 0; left: 0; right: 0; bottom: 0;
+      inset: 0;
       width: 100%;
       height: 100%;
       object-fit: cover;
-      object-position: center center;
-      opacity: 0;
-      filter: blur(18px);
       transform-origin: center center;
-      transform: scale(1.08);
-      /* 最初の一瞬でブラーが一気に抜け、残りはゆるやかに収束 */
-      transition: opacity 0.6s ease-in-out, filter 2.1s cubic-bezier(0, 0.92, 0.18, 1), transform 1.6s ease-out;
-      /* will-change・animation はJS側で最小限だけ動的付与 */
     }
-    .hero-photo.hp-active {
-      opacity: 1;
-      filter: blur(0px);
-      transform: scale(1.0);
-    }
-    .hero-photo--top    { object-position: center top !important; }
-    .hero-photo--center { object-position: 65% 35% !important; }
-    .hero-photo--bottom { object-position: center 60% !important; }
-    .hero-photo--ichigo { object-position: center 20% !important; }
-    .hero-photo--contain { object-fit: contain !important; object-position: center center !important; background: #c8cfc5; }
-    .slide-overlay { z-index: 1; }
-    .slide-title {
-      word-break: keep-all;
-      overflow-wrap: break-word;
-    }
-    /* ===== 白フェードオーバーレイ（写真エリアのみ） ===== */
-    #hero-white-overlay {
-      position: absolute;
-      inset: 0;
-      background: rgba(255, 254, 251, 0.9);
-      opacity: 0;
+
+    /* ===== オーバーレイ（テキストエリア） ===== */
+    .idx-overlay {
+      position: relative;
       z-index: 2;
-      pointer-events: none;
-      transition: opacity 0.3s ease;
-    }
-
-    /* box-1：白背景モード — 左下配置 */
-    #box-1 {
-      background: rgba(255, 254, 251, 0.9);
-    }
-    #box-1 .slide-overlay {
-      position: absolute;
-      inset: 0;
-      background: transparent;
+      height: 100%;
       display: flex;
       flex-direction: column;
-      justify-content: flex-end;
-      /* 左に溜め(44px)・底から浮かせる(72px)＝文字組みを気持ち上へ */
-      padding: 20px 20px 72px 44px;
+      padding: 52px 52px 72px;
     }
-    #box-1 .slide-overlay::before { display: none; }
-    #box-1 .slide-overlay > * { position: relative; z-index: 1; }
-    /* box-2：右上寄せ */
-    #box-2 .slide-overlay {
-      position: absolute;
-      inset: 0;
-      background: transparent;
-      display: flex;
-      flex-direction: column;
-      justify-content: flex-start;
-      align-items: flex-end;
-      text-align: right;
-      padding: 52px 44px 48px;
-    }
-    #box-2 .slide-overlay::before {
-      content: '';
-      position: absolute;
-      top: 0; left: 0; right: 0;
-      height: 55%;
-      background: linear-gradient(to top, transparent 0%, rgba(0,0,0,0.55) 100%);
-      z-index: 0;
-      pointer-events: none;
-    }
-    #box-2 .slide-overlay > * { position: relative; z-index: 1; }
+    .idx-overlay--bl { justify-content: flex-end; align-items: flex-start; }
+    .idx-overlay--br { justify-content: flex-end; align-items: flex-end; text-align: right; }
 
-    /* ===== ブランドカラー（採用サイトbouemouse.studio.siteに合わせる） ===== */
-    :root {
-      --bm-coral: #f2906c;        /* コーラル：主要CTA */
-      --bm-coral-dark: #e87e59;   /* コーラル濃いめ：hover */
-      --bm-teal: #5fc1c7;         /* ロゴカラー（BLUE MOUSE）。キッカー等のロゴ色はこれで統一 */
-      --bm-yellow: #f5d24a;       /* イエロー：補助アクセント */
-      --bm-cream: #fffdf7;        /* 温かみのあるオフホワイト：写真上の文字（純白より上品） */
-      --bm-ink: 40, 30, 24;       /* ブランドの暖色ダーク（rgb）：スクリムを純黒でなく温かく */
+    /* ===== テキスト：デフォルト非表示（アニメイン） ===== */
+    .idx-kicker,
+    .idx-title,
+    .idx-sub,
+    .idx-btn {
+      opacity: 0;
+      transform: translateY(22px);
+      transition: opacity 0.65s ease, transform 0.65s cubic-bezier(0.22,1,0.36,1);
     }
+    .idx-snap-card.is-active .idx-kicker { opacity: 1; transform: none; transition-delay:   0ms; }
+    .idx-snap-card.is-active .idx-title  { opacity: 1; transform: none; transition-delay: 110ms; }
+    .idx-snap-card.is-active .idx-sub    { opacity: 1; transform: none; transition-delay: 230ms; }
+    .idx-snap-card.is-active .idx-btn    { opacity: 1; transform: none; transition-delay: 380ms; }
 
-    /* ===== キッカー（タイトル上の小さなラベル） ===== */
-    .slide-kicker {
+    /* ===== Kicker ===== */
+    .idx-kicker {
       display: inline-flex;
       align-items: center;
       gap: 10px;
-      font-family: "Zen Kaku Gothic New", sans-serif;
       font-weight: 500 !important;
-      font-size: 0.85rem;
-      letter-spacing: 0.4em;
-      color: var(--bm-teal);   /* 左上ロゴ(BLUE MOUSE)と同じティール */
+      font-size: 0.78rem;
+      letter-spacing: 0.42em;
+      color: var(--bm-teal);
       text-transform: uppercase;
-      margin: 0 0 6px;            /* キッカーとタイトルの間を少し開ける */
-      text-shadow: 0 1px 10px rgba(0, 0, 0, 0.4);
+      margin: 0 0 8px;
+      text-shadow: 0 1px 8px rgba(0,0,0,0.5);
     }
-    .slide-kicker::before {
-      content: "";
+    .idx-kicker::before {
+      content: '';
       display: inline-block;
-      width: 28px;
+      width: 22px;
       height: 1px;
       background: currentColor;
       opacity: 0.85;
+      flex-shrink: 0;
     }
-    .slide-kicker-block { display: block; }
-    /* グローバル .bm-main p(0,1,1) を上回る詳細度で太さを確実に適用 */
-    .bm-main .slide-kicker { font-weight: 500 !important; }
 
-    /* ===== タイトル：各行を独立ブロック(display:table)で縦に積む =====
-       行ごとの白背景を「文字メトリクス依存のinline」ではなくブロックの箱で
-       積むため、ブラウザに関係なく重なり/隙間が一切出ない。短い行は背景も短い。*/
-    .slide-title {
-      font-family: "Zen Kaku Gothic New", sans-serif;
-      font-weight: 500;
-      display: block;
+    /* ===== Title ===== */
+    .idx-title {
+      font-weight: 500 !important;
+      font-size: clamp(2.0rem, 3.2vw, 3.5rem);
       color: var(--bm-cream);
-      -webkit-text-stroke: 0;
-      letter-spacing: 0.05em;
-      text-shadow: 0 1px 14px rgba(0, 0, 0, 0.4);
-    }
-    .slide-title .tl-line {
-      display: table;               /* 行ごとに縦に積む */
-      background: transparent;      /* 白背景ボックス廃止：写真に直接白文字 */
-      padding: 0;
-      line-height: 1.05;            /* 行間を詰める */
-      border-radius: 0;
-    }
-    /* ブロック用ラッパー */
-    .slide-title-block {
-      display: inline-block;
-      margin: 0;
-    }
-    #box-1 .slide-title { font-size: clamp(2.0rem, 3.1vw, 2.9rem) !important; }
-    #box-2 .slide-title { font-size: clamp(1.4rem, 2.1vw, 2.0rem); }
-
-    .slide-title-sub {
-      font-family: "Zen Kaku Gothic New", sans-serif;
-      font-weight: 400;
-      font-size: 0.9em;
-      display: block;
-      color: var(--bm-cream);
-      letter-spacing: 0.07em;
-      line-height: 1.3;             /* スライド1(sub2)と統一 */
-      text-shadow: 0 1px 12px rgba(0, 0, 0, 0.4);
-    }
-    .slide-title-sub .tl-line {
-      display: table;               /* タイトルと同じ：行ごとに縦に積む */
-      background: transparent;      /* 白背景ボックス廃止 */
-      padding: 0;
-      line-height: 1.3;             /* 行間：スライド1と統一 */
-      border-radius: 0;
-    }
-    .slide-title-sub-block {
-      display: block;
-      margin-top: 4px;   /* タイトルとサブタイトルの間隔（唯一の制御点） */
+      line-height: 1.1;
+      letter-spacing: 0.04em;
+      text-shadow: 0 1px 20px rgba(0,0,0,0.38);
+      margin: 0 0 10px;
     }
 
-    /* サブタイトル2：フォントスタイルはサブタイトル1と完全に同一 */
-    .slide-title-sub2 {
-      font-family: "Zen Kaku Gothic New", sans-serif;
-      font-weight: 400;
-      font-size: 0.9em;
-      display: block;
-      color: var(--bm-cream);
-      letter-spacing: 0.07em;
-      line-height: 1.3;      /* タイトル(1.05)とのバランスで適度に詰める */
-      text-shadow: 0 1px 12px rgba(0, 0, 0, 0.4);
-    }
-    .slide-title-sub2 .tl-line {
-      display: table;        /* サブタイトル1と同じ：行ごとに縦に積む */
-      line-height: 1.3;      /* 2行の間隔をバランスよく */
-    }
-    .slide-title-sub2-block {
-      display: block;
-      margin-top: 4px;   /* タイトルとの間隔（サブタイトルと同じ） */
+    /* ===== Sub ===== */
+    .idx-sub {
+      font-weight: 400 !important;
+      font-size: clamp(0.80rem, 1.05vw, 0.96rem);
+      color: rgba(255,253,247,0.74);
+      line-height: 1.85;
+      letter-spacing: 0.09em;
+      text-shadow: 0 1px 10px rgba(0,0,0,0.35);
+      margin: 0 0 26px;
     }
 
-    .slide-lead {
-      font-family: "Zen Kaku Gothic New", sans-serif;
-      color: rgba(255,255,255,.9);
-      font-size: 15.5px;
-      font-weight: 400;
-      line-height: 2.0;
-      margin: 0 0 24px;
-      letter-spacing: .20em;
-    }
-
-    /* box-1 のボタン */
-    #box-1 .slide-btn {
+    /* ===== CTA Button ===== */
+    .idx-btn {
       display: inline-flex;
       align-items: center;
-      gap: 0;
-      padding: 8px 40px;
-      margin-top: 16px;             /* サブタイトルとの間隔 */
+      padding: 9px 34px;
       background: var(--bm-coral);
-      color: #fff;
-      font-family: "Zen Kaku Gothic New", sans-serif;
-      font-size: 1.15em;
-      font-weight: 700 !important;   /* 800→700：小CTAで重すぎを解消（グローバルa:300を上書き） */
+      color: #fff !important;
+      font-size: 0.9rem;
+      font-weight: 700 !important;
+      letter-spacing: 0.14em;
       border-radius: 100px;
       text-decoration: none;
+      box-shadow: 0 4px 14px rgba(242,144,108,0.30);
       align-self: flex-start;
-      letter-spacing: .14em;         /* .24em→.14em：張りすぎを解消し上品に */
-      position: relative;
-      /* 通常時：ごく薄いコーラル影で「浮いて押せる」質感 */
-      box-shadow: 0 4px 14px rgba(242,144,108,0.28);
-      transition: transform .22s cubic-bezier(.34,1.56,.64,1), background .2s, border-color .2s, color .2s, box-shadow .25s;
+      /* hover用transitionは別途。アニメインと競合させないため */
+      transition: opacity 0.65s ease, transform 0.65s cubic-bezier(0.22,1,0.36,1),
+                  background 0.2s, box-shadow 0.22s;
     }
-    /* 矢印：ホバーで右へスッと動く微細モーション */
+    .idx-snap-card.is-active .idx-btn {
+      /* アニメイン完了後にhoverトランジションへ切替 */
+      transition: background 0.2s, box-shadow 0.22s,
+                  transform 0.22s cubic-bezier(0.34,1.56,0.64,1);
+    }
+    .idx-overlay--br .idx-btn { align-self: flex-end; }
+    .idx-btn:hover {
+      background: var(--bm-coral-dark);
+      transform: scale(1.04);
+      box-shadow: 0 8px 22px rgba(242,144,108,0.44);
+    }
+    .idx-btn:hover .btn-arrow { transform: translateX(5px); }
+
+    /* Ghost variant (recruit) */
+    .idx-btn--ghost {
+      background: transparent;
+      border: 1.5px solid rgba(255,255,255,0.65);
+      box-shadow: none;
+    }
+    .idx-btn--ghost:hover {
+      background: rgba(255,255,255,0.12);
+      border-color: #fff;
+      box-shadow: none;
+    }
+
+    /* ===== 矢印 ===== */
     .btn-arrow {
-      margin-left: 14px;
+      margin-left: 12px;
       font-style: normal;
       display: inline-block;
-      transition: transform .25s cubic-bezier(.34,1.56,.64,1);
+      transition: transform 0.25s cubic-bezier(0.34,1.56,0.64,1);
     }
-    #box-1 .slide-btn:hover {
-      background: var(--bm-coral-dark);
-      color: #fff;
-      transform: scale(1.04);
-      /* ホバー：影を少し深くして一段浮かせる */
-      box-shadow: 0 8px 22px rgba(242,144,108,0.42);
-    }
-    #box-1 .slide-btn:hover .btn-arrow { transform: translateX(5px); }
 
-    /* box-3 */
-    #box-3 .slide-overlay {
-      position: absolute;
-      inset: 0;
-      background: transparent;
+    /* ===== セクションカウンター ===== */
+    .idx-counter {
+      position: fixed;
+      right: calc(25vw + 20px);
+      bottom: 28px;
+      z-index: 60;
       display: flex;
       flex-direction: column;
-      justify-content: flex-end;
-      padding: 48px 44px;
-    }
-    #box-3 .slide-overlay::before {
-      content: '';
-      position: absolute;
-      bottom: 0; left: 0; right: 0;
-      height: 55%;
-      background: linear-gradient(to bottom, transparent 0%, rgba(0,0,0,0.55) 100%);
-      z-index: 0;
+      align-items: center;
       pointer-events: none;
     }
-    #box-3 .slide-overlay > * { position: relative; z-index: 1; }
-    #box-3 .slide-title { font-size: clamp(2.45rem, 3.7vw, 3.5rem); color: #5EC1C6; }
-    #box-3 .slide-btn {
-      display: inline-block;
-      padding: 10px 24px;
-      background: transparent;
-      color: #fff;
-      font-family: "Zen Kaku Gothic New", sans-serif;
-      font-size: 13px;
-      font-weight: 400;
-      border-radius: 2px;
-      border: 1.5px solid rgba(255,255,255,.6);
-      text-decoration: none;
-      align-self: flex-start;
-      transition: background .2s, border-color .2s, transform .15s;
+    .idx-counter__cur {
+      font-size: 1.0rem;
+      font-weight: 600 !important;
+      color: var(--bm-teal);
+      line-height: 1;
+      letter-spacing: 0.02em;
     }
-    #box-3 .slide-btn:hover { background: rgba(255,255,255,.12); border-color: #fff; transform: translateY(-1px); }
-
-    /* box-2 のボタン：透明アウトライン */
-    #box-2 .slide-btn {
-      display: inline-block;
-      padding: 10px 24px;
-      background: transparent;
-      color: #fff;
-      font-family: "Zen Kaku Gothic New", sans-serif;
-      font-size: 13px;
-      font-weight: 400;
-      border-radius: 2px;
-      border: 1.5px solid rgba(255,255,255,.6);
-      text-decoration: none;
-      align-self: flex-end;
-      transition: background .2s, border-color .2s, transform .15s;
+    .idx-counter__sep {
+      width: 1px;
+      height: 14px;
+      background: rgba(255,253,247,0.28);
+      margin: 4px 0;
     }
-    #box-2 .slide-btn:hover { background: rgba(255,255,255,.12); border-color: #fff; transform: translateY(-1px); }
-
-    /* 右パネル ナビカード */
-    .idx-nav-card {
-      display: block;
-      background: #fff;
-      border-radius: 4px;
-      border: 1px solid rgba(0,0,0,.06);
-      box-shadow: 0 2px 8px rgba(0,0,0,.05);
-      padding: 14px 16px 16px;
-      text-decoration: none;
-      color: inherit;
-      border-top: 3px solid var(--c, #ccc);
-      transition: transform .2s, box-shadow .2s;
-    }
-    .idx-nav-card:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 6px 20px rgba(0,0,0,.1);
-    }
-    .idx-nav-card__badge {
-      display: inline-block;
-      background: var(--c, #ccc);
-      color: #33251a;
-      font-family: "Zen Kaku Gothic New", sans-serif;
-      font-size: 9px;
-      font-weight: 700;
-      padding: 2px 10px;
-      border-radius: 4px;
-      margin-bottom: 8px;
-    }
-    .idx-nav-card__title {
-      font-size: 15px;
-      font-weight: 500;
-      color: #33251a;
-      line-height: 1.45;
-      margin: 0 0 2px;
-    }
-    .idx-nav-card__sub {
-      font-size: 10px;
-      color: #aaa;
-      font-weight: 400;
-      margin: 0;
+    .idx-counter__total {
+      font-size: 0.68rem;
+      font-weight: 400 !important;
+      color: rgba(255,253,247,0.42);
+      line-height: 1;
+      letter-spacing: 0.04em;
     }
 
-
-    /* ===== ロゴ姉妹 ===== */
-    /* ワードマーク：fixed（黒オーバーレイより上） */
-    /* ロゴ：写真エリア(box-1)左上に絶対配置 */
+    /* ===== ロゴ・ワードマーク ===== */
     .hero-logo-wordmark {
       position: fixed;
       top: 16px;
@@ -444,7 +258,6 @@
       height: auto;
       display: block;
     }
-
     .hero-logo-badge {
       position: fixed;
       top: 18px;
@@ -455,155 +268,22 @@
       height: 40px;
       text-decoration: none;
     }
+    .hero-logo { display: none; }
 
-    /* hero-logo本体は不要になるので非表示 */
-    .hero-logo {
-      display: none;
-    }
-
+    /* ===== モバイル ===== */
     @media (max-width: 780px) {
-      body { background: #FFFEFB; overscroll-behavior-x: none; }
-      .bm-main { min-height: 0 !important; }
-      .bm-layout { min-height: 0 !important; }
-      #box-1 { height: 100vh; height: 100svh; touch-action: pan-y; overscroll-behavior-x: none; }
-      #box-1 .slide-overlay { padding-bottom: max(60px, calc(env(safe-area-inset-bottom) + 40px)); }
-      .hero-logo-wordmark {
-        left: 16px;
-      }
-      .hero-logo-wordmark img {
-        width: 150px;
-      }
-      /* モバイルヘッダーのロゴは非表示（写真上のロゴだけ使う） */
-      .bm-mobile-header__logo {
-        display: none !important;
-      }
-      /* スマホ：タイトルサイズ */
-      #box-1 .slide-title { font-size: clamp(1.1rem, 5.0vw, 1.8rem); word-break: normal; }
-      /* 横パディングを狭めて文字が収まるように／テキストを上に */
-      #box-1 .slide-overlay { padding: 48px 20px 68px; justify-content: flex-end; }
-      #box-1 .slide-overlay::before { display: none; }
-      /* スマホ：MOREボタン（高さそのまま、少し横長に） */
-      #box-1 .slide-btn { font-size: 0.95rem; padding: 6px 38px; margin-top: 18px; }
+      body { background: #111; overscroll-behavior-x: none; }
+      .bm-mobile-header__logo { display: none !important; }
+      .hero-logo-wordmark { left: 16px; }
+      .hero-logo-wordmark img { width: 150px; }
+      .idx-overlay { padding: 48px 22px 80px; }
+      .idx-overlay--bl,
+      .idx-overlay--br { padding-bottom: max(72px, calc(env(safe-area-inset-bottom) + 52px)); }
+      .idx-title { font-size: clamp(1.75rem, 7.5vw, 2.6rem); }
+      .idx-btn { font-size: 0.88rem; padding: 8px 30px; }
+      .idx-counter { right: 18px; }
     }
 
-    /* ===== スライドドット ===== */
-    .slide-dots {
-      position: absolute;
-      bottom: 28px;
-      right: 28px;
-      z-index: 10;
-      display: flex;
-      gap: 8px;
-      align-items: center;
-      /* どんな写真の上でもバーの輪郭が残るよう、全体に控えめな影 */
-      filter: drop-shadow(0 1px 3px rgba(0,0,0,0.45));
-    }
-    .slide-dot {
-      width: 12px;
-      height: 3px;
-      border-radius: 3px;
-      /* 非アクティブ：白45%で写真上でも視認できる */
-      background: rgba(255,255,255,0.45);
-      transition: width 0.4s ease, background 0.4s ease;
-      display: block;
-    }
-    .slide-dot.active {
-      width: 24px;
-      /* アクティブ：白（不透明）。どんな写真でも確実に読め、現在地は長さで示す */
-      background: #fff;
-    }
-
-    /* ===== スクロール誘導矢印 ===== */
-    .scroll-hint {
-      position: absolute;
-      bottom: 32px;
-      left: 50%;
-      transform: translateX(-50%);
-      z-index: 10;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 4px;
-      cursor: pointer;
-      animation: scroll-hint-pulse 2s ease-in-out infinite;
-    }
-    .scroll-hint span {
-      display: block;
-      width: 10px; height: 10px;
-      border-right: 2px solid rgba(51,37,26,.45);
-      border-bottom: 2px solid rgba(51,37,26,.45);
-      transform: rotate(45deg);
-    }
-    @keyframes scroll-hint-pulse {
-      0%, 100% { opacity: .5; transform: translateX(-50%) translateY(0); }
-      50%       { opacity: 1;  transform: translateX(-50%) translateY(6px); }
-    }
-
-    /* ===== マニフェストセクション（Appleスタイル） ===== */
-    #box-manifesto {
-      background: rgba(255, 254, 251, 0.9);
-      color: #33251a;
-      padding: 140px 48px 120px;
-      min-height: 100vh;
-      display: flex;
-      align-items: center;
-    }
-    .manifesto-inner {
-      max-width: 780px;
-      margin: 0 auto;
-    }
-    .manifesto-lead {
-      font-family: "Zen Kaku Gothic New", sans-serif;
-      font-size: clamp(2.6rem, 5.1vw, 5.0rem);
-      font-weight: 500;
-      line-height: 1.3;
-      letter-spacing: .14em;
-      color: #33251a;
-      margin: 0 0 56px;
-    }
-    .manifesto-h3 {
-      font-family: "Zen Kaku Gothic New", sans-serif;
-      font-size: clamp(1.5rem, 2.8vw, 2.35rem);
-      font-weight: 500;
-      color: #33251a;
-      margin: 64px 0 20px;
-      line-height: 1.4;
-      letter-spacing: .16em;
-    }
-    .manifesto-body {
-      font-family: "Zen Kaku Gothic New", sans-serif;
-      font-size: clamp(1.2rem, 1.9vw, 1.4rem);
-      font-weight: 400;
-      line-height: 2;
-      color: rgba(51,37,26,.7);
-      margin: 0 0 24px;
-      letter-spacing: .14em;
-    }
-    .manifesto-btns {
-      display: flex;
-      gap: 20px;
-      flex-wrap: wrap;
-      margin-top: 88px;
-    }
-    .manifesto-btn {
-      display: inline-block;
-      padding: 18px 40px;
-      border-radius: 999px;
-      font-family: "Zen Kaku Gothic New", sans-serif;
-      font-size: 15px;
-      font-weight: 500;
-      text-decoration: none;
-      letter-spacing: .04em;
-      transition: transform .2s, opacity .2s;
-    }
-    .manifesto-btn:hover { transform: translateY(-3px); opacity: .88; }
-    .manifesto-btn--primary  { background: #E6CC5E; color: #1d1d1f; }
-    .manifesto-btn--secondary { background: #3a9095; color: #fff; }
-    @media (max-width: 780px) {
-      #box-manifesto { padding: 80px 28px 100px; }
-      .manifesto-btns { flex-direction: column; gap: 14px; }
-      .manifesto-btn { text-align: center; }
-    }
     /* ===== ページ遷移オーバーレイ ===== */
     #page-transition {
       position: fixed;
@@ -627,9 +307,7 @@
       opacity: 0;
       transition: opacity 0.28s ease 0.3s;
     }
-    #page-transition.is-enter img {
-      opacity: 1;
-    }
+    #page-transition.is-enter img { opacity: 1; }
   </style>
 </head>
 <body>
@@ -640,8 +318,7 @@
     <a class="bm-logo" href="./index.html">
       <img src="./logo.png" alt="BLUE MOUSE" />
     </a>
-
-        <nav class="bm-nav">
+    <nav class="bm-nav">
       <a href="./index.html"       class="bm-nav__item is-active" data-page="index">Front</a>
       <a href="./philosophy.html"  class="bm-nav__item" data-page="philosophy">BLUE MOUSEの想い</a>
       <div class="bm-nav__group">
@@ -674,65 +351,76 @@
     <a class="bm-drawer-sns" href="https://www.instagram.com/blue_mouse_okayama/" target="_blank" rel="noopener" aria-label="Instagram"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2.5" y="2.5" width="19" height="19" rx="5"/><circle cx="12" cy="12" r="4.2"/><circle cx="17.3" cy="6.7" r="1.1" fill="currentColor" stroke="none"/></svg></a>
   </aside>
 
-  <!-- ===== 中央：スライドスクロール ===== -->
+  <!-- ===== メイン：スナップスクロール ===== -->
   <main class="bm-main" id="bm-center">
 
-    <!-- スライド 1：メインビジュアル -->
-    <div id="box-1">
-      <!-- ワードマーク：写真に絶対配置 -->
-      <a class="hero-logo-wordmark" href="./index.html">
-        <img src="./logo.png" alt="BLUE MOUSE" />
-      </a>
-      <!-- バッジ：fixed でスクロールについてくる -->
-      <span class="hero-logo-badge">
-        <img src="./logo.png" alt="BLUE MOUSE" />
-      </span>
-      <div class="hero-photos">
-        <img class="hero-photo hp-active" src="./photos/IMG_8852.jpg" alt="BLUE MOUSE"
-          data-kicker="PHILOSOPHY"
-          data-title="主体性療育から<br>IT療育へ"
-          data-sub2="経済的自立から逆算した、<br>10年後のロードマップ。"
-          data-btn-text="MORE <span class='btn-arrow'>›</span>" data-btn-href="./philosophy.html" data-anim="kb-pan" />
-        <img class="hero-photo" src="./photos/IMG_8852.jpg" alt="児童発達支援事業" loading="lazy"
-          data-kicker="Early Intervention"
-          data-title="児童発達支援<br><span class='slide-title-sub'>土台となる「見えない力」は、<br>こどもが自ら育む</span>"
-          data-btn-text="MORE <span class='btn-arrow'>›</span>" data-btn-href="./child.html" data-anim="kb-down" />
-        <img class="hero-photo" src="./photos/IMG_8852.jpg" alt="放課後等デイサービス" loading="lazy"
-          data-kicker="AFTER SCHOOL"
-          data-title="放課後等<br>デイサービス<br><span class='slide-title-sub'>強みとなる「見える力」は、<br>伴走者と共に育む</span>"
-          data-btn-text="MORE <span class='btn-arrow'>›</span>" data-btn-href="./afterschool.html" data-anim="kb-up" />
-        <img class="hero-photo" src="./photos/IMG_8852.jpg" alt="いちご狩り" loading="lazy"
-          data-kicker="RECRUIT"
-          data-title="自分らしく働く。<br>採用情報<br><span class='slide-title-sub'>岡山で一番働きやすい<br>職場を目指しています</span>"
-          data-btn-text="MORE <span class='btn-arrow'>›</span>" data-btn-href="./recruit.html" data-anim="kb-pan-x" />
-      </div>
-      <div id="hero-white-overlay"></div>
-      <div class="slide-dots" id="hero-slide-dots">
-        <span class="slide-dot active"></span>
-        <span class="slide-dot"></span>
-        <span class="slide-dot"></span>
-        <span class="slide-dot"></span>
-      </div>
-      <!-- スクロール誘導 -->
+    <!-- ワードマーク（fixed） -->
+    <a class="hero-logo-wordmark" href="./index.html">
+      <img src="./logo.png" alt="BLUE MOUSE" />
+    </a>
+    <!-- バッジ（fixed・バウンス） -->
+    <span class="hero-logo-badge">
+      <img src="./logo.png" alt="BLUE MOUSE" />
+    </span>
 
-      <div class="slide-overlay">
-        <div class="slide-kicker-block">
-          <p class="slide-kicker">PHILOSOPHY</p>
-        </div>
-        <div class="slide-title-block">
-          <h2 class="slide-title"><span class="tl-line">主体性療育から</span><span class="tl-line">IT療育へ</span></h2>
-        </div>
-        <div class="slide-title-sub-block" style="display:none">
-          <span class="slide-title-sub"></span>
-        </div>
-        <div class="slide-title-sub2-block">
-          <span class="slide-title-sub2"><span class="tl-line">経済的自立から逆算した、</span><span class="tl-line">10年後のロードマップ。</span></span>
-        </div>
-        <a class="slide-btn js-slide-btn" href="" style="display:none">MORE <span class="btn-arrow">›</span></a>
+    <!-- ─── Section 0: Philosophy ─── -->
+    <section class="idx-snap-card" id="idx-0" data-idx="0">
+      <div class="idx-photo">
+        <img class="idx-photo__img" src="./1.webp" alt="BLUE MOUSE" data-anim="kb-pan" />
       </div>
+      <div class="idx-overlay idx-overlay--bl">
+        <p class="idx-kicker">PHILOSOPHY</p>
+        <h2 class="idx-title">主体性療育から<br>IT療育へ</h2>
+        <p class="idx-sub">経済的自立から逆算した、<br>10年後のロードマップ。</p>
+        <a href="./philosophy.html" class="idx-btn js-slide-btn">MORE <span class="btn-arrow">›</span></a>
+      </div>
+    </section>
+
+    <!-- ─── Section 1: Child ─── -->
+    <section class="idx-snap-card" id="idx-1" data-idx="1">
+      <div class="idx-photo">
+        <img class="idx-photo__img" src="./photos/jidou_opt.jpg" alt="児童発達支援" data-anim="kb-down" />
+      </div>
+      <div class="idx-overlay idx-overlay--bl">
+        <p class="idx-kicker">EARLY INTERVENTION</p>
+        <h2 class="idx-title">こどもが自ら、<br>育む。</h2>
+        <p class="idx-sub">土台となる「見えない力」は、<br>こどもが主役。</p>
+        <a href="./child.html" class="idx-btn js-slide-btn">MORE <span class="btn-arrow">›</span></a>
+      </div>
+    </section>
+
+    <!-- ─── Section 2: After School ─── -->
+    <section class="idx-snap-card" id="idx-2" data-idx="2">
+      <div class="idx-photo">
+        <img class="idx-photo__img" src="./photos/hokago_opt.jpg" alt="放課後等デイサービス" data-anim="kb-up" />
+      </div>
+      <div class="idx-overlay idx-overlay--br">
+        <p class="idx-kicker">AFTER SCHOOL</p>
+        <h2 class="idx-title">強みとなる<br>「見える力」を、<br>武器に。</h2>
+        <p class="idx-sub">IT療育で、<br>収入格差に立ち向かう。</p>
+        <a href="./afterschool.html" class="idx-btn js-slide-btn">MORE <span class="btn-arrow">›</span></a>
+      </div>
+    </section>
+
+    <!-- ─── Section 3: Recruit ─── -->
+    <section class="idx-snap-card" id="idx-3" data-idx="3">
+      <div class="idx-photo">
+        <img class="idx-photo__img" src="./photos/recruit_opt.jpg" alt="採用情報" data-anim="kb-pan-x" />
+      </div>
+      <div class="idx-overlay idx-overlay--bl">
+        <p class="idx-kicker">RECRUIT</p>
+        <h2 class="idx-title">自分らしく、<br>働く。</h2>
+        <p class="idx-sub">岡山で一番働きやすい<br>職場を目指しています。</p>
+        <a href="./recruit.html" class="idx-btn idx-btn--ghost js-slide-btn">MORE <span class="btn-arrow">›</span></a>
+      </div>
+    </section>
+
+    <!-- セクションカウンター -->
+    <div class="idx-counter" id="idx-counter">
+      <span class="idx-counter__cur" id="idx-counter-cur">01</span>
+      <span class="idx-counter__sep"></span>
+      <span class="idx-counter__total">04</span>
     </div>
-
-    <!-- ===== マニフェストセクション ===== -->
 
   </main>
 
@@ -756,12 +444,10 @@
       </div>
       <div class="side-card">
         <span class="side-card__badge">所在地</span>
-        <!-- タブ -->
         <div class="side-loc-tabs">
           <button class="side-loc-tab is-active" data-loc="houdei">放課後等デイサービス</button>
           <button class="side-loc-tab" data-loc="jidou">児童発達支援事業</button>
         </div>
-        <!-- 放課後等デイサービス -->
         <div class="side-loc-content is-active" id="loc-houdei">
           <p class="side-card__title">岡山市中区<br>徳吉町二丁目11番地25</p>
           <p class="side-card__sub">東山電停から徒歩1分</p>
@@ -769,7 +455,6 @@
              href="https://maps.google.com/?q=岡山県岡山市中区徳吉町二丁目11番地25"
              target="_blank" rel="noopener">場所を見る</a>
         </div>
-        <!-- 児童発達支援事業 -->
         <div class="side-loc-content" id="loc-jidou">
           <p class="side-card__title">岡山市北区<br>辰巳２６−１０２</p>
           <p class="side-card__sub">北長瀬駅から徒歩約18分</p>
@@ -780,7 +465,6 @@
       </div>
     </div>
 
-    <!-- Google Maps (スライドに連動して切り替わる) -->
     <div class="side-map-wrap">
       <iframe id="side-map-iframe"
         src="https://maps.google.com/maps?q=ブルーマウス徳吉町+放課後等デイサービス&output=embed&z=17&hl=ja"
@@ -805,6 +489,7 @@
 </div>
 
 <script src="./layout.js"></script>
+
 <script>
 /* ===== ヒーローバッジ文字アニメーション ===== */
 (function () {
@@ -818,71 +503,43 @@
   function run() {
     var link = document.querySelector('.hero-logo-badge');
     if (!link) return;
-
     var logoImg = link.querySelector('img');
     if (logoImg) logoImg.style.display = 'none';
-
     var wrap = document.createElement('div');
     wrap.style.cssText = 'position:relative;display:block;width:' + SIZE + 'px;height:' + SIZE + 'px;flex-shrink:0;pointer-events:none;overflow:hidden;border-radius:50%;';
     link.appendChild(wrap);
-
     var badges = FILES.map(function (src) {
       var img = document.createElement('img');
       img.src = src;
       img.style.cssText = [
         'position:absolute','top:0','left:0',
         'width:' + SIZE + 'px','height:' + SIZE + 'px',
-        'border-radius:50%','opacity:0','transform:scale(1)',
-        'z-index:1',
+        'border-radius:50%','opacity:0','transform:scale(1)','z-index:1',
       ].join(';');
       wrap.appendChild(img);
       return img;
     });
-
     var cur = -1;
-
-    /* 常に1.0（サイズ固定） */
-    function randScale() { return '1'; }
-
-    /* トランジションなしで即座に文字差し替え（外側scale≈0の瞬き時 or タップ時） */
     function swapLetter() {
-      var from = cur;
-      var to   = (from + 1) % badges.length;
+      var from = cur, to = (from + 1) % badges.length;
       cur = to;
-      if (from >= 0) {
-        badges[from].style.transition = 'none';
-        badges[from].style.opacity    = '0';
-        badges[from].style.zIndex     = '0';
-      }
-      badges[to].style.transition = 'none';
-      badges[to].style.zIndex     = '1';
-      badges[to].style.opacity    = '1';
-      badges[to].style.transform  = 'scale(' + randScale() + ')';
+      if (from >= 0) { badges[from].style.transition = 'none'; badges[from].style.opacity = '0'; badges[from].style.zIndex = '0'; }
+      badges[to].style.transition = 'none'; badges[to].style.zIndex = '1'; badges[to].style.opacity = '1'; badges[to].style.transform = 'scale(1)';
     }
-
-    /* 初回表示 */
     setTimeout(swapLetter, 400);
-
-    /* doBlink（バウンススクリプト）からの呼び出し口
-       ― バッジが縮んで見えない瞬間に文字を切り替える。自動タイマーなし */
     window._badgeSwapOnBlink = swapLetter;
-
-    /* タップ：瞬きアニメを起動 → 縮んだ瞬間に文字切替（_badgeSwapOnBlinkと連動） */
     document.addEventListener('click', function () {
       if (window._badgeBlink) window._badgeBlink();
-      else swapLetter(); /* バウンススクリプト未ロード時のフォールバック */
+      else swapLetter();
     });
   }
-
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', run);
-  } else {
-    run();
-  }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', run);
+  else run();
 })();
 </script>
+
 <script>
-/* ===== 所在地タブ切り替え（地図も連動） ===== */
+/* ===== 所在地タブ切り替え ===== */
 var _mapEmbedUrls = {
   houdei: 'https://maps.google.com/maps?q=ブルーマウス徳吉町+放課後等デイサービス&output=embed&z=17&hl=ja',
   jidou:  'https://maps.google.com/maps?q=〒700-0976+岡山県岡山市北区辰巳26-102&output=embed&z=17&hl=ja'
@@ -894,317 +551,147 @@ document.querySelectorAll('.side-loc-tab').forEach(function(btn) {
     btn.classList.add('is-active');
     document.querySelectorAll('.side-loc-content').forEach(function(c) { c.classList.remove('is-active'); });
     document.getElementById('loc-' + loc).classList.add('is-active');
-    /* 地図を切り替え */
     var iframe = document.getElementById('side-map-iframe');
     if (iframe && _mapEmbedUrls[loc]) iframe.src = _mapEmbedUrls[loc];
   });
 });
 </script>
+
 <script>
-/* ---- ヒーロー写真：Ken Burns + クロスフェード ---- */
+/* ===== スナップスクロール：セクション追跡 ===== */
 (function () {
-  var ANIM_DUR       = '8s ease-out forwards';
-  var SLIDE_INTERVAL = 6500;
+  var ANIM_DUR = '10s ease-out forwards';
+  var cards = Array.from(document.querySelectorAll('.idx-snap-card'));
+  var counterCurEl = document.getElementById('idx-counter-cur');
+  var sideHeadingEl = document.getElementById('side-heading');
+  var sideLabels = ['PHILOSOPHY', 'CHILD DEVELOPMENT', 'AFTER SCHOOL', 'RECRUIT'];
 
-  /* <br>区切りの各行を独立ブロック .tl-line でラップ（行ごとの背景箱） */
-  function wrapLines(html) {
-    return (html || '')
-      .split(/<br\s*\/?>/i)
-      .map(function (s) { return s.trim(); })
-      .filter(function (s) { return s.length; })
-      .map(function (s) { return '<span class="tl-line">' + s + '</span>'; })
-      .join('');
+  function pad2(x) { return (x < 10 ? '0' : '') + x; }
+
+  function activateCard(card) {
+    var idx = parseInt(card.getAttribute('data-idx') || '0', 10);
+    card.classList.add('is-active');
+    var img = card.querySelector('.idx-photo__img');
+    if (img) {
+      img.style.animation = 'none';
+      void img.offsetHeight; /* 強制リフロー */
+      img.style.animation = (img.getAttribute('data-anim') || 'kb-pan') + ' ' + ANIM_DUR;
+    }
+    if (counterCurEl) counterCurEl.textContent = pad2(idx + 1);
+    if (sideHeadingEl) sideHeadingEl.textContent = sideLabels[idx] || 'SERVICE INFO';
   }
 
-  function updateTitle(photos, idx) {
-    var parent   = photos[0].closest('.hero-photos').parentElement;
-    var titleEl  = parent.querySelector('.slide-title');
-    var subBlock = parent.querySelector('.slide-title-sub-block');
-    var kickBlock= parent.querySelector('.slide-kicker-block');
-    var btnEl    = parent.querySelector('.js-slide-btn');
-    if (!titleEl) return;
-    var raw      = photos[idx].getAttribute('data-title') || '';
-    var kicker   = photos[idx].getAttribute('data-kicker') || '';
-    if (kickBlock) {
-      var kickEl = kickBlock.querySelector('.slide-kicker');
-      if (kickEl) kickEl.textContent = kicker;
-      kickBlock.style.display = kicker ? '' : 'none';
-    }
-    var btnText  = photos[idx].getAttribute('data-btn-text') || '';
-    var btnHref  = photos[idx].getAttribute('data-btn-href') || '';
-    /* 新構造：<span class='slide-title-sub'>…</span> を分離 */
-    var subMatch = raw.match(/<span[^>]*class=['"]slide-title-sub['"][^>]*>([\s\S]*?)<\/span>/i);
-    var subHtml  = subMatch ? subMatch[1] : '';
-    var mainHtml = raw.replace(/<br>\s*<span[^>]*class=['"]slide-title-sub['"][^>]*>[\s\S]*?<\/span>/i, '')
-                      .replace(/<span[^>]*class=['"]slide-title-sub['"][^>]*>[\s\S]*?<\/span>/i, '');
-    titleEl.innerHTML = wrapLines(mainHtml);
-    if (subBlock) {
-      var subSpan = subBlock.querySelector('.slide-title-sub');
-      if (subSpan) subSpan.innerHTML = wrapLines(subHtml);
-      subBlock.style.display = subHtml ? '' : 'none';
-    }
-    /* サブタイトル2（data-sub2 がある時だけ表示） */
-    var sub2      = photos[idx].getAttribute('data-sub2') || '';
-    var sub2Block = parent.querySelector('.slide-title-sub2-block');
-    if (sub2Block) {
-      var sub2Span = sub2Block.querySelector('.slide-title-sub2');
-      if (sub2Span) sub2Span.innerHTML = wrapLines(sub2);
-      sub2Block.style.display = sub2 ? '' : 'none';
-    }
-    if (btnEl) {
-      if (btnText) {
-        btnEl.innerHTML = btnText;
-        btnEl.href = btnHref;
-        btnEl.style.display = '';
-      } else {
-        btnEl.style.display = 'none';
+  function deactivateCard(card) {
+    card.classList.remove('is-active');
+    var img = card.querySelector('.idx-photo__img');
+    if (img) img.style.animation = 'none';
+  }
+
+  var observer = new IntersectionObserver(function (entries) {
+    entries.forEach(function (entry) {
+      if (entry.isIntersecting && entry.intersectionRatio >= 0.5) {
+        activateCard(entry.target);
+      } else if (!entry.isIntersecting) {
+        deactivateCard(entry.target);
       }
-    }
-  }
-
-  function animOf(photo) {
-    return (photo.getAttribute('data-anim') || 'kb') + ' ' + ANIM_DUR;
-  }
-
-  function startSlide(photos, overlay) {
-    var current = 0;
-    photos[current].style.willChange = 'transform';
-    photos[current].style.animation  = animOf(photos[current]);
-    updateTitle(photos, current);
-
-    function goTo(next) {
-      var prev = current;
-      if (next === prev) return;
-      current = next; /* 即時更新して連続スワイプの順番ずれを防ぐ */
-      if (overlay) { overlay.style.transition = 'opacity 0.27s ease'; overlay.style.opacity = '1'; }
-      setTimeout(function () {
-        photos[prev].style.transition = 'none';
-        photos[prev].style.opacity    = '0';
-        photos[prev].classList.remove('hp-active');
-        photos[next].style.willChange = 'transform';
-        photos[next].classList.remove('hp-active');
-        photos[next].style.animation = 'none';
-        void photos[next].offsetHeight; /* 強制リフロー：blur状態を確定させてからtransition開始 */
-        photos[next].classList.add('hp-active');
-        photos[next].style.animation = animOf(photos[next]);
-        updateTitle(photos, current);
-        var dots = document.querySelectorAll('#hero-slide-dots .slide-dot');
-        dots.forEach(function(d, i) { d.classList.toggle('active', i === current); });
-        setTimeout(function () {
-          if (overlay) { overlay.style.transition = 'opacity 0.9s ease'; overlay.style.opacity = '0'; }
-        }, 120);
-        setTimeout(function () {
-          photos[prev].style.animation   = 'none';
-          photos[prev].style.willChange  = 'auto';
-          photos[prev].style.transition  = '';
-          photos[prev].style.opacity     = '';
-        }, 1000);
-      }, 380);
-    }
-
-    var timer = setInterval(function () {
-      goTo((current + 1) % photos.length);
-    }, SLIDE_INTERVAL);
-
-    /* スワイプでスライド切替 */
-    var box1 = document.getElementById('box-1');
-    var touchStartX = 0, touchStartY = 0, swiping = false;
-    box1.addEventListener('touchstart', function (e) {
-      touchStartX = e.touches[0].clientX;
-      touchStartY = e.touches[0].clientY;
-      swiping = false;
-      /* layout.js のページ遷移スワイプに座標を渡さない */
-      e.stopPropagation();
-    }, { passive: true });
-    box1.addEventListener('touchmove', function (e) {
-      var dx = e.touches[0].clientX - touchStartX;
-      var dy = e.touches[0].clientY - touchStartY;
-      if (Math.abs(dx) > Math.abs(dy) && Math.abs(dx) > 3) {
-        e.preventDefault();
-        swiping = true;
-      }
-      e.stopPropagation();
-    }, { passive: false });
-    box1.addEventListener('touchend', function (e) {
-      /* layout.js のdocumentレベルのページ遷移ハンドラに届かせない */
-      e.stopPropagation();
-      if (!swiping) return;
-      var dx = e.changedTouches[0].clientX - touchStartX;
-      /* 左フリック(dx<0)→次へ：主体性→自発→放課後→採用 */
-      /* 右フリック(dx>0)→前へ：採用→放課後→自発→主体性 */
-      if (dx < -40) {
-        /* 右スワイプ：次の写真へ */
-        clearInterval(timer);
-        goTo((current + 1) % photos.length);
-        timer = setInterval(function () { goTo((current + 1) % photos.length); }, SLIDE_INTERVAL);
-        box1.addEventListener('click', function stopClick(ev) {
-          ev.stopPropagation();
-          ev.preventDefault();
-          box1.removeEventListener('click', stopClick, true);
-        }, { capture: true, once: true });
-      } else if (dx > 40) {
-        /* 左スワイプ：前の写真へ */
-        clearInterval(timer);
-        goTo((current - 1 + photos.length) % photos.length);
-        timer = setInterval(function () { goTo((current + 1) % photos.length); }, SLIDE_INTERVAL);
-      }
-      swiping = false;
-    }, { passive: true });
-  }
-
-  function init() {
-    var overlay = document.getElementById('hero-white-overlay');
-    document.querySelectorAll('.hero-photos').forEach(function (set) {
-      var photos = Array.from(set.querySelectorAll('.hero-photo'));
-      if (photos.length) startSlide(photos, overlay);
     });
-  }
+  }, { threshold: [0, 0.5] });
 
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', init);
-  } else {
-    init();
+  cards.forEach(function (card) { observer.observe(card); });
+
+  /* 初回：最初のカードをアクティブに */
+  if (cards.length > 0) {
+    setTimeout(function () { activateCard(cards[0]); }, 80);
   }
 })();
 </script>
 
 <script>
-/* ワードマーク：スクロールしてヒーローを過ぎたら非表示 */
+/* ===== ワードマーク：最初のセクションを過ぎたら非表示 ===== */
 (function () {
-  function updateWordmark() {
-    var box1 = document.getElementById('box-1');
-    var wm   = document.querySelector('.hero-logo-wordmark');
-    if (!box1 || !wm) return;
-    if (window.scrollY > box1.offsetHeight * 0.85) {
-      wm.style.opacity = '0';
-      wm.style.pointerEvents = 'none';
-    } else {
-      wm.style.opacity = '1';
-      wm.style.pointerEvents = 'auto';
-    }
+  var wm = document.querySelector('.hero-logo-wordmark');
+  if (!wm) return;
+  function update() {
+    var first = document.getElementById('idx-0');
+    if (!first) return;
+    var hidden = window.scrollY > first.offsetHeight * 0.75;
+    wm.style.opacity = hidden ? '0' : '1';
+    wm.style.pointerEvents = hidden ? 'none' : 'auto';
   }
-  window.addEventListener('scroll', updateWordmark, { passive: true });
+  window.addEventListener('scroll', update, { passive: true });
 })();
 </script>
 
-
 <script>
-/* ===== 円バッジ：跳ね返りバウンス＋完全ランダムスケール ===== */
+/* ===== 円バッジ：跳ね返りバウンス ===== */
 (function () {
   var badge = document.querySelector('.hero-logo-badge');
   if (!badge) return;
-
-  var SIZE  = 40;
-  var SPEED = 1.8;
-
+  var SIZE = 40, SPEED = 1.8;
   var x = 60, y = 60;
   var angle = Math.PI / 4 + (Math.random() - 0.5) * 0.5;
-  var vx = Math.cos(angle) * SPEED;
-  var vy = Math.sin(angle) * SPEED;
-
-  /* 瞬き型スケール：閉じる→パチッと開く（オーバーシュート）→落ち着く */
-  var displayScale = 1;
-  var targetScale  = 1;
-  var snapSpeed    = 0;
-  var blinking     = false;
+  var vx = Math.cos(angle) * SPEED, vy = Math.sin(angle) * SPEED;
+  var displayScale = 1, targetScale = 1, snapSpeed = 0, blinking = false;
 
   function doBlink(isDouble) {
     blinking = true;
-    /* ① 素早く閉じる（縮む） */
-    targetScale = 0.04;
-    snapSpeed   = 0.45;
+    targetScale = 0.04; snapSpeed = 0.45;
     setTimeout(function () {
-      /* ★ バッジがほぼ見えない状態 → 文字を強制チェンジ */
       if (window._badgeSwapOnBlink) window._badgeSwapOnBlink();
-      /* ② パチッと大きく開く */
-      targetScale = 1.5 + Math.random() * 0.5;  /* 1.5〜2.0倍 */
-      snapSpeed   = 0.5;
+      targetScale = 1.5 + Math.random() * 0.5; snapSpeed = 0.5;
       setTimeout(function () {
-        /* ③ 40pxに戻る */
-        targetScale = 1;
-        snapSpeed   = 0.22;
-        setTimeout(function () {
-          blinking = false;
-          if (!isDouble) scheduleNext();
-        }, 250);
+        targetScale = 1; snapSpeed = 0.22;
+        setTimeout(function () { blinking = false; if (!isDouble) scheduleNext(); }, 250);
       }, 120 + Math.random() * 60);
     }, 90 + Math.random() * 40);
   }
 
   badge.style.transition = 'none';
-  badge.style.top  = y + 'px';
-  badge.style.left = x + 'px';
-
-  var nextTimer  = null; /* scheduleNext の setTimeout ID */
-  var clickTimer = null; /* クリック瞬きの setTimeout ID */
+  badge.style.top = y + 'px'; badge.style.left = x + 'px';
+  var nextTimer = null, clickTimer = null;
 
   function scheduleNext() {
     nextTimer = setTimeout(function () {
       doBlink(false);
-      if (Math.random() < 0.25) {
-        setTimeout(function () { doBlink(true); }, 280 + Math.random() * 150);
-      }
+      if (Math.random() < 0.25) setTimeout(function () { doBlink(true); }, 280 + Math.random() * 150);
     }, 1400 + Math.random() * 7600);
   }
-
   scheduleNext();
 
-  /* クリック専用瞬き：自動瞬きと競合しないよう独立管理 */
   window._badgeBlink = function () {
-    clearTimeout(nextTimer);  /* 自動スケジュールをキャンセル */
-    clearTimeout(clickTimer); /* 連打時：前の途中アニメをリセット */
-
-    blinking    = true;
-    targetScale = 0.01;  /* ほぼゼロまで縮む */
-    snapSpeed   = 0.75;
-
-    /* 縮み切ったら文字チェンジ→膨らむ */
+    clearTimeout(nextTimer); clearTimeout(clickTimer);
+    blinking = true; targetScale = 0.01; snapSpeed = 0.75;
     clickTimer = setTimeout(function () {
       if (window._badgeSwapOnBlink) window._badgeSwapOnBlink();
-      targetScale = 1.6 + Math.random() * 0.6;  /* 1.6〜2.2倍 */
-      snapSpeed   = 0.5;
-
+      targetScale = 1.6 + Math.random() * 0.6; snapSpeed = 0.5;
       clickTimer = setTimeout(function () {
-        targetScale = 1;
-        snapSpeed   = 0.22;  /* 40pxにすばやく戻る */
-        clickTimer = setTimeout(function () {
-          blinking = false;
-          scheduleNext();
-        }, 280);
+        targetScale = 1; snapSpeed = 0.22;
+        clickTimer = setTimeout(function () { blinking = false; scheduleNext(); }, 280);
       }, 140);
-    }, 150); /* 150ms で縮み→チェンジ */
+    }, 150);
   };
 
   function bounce() {
-    var maxX = window.innerWidth  - SIZE;
-    var maxY = window.innerHeight - SIZE;
+    var maxX = window.innerWidth - SIZE, maxY = window.innerHeight - SIZE;
     x += vx; y += vy;
     if (x <= 0)    { x = 0;    vx =  Math.abs(vx); nudge(); }
     if (x >= maxX) { x = maxX; vx = -Math.abs(vx); nudge(); }
     if (y <= 0)    { y = 0;    vy =  Math.abs(vy); nudge(); }
     if (y >= maxY) { y = maxY; vy = -Math.abs(vy); nudge(); }
-    badge.style.left = x + 'px';
-    badge.style.top  = y + 'px';
-
+    badge.style.left = x + 'px'; badge.style.top = y + 'px';
     if (blinking) {
       displayScale += (targetScale - displayScale) * snapSpeed;
       if (Math.abs(displayScale - targetScale) < 0.003) displayScale = targetScale;
       badge.style.transform = 'scale(' + displayScale.toFixed(3) + ')';
     } else {
-      displayScale = 1;
-      badge.style.transform = 'scale(1)';
+      displayScale = 1; badge.style.transform = 'scale(1)';
     }
-
     requestAnimationFrame(bounce);
   }
-
   function nudge() {
-    var spd = Math.sqrt(vx * vx + vy * vy);
-    var a   = Math.atan2(vy, vx) + (Math.random() - 0.5) * 0.4;
-    vx = Math.cos(a) * spd;
-    vy = Math.sin(a) * spd;
+    var spd = Math.sqrt(vx * vx + vy * vy), a = Math.atan2(vy, vx) + (Math.random() - 0.5) * 0.4;
+    vx = Math.cos(a) * spd; vy = Math.sin(a) * spd;
   }
-
   requestAnimationFrame(bounce);
 })();
 </script>
@@ -1216,9 +703,8 @@ document.querySelectorAll('.side-loc-tab').forEach(function(btn) {
 <script>
 (function () {
   var overlay = document.getElementById('page-transition');
-  /* 戻る/進むキャッシュからの復元時にオーバーレイをリセット */
   window.addEventListener('pageshow', function (e) {
-    if (e.persisted || performance.getEntriesByType('navigation')[0]?.type === 'back_forward') {
+    if (e.persisted || (performance.getEntriesByType('navigation')[0] || {}).type === 'back_forward') {
       overlay.classList.remove('is-enter');
     }
   });
@@ -1228,13 +714,10 @@ document.querySelectorAll('.side-loc-tab').forEach(function(btn) {
     e.preventDefault();
     var href = btn.href;
     overlay.classList.add('is-enter');
-    setTimeout(function () {
-      window.location.href = href;
-    }, 700);
+    setTimeout(function () { window.location.href = href; }, 700);
   });
 })();
 </script>
-
 
 </body>
 </html>
