@@ -648,6 +648,7 @@ document.querySelectorAll('.side-loc-tab').forEach(function(btn) {
   }
 
   function easeOut3(t) { return 1 - Math.pow(1 - t, 3); }
+  function easeOut5(t) { return 1 - Math.pow(1 - t, 5); }
 
   /* 2枚の中間状態を描画（ドラッグ中・スナップ中共用）*/
   function draw2(fi, ti, dir, prog) {
@@ -712,11 +713,11 @@ document.querySelectorAll('.side-loc-tab').forEach(function(btn) {
   function snapComplete(fi, ti, dir, startProg) {
     locked = true;
     activateCard(cards[ti]); deactivateCard(cards[fi]); updateUI(ti);
-    var dur = Math.max(160, 550 * (1 - startProg)), startT = null;
+    var dur = Math.max(200, 800 * (1 - startProg)), startT = null;
     function step(ts) {
       if (!startT) startT = ts;
       var p = Math.min((ts - startT) / dur, 1);
-      draw2(fi, ti, dir, startProg + (1 - startProg) * easeOut3(p));
+      draw2(fi, ti, dir, startProg + (1 - startProg) * easeOut5(p));
       if (p < 1) { requestAnimationFrame(step); return; }
       current = ti;
       cards[ti].style.transform = ''; cards[ti].style.opacity = ''; cards[ti].style.zIndex = '';
@@ -773,7 +774,7 @@ document.querySelectorAll('.side-loc-tab').forEach(function(btn) {
       var fi3=current, ti3=pendingIdx, pd3=pendingDir, dp3=dragProg; pendingIdx=-1; wAcc=0;
       if (dp3 >= 1.0) snapComplete(fi3, ti3, pd3, dp3);
       else             snapBack(fi3, ti3, pd3, dp3);
-    }, 200);
+    }, 400);
   }, { passive: false });
 
   /* ===== TOUCH ===== */
