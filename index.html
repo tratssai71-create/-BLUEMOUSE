@@ -600,27 +600,31 @@ document.querySelectorAll('.side-loc-tab').forEach(function(btn) {
 </script>
 
 <script>
-/* ===== スクロールジャック（ResnのWorkスタイル：position:fixed + goToSection） ===== */
+/* ===== スクロールジャック（スクラブ式：途中まで引っ張れる・やめたら戻る） ===== */
 (function () {
   var KB_DUR   = '10s ease-out forwards';
   var LAND_DUR = '0.85s cubic-bezier(0.22,1,0.36,1) forwards';
-  var cards = Array.from(document.querySelectorAll('.idx-snap-card'));
-  var n = cards.length;
-  var spacer = document.getElementById('idx-spacer');
-  var counterCurEl = document.getElementById('idx-counter-cur');
+  var cards    = Array.from(document.querySelectorAll('.idx-snap-card'));
+  var n        = cards.length;
+  var spacer   = document.getElementById('idx-spacer');
+  var counterCurEl  = document.getElementById('idx-counter-cur');
   var sideHeadingEl = document.getElementById('side-heading');
-  var sideLabels = ['PHILOSOPHY', 'CHILD DEVELOPMENT', 'AFTER SCHOOL', 'RECRUIT'];
+  var sideLabels    = ['PHILOSOPHY', 'CHILD DEVELOPMENT', 'AFTER SCHOOL', 'RECRUIT'];
   var wm = document.querySelector('.hero-logo-wordmark');
 
-  var current = 0;
-  var scrollLocked = false;
-  var touchStartY = 0;
-  var vh = window.innerHeight;
+  var current    = 0;    /* 現在表示中のセクション */
+  var pendingIdx = -1;   /* ドラッグ先（-1=未操作） */
+  var pendingDir = 0;    /* ±1 */
+  var dragProg   = 0;    /* 0..1 スクラブ進捗 */
+  var locked     = false; /* スナップアニメ中 */
+  var vh         = window.innerHeight;
+  var THRESHOLD;         /* setup() で設定 */
 
   function pad2(x) { return (x < 10 ? '0' : '') + x; }
 
   function setup() {
     vh = window.innerHeight;
+    THRESHOLD = vh * 0.28;
     if (spacer) spacer.style.height = (n * vh) + 'px';
   }
 
@@ -628,141 +632,160 @@ document.querySelectorAll('.side-loc-tab').forEach(function(btn) {
     card.classList.add('is-active');
     var img = card.querySelector('.idx-photo__img');
     if (img) {
-      if (img._landTimer) clearTimeout(img._landTimer);
+      if (img._lt) clearTimeout(img._lt);
       img.style.animation = 'none';
       void img.offsetHeight;
       img.style.animation = 'idx-photo-land ' + LAND_DUR;
-      img._landTimer = setTimeout(function () {
+      img._lt = setTimeout(function () {
         img.style.animation = (img.getAttribute('data-anim') || 'kb-pan') + ' ' + KB_DUR;
       }, 850);
     }
   }
-
   function deactivateCard(card) {
     card.classList.remove('is-active');
     var img = card.querySelector('.idx-photo__img');
-    if (img) {
-      if (img._landTimer) clearTimeout(img._landTimer);
-      img.style.animation = 'none';
-    }
+    if (img) { if (img._lt) clearTimeout(img._lt); img.style.animation = 'none'; }
   }
 
   function easeOut3(t) { return 1 - Math.pow(1 - t, 3); }
 
-  function goToSection(idx) {
-    if (idx < 0 || idx >= n || scrollLocked) return;
-    scrollLocked = true;
-    var prev = current;
-    current = idx;
-    var dir = idx > prev ? 1 : -1;
-    var dur = 900;
+  /* 2枚の中間状態を描画（ドラッグ中・スナップ中共用）*/
+  function draw2(fi, ti, dir, prog) {
+    cards[fi].style.zIndex     = '11';
+    cards[fi].style.visibility = 'visible';
+    cards[fi].style.transform  = 'perspective(700px) rotateX(' + (prog * 14).toFixed(2) + 'deg) scale(' + (1 - prog * 0.15).toFixed(4) + ')';
+    cards[fi].style.opacity    = (1 - prog * 0.65).toFixed(3);
+    cards[ti].style.zIndex     = '10';
+    cards[ti].style.visibility = 'visible';
+    cards[ti].style.transform  = 'translateY(' + ((dir * vh) * (1 - prog)).toFixed(1) + 'px)';
+    cards[ti].style.opacity    = '1';
+  }
 
-    /* 遷移する2枚だけ表示、他は隠す */
-    cards.forEach(function (c, i) {
-      if (i === prev || i === idx) {
-        c.style.visibility = 'visible';
-        c.style.opacity = '1';
-      } else {
-        c.style.visibility = 'hidden';
-      }
-    });
+  function startDrag(dir) {
+    var next = current + dir;
+    if (next < 0 || next >= n) return false;
+    pendingIdx = next; pendingDir = dir; dragProg = 0;
+    cards.forEach(function (c, i) { if (i !== current && i !== pendingIdx) c.style.visibility = 'hidden'; });
+    draw2(current, pendingIdx, dir, 0);
+    return true;
+  }
 
-    /* 退場(prev)が前面z11、入場(idx)が背面z10 → prevの3D回転が見える */
-    cards[prev].style.zIndex = '11';
-    cards[idx].style.zIndex  = '10';
-    cards[idx].style.transform = 'translateY(' + (dir * vh) + 'px)';
-    cards[prev].style.transform = 'translateY(0)';
-
-    deactivateCard(cards[prev]);
-    activateCard(cards[idx]);
-
-    if (counterCurEl) counterCurEl.textContent = pad2(idx + 1);
+  function updateUI(idx) {
+    if (counterCurEl)  counterCurEl.textContent  = pad2(idx + 1);
     if (sideHeadingEl) sideHeadingEl.textContent = sideLabels[idx] || 'SERVICE INFO';
-    if (wm) {
-      wm.style.opacity      = idx === 0 ? '1' : '0';
-      wm.style.pointerEvents = idx === 0 ? 'auto' : 'none';
-    }
+    if (wm) { wm.style.opacity = idx === 0 ? '1' : '0'; wm.style.pointerEvents = idx === 0 ? 'auto' : 'none'; }
+  }
 
-    var startT = null;
+  /* startProg → 1 へアニメ（確定） */
+  function snapComplete(fi, ti, dir, startProg) {
+    locked = true;
+    activateCard(cards[ti]); deactivateCard(cards[fi]); updateUI(ti);
+    var dur = Math.max(160, 550 * (1 - startProg)), startT = null;
     function step(ts) {
       if (!startT) startT = ts;
       var p = Math.min((ts - startT) / dur, 1);
-      var e = easeOut3(p);
-
-      /* 新セクション：下（or上）からスライドイン */
-      cards[idx].style.transform  = 'translateY(' + ((dir * vh) * (1 - e)).toFixed(1) + 'px)';
-
-      /* 旧セクション：perspective + rotateX で奥へ倒れ込む 3D退場 */
-      var rotX  = (e * 14).toFixed(2);           /* 0deg  → 14deg  */
-      var scl   = (1 - e * 0.15).toFixed(4);    /* 1.0   → 0.85   */
-      var alpha = (1 - e * 0.65).toFixed(3);    /* 1.0   → 0.35   */
-      cards[prev].style.transform = 'perspective(700px) rotateX(' + rotX + 'deg) scale(' + scl + ')';
-      cards[prev].style.opacity   = alpha;
-
-      if (p < 1) {
-        requestAnimationFrame(step);
-      } else {
-        cards[idx].style.transform  = '';
-        cards[idx].style.opacity    = '';
-        cards[idx].style.zIndex     = '';
-        cards[prev].style.visibility = 'hidden';
-        cards[prev].style.transform  = '';
-        cards[prev].style.opacity    = '';
-        cards[prev].style.zIndex     = '';
-        scrollLocked = false;
-      }
+      draw2(fi, ti, dir, startProg + (1 - startProg) * easeOut3(p));
+      if (p < 1) { requestAnimationFrame(step); return; }
+      current = ti;
+      cards[ti].style.transform = ''; cards[ti].style.opacity = ''; cards[ti].style.zIndex = '';
+      cards[fi].style.visibility = 'hidden'; cards[fi].style.transform = ''; cards[fi].style.opacity = ''; cards[fi].style.zIndex = '';
+      cards.forEach(function (c, i) { if (i !== current) c.style.visibility = 'hidden'; });
+      locked = false; pendingIdx = -1; dragProg = 0;
     }
     requestAnimationFrame(step);
   }
 
-  /* ===== イベントハンドラ ===== */
+  /* startProg → 0 へ戻す（キャンセル） */
+  function snapBack(fi, ti, dir, startProg) {
+    locked = true;
+    var dur = Math.max(100, 380 * startProg), startT = null;
+    function step(ts) {
+      if (!startT) startT = ts;
+      var p = Math.min((ts - startT) / dur, 1);
+      draw2(fi, ti, dir, startProg * (1 - easeOut3(p)));
+      if (p < 1) { requestAnimationFrame(step); return; }
+      cards[ti].style.visibility = 'hidden'; cards[ti].style.transform = ''; cards[ti].style.opacity = ''; cards[ti].style.zIndex = '';
+      cards[fi].style.transform = ''; cards[fi].style.opacity = ''; cards[fi].style.zIndex = '';
+      locked = false; pendingIdx = -1; dragProg = 0;
+    }
+    requestAnimationFrame(step);
+  }
+
+  /* ===== WHEEL ===== */
+  var wAcc = 0, wTimer = null;
   window.addEventListener('wheel', function (e) {
     e.preventDefault();
-    if (scrollLocked) return;
-    goToSection(e.deltaY > 0 ? current + 1 : current - 1);
-  }, { passive: false });
+    if (locked) return;
+    var delta = e.deltaY || e.deltaX;
+    var dir   = delta > 0 ? 1 : -1;
 
-  window.addEventListener('touchstart', function (e) {
-    touchStartY = e.touches[0].clientY;
-  }, { passive: true });
-
-  window.addEventListener('touchmove', function (e) {
-    /* サイドバー内のスクロールは通す */
-    var el = e.target;
-    while (el) {
-      if (el.classList && (el.classList.contains('bm-left') || el.classList.contains('bm-right'))) return;
-      el = el.parentElement;
+    if (pendingIdx !== -1 && dir !== pendingDir) {
+      clearTimeout(wTimer);
+      var fi=current, ti=pendingIdx, pd=pendingDir, dp=dragProg; pendingIdx=-1; wAcc=0;
+      snapBack(fi, ti, pd, dp); return;
     }
-    e.preventDefault();
+    if (pendingIdx === -1) { if (!startDrag(dir)) return; }
+
+    wAcc += Math.abs(delta);
+    dragProg = Math.min(wAcc / THRESHOLD, 1);
+    draw2(current, pendingIdx, pendingDir, dragProg);
+
+    if (dragProg >= 1) {
+      clearTimeout(wTimer);
+      var fi2=current, ti2=pendingIdx, pd2=pendingDir, dp2=dragProg; pendingIdx=-1; wAcc=0;
+      snapComplete(fi2, ti2, pd2, dp2); return;
+    }
+    clearTimeout(wTimer);
+    wTimer = setTimeout(function () {
+      if (locked || pendingIdx === -1) return;
+      var fi3=current, ti3=pendingIdx, pd3=pendingDir, dp3=dragProg; pendingIdx=-1; wAcc=0;
+      if (dp3 >= 0.32) snapComplete(fi3, ti3, pd3, dp3);
+      else             snapBack(fi3, ti3, pd3, dp3);
+    }, 200);
   }, { passive: false });
 
-  window.addEventListener('touchend', function (e) {
-    if (scrollLocked) return;
-    var dy = touchStartY - e.changedTouches[0].clientY;
-    if (Math.abs(dy) < 8) return;
-    goToSection(dy > 0 ? current + 1 : current - 1);
+  /* ===== TOUCH ===== */
+  var tStartY=0, tDir=0, tActive=false;
+  window.addEventListener('touchstart', function (e) {
+    tStartY = e.touches[0].clientY; tActive = false;
+  }, { passive: true });
+  window.addEventListener('touchmove', function (e) {
+    var el = e.target;
+    while (el) { if (el.classList && (el.classList.contains('bm-left') || el.classList.contains('bm-right'))) return; el = el.parentElement; }
+    e.preventDefault();
+    if (locked) return;
+    var dy = tStartY - e.touches[0].clientY, dir = dy > 0 ? 1 : -1, dist = Math.abs(dy);
+    if (!tActive) {
+      if (dist < 8) return;
+      tActive = true; tDir = dir;
+      if (!startDrag(dir)) return;
+    }
+    if (dir !== tDir) return;
+    dragProg = Math.min(dist / THRESHOLD, 1);
+    draw2(current, pendingIdx, pendingDir, dragProg);
+    if (dragProg >= 1) { var fi=current,ti=pendingIdx,pd=pendingDir,dp=dragProg; pendingIdx=-1; snapComplete(fi,ti,pd,dp); }
+  }, { passive: false });
+  window.addEventListener('touchend', function () {
+    if (locked || pendingIdx === -1) return;
+    var fi=current, ti=pendingIdx, pd=pendingDir, dp=dragProg; pendingIdx=-1;
+    if (dp >= 0.32) snapComplete(fi, ti, pd, dp);
+    else            snapBack(fi, ti, pd, dp);
+    tActive = false;
   });
 
+  /* ===== KEYBOARD ===== */
   window.addEventListener('keydown', function (e) {
-    if (e.key === 'ArrowDown' || e.key === ' ') {
-      e.preventDefault();
-      if (!scrollLocked) goToSection(current + 1);
-    } else if (e.key === 'ArrowUp') {
-      e.preventDefault();
-      if (!scrollLocked) goToSection(current - 1);
-    }
+    if (locked || pendingIdx !== -1) return;
+    if (e.key === 'ArrowDown' || e.key === ' ')  { e.preventDefault(); if (startDrag(1))  snapComplete(current, pendingIdx, pendingDir, 0); }
+    else if (e.key === 'ArrowUp')                { e.preventDefault(); if (startDrag(-1)) snapComplete(current, pendingIdx, pendingDir, 0); }
   });
 
   window.addEventListener('resize', function () { vh = window.innerHeight; setup(); });
 
   /* ===== 初期化 ===== */
   setup();
-  cards.forEach(function (c, i) {
-    c.style.visibility = i === 0 ? 'visible' : 'hidden';
-    c.style.transform  = '';
-    c.style.opacity    = '';
-  });
-  if (counterCurEl) counterCurEl.textContent = pad2(1);
+  cards.forEach(function (c, i) { c.style.visibility = i === 0 ? 'visible' : 'hidden'; c.style.transform = ''; c.style.opacity = ''; });
+  if (counterCurEl)  counterCurEl.textContent  = pad2(1);
   if (sideHeadingEl) sideHeadingEl.textContent = sideLabels[0];
   setTimeout(function () { activateCard(cards[0]); }, 80);
 })();
