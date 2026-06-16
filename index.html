@@ -655,10 +655,10 @@ document.querySelectorAll('.side-loc-tab').forEach(function(btn) {
     var fiP = 0.1 + prog * 0.9;
     /* 入場チルト用進捗（tilt freeze計算に使用） */
     var tiP = prog < 0.1 ? 0 : (prog < 0.3 ? (prog - 0.1) * 1.5 : 0.3 + (prog - 0.3));
-    /* 入場Y位置：退場と同速(0.315vh/prog)で0〜80%一定距離、80〜100%で収束 */
-    var tiY80 = 0.75 - 0.8 * 0.315;
-    var tiY = prog <= 0.8 ? 0.75 - prog * 0.315
-            : tiY80 * (1 - (prog - 0.8) / 0.2);
+    /* 入場Y位置：0〜90%は0.355vh/progで移動、90〜100%で加速収束 */
+    var tiY90 = 0.75 - 0.9 * 0.355;
+    var tiY = prog <= 0.9 ? 0.75 - prog * 0.355
+            : tiY90 * (1 - (prog - 0.9) / 0.1);
 
     /* チルト進捗：20〜60%は凍結、60%〜再開 */
     var fiTilt = prog <= 0.2 ? fiP
@@ -668,8 +668,8 @@ document.querySelectorAll('.side-loc-tab').forEach(function(btn) {
                : prog <= 0.6 ? 0.15
                : 0.15 + (prog - 0.6) * 2.125;
 
-    /* スケール：0〜80%で20%縮小(0.8)、80〜100%で元に戻す(1.0) */
-    var scl = (prog <= 0.8 ? 1 - prog * 0.25 : 0.8 + (prog - 0.8) * 1.0).toFixed(4);
+    /* スケール：0〜90%で0.8まで縮小、90〜100%で1.0に戻す */
+    var scl = (prog <= 0.9 ? 1 - prog * (0.2 / 0.9) : 0.8 + (prog - 0.9) * 2.0).toFixed(4);
 
     /* 40%以降は入場カードを手前に */
     var fiz = prog < 0.4 ? '11' : '10';
