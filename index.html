@@ -667,9 +667,9 @@ document.querySelectorAll('.side-loc-tab').forEach(function(btn) {
       }
     });
 
-    /* 新セクション：画面外（下or上）から出発 */
-    cards[idx].style.zIndex  = '11';
-    cards[prev].style.zIndex = '10';
+    /* 退場(prev)が前面z11、入場(idx)が背面z10 → prevの3D回転が見える */
+    cards[prev].style.zIndex = '11';
+    cards[idx].style.zIndex  = '10';
     cards[idx].style.transform = 'translateY(' + (dir * vh) + 'px)';
     cards[prev].style.transform = 'translateY(0)';
 
@@ -693,10 +693,10 @@ document.querySelectorAll('.side-loc-tab').forEach(function(btn) {
       cards[idx].style.transform  = 'translateY(' + ((dir * vh) * (1 - e)).toFixed(1) + 'px)';
 
       /* 旧セクション：perspective + rotateX で奥へ倒れ込む 3D退場 */
-      var rotX  = (e * 10).toFixed(2);          /* 0deg → 10deg */
-      var scl   = (1 - e * 0.1).toFixed(4);     /* 1.0  → 0.90  */
-      var alpha = (1 - e * 0.55).toFixed(3);    /* 1.0  → 0.45  */
-      cards[prev].style.transform = 'perspective(900px) rotateX(' + rotX + 'deg) scale(' + scl + ')';
+      var rotX  = (e * 14).toFixed(2);           /* 0deg  → 14deg  */
+      var scl   = (1 - e * 0.15).toFixed(4);    /* 1.0   → 0.85   */
+      var alpha = (1 - e * 0.65).toFixed(3);    /* 1.0   → 0.35   */
+      cards[prev].style.transform = 'perspective(700px) rotateX(' + rotX + 'deg) scale(' + scl + ')';
       cards[prev].style.opacity   = alpha;
 
       if (p < 1) {
