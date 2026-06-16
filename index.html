@@ -651,24 +651,26 @@ document.querySelectorAll('.side-loc-tab').forEach(function(btn) {
 
   /* 2枚の中間状態を描画（ドラッグ中・スナップ中共用）*/
   function draw2(fi, ti, dir, prog) {
-    /* 最初の20%はデッドゾーン、20%〜100%を0〜1にリマップ */
-    var p = prog <= 0.2 ? 0 : (prog - 0.2) / 0.8;
+    /* 退場：最初の20%で70%まで急加速、残り80%でゆっくり完了 */
+    var fiP = prog <= 0.2 ? prog * 3.5 : 0.7 + (prog - 0.2) * (0.3 / 0.8);
+    /* 入場：20%以降にスタートして並行 */
+    var tiP = prog <= 0.2 ? 0 : (prog - 0.2) / 0.8;
 
-    /* 退場：上へ移動 + rotateX(80deg) + rotateZ(-5deg)左傾き */
+    /* 退場 */
     cards[fi].style.zIndex     = '11';
     cards[fi].style.visibility = 'visible';
     cards[fi].style.transform  =
-      'perspective(700px) translateY(' + (-dir * p * vh * 0.35).toFixed(1) + 'px)' +
-      ' rotateX(' + (-dir * p * 80).toFixed(2) + 'deg)' +
-      ' rotateZ(' + (-p * 5).toFixed(2) + 'deg)';
+      'perspective(700px) translateY(' + (-dir * fiP * vh * 0.35).toFixed(1) + 'px)' +
+      ' rotateX(' + (-dir * fiP * 80).toFixed(2) + 'deg)' +
+      ' rotateZ(' + (-fiP * 5).toFixed(2) + 'deg)';
 
-    /* 入場：並行して下からスライド + rotateX(80deg) + rotateZ(+5deg→0) */
+    /* 入場：左傾きに変更 */
     cards[ti].style.zIndex     = '10';
     cards[ti].style.visibility = 'visible';
     cards[ti].style.transform  =
-      'perspective(700px) translateY(' + (dir * vh * (1 - p)).toFixed(1) + 'px)' +
-      ' rotateX(' + (dir * (1 - p) * 80).toFixed(2) + 'deg)' +
-      ' rotateZ(' + ((1 - p) * 5).toFixed(2) + 'deg)';
+      'perspective(700px) translateY(' + (dir * vh * (1 - tiP)).toFixed(1) + 'px)' +
+      ' rotateX(' + (dir * (1 - tiP) * 80).toFixed(2) + 'deg)' +
+      ' rotateZ(' + (-(1 - tiP) * 5).toFixed(2) + 'deg)';
   }
 
   function startDrag(dir) {
