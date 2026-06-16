@@ -661,10 +661,8 @@ document.querySelectorAll('.side-loc-tab').forEach(function(btn) {
     var tiY = prog <= 0.95 ? 0.75 - prog * 0.375
             : tiY95 * (1 - (prog - 0.95) / 0.05);
 
-    /* チルト進捗：20〜60%は凍結、60%〜再開 */
-    var fiTilt = prog <= 0.2 ? fiP
-               : prog <= 0.6 ? 0.28
-               : 0.28 + (prog - 0.6) * 1.8;
+    /* チルト進捗：退場は20%以降停止、入場は20〜60%凍結→60%〜再開 */
+    var fiTilt = prog <= 0.2 ? fiP : 0.28;
     var tiTilt = prog <= 0.2 ? tiP
                : prog <= 0.6 ? 0.15
                : 0.15 + (prog - 0.6) * 2.125;
@@ -713,7 +711,7 @@ document.querySelectorAll('.side-loc-tab').forEach(function(btn) {
   function snapComplete(fi, ti, dir, startProg) {
     locked = true;
     activateCard(cards[ti]); deactivateCard(cards[fi]); updateUI(ti);
-    var dur = Math.max(200, 800 * (1 - startProg)), startT = null;
+    var dur = Math.max(200, 1500 * (1 - startProg)), startT = null;
     function step(ts) {
       if (!startT) startT = ts;
       var p = Math.min((ts - startT) / dur, 1);
