@@ -651,28 +651,24 @@ document.querySelectorAll('.side-loc-tab').forEach(function(btn) {
 
   /* 2枚の中間状態を描画（ドラッグ中・スナップ中共用）*/
   function draw2(fi, ti, dir, prog) {
-    /* 退場：スタート位置10%（最初から少し動いた状態）、終始ゆっくり線形 */
+    /* 退場：スタート位置10%、終始ゆっくり線形、常にz11（前面） */
     var fiP = 0.1 + prog * 0.9;
-    /* 入場：10%からスタート、20%幅で急加速して30%、その後ゆっくり完了 */
+    /* 入場：translateYなし（退場の下で待機・露出）、チルトのみ収束 */
     var tiP = prog < 0.1 ? 0 : (prog < 0.3 ? (prog - 0.1) * 1.5 : 0.3 + (prog - 0.3));
 
-    /* 40%以降は入場カードを手前に */
-    var fiz = prog < 0.4 ? '11' : '10';
-    var tiz = prog < 0.4 ? '10' : '11';
-
-    /* 退場 */
-    cards[fi].style.zIndex     = fiz;
+    /* 退場：z11固定、上へ動きながらチルト */
+    cards[fi].style.zIndex     = '11';
     cards[fi].style.visibility = 'visible';
     cards[fi].style.transform  =
       'perspective(700px) translateY(' + (-dir * fiP * vh * 0.35).toFixed(1) + 'px)' +
       ' rotateX(' + (-dir * fiP * 80).toFixed(2) + 'deg)' +
       ' rotateZ(' + (-fiP * 10).toFixed(2) + 'deg)';
 
-    /* 入場：左傾き、40%で手前に */
-    cards[ti].style.zIndex     = tiz;
+    /* 入場：z10固定、画面に張り付いて待機、退場が上がると露出 */
+    cards[ti].style.zIndex     = '10';
     cards[ti].style.visibility = 'visible';
     cards[ti].style.transform  =
-      'perspective(700px) translateY(' + (dir * vh * (1 - tiP)).toFixed(1) + 'px)' +
+      'perspective(700px)' +
       ' rotateX(' + (dir * (1 - tiP) * 80).toFixed(2) + 'deg)' +
       ' rotateZ(' + ((1 - tiP) * 10).toFixed(2) + 'deg)';
   }
