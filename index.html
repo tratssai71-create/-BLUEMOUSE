@@ -650,26 +650,25 @@ document.querySelectorAll('.side-loc-tab').forEach(function(btn) {
   function easeOut3(t) { return 1 - Math.pow(1 - t, 3); }
 
   /* 2枚の中間状態を描画（ドラッグ中・スナップ中共用）*/
-  var ENTRY_DELAY = 0.45; /* 退場がこの割合進んでから入場開始 */
   function draw2(fi, ti, dir, prog) {
-    /* 入場の遅延進捗（0〜1）：ENTRY_DELAY以降にスタート */
-    var tiProg = prog < ENTRY_DELAY ? 0 : (prog - ENTRY_DELAY) / (1 - ENTRY_DELAY);
+    /* 最初の20%はデッドゾーン、20%〜100%を0〜1にリマップ */
+    var p = prog <= 0.2 ? 0 : (prog - 0.2) / 0.8;
 
     /* 退場：上へ移動 + rotateX(80deg) + rotateZ(-5deg)左傾き */
     cards[fi].style.zIndex     = '11';
     cards[fi].style.visibility = 'visible';
     cards[fi].style.transform  =
-      'perspective(700px) translateY(' + (-dir * prog * vh * 0.35).toFixed(1) + 'px)' +
-      ' rotateX(' + (-dir * prog * 80).toFixed(2) + 'deg)' +
-      ' rotateZ(' + (-prog * 5).toFixed(2) + 'deg)';
+      'perspective(700px) translateY(' + (-dir * p * vh * 0.35).toFixed(1) + 'px)' +
+      ' rotateX(' + (-dir * p * 80).toFixed(2) + 'deg)' +
+      ' rotateZ(' + (-p * 5).toFixed(2) + 'deg)';
 
-    /* 入場：遅延後に下からスライド + rotateX(80deg) + rotateZ(+5deg→0)右傾き */
+    /* 入場：並行して下からスライド + rotateX(80deg) + rotateZ(+5deg→0) */
     cards[ti].style.zIndex     = '10';
-    cards[ti].style.visibility = tiProg > 0 ? 'visible' : 'hidden';
+    cards[ti].style.visibility = 'visible';
     cards[ti].style.transform  =
-      'perspective(700px) translateY(' + (dir * vh * (1 - tiProg)).toFixed(1) + 'px)' +
-      ' rotateX(' + (dir * (1 - tiProg) * 80).toFixed(2) + 'deg)' +
-      ' rotateZ(' + ((1 - tiProg) * 5).toFixed(2) + 'deg)';
+      'perspective(700px) translateY(' + (dir * vh * (1 - p)).toFixed(1) + 'px)' +
+      ' rotateX(' + (dir * (1 - p) * 80).toFixed(2) + 'deg)' +
+      ' rotateZ(' + ((1 - p) * 5).toFixed(2) + 'deg)';
   }
 
   function startDrag(dir) {
