@@ -668,8 +668,7 @@ document.querySelectorAll('.side-loc-tab').forEach(function(btn) {
   }
 
   function startDrag(dir) {
-    var next = current + dir;
-    if (next < 0 || next >= n) return false;
+    var next = (current + dir + n) % n;
     pendingIdx = next; pendingDir = dir; dragProg = 0;
     cards.forEach(function (c, i) { if (i !== current && i !== pendingIdx) c.style.visibility = 'hidden'; });
     draw2(current, pendingIdx, dir, 0);
