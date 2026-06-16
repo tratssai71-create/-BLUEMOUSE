@@ -651,9 +651,14 @@ document.querySelectorAll('.side-loc-tab').forEach(function(btn) {
 
   /* 2枚の中間状態を描画（ドラッグ中・スナップ中共用）*/
   function draw2(fi, ti, dir, prog) {
-    /* 移動進捗（チルトと独立） */
+    /* 退場移動進捗 */
     var fiP = 0.1 + prog * 0.9;
+    /* 入場チルト用進捗（tilt freeze計算に使用） */
     var tiP = prog < 0.1 ? 0 : (prog < 0.3 ? (prog - 0.1) * 1.5 : 0.3 + (prog - 0.3));
+    /* 入場Y位置：退場と同速(0.315vh/prog)で0〜60%一定距離、60〜100%で収束 */
+    var tiY60 = 0.75 - 0.6 * 0.315;
+    var tiY = prog <= 0.6 ? 0.75 - prog * 0.315
+            : tiY60 * (1 - (prog - 0.6) / 0.4);
 
     /* チルト進捗：20〜60%は凍結、60%〜再開 */
     var fiTilt = prog <= 0.2 ? fiP
@@ -683,7 +688,7 @@ document.querySelectorAll('.side-loc-tab').forEach(function(btn) {
     cards[ti].style.zIndex     = tiz;
     cards[ti].style.visibility = 'visible';
     cards[ti].style.transform  =
-      'perspective(700px) translateY(' + (dir * vh * 0.80 * (1 - tiP)).toFixed(1) + 'px)' +
+      'perspective(700px) translateY(' + (dir * vh * tiY).toFixed(1) + 'px)' +
       ' rotateX(' + (dir * (1 - tiTilt) * 80).toFixed(2) + 'deg)' +
       ' rotateZ(' + ((1 - tiTilt) * 10).toFixed(2) + 'deg)' +
       ' scale(' + scl + ')';
