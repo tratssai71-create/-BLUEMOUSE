@@ -653,8 +653,8 @@ document.querySelectorAll('.side-loc-tab').forEach(function(btn) {
   function draw2(fi, ti, dir, prog) {
     /* 退場：20%で30%済み、その後ゆっくり完了 */
     var fiP = prog <= 0.2 ? prog * 1.5 : 0.3 + (prog - 0.2) * (0.7 / 0.8);
-    /* 入場：0%からスタート */
-    var tiP = prog;
+    /* 入場：10%からスタート、20%幅で急加速して30%、その後ゆっくり完了 */
+    var tiP = prog < 0.1 ? 0 : (prog < 0.3 ? (prog - 0.1) * 1.5 : 0.3 + (prog - 0.3));
 
     /* 40%以降は入場カードを手前に */
     var fiz = prog < 0.4 ? '11' : '10';
@@ -666,7 +666,7 @@ document.querySelectorAll('.side-loc-tab').forEach(function(btn) {
     cards[fi].style.transform  =
       'perspective(700px) translateY(' + (-dir * fiP * vh * 0.35).toFixed(1) + 'px)' +
       ' rotateX(' + (-dir * fiP * 80).toFixed(2) + 'deg)' +
-      ' rotateZ(' + (-fiP * 5).toFixed(2) + 'deg)';
+      ' rotateZ(' + (-fiP * 10).toFixed(2) + 'deg)';
 
     /* 入場：左傾き、40%で手前に */
     cards[ti].style.zIndex     = tiz;
@@ -674,7 +674,7 @@ document.querySelectorAll('.side-loc-tab').forEach(function(btn) {
     cards[ti].style.transform  =
       'perspective(700px) translateY(' + (dir * vh * (1 - tiP)).toFixed(1) + 'px)' +
       ' rotateX(' + (dir * (1 - tiP) * 80).toFixed(2) + 'deg)' +
-      ' rotateZ(' + (-(1 - tiP) * 5).toFixed(2) + 'deg)';
+      ' rotateZ(' + ((1 - tiP) * 10).toFixed(2) + 'deg)';
   }
 
   function startDrag(dir) {
