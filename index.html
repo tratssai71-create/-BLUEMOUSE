@@ -656,15 +656,13 @@ document.querySelectorAll('.side-loc-tab').forEach(function(btn) {
     cards[fi].style.visibility = 'visible';
     cards[fi].style.transform  =
       'perspective(700px) translateY(' + (-dir * prog * vh * 0.35).toFixed(1) + 'px)' +
-      ' rotateX(' + (-dir * prog * 12).toFixed(2) + 'deg)';
-    cards[fi].style.opacity    = (1 - prog).toFixed(3);
-    /* 入場：下からスライド + フェードイン + 画像上部が広がった状態から収束 */
+      ' rotateX(' + (-dir * prog * 36).toFixed(2) + 'deg)';
+    /* 入場：下からスライド + 画像上部が広がった状態から収束 */
     cards[ti].style.zIndex     = '10';
     cards[ti].style.visibility = 'visible';
     cards[ti].style.transform  =
       'perspective(700px) translateY(' + (dir * vh * (1 - prog)).toFixed(1) + 'px)' +
-      ' rotateX(' + (dir * (1 - prog) * 10).toFixed(2) + 'deg)';
-    cards[ti].style.opacity    = prog.toFixed(3);
+      ' rotateX(' + (dir * (1 - prog) * 30).toFixed(2) + 'deg)';
   }
 
   function startDrag(dir) {
