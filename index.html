@@ -654,7 +654,6 @@ document.querySelectorAll('.side-loc-tab').forEach(function(btn) {
     cards[fi].style.zIndex     = '11';
     cards[fi].style.visibility = 'visible';
     cards[fi].style.transform  = 'perspective(700px) rotateX(' + (prog * 14).toFixed(2) + 'deg) scale(' + (1 - prog * 0.15).toFixed(4) + ')';
-    cards[fi].style.opacity    = (1 - prog * 0.65).toFixed(3);
     cards[ti].style.zIndex     = '10';
     cards[ti].style.visibility = 'visible';
     cards[ti].style.transform  = 'translateY(' + ((dir * vh) * (1 - prog)).toFixed(1) + 'px)';
