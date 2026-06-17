@@ -664,14 +664,14 @@ document.querySelectorAll('.side-loc-tab').forEach(function(btn) {
     var tiTilt = prog <= 0.8 ? 40 : 40 * (1 - (prog - 0.8) / 0.2);
     var fiTilt = prog <= 0.8 ? 40 : 40 * (1 - (prog - 0.8) / 0.2);
     /* 横チルト(rotateY)：入場-10deg／退場+10deg */
-    var tiLeanY = prog <= 0.8 ? -10 : -10 * (1 - (prog - 0.8) / 0.2);
+    var tiLeanY = prog <= 0.8 ? -15 : -15 * (1 - (prog - 0.8) / 0.2);
     var fiLeanY = prog <= 0.8 ?  10 :  10 * (1 - (prog - 0.8) / 0.2);
 
     /* 移動：退場0.275vh/prog / 入場25%のぞきスタート・0.200vh/progで80%まで→収束 */
-    var fiY = (-dir * prog * 0.175 * vh).toFixed(1);
-    var tiY80 = 0.75 - 0.8 * 0.100;
+    var fiY = (-dir * prog * 0.125 * vh).toFixed(1);
+    var tiY80 = 0.70 - 0.8 * 0.050;
     var tiY = (prog <= 0.8
-      ? dir * (0.75 - prog * 0.100) * vh
+      ? dir * (0.70 - prog * 0.050) * vh
       : dir * tiY80 * (1 - (prog - 0.8) / 0.2) * vh).toFixed(1);
 
     /* 40%以降は入場カードを手前に */
