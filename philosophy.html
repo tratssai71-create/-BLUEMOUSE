@@ -603,23 +603,25 @@
     if (next !== base) {
       var drag_t = Math.min(1, Math.max(0, stRel / secSpan));
       if (touching) {
-        /* 物理ドラッグ量に比例してチルトが増し続ける。next は opacity:0（画像は重ならない）。 */
-        var rawDisp = Math.abs(touchRawVY - touchBaseVY);
+        /* ドラッグ量に比例してチルト増加 + 指と同方向にスライド。50%超えても画像は変えない。 */
+        var rawDrag = touchRawVY - touchBaseVY;
+        var rawDisp = Math.abs(rawDrag);
         var tilt = 10 * Math.min(1, rawDisp / secSpan);
+        var slidePx = -(rawDrag * DRAG_SENSITIVITY); /* 指の動きの 35% を視覚スライドに変換 */
         lastTiltDeg = tilt;
         sections[base].style.zIndex = '100';
         sections[base].style.opacity = '1';
-        sections[base].style.transform = 'perspective(800px) rotateX(' + tilt.toFixed(2) + 'deg)';
+        sections[base].style.transform = 'perspective(800px) rotateX(' + tilt.toFixed(2) + 'deg) translateY(' + slidePx.toFixed(1) + 'px)';
         sections[next].style.zIndex = '50';
         sections[next].style.opacity = '0';
         sections[next].style.transform = 'translateY(0)';
       } else {
-        /* 指を離した後：tiltDeg がゆっくり 0 に戻りながら、クロスフェードで画像が重なる。 */
+        /* 指を離した後：チルト収束 + スライドも stRel に沿って自然解決 + クロスフェード。 */
         var e = drag_t;
         e = e * e * (3 - 2 * e); /* smoothstep */
         sections[base].style.zIndex = '100';
         sections[base].style.opacity = String(1 - e);
-        sections[base].style.transform = 'perspective(800px) rotateX(' + tiltDeg.toFixed(2) + 'deg) scale(' + (1 - e * 0.04).toFixed(4) + ')';
+        sections[base].style.transform = 'perspective(800px) rotateX(' + tiltDeg.toFixed(2) + 'deg) translateY(' + (-stRel).toFixed(1) + 'px) scale(' + (1 - e * 0.04).toFixed(4) + ')';
         sections[next].style.zIndex = '50';
         sections[next].style.opacity = String(e);
         sections[next].style.transform = 'translateY(0)';
@@ -763,6 +765,7 @@
     touching = true;
     touchStartY = e.touches[0].clientY;
     touchBaseVY = virtualY;
+    touchRawVY = virtualY; /* ← 新タッチ開始時にリセット（前回の残留値を除去） */
     touchHistory = [{ t: Date.now(), y: touchStartY }];
     springActive = false; animating = false;
     if (animRaf) { cancelAnimationFrame(animRaf); animRaf = null; }
