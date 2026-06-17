@@ -415,10 +415,13 @@
   var animRaf = null;      /* 実行中アニメーションの RAF id */
   var animating = false;   /* wheel連打ブロック */
 
-  var touching = false;    /* タッチ中フラグ: trueの間は画面が完全切り替わりしない（粘り） */
+  var touching = false;
   var touchStartY = 0, touchBaseVY = 0, touchRawVY = 0;
-  var touchHistory = [];   /* [{t, y}] 速度計算用の直近タッチ点 */
-  var DRAG_SENSITIVITY = 0.35; /* 指の移動量に対して画面が動く割合。1未満で「粘り」が生まれる */
+  var touchHistory = [];
+  var DRAG_SENSITIVITY = 0.35;
+  var lastTiltDeg = 0;   /* ドラッグ終了時のチルト角（スプリングへの引継ぎ用） */
+  var tiltDeg = 0;       /* スプリング中の現在チルト角（→0に収束） */
+  var tiltVel = 0;       /* チルトスプリング速度 */
 
   var secGen = {};
   function bumpSecGen (si) { secGen[si] = (secGen[si] || 0) + 1; return secGen[si]; }
@@ -598,17 +601,32 @@
     var next = Math.min(base + 1, n - 1);
     var secSpan = vh, stRel = st - base * vh;
     if (next !== base) {
-      /* base(現在)が手前(z:100)でフェードアウト＋縮小、next(次)が奥(z:50)で opacity:1 固定。
-         「次が前に出る」ではなく「今が奥に引く」Resn 式レイヤー構造。touching 判定不要。 */
-      var e = Math.min(1, Math.max(0, stRel / secSpan));
-      e = e * e * (3 - 2 * e); /* smoothstep */
-      sections[base].style.zIndex = '100';
-      sections[base].style.opacity = String(1 - e);
-      sections[base].style.transform = 'scale(' + (1 - e * 0.04).toFixed(4) + ')';
-      sections[next].style.zIndex = '50';
-      sections[next].style.opacity = '1';
-      sections[next].style.transform = 'translateY(0)';
+      var drag_t = Math.min(1, Math.max(0, stRel / secSpan));
+      if (touching) {
+        /* ドラッグ中：前半チルト強／後半スライド強。next は opacity:0 で画像は重ならない。 */
+        var tiltFactor = drag_t * Math.pow(1 - drag_t, 1.5) * 4.5; /* 0.35付近でピーク */
+        var tilt = 8 * tiltFactor;
+        var slidePx = -35 * Math.pow(drag_t, 1.5);
+        lastTiltDeg = tilt;
+        sections[base].style.zIndex = '100';
+        sections[base].style.opacity = '1';
+        sections[base].style.transform = 'perspective(800px) rotateX(' + (-tilt).toFixed(2) + 'deg) translateY(' + slidePx.toFixed(1) + 'px)';
+        sections[next].style.zIndex = '50';
+        sections[next].style.opacity = '0';
+        sections[next].style.transform = 'translateY(0)';
+      } else {
+        /* スプリング後：チルトが tiltDeg→0 に収束しつつ、クロスフェードで画像が重なる。 */
+        var e = drag_t;
+        e = e * e * (3 - 2 * e); /* smoothstep */
+        sections[base].style.zIndex = '100';
+        sections[base].style.opacity = String(1 - e);
+        sections[base].style.transform = 'perspective(800px) rotateX(' + (-tiltDeg).toFixed(2) + 'deg) scale(' + (1 - e * 0.04).toFixed(4) + ')';
+        sections[next].style.zIndex = '50';
+        sections[next].style.opacity = String(e);
+        sections[next].style.transform = 'translateY(0)';
+      }
     } else {
+      lastTiltDeg = 0; tiltDeg = 0; tiltVel = 0;
       sections[base].style.opacity = '';
       sections[base].style.transform = '';
       sections[base].style.zIndex = '';
@@ -663,9 +681,15 @@
     function step () {
       if (!springActive) return;
       var dist = springTarget - virtualY;
-      springVel = (springVel + dist * 0.04) * 0.88; /* さらに柔らかく: stiffness↓↓ / 慣性↑↑ */
+      springVel = (springVel + dist * 0.04) * 0.88;
       virtualY += springVel;
       virtualY = Math.max(0, Math.min((n - 1) * vh, virtualY));
+      /* チルト収束スプリング：tiltDeg を 0 へ向けて追従させる */
+      if (tiltDeg !== 0) {
+        tiltVel = (tiltVel + (0 - tiltDeg) * 0.04) * 0.88;
+        tiltDeg += tiltVel;
+        if (Math.abs(tiltVel) < 0.01 && Math.abs(tiltDeg) < 0.01) { tiltDeg = 0; tiltVel = 0; }
+      }
       draw();
       if (Math.abs(springVel) < 0.25 && Math.abs(dist) < 0.5) {
         virtualY = springTarget; springActive = false; springVel = 0; animating = false;
@@ -707,6 +731,7 @@
     document.body.style.width = '';
     document.body.style.overflow = '';
     locked = false; virtualY = 0; springVel = 0; springActive = false; animating = false;
+    lastTiltDeg = 0; tiltDeg = 0; tiltVel = 0;
     if (animRaf) { cancelAnimationFrame(animRaf); animRaf = null; }
     window.scrollTo(0, 0);
     prevBase = -1; prevNext = -1;
@@ -761,7 +786,8 @@
 
   /* touchend: 粘りを解除 → 速度計算 → スプリングへ初速として渡す → 余韻のアニメーション */
   window.addEventListener('touchend', function (e) {
-    touching = false; /* ここで粘りを解除。以降のspringは完全切り替わりを許可 */
+    touching = false;
+    tiltDeg = lastTiltDeg; tiltVel = 0; /* ドラッグ終了時のチルトをスプリングへ引き継ぐ */
     var totalDy = touchStartY - e.changedTouches[0].clientY;
     if (!locked) { if (window.pageYOffset > 4) goToSection(0, 420); return; }
     var vel = 0;
