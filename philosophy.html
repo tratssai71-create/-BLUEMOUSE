@@ -375,9 +375,7 @@
 <script>
 (function () {
   'use strict';
-  if ('scrollRestoration' in history) history.scrollRestoration = 'manual'; /* ブラウザの自動スクロール位置復元を無効化（常にプロローグから開始） */
-  /* 和文フォント(Zen Kaku)を積極ロード。初回スクロール時に未ロードだとfont-display:swapの
-     再レンダリングがopacityトランジションを潰し「文章だけパッと表示」になるため */
+  if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
   if (document.fonts && document.fonts.load) {
     document.fonts.load('700 2rem "Zen Kaku Gothic New"');
     document.fonts.load('400 1rem "Zen Kaku Gothic New"');
@@ -397,39 +395,60 @@
   var counterTotEl = document.getElementById('pf-counter-total');
   function pad2(x) { return (x < 10 ? '0' : '') + x; }
   if (counterTotEl) counterTotEl.textContent = pad2(n);
-  var PRO = 0; /* プロローグ画面の高さ。ジャックのスクロール基準オフセット */
+  var PRO = 0;
   var titleEls = sections[0] ? Array.prototype.slice.call(sections[0].querySelectorAll('.pf-anim')) : [];
   var s3Els    = sections[3] ? Array.prototype.slice.call(sections[3].querySelectorAll('.pf-anim')) : [];
   var s7Els    = sections[8] ? Array.prototype.slice.call(sections[8].querySelectorAll('.pf-anim')) : [];
-  var s3Gen = 0, s3PhaseTimer = null, s3Step = 0; /* section3の二段スクロール制御 */
-  var vh = window.innerHeight, ticking = false, prevBase = -1, prevNext = -1, locked = false, lockedVh = 0;
+  var s3Gen = 0, s3PhaseTimer = null, s3Step = 0;
+  var vh = window.innerHeight, prevBase = -1, prevNext = -1, locked = false, lockedVh = 0;
   var seen = sections.map(function () { return false; });
   var hintEl = document.getElementById('pf-title-hint');
-  var isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
 
-  function setup () { if (locked) return; vh = window.innerHeight; PRO = prologue ? Math.round(prologue.offsetHeight) : 0; spacer.style.height = (n * vh) + 'px'; }
-  /* プロローグを抜けてジャックに入る瞬間にvh/レイアウトを確定。以降バー変動を無視して演出を安定させる。
-     ※section高さはpx固定しない（reflowで初回遷移・フェードが乱れるため）。CSSの100dvh＝確定vhに任せる */
+  /* ── 仮想スクロールエンジン ──────────────────────────────────────────────────
+     virtualY が描画の唯一のソース。window.pageYOffset はプロローグのiOSバー縮小だけに使う。
+     touchmove中 → virtualY をリアルタイム更新 → draw() → 画面が指に追従
+     touchend後  → 指の速度を初速としてスプリング物理 → 最寄りセクションへ吸着（余韻）  */
+  var virtualY = 0;        /* 現在位置 px (0 = section0, vh = section1, ...) */
+  var springVel = 0;       /* スプリング速度 px/frame */
+  var springTarget = 0;    /* スナップ先 */
+  var springActive = false;
+  var animRaf = null;      /* 実行中アニメーションの RAF id */
+  var animating = false;   /* wheel連打ブロック */
+
+  var touching = false;    /* タッチ中フラグ: trueの間は画面が完全切り替わりしない（粘り） */
+  var touchStartY = 0, touchBaseVY = 0, touchRawVY = 0;
+  var touchHistory = [];   /* [{t, y}] 速度計算用の直近タッチ点 */
+  var DRAG_SENSITIVITY = 0.35; /* 指の移動量に対して画面が動く割合。1未満で「粘り」が生まれる */
+
+  var secGen = {};
+  function bumpSecGen (si) { secGen[si] = (secGen[si] || 0) + 1; return secGen[si]; }
+  function checkSecGen (si, g) { return (secGen[si] || 0) === g; }
+
+  function setup () {
+    if (locked) return;
+    vh = window.innerHeight;
+    PRO = prologue ? Math.round(prologue.offsetHeight) : 0;
+    spacer.style.height = (PRO + vh) + 'px';
+  }
   function lockLayout () {
     vh = window.innerHeight; lockedVh = vh;
     PRO = prologue ? Math.round(prologue.offsetHeight) : 0;
-    spacer.style.height = (n * vh) + 'px';
+    spacer.style.height = (PRO + vh) + 'px';
     locked = true;
-    /* プロローグ→ジャック移行の瞬間にロゴをアニメアウト */
+    window.scrollTo(0, PRO);
     if (proInner) proInner.classList.add('is-leaving');
   }
-  /* iOS Safari対応: transform設定ヘルパー（webkit接頭辞付き）*/
   function setTf (el, val) { el.style.webkitTransform = val; el.style.transform = val; }
-  /* 要素1つをフェードイン。forceX=trueで右からスライド（translateX）、falseで下からフェード（translateY） */
+
   function showEl (el, forceX) {
-    el._pfCancelled = false; /* 直前のrAFループを無効化（新しいshowEl開始を宣言） */
+    el._pfCancelled = false;
     var noMove = el.classList.contains('pf-fignum') || el.classList.contains('pf-lead-em');
-    var isEyebrow = el.classList.contains('pf-eyebrow'); /* ラインが動く→テキストはopacityのみ */
+    var isEyebrow = el.classList.contains('pf-eyebrow');
     var useX = !isEyebrow && forceX && !noMove;
     var fx = useX ? 40 : 0;
     var fy = (!noMove && !useX && !isEyebrow) ? 26 : 0;
-    var isPunch = el.classList.contains('pf-fignum'); /* ② 数字ドン: scaleパンチ */
-    var countSpan = isPunch ? el.querySelector('.pf-count') : null; /* ① カウントアップ */
+    var isPunch = el.classList.contains('pf-fignum');
+    var countSpan = isPunch ? el.querySelector('.pf-count') : null;
     var countTarget = countSpan ? parseInt(countSpan.getAttribute('data-target'), 10) : 0;
     if (countSpan) countSpan.textContent = '0';
     el.style.transition = 'none'; el.style.webkitTransition = 'none'; el.style.animation = 'none';
@@ -441,7 +460,7 @@
     void el.offsetWidth;
     var dur = 900, startT = null;
     function stp (ts) {
-      if (el._pfCancelled) return; /* resetAnimによる中断 — クリーンアップはresetAnimが担う */
+      if (el._pfCancelled) return;
       if (!startT) startT = ts;
       var p = Math.min((ts - startT) / dur, 1);
       var e = 1 - Math.pow(1 - p, 3);
@@ -455,7 +474,7 @@
     }
     requestAnimationFrame(stp);
   }
-  /* section3 Phase B（5年間）をスクロールトリガーで起動 */
+
   function animateS3PhaseB () {
     var gen = ++s3Gen;
     if (s3PhaseTimer) { clearTimeout(s3PhaseTimer); s3PhaseTimer = null; }
@@ -476,72 +495,52 @@
     var els = Array.prototype.slice.call(section.querySelectorAll('.pf-anim'));
     els.forEach(function (el) { el.classList.remove('is-visible'); el.style.opacity = ''; el.style.transition = ''; el.style.webkitTransition = ''; el.style.transform = ''; el.style.webkitTransform = ''; el.style.animation = ''; });
     void section.offsetHeight;
-    /* section4（暗転の問い）: 1.2秒の「ため」で問いを刻む */
     if (sIdx === 4) {
       var gen4 = bumpSecGen(4);
       var washEl4 = section.querySelector('.pf-s4-wash');
       if (washEl4) setTimeout(function () { if (!checkSecGen(4, gen4)) return; washEl4.classList.add('is-on'); }, 500);
-      els.forEach(function (el, i) {
-        setTimeout(function () { if (!checkSecGen(4, gen4)) return; showEl(el, false); }, i === 0 ? 300 : 1500);
-      });
+      els.forEach(function (el, i) { setTimeout(function () { if (!checkSecGen(4, gen4)) return; showEl(el, false); }, i === 0 ? 300 : 1500); });
       return;
     }
-    /* section6（暗転・告白）: 既存の療育に答えはなかった——重い告白 */
     if (sIdx === 6) {
       var gen6 = bumpSecGen(6);
       var washEl6 = section.querySelector('.pf-s4-wash');
       if (washEl6) setTimeout(function () { if (!checkSecGen(6, gen6)) return; washEl6.classList.add('is-on'); }, 400);
-      els.forEach(function (el, i) {
-        setTimeout(function () { if (!checkSecGen(6, gen6)) return; showEl(el, false); }, i === 0 ? 80 : 800);
-      });
+      els.forEach(function (el, i) { setTimeout(function () { if (!checkSecGen(6, gen6)) return; showEl(el, false); }, i === 0 ? 80 : 800); });
       return;
     }
-    /* section7（答え）: 暗転を抜けて白へ、前進の宣言 */
     if (sIdx === 7) {
       var gen7 = bumpSecGen(7);
-      els.forEach(function (el, i) {
-        setTimeout(function () { if (!checkSecGen(7, gen7)) return; showEl(el, true); }, i === 0 ? 80 : i === 1 ? 520 : 1100);
-      });
+      els.forEach(function (el, i) { setTimeout(function () { if (!checkSecGen(7, gen7)) return; showEl(el, true); }, i === 0 ? 80 : i === 1 ? 520 : 1100); });
       return;
     }
-    /* section12（CTA）: lead→sub→primary→secondaryの順に時差フェードイン */
     if (sIdx === 12) {
       var gen12 = bumpSecGen(12);
-      els.forEach(function (el, i) {
-        setTimeout(function () { if (!checkSecGen(12, gen12)) return; showEl(el, false); }, 80 + i * 180);
-      });
+      els.forEach(function (el, i) { setTimeout(function () { if (!checkSecGen(12, gen12)) return; showEl(el, false); }, 80 + i * 180); });
       return;
     }
-    /* section3（13万円）: Phase Aのみ。Phase Bはユーザーの2回目スクロールで起動 */
     if (sIdx === 3) {
-      s3Step = 0; /* ステップリセット */
-      var gen = ++s3Gen;
+      s3Step = 0;
+      var gen3 = ++s3Gen;
       if (s3PhaseTimer) { clearTimeout(s3PhaseTimer); s3PhaseTimer = null; }
       var aEls = els.filter(function (el) { return !el.classList.contains('pf-s3b-el'); });
-      /* iOS対応: translateY(縦)を使用 */
       aEls.forEach(function (el) {
         var d;
         if (el.classList.contains('pf-eyebrow'))         d = 40;
         else if (el.classList.contains('pf-fignum'))     d = 160;
         else if (el.classList.contains('pf-text__lead')) d = 1300;
         else                                             d = 1500;
-        setTimeout(function () { if (s3Gen !== gen) return; showEl(el, false); }, d);
+        setTimeout(function () { if (s3Gen !== gen3) return; showEl(el, false); }, d);
       });
-      /* ④ 背景コーラルグロウ: 13万円が現れ始める頃に起動 */
       var washEl = sections[3].querySelector('.pf-s3-wash');
-      if (washEl) setTimeout(function () { if (s3Gen !== gen) return; washEl.classList.add('is-on'); }, 600);
+      if (washEl) setTimeout(function () { if (s3Gen !== gen3) return; washEl.classList.add('is-on'); }, 600);
       return;
     }
-    /* section1（写真）: 右からスライドイン */
     if (sIdx === 1) {
       var gen1 = bumpSecGen(1);
-      var base1 = 80, step1 = 120;
-      els.forEach(function (el, i) {
-        setTimeout(function () { if (!checkSecGen(1, gen1)) return; showEl(el, true); }, base1 + i * step1);
-      });
+      els.forEach(function (el, i) { setTimeout(function () { if (!checkSecGen(1, gen1)) return; showEl(el, true); }, 80 + i * 120); });
       return;
     }
-    /* section8（Roadmap）: キッカー→オレンジの「土台」「武器」を先行強調→通常文→補足の順 */
     if (sIdx === 8) {
       var gen8 = bumpSecGen(8);
       els.forEach(function (el) {
@@ -554,76 +553,53 @@
       });
       return;
     }
-    /* デフォルト: 右からスライドイン（section0/2/5/9/10/11など） */
     var genD = bumpSecGen(sIdx);
-    var base = 80, step = 120;
-    els.forEach(function (el, i) {
-      setTimeout(function () { if (!checkSecGen(sIdx, genD)) return; showEl(el, true); }, base + i * step);
-    });
+    els.forEach(function (el, i) { setTimeout(function () { if (!checkSecGen(sIdx, genD)) return; showEl(el, true); }, 80 + i * 120); });
     if (sIdx === 0 && hintEl) {
-      setTimeout(function () { if (!checkSecGen(0, genD)) return; hintEl.classList.add('is-visible'); }, base + (els.length > 0 ? (els.length - 1) * step : 0) + 700);
+      setTimeout(function () { if (!checkSecGen(0, genD)) return; hintEl.classList.add('is-visible'); }, 80 + (els.length > 0 ? (els.length - 1) * 120 : 0) + 700);
     }
   }
-  /* 画面外に出たセクションはアニメをリセット（再訪のたびに再生されるように） */
+
   function resetAnim (section) {
     var si = +section.getAttribute('data-idx');
-    if (!isNaN(si)) bumpSecGen(si); /* 世代を進めて古いsetTimeoutコールバックを無効化 */
+    if (!isNaN(si)) bumpSecGen(si);
     Array.prototype.slice.call(section.querySelectorAll('.pf-anim')).forEach(function (el) {
-      el._pfCancelled = true; /* showElのrAFループを次フレームで停止 */
+      el._pfCancelled = true;
       el.classList.remove('is-visible'); el.style.opacity = ''; el.style.transform = ''; el.style.webkitTransform = ''; el.style.transition = ''; el.style.webkitTransition = ''; el.style.animation = '';
     });
     section.querySelectorAll('.pf-s3-wash, .pf-s4-wash').forEach(function (w) { w.classList.remove('is-on'); });
     if (si === 0 && hintEl) hintEl.classList.remove('is-visible');
   }
-  /* Safari再起動・タブ復元などで途中位置から開かれた時、プロローグに戻してバー縮小の導線を再提供 */
-  function resetToPrologue () {
-    locked = false; /* ロック解除：プロローグからやり直し、次のスワイプで再lock */
-    window.scrollTo(0, 0);
-    prevBase = -1; prevNext = -1;
-    seen = sections.map(function () { return false; });
-    sections.forEach(function (sec, i) {
-      sec.style.height = ''; /* lockのpx固定を解除（CSSの100dvhに戻す） */
-      sec.style.visibility = i === 0 ? 'visible' : 'hidden';
-      sec.style.opacity = ''; sec.style.transform = '';
-      resetAnim(sec);
-      var img = sec.querySelector('.pf-photo__img'); if (img) img.style.transform = '';
-    });
-    titleEls.forEach(function (el) { el.style.transition = ''; el.style.opacity = ''; el.style.transform = ''; });
-    s3Els.forEach(function (el) { el.style.transition = ''; el.style.opacity = ''; el.style.transform = ''; });
-    s7Els.forEach(function (el) { el.style.transition = ''; el.style.opacity = ''; el.style.transform = ''; });
-    s3Gen++; s3Step = 0; if (s3PhaseTimer) { clearTimeout(s3PhaseTimer); s3PhaseTimer = null; }
-    if (proInner) { proInner.classList.remove('is-leaving'); proInner.style.opacity = ''; proInner.style.transform = ''; }
-    if (progressEl) { progressEl.classList.remove('is-active'); progressEl.style.width = '0%'; }
-    setup(); draw();
-  }
+
+  function inPrologue () { return !locked; }
+  function currentBase () { var b = 0; for (var i = n - 2; i >= 0; i--) { if (virtualY >= i * vh) { b = i; break; } } return Math.max(0, b); }
+
   function draw () {
-    ticking = false;
-    var st = window.pageYOffset - PRO; /* プロローグ分を引いたジャック領域内の相対スクロール（vhはlock済み固定値） */
-    if (st < -2) { /* プロローグ領域：ジャック演出は開始前。進行ドットだけ先頭に（-2pxは丸め誤差マージン） */
+    if (!locked) {
       dotEls.forEach(function (d, j) { d.classList.toggle('active', j === 0); });
       if (dotsWrap) dotsWrap.classList.remove('dark');
       if (vscrollEl) { vscrollEl.classList.remove('is-active'); vscrollEl.classList.remove('dark'); }
-      if (counterEl)  { counterEl.classList.remove('is-active');  counterEl.classList.remove('dark'); }
+      if (counterEl) { counterEl.classList.remove('is-active'); counterEl.classList.remove('dark'); }
       return;
     }
-    if (st < 0) st = 0; /* 丸め誤差で僅かに負のときは0扱い（section0のフェードを確実に発火） */
+    var st = Math.max(0, virtualY);
     var base = 0;
     for (var i = n - 2; i >= 0; i--) { if (st >= i * vh) { base = i; break; } }
     var next = Math.min(base + 1, n - 1);
     var secSpan = vh, stRel = st - base * vh;
-    sections[base].style.opacity = '';
     if (next !== base) {
-      var thr = base === 0 ? 0.55 : 0.80, span = base === 0 ? 0.45 : 0.20;
-      var fade = stRel < secSpan * thr ? 1 : Math.max(0, 1 - (stRel - secSpan * thr) / (secSpan * span));
-      var exitP = 1 - fade;
+      /* タッチ中(touching=true)は次セクションを完全非表示。
+         指を離した後のスプリングだけがクロスフェードを担う。 */
+      var e = touching ? 0 : Math.min(1, Math.max(0, stRel / secSpan));
+      e = e * e * (3 - 2 * e); /* smoothstep */
       sections[next].style.transform = 'translateY(0)';
-      sections[next].style.opacity = String(1 - fade);
-      /* ⑤ scale exit: 退場セクションを軽くスケールダウン（0.97まで）*/
-      sections[base].style.transform = exitP > 0.001 ? 'scale(' + (1 - exitP * 0.03).toFixed(4) + ')' : 'translateY(0)';
+      sections[next].style.opacity = String(e);
+      sections[base].style.opacity = String(1 - e);
+      sections[base].style.transform = e > 0.001 ? 'scale(' + (1 - e * 0.03).toFixed(4) + ')' : 'translateY(0)';
     } else {
+      sections[base].style.opacity = '';
       sections[base].style.transform = 'translateY(0)';
     }
-    /* 写真パララックス: スクロールに対して写真が逆方向にゆっくり流れる */
     [base, next].forEach(function (si) {
       if (si < 0 || si >= n) return;
       var sec = sections[si];
@@ -637,7 +613,6 @@
       if (tp > 0) { el.style.animation = 'none'; el.style.transition = 'none'; el.style.opacity = String(Math.max(0, 1 - tp)); el.style.transform = 'translateX(' + Math.round(-tp * 16) + 'px)'; }
       else { el.style.animation = ''; el.style.transition = ''; el.style.opacity = ''; el.style.transform = ''; }
     });
-    /* section3/8 フェードアウト: タイトル画面と同じく全要素を一斉に左へ退出（位相差なし） */
     if (base === 3 || base === 8) {
       var foEls = base === 3 ? s3Els : s7Els;
       var op = Math.min(1, Math.max(0, (stRel - secSpan * 0.05) / (secSpan * 0.85)));
@@ -654,88 +629,166 @@
       sections[base].style.visibility = 'visible'; sections[next].style.visibility = 'visible';
       prevBase = base; prevNext = next;
     }
-    /* animateInはdrawでは呼ばずgoToSection完了時に実行（スクロール中のrAF競合でフェードインが潰れるのを防ぐ） */
-    var ty = Math.round(vh * Math.max(0, 1 - stRel / secSpan));
-    var ai = ty < vh * 0.5 ? next : base;
+    var ai = stRel / secSpan < 0.5 ? base : next;
     dotEls.forEach(function (d, j) { d.classList.toggle('active', j === ai); });
     if (dotsWrap) dotsWrap.classList.toggle('dark', !!sections[ai].getAttribute('data-dark'));
     var isDark = !!sections[ai].getAttribute('data-dark');
     if (vscrollEl)    { vscrollEl.classList.toggle('dark', isDark); vscrollEl.classList.add('is-active'); }
     if (counterEl)    { counterEl.classList.toggle('dark', isDark);  counterEl.classList.add('is-active'); }
     if (counterCurEl) counterCurEl.textContent = pad2(ai + 1);
-    /* ② モバイル進行バー: ジャック開始後にアクティブ化 */
-    if (progressEl) {
-      if (st >= 0) { progressEl.classList.add('is-active'); progressEl.style.width = (n > 1 ? (ai / (n - 1)) * 100 : 0).toFixed(1) + '%'; }
-      else { progressEl.classList.remove('is-active'); progressEl.style.width = '0%'; }
-    }
+    if (progressEl) { progressEl.classList.add('is-active'); progressEl.style.width = (n > 1 ? (ai / (n - 1)) * 100 : 0).toFixed(1) + '%'; }
   }
-  function onScroll () { if (!ticking) { requestAnimationFrame(draw); ticking = true; } }
 
-  var scrollLocked = false, touchStartY = 0;
-  /* セクションごとのアニメ世代管理: bumpで古いsetTimeout/rAFを一括無効化 */
-  var secGen = {};
-  function bumpSecGen (si) { secGen[si] = (secGen[si] || 0) + 1; return secGen[si]; }
-  function checkSecGen (si, g) { return (secGen[si] || 0) === g; }
-  function currentBase () { var st = window.pageYOffset - PRO, b = 0; for (var i = n - 2; i >= 0; i--) { if (st >= i * vh) { b = i; break; } } return Math.max(0, b); }
-  function goToSection (idx, dur) {
-    if (idx < 0 || idx > n - 1 || scrollLocked) return;
-    /* section3の3ステップ制御: 前進スクロールをインターセプト */
-    if (currentBase() === 3 && idx > 3) {
-      if (s3Step === 0) { s3Step = 1; animateS3PhaseB(); return; } /* 2回目: Phase B起動 */
-      /* s3Step === 1: 3回目 → 通常通りsection4へ進む */
+  /* スプリングアニメーション ─────────────────────────────────────────────────
+     initVel に指の速度(px/frame)を渡すことで、指を離した直後の慣性を再現。
+     stiffness=0.10 / damping=0.80 で Resn に近い滑らかな吸着感を得る。      */
+  function springTo (targetVY, initVel) {
+    springActive = true;
+    springTarget = Math.max(0, Math.min((n - 1) * vh, targetVY));
+    springVel = initVel || 0;
+    if (animRaf) cancelAnimationFrame(animRaf);
+    function step () {
+      if (!springActive) return;
+      var dist = springTarget - virtualY;
+      springVel = (springVel + dist * 0.04) * 0.88; /* さらに柔らかく: stiffness↓↓ / 慣性↑↑ */
+      virtualY += springVel;
+      virtualY = Math.max(0, Math.min((n - 1) * vh, virtualY));
+      draw();
+      if (Math.abs(springVel) < 0.25 && Math.abs(dist) < 0.5) {
+        virtualY = springTarget; springActive = false; springVel = 0; animating = false;
+        draw();
+        var b = currentBase(); if (!seen[b]) { seen[b] = true; animateIn(sections[b]); }
+      } else { animRaf = requestAnimationFrame(step); }
     }
-    if (!locked) lockLayout(); /* プロローグ→ジャック移行時にレイアウトを確定 */
-    scrollLocked = true;
-    var startY = window.pageYOffset, targetY = PRO + idx * vh;
-    if (startY === targetY) { scrollLocked = false; return; }
-    var startT = null; dur = dur || 1000;
-    function ease (t) { return t < .5 ? 2 * t * t : -1 + (4 - 2 * t) * t; }
-    function step (ts) { if (!startT) startT = ts; var p = Math.min((ts - startT) / dur, 1); window.scrollTo(0, startY + (targetY - startY) * ease(p)); if (p < 1) requestAnimationFrame(step); else { scrollLocked = false; var b = currentBase(); if (!seen[b]) { seen[b] = true; animateIn(sections[b]); } } }
-    requestAnimationFrame(step);
+    animRaf = requestAnimationFrame(step);
   }
-  /* プロローグ領域にいるか（=まだネイティブスクロールでバー縮小中の区間） */
-  function inPrologue () { return window.pageYOffset < PRO - 1; }
+
+  /* イージングアニメーション（プロローグ→ジャック移行など短い即時遷移用） */
+  function easeTo (targetVY, dur) {
+    animating = true; springActive = false;
+    if (animRaf) cancelAnimationFrame(animRaf);
+    var startVY = virtualY, startT = null;
+    function ease (t) { return t < .5 ? 2*t*t : -1+(4-2*t)*t; }
+    function step (ts) {
+      if (!startT) startT = ts;
+      var p = Math.min((ts - startT) / dur, 1);
+      virtualY = startVY + (targetVY - startVY) * ease(p);
+      draw();
+      if (p < 1) { animRaf = requestAnimationFrame(step); }
+      else { virtualY = targetVY; animating = false; draw(); var b = currentBase(); if (!seen[b]) { seen[b] = true; animateIn(sections[b]); } }
+    }
+    animRaf = requestAnimationFrame(step);
+  }
+
+  function goToSection (idx, dur) {
+    if (idx < 0 || idx > n - 1) return;
+    if (currentBase() === 3 && idx > 3) { if (s3Step === 0) { s3Step = 1; animateS3PhaseB(); return; } }
+    if (!locked) lockLayout();
+    var targetVY = idx * vh;
+    animating = true; easeTo(targetVY, dur || 900); /* wheel/keyboardは常にeaseInOut */
+  }
+
+  function resetToPrologue () {
+    locked = false; virtualY = 0; springVel = 0; springActive = false; animating = false;
+    if (animRaf) { cancelAnimationFrame(animRaf); animRaf = null; }
+    window.scrollTo(0, 0);
+    prevBase = -1; prevNext = -1;
+    seen = sections.map(function () { return false; });
+    sections.forEach(function (sec, i) {
+      sec.style.height = ''; sec.style.visibility = i === 0 ? 'visible' : 'hidden';
+      sec.style.opacity = ''; sec.style.transform = '';
+      resetAnim(sec);
+      var img = sec.querySelector('.pf-photo__img'); if (img) img.style.transform = '';
+    });
+    titleEls.forEach(function (el) { el.style.transition = ''; el.style.opacity = ''; el.style.transform = ''; });
+    s3Els.forEach(function (el) { el.style.transition = ''; el.style.opacity = ''; el.style.transform = ''; });
+    s7Els.forEach(function (el) { el.style.transition = ''; el.style.opacity = ''; el.style.transform = ''; });
+    s3Gen++; s3Step = 0; if (s3PhaseTimer) { clearTimeout(s3PhaseTimer); s3PhaseTimer = null; }
+    if (proInner) { proInner.classList.remove('is-leaving'); proInner.style.opacity = ''; proInner.style.transform = ''; }
+    if (progressEl) { progressEl.classList.remove('is-active'); progressEl.style.width = '0%'; }
+    setup(); draw();
+  }
+
+  /* ── イベントリスナー ────────────────────────────────────────────────────── */
 
   window.addEventListener('wheel', function (e) {
-    e.preventDefault(); if (scrollLocked) return;
-    if (inPrologue()) { goToSection(0, 420); return; } /* プロローグ→ジャック開始（短め遷移でもたつき防止） */
+    e.preventDefault(); if (animating) return;
+    if (inPrologue()) { goToSection(0, 420); return; }
     goToSection(e.deltaY > 0 ? currentBase() + 1 : currentBase() - 1);
   }, { passive: false });
-  window.addEventListener('touchstart', function (e) { touchStartY = e.touches[0].clientY; }, { passive: true });
-  /* プロローグ領域はネイティブスクロールを通す（バー縮小）。ジャック領域だけ抑止 */
-  window.addEventListener('touchmove', function (e) { if (!inPrologue()) e.preventDefault(); }, { passive: false });
-  window.addEventListener('touchend', function (e) {
-    var dy = touchStartY - e.changedTouches[0].clientY;
-    if (inPrologue()) {
-      if (window.pageYOffset > 4) goToSection(0, 420); /* ひとスワイプで即ジャックへ（短め遷移） */
-      return;
-    }
-    if (scrollLocked) return;
-    if (Math.abs(dy) < 5) return;
-    goToSection(dy > 0 ? currentBase() + 1 : currentBase() - 1);
+
+  /* touchstart: 現在の virtualY を基点として記録。スプリング中でも即タッチ優先 */
+  window.addEventListener('touchstart', function (e) {
+    touching = true;
+    touchStartY = e.touches[0].clientY;
+    touchBaseVY = virtualY;
+    touchHistory = [{ t: Date.now(), y: touchStartY }];
+    springActive = false; animating = false;
+    if (animRaf) { cancelAnimationFrame(animRaf); animRaf = null; }
+    if (locked) draw(); /* スプリング途中にタッチしたとき残像を即クリア */
   }, { passive: true });
+
+  /* touchmove: 画面は指の DRAG_SENSITIVITY 倍しか動かない（粘り）。
+     スナップ判定用に実ドラッグ量は touchRawVY に別途保持する。 */
+  window.addEventListener('touchmove', function (e) {
+    if (!locked) return;
+    e.preventDefault();
+    var cy = e.touches[0].clientY;
+    touchHistory.push({ t: Date.now(), y: cy });
+    if (touchHistory.length > 8) touchHistory.shift();
+    var drag = touchStartY - cy;
+    touchRawVY = Math.max(0, Math.min((n - 1) * vh, touchBaseVY + drag));
+    virtualY   = Math.max(0, Math.min((n - 1) * vh, touchBaseVY + drag * DRAG_SENSITIVITY));
+    draw();
+  }, { passive: false });
+
+  /* touchend: 粘りを解除 → 速度計算 → スプリングへ初速として渡す → 余韻のアニメーション */
+  window.addEventListener('touchend', function (e) {
+    touching = false; /* ここで粘りを解除。以降のspringは完全切り替わりを許可 */
+    var totalDy = touchStartY - e.changedTouches[0].clientY;
+    if (!locked) { if (window.pageYOffset > 4) goToSection(0, 420); return; }
+    var vel = 0;
+    if (touchHistory.length >= 2) {
+      var recent = touchHistory.slice(-5);
+      var dt = recent[recent.length - 1].t - recent[0].t;
+      if (dt > 0) vel = ((recent[0].y - recent[recent.length - 1].y) / dt) * 16;
+    }
+    /* スナップ判定: 実ドラッグ量(touchRawVY)の50%で前進/後退を決める。
+       勢いがある場合(vel>5)は速度方向を優先。
+       画面の表示位置(virtualY)はSENSITIVITY圧縮済みのため判定には使わない。 */
+    var targetIdx;
+    if (Math.abs(vel) > 5) {
+      targetIdx = vel > 0 ? Math.ceil(touchRawVY / vh) : Math.floor(touchRawVY / vh);
+    } else {
+      targetIdx = Math.round(touchRawVY / vh);
+    }
+    targetIdx = Math.max(0, Math.min(n - 1, targetIdx));
+    if (currentBase() === 3 && targetIdx > 3) { if (s3Step === 0) { s3Step = 1; animateS3PhaseB(); springTo(3 * vh, 0); return; } }
+    if (Math.abs(totalDy) < 5) { springTo(currentBase() * vh, 0); return; }
+    animating = true;
+    springTo(targetIdx * vh, vel * 0.8);
+  }, { passive: true });
+
   window.addEventListener('keydown', function (e) {
-    if (e.key === 'ArrowDown' || e.key === ' ') { e.preventDefault(); if (scrollLocked) return; if (inPrologue()) goToSection(0, 420); else goToSection(currentBase() + 1); }
-    else if (e.key === 'ArrowUp') { e.preventDefault(); if (!scrollLocked && !inPrologue()) goToSection(currentBase() - 1); }
+    if (e.key === 'ArrowDown' || e.key === ' ') { e.preventDefault(); if (animating) return; if (inPrologue()) goToSection(0, 420); else goToSection(currentBase() + 1); }
+    else if (e.key === 'ArrowUp') { e.preventDefault(); if (!animating && locked) goToSection(currentBase() - 1); }
   });
 
-  setup(); draw();
-  /* フォント読込完了後に再レイアウト（プロローグ表示中＝lock前のみ）。スクロール演出開始時にフォント確定済みに */
-  if (document.fonts && document.fonts.ready) { document.fonts.ready.then(function () { if (!locked) { setup(); draw(); } }); }
-  /* プロローグを半分以上ネイティブスクロールしたらsection0へスナップ（慣性での飛びすぎ防止） */
   window.addEventListener('scroll', function () {
-    if (!scrollLocked && window.pageYOffset > 0 && window.pageYOffset < PRO && window.pageYOffset >= PRO * 0.08) goToSection(0, 420);
-    onScroll();
+    if (locked) return;
+    if (window.pageYOffset >= PRO * 0.08) goToSection(0, 420);
   }, { passive: true });
+
   function relayout () {
-    /* lock後はバー変動(小)を無視し演出を安定。回転など大変化(>150px)のときだけ再lock */
     if (locked) { if (Math.abs(window.innerHeight - lockedVh) > 150) { lockLayout(); draw(); } return; }
     setup(); draw();
   }
   window.addEventListener('resize', relayout);
   if (window.visualViewport) window.visualViewport.addEventListener('resize', relayout);
-  /* Safari再起動・タブ復元で途中位置から開かれた時、プロローグへ戻す（次のスワイプでバー再縮小） */
   window.addEventListener('pageshow', function () { setup(); if (window.pageYOffset > 4) resetToPrologue(); });
+
+  setup(); draw();
+  if (document.fonts && document.fonts.ready) { document.fonts.ready.then(function () { if (!locked) { setup(); draw(); } }); }
 })();
 </script>
 </body>
