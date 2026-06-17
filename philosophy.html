@@ -419,7 +419,9 @@
   var touchStartY = 0, touchBaseVY = 0, touchRawVY = 0;
   var touchHistory = [];
   var DRAG_SENSITIVITY = 0.35;
+  var SLIDE_SENSITIVITY = 0.7; /* 視覚スライド量（rawDragに対する比率、DRAG_SENSITIVITYの2倍） */
   var lastTiltDeg = 0;   /* ドラッグ終了時のチルト角（スプリングへの引継ぎ用） */
+  var maxTiltDeg  = 0;   /* タッチ中の最大チルト角（逆方向スライドで減らさないために保持） */
   var tiltDeg = 0;       /* スプリング中の現在チルト角（→0に収束） */
   var tiltVel = 0;       /* チルトスプリング速度 */
 
@@ -607,11 +609,12 @@
         var rawDrag = touchRawVY - touchBaseVY;
         var rawDisp = Math.abs(rawDrag);
         var tilt = 10 * Math.min(1, rawDisp / secSpan);
-        var slidePx = -(rawDrag * DRAG_SENSITIVITY); /* 指の動きの 35% を視覚スライドに変換 */
-        lastTiltDeg = tilt;
+        maxTiltDeg = Math.max(maxTiltDeg, tilt); /* チルトは増加のみ（逆スライドで戻さない） */
+        var slidePx = -(rawDrag * SLIDE_SENSITIVITY); /* 視覚スライド：SLIDE_SENSITIVITY倍 */
+        lastTiltDeg = maxTiltDeg; /* touchend時にスプリングへ引き継ぐ最大チルト */
         sections[base].style.zIndex = '100';
         sections[base].style.opacity = '1';
-        sections[base].style.transform = 'perspective(800px) rotateX(' + tilt.toFixed(2) + 'deg) translateY(' + slidePx.toFixed(1) + 'px)';
+        sections[base].style.transform = 'perspective(800px) rotateX(' + maxTiltDeg.toFixed(2) + 'deg) translateY(' + slidePx.toFixed(1) + 'px)';
         sections[next].style.zIndex = '50';
         sections[next].style.opacity = '0';
         sections[next].style.transform = 'translateY(0)';
@@ -621,7 +624,8 @@
         e = e * e * (3 - 2 * e); /* smoothstep */
         sections[base].style.zIndex = '100';
         sections[base].style.opacity = String(1 - e);
-        sections[base].style.transform = 'perspective(800px) rotateX(' + tiltDeg.toFixed(2) + 'deg) translateY(' + (-stRel).toFixed(1) + 'px) scale(' + (1 - e * 0.04).toFixed(4) + ')';
+        var slideRel = stRel / DRAG_SENSITIVITY * SLIDE_SENSITIVITY; /* touch相と連続するスライド量 */
+        sections[base].style.transform = 'perspective(800px) rotateX(' + tiltDeg.toFixed(2) + 'deg) translateY(' + (-slideRel).toFixed(1) + 'px) scale(' + (1 - e * 0.04).toFixed(4) + ')';
         sections[next].style.zIndex = '50';
         sections[next].style.opacity = String(e);
         sections[next].style.transform = 'translateY(0)';
@@ -732,7 +736,7 @@
     document.body.style.width = '';
     document.body.style.overflow = '';
     locked = false; virtualY = 0; springVel = 0; springActive = false; animating = false;
-    lastTiltDeg = 0; tiltDeg = 0; tiltVel = 0;
+    lastTiltDeg = 0; maxTiltDeg = 0; tiltDeg = 0; tiltVel = 0;
     if (animRaf) { cancelAnimationFrame(animRaf); animRaf = null; }
     window.scrollTo(0, 0);
     prevBase = -1; prevNext = -1;
@@ -766,6 +770,7 @@
     touchStartY = e.touches[0].clientY;
     touchBaseVY = virtualY;
     touchRawVY = virtualY; /* ← 新タッチ開始時にリセット（前回の残留値を除去） */
+    maxTiltDeg = 0; /* 新タッチごとにチルト最大値をリセット */
     touchHistory = [{ t: Date.now(), y: touchStartY }];
     springActive = false; animating = false;
     if (animRaf) { cancelAnimationFrame(animRaf); animRaf = null; }
@@ -812,6 +817,14 @@
     if (Math.abs(totalDy) < 5) { springTo(currentBase() * vh, 0); return; }
     animating = true;
     springTo(targetIdx * vh, vel * 0.8);
+  }, { passive: true });
+
+  /* touchcancel: iOSがジェスチャーを横取りしたとき。touching=trueのまま放置するとスプリングが起動しない。 */
+  window.addEventListener('touchcancel', function () {
+    if (!locked || !touching) return;
+    touching = false;
+    tiltDeg = lastTiltDeg; tiltVel = 0;
+    springTo(currentBase() * vh, 0);
   }, { passive: true });
 
   window.addEventListener('keydown', function (e) {
