@@ -667,11 +667,11 @@ document.querySelectorAll('.side-loc-tab').forEach(function(btn) {
     var tiLean = prog <= 0.8 ? 5  :  5 * (1 - (prog - 0.8) / 0.2);
     var fiLean = prog <= 0.8 ? 10 : 10 * (1 - (prog - 0.8) / 0.2);
 
-    /* 移動：退場0.275vh/prog / 入場30%のぞきスタート・0.215vh/progで80%まで→収束 */
+    /* 移動：退場0.275vh/prog / 入場25%のぞきスタート・0.200vh/progで80%まで→収束 */
     var fiY = (-dir * prog * 0.275 * vh).toFixed(1);
-    var tiY80 = 0.7 - 0.8 * 0.215;
+    var tiY80 = 0.75 - 0.8 * 0.200;
     var tiY = (prog <= 0.8
-      ? dir * (0.7 - prog * 0.215) * vh
+      ? dir * (0.75 - prog * 0.200) * vh
       : dir * tiY80 * (1 - (prog - 0.8) / 0.2) * vh).toFixed(1);
 
     /* 40%以降は入場カードを手前に */
