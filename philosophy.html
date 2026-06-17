@@ -787,7 +787,7 @@
     touchStartY = e.touches[0].clientY;
     touchBaseVY = virtualY;
     touchRawVY = virtualY;
-    touchTiltDeg = 0;
+    touchTiltDeg = tiltDeg; /* tiltDecay/スプリングの現在値を引き継ぐ — rotateX(0)へのスナップを防ぐ */
     needsTouchReset = false; /* touchstartで全状態を初期化するのでリセット不要 */
     touchHistory = [{ t: Date.now(), y: touchStartY }];
     springActive = false; animating = false;
