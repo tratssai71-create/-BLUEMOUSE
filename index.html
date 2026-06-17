@@ -658,7 +658,7 @@ document.querySelectorAll('.side-loc-tab').forEach(function(btn) {
       : 0.8 + (prog - 0.7) * (0.2 / 0.3)).toFixed(4);
 
     /* チルト：0〜70%はrotateX 100deg固定、70〜100%で100→0deg */
-    var tilt = prog <= 0.7 ? 100 : 100 * (1 - (prog - 0.7) / 0.3);
+    var tilt = prog <= 0.7 ? 20 : 20 * (1 - (prog - 0.7) / 0.3);
 
     /* 移動：退場・入場共通 0.375vh/prog */
     var fiY = (-dir * prog * 0.375 * vh).toFixed(1);
