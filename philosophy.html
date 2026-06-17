@@ -418,6 +418,7 @@
   var touching = false;
   var touchStartY = 0, touchBaseVY = 0, touchRawVY = 0;
   var needsTouchReset = false; /* lockLayout後の最初のtouchmoveでtouchStartYをリセットするフラグ */
+  var touchSlideOffset = 0;   /* touchstart時点のスプリングスライド量（translateY連続性のため引き継ぐ） */
   var touchHistory = [];
   var DRAG_SENSITIVITY = 0.35;
   var SLIDE_SENSITIVITY = 0.7; /* 視覚スライド量（rawDragに対する比率、DRAG_SENSITIVITYの2倍） */
@@ -611,7 +612,7 @@
       if (touching) {
         /* ドラッグ量に比例してチルト増加 + 指と同方向にスライド。50%超えても画像は変えない。 */
         var rawDrag = touchRawVY - touchBaseVY;
-        var slidePx = -(rawDrag * SLIDE_SENSITIVITY);
+        var slidePx = -(touchSlideOffset + rawDrag * SLIDE_SENSITIVITY);
         sections[base].style.zIndex = '100';
         sections[base].style.opacity = '1';
         sections[base].style.transform = 'perspective(800px) rotateX(' + touchTiltDeg.toFixed(2) + 'deg) translateY(' + slidePx.toFixed(1) + 'px)';
@@ -749,7 +750,7 @@
     document.body.style.width = '';
     document.body.style.overflow = '';
     locked = false; virtualY = 0; springVel = 0; springActive = false; animating = false;
-    touchTiltDeg = 0; tiltDeg = 0; tiltVel = 0;
+    touchTiltDeg = 0; tiltDeg = 0; tiltVel = 0; touchSlideOffset = 0;
     if (animRaf) { cancelAnimationFrame(animRaf); animRaf = null; }
     window.scrollTo(0, 0);
     prevBase = -1; prevNext = -1;
@@ -788,6 +789,7 @@
     touchBaseVY = virtualY;
     touchRawVY = virtualY;
     touchTiltDeg = tiltDeg; /* tiltDecay/スプリングの現在値を引き継ぐ — rotateX(0)へのスナップを防ぐ */
+    var _sb = currentBase(); touchSlideOffset = (virtualY - _sb * vh) * (SLIDE_SENSITIVITY / DRAG_SENSITIVITY); /* スプリングのtranslateY量を引き継ぐ */
     needsTouchReset = false; /* touchstartで全状態を初期化するのでリセット不要 */
     touchHistory = [{ t: Date.now(), y: touchStartY }];
     springActive = false; animating = false;
@@ -803,7 +805,7 @@
     var cy = e.touches[0].clientY;
     /* プロローグ→ロック移行直後の最初のtouchmove。
        プロローグ中の蓄積ドラッグをリセットしてチルト/スライドの急跳びを防ぐ。 */
-    if (needsTouchReset) { needsTouchReset = false; touchStartY = cy; touchBaseVY = virtualY; touchRawVY = virtualY; }
+    if (needsTouchReset) { needsTouchReset = false; touchStartY = cy; touchBaseVY = virtualY; touchRawVY = virtualY; touchSlideOffset = 0; }
     touchHistory.push({ t: Date.now(), y: cy });
     if (touchHistory.length > 8) touchHistory.shift();
     var drag = touchStartY - cy;
@@ -850,7 +852,7 @@
   window.addEventListener('touchcancel', function () {
     if (!locked || !touching) return;
     touching = false;
-    tiltDeg = 0; tiltVel = 0; touchTiltDeg = 0; /* 収束アニメなしで即クリア */
+    tiltDeg = 0; tiltVel = 0; touchTiltDeg = 0; touchSlideOffset = 0; /* 収束アニメなしで即クリア */
     springTo(currentBase() * vh, 0);
   }, { passive: true });
 
