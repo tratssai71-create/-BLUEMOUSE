@@ -684,7 +684,7 @@ document.querySelectorAll('.side-loc-tab').forEach(function(btn) {
     cards[fi].style.transform  =
       'perspective(700px) translateY(' + fiY + 'px)' +
       ' rotateX(' + (-dir * fiTilt).toFixed(2) + 'deg)' +
-      ' rotateZ(' + (-fiLean).toFixed(2) + 'deg)' +
+      ' rotateZ(' + (fiLean).toFixed(2) + 'deg)' +
       ' scale(' + fiScl + ')';
 
     /* 入場 */
