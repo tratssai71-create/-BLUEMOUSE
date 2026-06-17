@@ -417,7 +417,7 @@
 
   var touching = false;
   var touchStartY = 0, touchBaseVY = 0, touchRawVY = 0;
-  var lastTouchClientY = 0; /* 最後に記録した指のY座標（lockLayout時のtouchStartYリセット用） */
+  var needsTouchReset = false; /* lockLayout後の最初のtouchmoveでtouchStartYをリセットするフラグ */
   var touchHistory = [];
   var DRAG_SENSITIVITY = 0.35;
   var SLIDE_SENSITIVITY = 0.7; /* 視覚スライド量（rawDragに対する比率、DRAG_SENSITIVITYの2倍） */
@@ -452,9 +452,10 @@
     document.body.style.width = '100%';
     document.body.style.overflow = 'hidden';
     if (proInner) proInner.classList.add('is-leaving');
-    /* プロローグ→ロック移行中にタッチ継続中の場合、touchStartY をリセット。
-       ロック前の蓄積ドラッグ量が初回touchmoveでスライド/チルトを急跳びさせるのを防ぐ。 */
-    if (touching) { touchStartY = lastTouchClientY; touchBaseVY = virtualY; touchRawVY = virtualY; touchTiltDeg = 0; }
+    /* プロローグ中に指が触れたまま locked=true になった場合、
+       蓄積ドラッグが最初の touchmove で急スライド/急チルトを起こさないよう
+       最初のtouchmoveでtouchStartYをリセットするフラグを立てる。 */
+    if (touching) needsTouchReset = true;
   }
   function setTf (el, val) { el.style.webkitTransform = val; el.style.transform = val; }
 
@@ -699,6 +700,19 @@
         virtualY = springTarget; springActive = false; springVel = 0; animating = false;
         draw();
         var b = currentBase(); if (!seen[b]) { seen[b] = true; animateIn(sections[b]); }
+        /* 位置は収束したがtiltDegが残留している場合、チルトだけ別RAFで0まで収束させる。
+           これがないと次ジェスチャー開始時にtouchTiltDeg=0でrotateX(0)へスナップして
+           「スクロール開始直後の急チルト消失」が起きる。 */
+        if (tiltDeg !== 0) {
+          (function tiltDecay () {
+            if (touching) { tiltDeg = 0; tiltVel = 0; return; }
+            tiltVel = (tiltVel + (0 - tiltDeg) * 0.04) * 0.88;
+            tiltDeg += tiltVel;
+            draw();
+            if (Math.abs(tiltVel) < 0.01 && Math.abs(tiltDeg) < 0.01) { tiltDeg = 0; tiltVel = 0; draw(); return; }
+            animRaf = requestAnimationFrame(tiltDecay);
+          }());
+        }
       } else { animRaf = requestAnimationFrame(step); }
     }
     animRaf = requestAnimationFrame(step);
@@ -771,10 +785,10 @@
     if (locked) e.preventDefault(); /* iOSネイティブスクロール介入を防ぐ */
     touching = true;
     touchStartY = e.touches[0].clientY;
-    lastTouchClientY = touchStartY;
     touchBaseVY = virtualY;
     touchRawVY = virtualY;
-    touchTiltDeg = tiltDeg; /* スプリングの現在値を引き継ぐ — タッチ開始時にrotateX(0)へスナップするのを防ぐ */
+    touchTiltDeg = 0;
+    needsTouchReset = false; /* touchstartで全状態を初期化するのでリセット不要 */
     touchHistory = [{ t: Date.now(), y: touchStartY }];
     springActive = false; animating = false;
     if (animRaf) { cancelAnimationFrame(animRaf); animRaf = null; }
@@ -787,7 +801,9 @@
     if (!locked) return;
     e.preventDefault();
     var cy = e.touches[0].clientY;
-    lastTouchClientY = cy;
+    /* プロローグ→ロック移行直後の最初のtouchmove。
+       プロローグ中の蓄積ドラッグをリセットしてチルト/スライドの急跳びを防ぐ。 */
+    if (needsTouchReset) { needsTouchReset = false; touchStartY = cy; touchBaseVY = virtualY; touchRawVY = virtualY; }
     touchHistory.push({ t: Date.now(), y: cy });
     if (touchHistory.length > 8) touchHistory.shift();
     var drag = touchStartY - cy;
