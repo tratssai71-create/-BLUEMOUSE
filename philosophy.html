@@ -759,18 +759,21 @@
     goToSection(e.deltaY > 0 ? currentBase() + 1 : currentBase() - 1);
   }, { passive: false });
 
-  /* touchstart: 現在の virtualY を基点として記録。スプリング中でも即タッチ優先 */
+  /* touchstart: 現在の virtualY を基点として記録。スプリング中でも即タッチ優先。
+     locked時は e.preventDefault() を呼び、iOSがジェスチャーを横取りしないようにする。
+     passive:false にしないと locked 時の preventDefault が無視され touchcancel が発生する。 */
   window.addEventListener('touchstart', function (e) {
+    if (locked) e.preventDefault(); /* iOSネイティブスクロール介入を防ぐ */
     touching = true;
     touchStartY = e.touches[0].clientY;
     touchBaseVY = virtualY;
-    touchRawVY = virtualY; /* ← 新タッチ開始時にリセット（前回の残留値を除去） */
-    touchTiltDeg = 0; /* 新タッチごとにリセット */
+    touchRawVY = virtualY;
+    touchTiltDeg = 0;
     touchHistory = [{ t: Date.now(), y: touchStartY }];
     springActive = false; animating = false;
     if (animRaf) { cancelAnimationFrame(animRaf); animRaf = null; }
-    if (locked) draw(); /* スプリング途中にタッチしたとき残像を即クリア */
-  }, { passive: true });
+    if (locked) draw();
+  }, { passive: false }); /* passive:false 必須 — これがないと preventDefault が効かない */
 
   /* touchmove: 画面は指の DRAG_SENSITIVITY 倍しか動かない（粘り）。
      スナップ判定用に実ドラッグ量は touchRawVY に別途保持する。 */
@@ -818,11 +821,12 @@
     springTo(targetIdx * vh, vel * 0.8);
   }, { passive: true });
 
-  /* touchcancel: iOSがジェスチャーを横取りしたとき。touching=trueのまま放置するとスプリングが起動しない。 */
+  /* touchcancel: 安全弁。touchstart を non-passive にしたことで基本的には発生しないが
+     電話着信など OS 割り込み時の保険として残す。チルトは即消去してスプリングへ渡さない。 */
   window.addEventListener('touchcancel', function () {
     if (!locked || !touching) return;
     touching = false;
-    tiltDeg = touchTiltDeg; tiltVel = 0;
+    tiltDeg = 0; tiltVel = 0; touchTiltDeg = 0; /* 収束アニメなしで即クリア */
     springTo(currentBase() * vh, 0);
   }, { passive: true });
 
