@@ -819,9 +819,11 @@
     var drag = touchStartY - cy;
     touchRawVY = Math.max(0, Math.min((n - 1) * vh, touchBaseVY + drag));
     virtualY   = Math.max(0, Math.min((n - 1) * vh, touchBaseVY + drag * DRAG_SENSITIVITY));
-    /* チルト：物理ドラッグ量から計算。最大値のみ更新（指を離すまで絶対に戻らない） */
+    /* チルト：物理ドラッグ量から計算。最大値のみ更新（指を離すまで絶対に戻らない）
+       t² のイーズインで始まりをゆっくりにする（線形だと最初から急すぎる） */
     var physDisp = Math.abs(drag);
-    var newTilt  = 10 * Math.min(1, physDisp / vh);
+    var _t = Math.min(1, physDisp / vh);
+    var newTilt  = 10 * _t * _t;
     if (newTilt > touchTiltDeg) touchTiltDeg = newTilt;
     draw();
   }, { passive: false });
