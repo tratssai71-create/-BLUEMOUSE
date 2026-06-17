@@ -652,13 +652,13 @@ document.querySelectorAll('.side-loc-tab').forEach(function(btn) {
 
   /* 2枚の中間状態を描画（ドラッグ中・スナップ中共用）*/
   function draw2(fi, ti, dir, prog) {
-    /* スケール：退場 0.6→0.8→1.0 / 入場 1.0→0.8→6.0 */
+    /* スケール：退場 1.0→0.8→6.0 / 入場 0.6→0.8→1.0 */
     var fiScl = (prog <= 0.7
-      ? 0.6 + prog * (0.2 / 0.7)
-      : 0.8 + (prog - 0.7) * (0.2 / 0.3)).toFixed(4);
-    var tiScl = (prog <= 0.7
       ? 1.0 - prog * (0.2 / 0.7)
       : 0.8 + (prog - 0.7) * (5.2 / 0.3)).toFixed(4);
+    var tiScl = (prog <= 0.7
+      ? 0.6 + prog * (0.2 / 0.7)
+      : 0.8 + (prog - 0.7) * (0.2 / 0.3)).toFixed(4);
 
     /* チルト：共通 0〜70%で20deg固定、70〜100%で20→0deg */
     var tilt = prog <= 0.7 ? 20 : 20 * (1 - (prog - 0.7) / 0.3);
