@@ -417,6 +417,7 @@
 
   var touching = false;
   var touchStartY = 0, touchBaseVY = 0, touchRawVY = 0;
+  var lastTouchClientY = 0; /* 最後に記録した指のY座標（lockLayout時のtouchStartYリセット用） */
   var touchHistory = [];
   var DRAG_SENSITIVITY = 0.35;
   var SLIDE_SENSITIVITY = 0.7; /* 視覚スライド量（rawDragに対する比率、DRAG_SENSITIVITYの2倍） */
@@ -451,6 +452,9 @@
     document.body.style.width = '100%';
     document.body.style.overflow = 'hidden';
     if (proInner) proInner.classList.add('is-leaving');
+    /* プロローグ→ロック移行中にタッチ継続中の場合、touchStartY をリセット。
+       ロック前の蓄積ドラッグ量が初回touchmoveでスライド/チルトを急跳びさせるのを防ぐ。 */
+    if (touching) { touchStartY = lastTouchClientY; touchBaseVY = virtualY; touchRawVY = virtualY; touchTiltDeg = 0; }
   }
   function setTf (el, val) { el.style.webkitTransform = val; el.style.transform = val; }
 
@@ -767,9 +771,10 @@
     if (locked) e.preventDefault(); /* iOSネイティブスクロール介入を防ぐ */
     touching = true;
     touchStartY = e.touches[0].clientY;
+    lastTouchClientY = touchStartY;
     touchBaseVY = virtualY;
     touchRawVY = virtualY;
-    touchTiltDeg = 0;
+    touchTiltDeg = tiltDeg; /* スプリングの現在値を引き継ぐ — タッチ開始時にrotateX(0)へスナップするのを防ぐ */
     touchHistory = [{ t: Date.now(), y: touchStartY }];
     springActive = false; animating = false;
     if (animRaf) { cancelAnimationFrame(animRaf); animRaf = null; }
@@ -782,6 +787,7 @@
     if (!locked) return;
     e.preventDefault();
     var cy = e.touches[0].clientY;
+    lastTouchClientY = cy;
     touchHistory.push({ t: Date.now(), y: cy });
     if (touchHistory.length > 8) touchHistory.shift();
     var drag = touchStartY - cy;
