@@ -626,7 +626,7 @@
         sections[next].style.transform = 'translateY(0)';
       }
     } else {
-      touchTiltDeg = 0; tiltDeg = 0; tiltVel = 0;
+      tiltDeg = 0; tiltVel = 0; /* touchTiltDegは保持（最終セクションでも次ジェスチャーへ引継ぎ） */
       sections[base].style.opacity = '';
       sections[base].style.transform = '';
       sections[base].style.zIndex = '';
@@ -763,6 +763,7 @@
      locked時は e.preventDefault() を呼び、iOSがジェスチャーを横取りしないようにする。
      passive:false にしないと locked 時の preventDefault が無視され touchcancel が発生する。 */
   window.addEventListener('touchstart', function (e) {
+    if (e.touches.length > 1) return; /* 2本目以降の指は無視 — 再発火で touchTiltDeg がリセットされるのを防ぐ */
     if (locked) e.preventDefault(); /* iOSネイティブスクロール介入を防ぐ */
     touching = true;
     touchStartY = e.touches[0].clientY;
@@ -795,6 +796,7 @@
 
   /* touchend: 粘りを解除 → 速度計算 → スプリングへ初速として渡す → 余韻のアニメーション */
   window.addEventListener('touchend', function (e) {
+    if (e.touches.length > 0) return; /* まだ指が残っている — 全指が離れるまでスプリングを起動しない */
     touching = false;
     tiltDeg = touchTiltDeg; tiltVel = 0; /* ドラッグ終了時のチルトをスプリングへ引き継ぐ */
     var totalDy = touchStartY - e.changedTouches[0].clientY;
