@@ -652,20 +652,24 @@ document.querySelectorAll('.side-loc-tab').forEach(function(btn) {
 
   /* 2枚の中間状態を描画（ドラッグ中・スナップ中共用）*/
   function draw2(fi, ti, dir, prog) {
-    /* スケール：退場 1.0→0.8→6.0 / 入場 0.6→0.8→1.0 */
-    var fiScl = (prog <= 0.7
-      ? 1.0 - prog * (0.2 / 0.7)
-      : 0.8 + (prog - 0.7) * (5.2 / 0.3)).toFixed(4);
+    /* スケール：入場 0.6→0.8→1.0 / 退場 1.0→0.8→0.6 */
     var tiScl = (prog <= 0.7
       ? 0.6 + prog * (0.2 / 0.7)
       : 0.8 + (prog - 0.7) * (0.2 / 0.3)).toFixed(4);
+    var fiScl = (prog <= 0.7
+      ? 1.0 - prog * (0.2 / 0.7)
+      : 0.8 - (prog - 0.7) * (0.2 / 0.3)).toFixed(4);
 
-    /* チルト：共通 0〜70%で20deg固定、70〜100%で20→0deg */
-    var tilt = prog <= 0.7 ? 20 : 20 * (1 - (prog - 0.7) / 0.3);
+    /* チルト：入場20deg / 退場10deg、0〜70%固定→70〜100%で→0 */
+    var tiTilt = prog <= 0.7 ? 20 : 20 * (1 - (prog - 0.7) / 0.3);
+    var fiTilt = prog <= 0.7 ? 10 : 10 * (1 - (prog - 0.7) / 0.3);
 
-    /* 移動：退場0.375vh/prog、入場10%のぞき位置スタート→0 */
-    var fiY = (-dir * prog * 0.375 * vh).toFixed(1);
-    var tiY = (dir * (1 - prog) * 0.9 * vh).toFixed(1);
+    /* 移動：退場0.275vh/prog / 入場20%のぞきスタート・0.215vh/progで70%まで→収束 */
+    var fiY = (-dir * prog * 0.275 * vh).toFixed(1);
+    var tiY70 = 0.8 - 0.7 * 0.215;
+    var tiY = (prog <= 0.7
+      ? dir * (0.8 - prog * 0.215) * vh
+      : dir * tiY70 * (1 - (prog - 0.7) / 0.3) * vh).toFixed(1);
 
     /* 40%以降は入場カードを手前に */
     var fiz = prog < 0.4 ? '11' : '10';
@@ -676,8 +680,8 @@ document.querySelectorAll('.side-loc-tab').forEach(function(btn) {
     cards[fi].style.visibility = 'visible';
     cards[fi].style.transform  =
       'perspective(700px) translateY(' + fiY + 'px)' +
-      ' rotateX(' + (-dir * tilt).toFixed(2) + 'deg)' +
-      ' rotateZ(' + (-(tilt / 20) * 30).toFixed(2) + 'deg)' +
+      ' rotateX(' + (-dir * fiTilt).toFixed(2) + 'deg)' +
+      ' rotateZ(' + (-(fiTilt / 10) * 30).toFixed(2) + 'deg)' +
       ' scale(' + fiScl + ')';
 
     /* 入場 */
@@ -685,8 +689,8 @@ document.querySelectorAll('.side-loc-tab').forEach(function(btn) {
     cards[ti].style.visibility = 'visible';
     cards[ti].style.transform  =
       'perspective(700px) translateY(' + tiY + 'px)' +
-      ' rotateX(' + (dir * tilt).toFixed(2) + 'deg)' +
-      ' rotateZ(' + (-(tilt / 20) * 10).toFixed(2) + 'deg)' +
+      ' rotateX(' + (dir * tiTilt).toFixed(2) + 'deg)' +
+      ' rotateZ(' + (-(tiTilt / 20) * 10).toFixed(2) + 'deg)' +
       ' scale(' + tiScl + ')';
   }
 
