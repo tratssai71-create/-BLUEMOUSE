@@ -680,12 +680,17 @@
   }
 
   /* スプリングアニメーション ─────────────────────────────────────────────────
-     initVel に指の速度(px/frame)を渡すことで、指を離した直後の慣性を再現。
-     stiffness=0.10 / damping=0.80 で Resn に近い滑らかな吸着感を得る。      */
-  function springTo (targetVY, initVel) {
+     displayVel(px/frame) = タッチ相の最終表示速度。spring frame1 の表示速度と
+     一致するよう springVel を逆算する。
+       表示速度 = springVel × (SLIDE_SENSITIVITY / DRAG_SENSITIVITY) = springVel × 2
+       frame1:  springVel_1 = (springVel_0 + dist × stiffness) × damping
+       → springVel_0 = displayVel/2/damping − dist×stiffness
+     displayVel=0 の場合は frame1 速度=0 で静かにスタート（Resn の余韻感）。  */
+  function springTo (targetVY, displayVel) {
     springActive = true;
     springTarget = Math.max(0, Math.min((n - 1) * vh, targetVY));
-    springVel = initVel || 0;
+    var _dist0 = springTarget - virtualY;
+    springVel = (displayVel || 0) / 2 / 0.88 - _dist0 * 0.04;
     if (animRaf) cancelAnimationFrame(animRaf);
     function step () {
       if (!springActive) return;
@@ -847,7 +852,7 @@
     if (currentBase() === 3 && targetIdx > 3) { if (s3Step === 0) { s3Step = 1; animateS3PhaseB(); springTo(3 * vh, 0); return; } }
     if (Math.abs(totalDy) < 5) { springTo(currentBase() * vh, 0); return; }
     animating = true;
-    springTo(targetIdx * vh, vel * 0.8);
+    springTo(targetIdx * vh, vel * SLIDE_SENSITIVITY);
   }, { passive: true });
 
   /* touchcancel: 安全弁。touchstart を non-passive にしたことで基本的には発生しないが
