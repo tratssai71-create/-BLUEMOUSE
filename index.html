@@ -660,8 +660,8 @@ document.querySelectorAll('.side-loc-tab').forEach(function(btn) {
       ? 1.0 - prog * (0.2 / 0.8)
       : 0.8 - (prog - 0.8) * (0.2 / 0.2)).toFixed(4);
 
-    /* チルト(rotateX)：入退場共通20deg、0〜80%固定→80〜100%で→0 */
-    var tilt = prog <= 0.8 ? 20 : 20 * (1 - (prog - 0.8) / 0.2);
+    /* チルト(rotateX)：入退場共通20deg、0〜80%固定→80〜100%でとてもゆっくり→0（easeIn5） */
+    var tilt = prog <= 0.8 ? 20 : 20 * (1 - Math.pow((prog - 0.8) / 0.2, 5));
     /* 傾き(rotateZ)：入場5deg / 退場10deg */
     var tiLean = prog <= 0.8 ? 5  :  5 * (1 - (prog - 0.8) / 0.2);
     var fiLean = prog <= 0.8 ? 10 : 10 * (1 - (prog - 0.8) / 0.2);
