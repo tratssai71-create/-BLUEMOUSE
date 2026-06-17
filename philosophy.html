@@ -429,8 +429,10 @@
     vh = window.innerHeight;
     PRO = prologue ? Math.round(prologue.offsetHeight) : 0;
     spacer.style.height = (PRO + vh) + 'px';
-    document.documentElement.style.touchAction = '';
-    document.documentElement.style.overscrollBehavior = '';
+    document.body.style.position = '';
+    document.body.style.top = '';
+    document.body.style.width = '';
+    document.body.style.overflow = '';
   }
   function lockLayout () {
     vh = window.innerHeight; lockedVh = vh;
@@ -438,10 +440,12 @@
     spacer.style.height = (PRO + vh) + 'px';
     locked = true;
     window.scrollTo(0, PRO);
-    /* ロック中はネイティブスクロールを完全封鎖
-       → iOS position:fixed がビューポート基準に保たれ、セクション位置ズレを防ぐ */
-    document.documentElement.style.touchAction = 'none';
-    document.documentElement.style.overscrollBehavior = 'none';
+    /* body を fixed に固定して iOS body-lock。
+       overflow-x:hidden の親を持つ fixed 要素が iOS でズレる問題も同時に解消。 */
+    document.body.style.position = 'fixed';
+    document.body.style.top = '-' + PRO + 'px';
+    document.body.style.width = '100%';
+    document.body.style.overflow = 'hidden';
     if (proInner) proInner.classList.add('is-leaving');
   }
   function setTf (el, val) { el.style.webkitTransform = val; el.style.transform = val; }
@@ -594,17 +598,20 @@
     var next = Math.min(base + 1, n - 1);
     var secSpan = vh, stRel = st - base * vh;
     if (next !== base) {
-      /* タッチ中(touching=true)は次セクションを完全非表示。
-         指を離した後のスプリングだけがクロスフェードを担う。 */
-      var e = touching ? 0 : Math.min(1, Math.max(0, stRel / secSpan));
+      /* base(現在)が手前(z:100)でフェードアウト＋縮小、next(次)が奥(z:50)で opacity:1 固定。
+         「次が前に出る」ではなく「今が奥に引く」Resn 式レイヤー構造。touching 判定不要。 */
+      var e = Math.min(1, Math.max(0, stRel / secSpan));
       e = e * e * (3 - 2 * e); /* smoothstep */
-      sections[next].style.transform = 'translateY(0)';
-      sections[next].style.opacity = String(e);
+      sections[base].style.zIndex = '100';
       sections[base].style.opacity = String(1 - e);
-      sections[base].style.transform = e > 0.001 ? 'scale(' + (1 - e * 0.03).toFixed(4) + ')' : 'translateY(0)';
+      sections[base].style.transform = 'scale(' + (1 - e * 0.04).toFixed(4) + ')';
+      sections[next].style.zIndex = '50';
+      sections[next].style.opacity = '1';
+      sections[next].style.transform = 'translateY(0)';
     } else {
       sections[base].style.opacity = '';
-      sections[base].style.transform = 'translateY(0)';
+      sections[base].style.transform = '';
+      sections[base].style.zIndex = '';
     }
     [base, next].forEach(function (si) {
       if (si < 0 || si >= n) return;
@@ -630,8 +637,8 @@
     if (base !== 3) { s3Els.forEach(function (el) { el.style.animation = ''; el.style.transition = ''; el.style.opacity = ''; el.style.transform = ''; }); }
     if (base !== 8) { s7Els.forEach(function (el) { el.style.animation = ''; el.style.transition = ''; el.style.opacity = ''; el.style.transform = ''; }); }
     if (base !== prevBase || next !== prevNext) {
-      if (prevBase >= 0 && prevBase !== base && prevBase !== next) { sections[prevBase].style.visibility = 'hidden'; sections[prevBase].style.transform = ''; seen[prevBase] = false; resetAnim(sections[prevBase]); if (prevBase === 3) { s3Gen++; s3Step = 0; if (s3PhaseTimer) { clearTimeout(s3PhaseTimer); s3PhaseTimer = null; } } }
-      if (prevNext >= 0 && prevNext !== base && prevNext !== next) { sections[prevNext].style.visibility = 'hidden'; sections[prevNext].style.transform = ''; seen[prevNext] = false; resetAnim(sections[prevNext]); if (prevNext === 3) { s3Gen++; s3Step = 0; if (s3PhaseTimer) { clearTimeout(s3PhaseTimer); s3PhaseTimer = null; } } }
+      if (prevBase >= 0 && prevBase !== base && prevBase !== next) { sections[prevBase].style.visibility = 'hidden'; sections[prevBase].style.opacity = ''; sections[prevBase].style.transform = ''; sections[prevBase].style.zIndex = ''; seen[prevBase] = false; resetAnim(sections[prevBase]); if (prevBase === 3) { s3Gen++; s3Step = 0; if (s3PhaseTimer) { clearTimeout(s3PhaseTimer); s3PhaseTimer = null; } } }
+      if (prevNext >= 0 && prevNext !== base && prevNext !== next) { sections[prevNext].style.visibility = 'hidden'; sections[prevNext].style.opacity = ''; sections[prevNext].style.transform = ''; sections[prevNext].style.zIndex = ''; seen[prevNext] = false; resetAnim(sections[prevNext]); if (prevNext === 3) { s3Gen++; s3Step = 0; if (s3PhaseTimer) { clearTimeout(s3PhaseTimer); s3PhaseTimer = null; } } }
       sections[base].style.visibility = 'visible'; sections[next].style.visibility = 'visible';
       prevBase = base; prevNext = next;
     }
@@ -695,8 +702,10 @@
   }
 
   function resetToPrologue () {
-    document.documentElement.style.touchAction = '';
-    document.documentElement.style.overscrollBehavior = '';
+    document.body.style.position = '';
+    document.body.style.top = '';
+    document.body.style.width = '';
+    document.body.style.overflow = '';
     locked = false; virtualY = 0; springVel = 0; springActive = false; animating = false;
     if (animRaf) { cancelAnimationFrame(animRaf); animRaf = null; }
     window.scrollTo(0, 0);
@@ -704,7 +713,7 @@
     seen = sections.map(function () { return false; });
     sections.forEach(function (sec, i) {
       sec.style.height = ''; sec.style.visibility = i === 0 ? 'visible' : 'hidden';
-      sec.style.opacity = ''; sec.style.transform = '';
+      sec.style.opacity = ''; sec.style.transform = ''; sec.style.zIndex = '';
       resetAnim(sec);
       var img = sec.querySelector('.pf-photo__img'); if (img) img.style.transform = '';
     });
