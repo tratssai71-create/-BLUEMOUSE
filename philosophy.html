@@ -429,6 +429,8 @@
     vh = window.innerHeight;
     PRO = prologue ? Math.round(prologue.offsetHeight) : 0;
     spacer.style.height = (PRO + vh) + 'px';
+    document.documentElement.style.touchAction = '';
+    document.documentElement.style.overscrollBehavior = '';
   }
   function lockLayout () {
     vh = window.innerHeight; lockedVh = vh;
@@ -436,6 +438,10 @@
     spacer.style.height = (PRO + vh) + 'px';
     locked = true;
     window.scrollTo(0, PRO);
+    /* ロック中はネイティブスクロールを完全封鎖
+       → iOS position:fixed がビューポート基準に保たれ、セクション位置ズレを防ぐ */
+    document.documentElement.style.touchAction = 'none';
+    document.documentElement.style.overscrollBehavior = 'none';
     if (proInner) proInner.classList.add('is-leaving');
   }
   function setTf (el, val) { el.style.webkitTransform = val; el.style.transform = val; }
@@ -689,6 +695,8 @@
   }
 
   function resetToPrologue () {
+    document.documentElement.style.touchAction = '';
+    document.documentElement.style.overscrollBehavior = '';
     locked = false; virtualY = 0; springVel = 0; springActive = false; animating = false;
     if (animRaf) { cancelAnimationFrame(animRaf); animRaf = null; }
     window.scrollTo(0, 0);
