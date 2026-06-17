@@ -666,6 +666,8 @@ document.querySelectorAll('.side-loc-tab').forEach(function(btn) {
     /* 傾き(rotateZ)：入場5deg / 退場10deg */
     var tiLean = prog <= 0.8 ? 5  :  5 * (1 - (prog - 0.8) / 0.2);
     var fiLean = prog <= 0.8 ? 10 : 10 * (1 - (prog - 0.8) / 0.2);
+    /* 横チルト(rotateY)：右側を奥に 10deg */
+    var leanY  = prog <= 0.8 ? 10 : 10 * (1 - (prog - 0.8) / 0.2);
 
     /* 移動：退場0.275vh/prog / 入場25%のぞきスタート・0.200vh/progで80%まで→収束 */
     var fiY = (-dir * prog * 0.275 * vh).toFixed(1);
@@ -684,7 +686,8 @@ document.querySelectorAll('.side-loc-tab').forEach(function(btn) {
     cards[fi].style.transform  =
       'perspective(700px) translateY(' + fiY + 'px)' +
       ' rotateX(' + (-dir * fiTilt).toFixed(2) + 'deg)' +
-      ' rotateZ(' + (fiLean).toFixed(2) + 'deg)' +
+      ' rotateY(' + leanY.toFixed(2) + 'deg)' +
+      ' rotateZ(' + (-fiLean).toFixed(2) + 'deg)' +
       ' scale(' + fiScl + ')';
 
     /* 入場 */
@@ -693,6 +696,7 @@ document.querySelectorAll('.side-loc-tab').forEach(function(btn) {
     cards[ti].style.transform  =
       'perspective(700px) translateY(' + tiY + 'px)' +
       ' rotateX(' + (dir * tiTilt).toFixed(2) + 'deg)' +
+      ' rotateY(' + leanY.toFixed(2) + 'deg)' +
       ' rotateZ(' + (-tiLean).toFixed(2) + 'deg)' +
       ' scale(' + tiScl + ')';
   }
