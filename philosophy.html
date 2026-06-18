@@ -616,7 +616,7 @@
         var drag_e = drag_t_raw * drag_t_raw * (3 - 2 * drag_t_raw); /* smoothstep */
         sections[base].style.zIndex = '100';
         sections[base].style.opacity = String(1 - drag_e);
-        sections[base].style.transform = 'perspective(800px) rotateX(' + touchTiltDeg.toFixed(2) + 'deg) translateY(0px) scale(' + (1 - drag_e * 0.04).toFixed(4) + ')';
+        sections[base].style.transform = 'scale(' + (1 - drag_e * 0.04).toFixed(4) + ')';
         sections[next].style.zIndex = '50';
         sections[next].style.opacity = String(drag_e);
         sections[next].style.transform = 'translateY(0)';
@@ -626,7 +626,7 @@
         e = e * e * (3 - 2 * e); /* smoothstep */
         sections[base].style.zIndex = '100';
         sections[base].style.opacity = String(1 - e);
-        sections[base].style.transform = 'perspective(800px) rotateX(' + tiltDeg.toFixed(2) + 'deg) translateY(0px) scale(' + (1 - e * 0.04).toFixed(4) + ')';
+        sections[base].style.transform = 'scale(' + (1 - e * 0.04).toFixed(4) + ')';
         sections[next].style.zIndex = '50';
         sections[next].style.opacity = String(e);
         sections[next].style.transform = 'translateY(0)';
