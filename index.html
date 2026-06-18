@@ -630,10 +630,10 @@ document.querySelectorAll('.side-loc-tab').forEach(function(btn) {
   /* 2枚の中間状態を描画（ドラッグ中・スナップ中共用）*/
   function draw2(fi, ti, dir, prog) {
     /* チルト：入場は着地に向けて0°へ収束、退場は離脱に向けて最大へ */
-    var tiRX = (30 * (1 - prog)).toFixed(2);  /* 上→奥 */
-    var tiRY = (-15 * (1 - prog)).toFixed(2); /* 左→奥 */
-    var fiRX = (-30 * prog).toFixed(2);        /* 下→奥 */
-    var fiRY = (15 * prog).toFixed(2);         /* 右→奥 */
+    var tiRX = (300 * (1 - prog)).toFixed(2);  /* 上→奥 */
+    var tiRY = (-150 * (1 - prog)).toFixed(2); /* 左→奥 */
+    var fiRX = (-300 * prog).toFixed(2);        /* 下→奥 */
+    var fiRY = (150 * prog).toFixed(2);         /* 右→奥 */
 
     cards[fi].style.visibility = 'visible';
     cards[fi].style.zIndex = '10';
