@@ -604,7 +604,7 @@ document.querySelectorAll('.side-loc-tab').forEach(function(btn) {
   var pendingDir = 0;    /* ±1 */
   var dragProg   = 0;    /* 0..1 スクラブ進捗 */
   var locked     = false; /* スナップアニメ中 */
-  var DRAG_SENSITIVITY = 0.90; /* touch中の視覚圧縮率（指を離すまで完全入れ替わりしない） */
+  var TOUCH_CAP = 0.90; /* touch中の最大視覚進捗（0.90 = 90%まで・入れ替わる手前で止まる） */
   var vh         = window.innerHeight;
   var THRESHOLD;         /* setup() で設定 */
 
@@ -735,12 +735,12 @@ document.querySelectorAll('.side-loc-tab').forEach(function(btn) {
     }
     if (dir !== tDir) return;
     dragProg = Math.min(dist / THRESHOLD, 1);
-    draw2(current, pendingIdx, pendingDir, dragProg * DRAG_SENSITIVITY);
+    draw2(current, pendingIdx, pendingDir, Math.min(dist / vh, TOUCH_CAP));
   }, { passive: false });
   window.addEventListener('touchend', function () {
     if (locked || pendingIdx === -1) return;
     var fi=current, ti=pendingIdx, pd=pendingDir, dp=dragProg; pendingIdx=-1;
-    var vdp = dp * DRAG_SENSITIVITY; /* 視覚上の進捗（圧縮済） */
+    var vdp = Math.min(dp * THRESHOLD / vh, TOUCH_CAP);
     if (dp >= 1.0) snapComplete(fi, ti, pd, vdp);
     else            snapBack(fi, ti, pd, vdp);
     tActive = false;
