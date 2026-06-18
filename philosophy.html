@@ -613,10 +613,8 @@
          → touchend→spring の opacity 連続性も同時に保証。 */
       var drag_t = Math.min(1, Math.max(0, stRel / secSpan));
       var e = drag_t * drag_t * (3 - 2 * drag_t); /* smoothstep */
-      sections[base].style.zIndex = '100';
       sections[base].style.opacity = String(1 - e);
       sections[base].style.transform = '';
-      sections[next].style.zIndex = '50';
       sections[next].style.opacity = String(e);
       sections[next].style.transform = 'translateY(0)';
     } else {
