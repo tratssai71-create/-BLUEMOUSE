@@ -793,7 +793,8 @@
     touchStartY = e.touches[0].clientY;
     touchBaseVY = virtualY;
     touchRawVY = virtualY;
-    touchTiltDeg = tiltDeg; /* tiltDecay/スプリングの現在値を引き継ぐ — rotateX(0)へのスナップを防ぐ */
+    touchTiltDeg = 0; /* 毎ジェスチャー0からスタート — tiltDeg引き継ぎはratchetと干渉して1mm操作で最大チルトになる */
+    tiltDeg = 0; tiltVel = 0; /* tiltDecay残留をここでリセット */
     touchSlideOffset = 0; /* 退場セクションY=0固定のため不使用 */
     needsTouchReset = false; /* touchstartで全状態を初期化するのでリセット不要 */
     touchHistory = [{ t: Date.now(), y: touchStartY }];
