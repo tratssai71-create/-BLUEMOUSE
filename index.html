@@ -729,7 +729,7 @@ document.querySelectorAll('.side-loc-tab').forEach(function(btn) {
 
   /* ===== TOUCH ===== */
   var tStartY=0, tDir=0, tActive=false, tHistory=[];
-  var VEL_THRESHOLD = 5.0; /* フリック判定速度(px/ms) */
+  var VEL_THRESHOLD = 4.0; /* フリック判定速度(px/ms) */
   window.addEventListener('touchstart', function (e) {
     tStartY = e.touches[0].clientY; tActive = false;
     tHistory = [{ t: Date.now(), y: tStartY }];
