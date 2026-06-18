@@ -604,7 +604,7 @@ document.querySelectorAll('.side-loc-tab').forEach(function(btn) {
   var pendingDir = 0;    /* ±1 */
   var dragProg   = 0;    /* 0..1 スクラブ進捗 */
   var locked     = false; /* スナップアニメ中 */
-  var DRAG_SENSITIVITY = 0.50; /* touch中の視覚圧縮率（指を離すまで完全入れ替わりしない） */
+  var DRAG_SENSITIVITY = 0.90; /* touch中の視覚圧縮率（指を離すまで完全入れ替わりしない） */
   var vh         = window.innerHeight;
   var THRESHOLD;         /* setup() で設定 */
 
