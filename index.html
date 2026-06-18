@@ -604,6 +604,7 @@ document.querySelectorAll('.side-loc-tab').forEach(function(btn) {
   var pendingDir = 0;    /* ±1 */
   var dragProg   = 0;    /* 0..1 スクラブ進捗 */
   var locked     = false; /* スナップアニメ中 */
+  var DRAG_SENSITIVITY = 0.35; /* touch中の視覚圧縮率（指を離すまで完全入れ替わりしない） */
   var vh         = window.innerHeight;
   var THRESHOLD;         /* setup() で設定 */
 
@@ -629,6 +630,8 @@ document.querySelectorAll('.side-loc-tab').forEach(function(btn) {
   function draw2(fi, ti, dir, prog) {
     cards[fi].style.visibility = 'visible';
     cards[ti].style.visibility = 'visible';
+    /* 入場カード：スワイプ方向から滑り込む（下から上→下部から、上から下→上部から） */
+    cards[ti].style.transform = 'translateY(' + (dir * (1 - prog) * 100).toFixed(1) + 'vh)';
   }
 
   function startDrag(dir) {
@@ -731,13 +734,14 @@ document.querySelectorAll('.side-loc-tab').forEach(function(btn) {
     }
     if (dir !== tDir) return;
     dragProg = Math.min(dist / THRESHOLD, 1);
-    draw2(current, pendingIdx, pendingDir, dragProg);
+    draw2(current, pendingIdx, pendingDir, dragProg * DRAG_SENSITIVITY);
   }, { passive: false });
   window.addEventListener('touchend', function () {
     if (locked || pendingIdx === -1) return;
     var fi=current, ti=pendingIdx, pd=pendingDir, dp=dragProg; pendingIdx=-1;
-    if (dp >= 1.0) snapComplete(fi, ti, pd, dp);
-    else            snapBack(fi, ti, pd, dp);
+    var vdp = dp * DRAG_SENSITIVITY; /* 視覚上の進捗（圧縮済） */
+    if (dp >= 1.0) snapComplete(fi, ti, pd, vdp);
+    else            snapBack(fi, ti, pd, vdp);
     tActive = false;
   });
 
