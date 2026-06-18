@@ -631,8 +631,11 @@ document.querySelectorAll('.side-loc-tab').forEach(function(btn) {
     cards[fi].style.visibility = 'visible';
     cards[fi].style.zIndex = '10';
     cards[ti].style.visibility = 'visible';
-    cards[ti].style.zIndex = '11'; /* 入場カードを常に手前に */
+    cards[ti].style.zIndex = '11';
     cards[ti].style.transform = 'translateY(' + (dir * (1 - prog) * 100).toFixed(1) + 'vh)';
+    /* ベール：スライドに同期して消す（CSSトランジション無効化して直接制御） */
+    var veil = cards[ti].querySelector('.idx-veil');
+    if (veil) { veil.style.transition = 'none'; veil.style.opacity = String(1 - prog); }
   }
 
   function startDrag(dir) {
@@ -652,14 +655,17 @@ document.querySelectorAll('.side-loc-tab').forEach(function(btn) {
   /* startProg → 1 へアニメ（確定） */
   function snapComplete(fi, ti, dir, startProg) {
     locked = true;
-    activateCard(cards[ti]); deactivateCard(cards[fi]); updateUI(ti);
-    var dur = Math.max(600, 2000 * (1 - startProg)), startT = null;
+    updateUI(ti);
+    var dur = Math.max(400, 1200 * (1 - startProg)), startT = null;
     function step(ts) {
       if (!startT) startT = ts;
       var p = Math.min((ts - startT) / dur, 1);
       draw2(fi, ti, dir, startProg + (1 - startProg) * easeOut5(p));
       if (p < 1) { requestAnimationFrame(step); return; }
       current = ti;
+      activateCard(cards[ti]); deactivateCard(cards[fi]);
+      var veil = cards[ti].querySelector('.idx-veil');
+      if (veil) { veil.style.transition = ''; veil.style.opacity = ''; }
       cards[ti].style.transform = ''; cards[ti].style.opacity = ''; cards[ti].style.zIndex = '';
       cards[fi].style.visibility = 'hidden'; cards[fi].style.transform = ''; cards[fi].style.opacity = ''; cards[fi].style.zIndex = '';
       cards.forEach(function (c, i) { if (i !== current) c.style.visibility = 'hidden'; });
@@ -677,6 +683,8 @@ document.querySelectorAll('.side-loc-tab').forEach(function(btn) {
       var p = Math.min((ts - startT) / dur, 1);
       draw2(fi, ti, dir, startProg * (1 - easeOut3(p)));
       if (p < 1) { requestAnimationFrame(step); return; }
+      var veil = cards[ti].querySelector('.idx-veil');
+      if (veil) { veil.style.transition = ''; veil.style.opacity = ''; }
       cards[ti].style.visibility = 'hidden'; cards[ti].style.transform = ''; cards[ti].style.opacity = ''; cards[ti].style.zIndex = '';
       cards[fi].style.transform = ''; cards[fi].style.opacity = ''; cards[fi].style.zIndex = '';
       locked = false; pendingIdx = -1; dragProg = 0;
