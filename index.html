@@ -660,12 +660,14 @@ document.querySelectorAll('.side-loc-tab').forEach(function(btn) {
       ? 1.0 - prog * (0.2 / 0.8)
       : 0.8 - (prog - 0.8) * (0.1 / 0.2)).toFixed(4);
 
-    /* チルト(rotateX)：一時停止 */
-    var tiTilt = 0;
-    var fiTilt = 0;
-    /* 横チルト(rotateY)：入場-10deg／退場+10deg */
-    var tiLeanY = prog <= 0.8 ? -15 : -15 * (1 - (prog - 0.8) / 0.2);
-    var fiLeanY = prog <= 0.8 ?  10 :  10 * (1 - (prog - 0.8) / 0.2);
+    /* チルト(rotateX)：sin カーブで 0→ピーク→0。prog=0.5 で最大、着地で必ず0。
+       Resn work ページの「通過中だけ傾く」挙動を再現。 */
+    var tiltCurve = Math.sin(prog * Math.PI);
+    var fiTilt = 8  * tiltCurve;   /* 退場：最大8deg */
+    var tiTilt = 5  * tiltCurve;   /* 入場：最大5deg（控えめ） */
+    /* 横チルト(rotateY)：同様にsinカーブで自然なリーン */
+    var tiLeanY = -10 * tiltCurve;
+    var fiLeanY =   7 * tiltCurve;
 
     /* 移動：退場0.275vh/prog / 入場25%のぞきスタート・0.200vh/progで80%まで→収束 */
     var fiY = (-dir * prog * 0.125 * vh).toFixed(1);
