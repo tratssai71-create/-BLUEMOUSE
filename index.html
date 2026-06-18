@@ -631,6 +631,7 @@ document.querySelectorAll('.side-loc-tab').forEach(function(btn) {
   function draw2(fi, ti, dir, prog) {
     cards[fi].style.visibility = 'visible';
     cards[fi].style.zIndex = '10';
+    cards[fi].style.transform = 'translateY(' + (-dir * prog * 100).toFixed(1) + 'vh)';
     cards[ti].style.visibility = 'visible';
     cards[ti].style.zIndex = '11';
     cards[ti].style.transform = 'translateY(' + (dir * (1 - prog) * 100).toFixed(1) + 'vh)';
