@@ -615,7 +615,7 @@
       var e = drag_t * drag_t * (3 - 2 * drag_t); /* smoothstep */
       sections[base].style.zIndex = '100';
       sections[base].style.opacity = String(1 - e);
-      sections[base].style.transform = 'scale(' + (1 - e * 0.04).toFixed(4) + ')';
+      sections[base].style.transform = '';
       sections[next].style.zIndex = '50';
       sections[next].style.opacity = String(e);
       sections[next].style.transform = 'translateY(0)';
