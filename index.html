@@ -718,16 +718,21 @@ document.querySelectorAll('.side-loc-tab').forEach(function(btn) {
   }, { passive: false });
 
   /* ===== TOUCH ===== */
-  var tStartY=0, tDir=0, tActive=false;
+  var tStartY=0, tDir=0, tActive=false, tHistory=[];
+  var VEL_THRESHOLD = 0.4; /* フリック判定速度(px/ms) */
   window.addEventListener('touchstart', function (e) {
     tStartY = e.touches[0].clientY; tActive = false;
+    tHistory = [{ t: Date.now(), y: tStartY }];
   }, { passive: true });
   window.addEventListener('touchmove', function (e) {
     var el = e.target;
     while (el) { if (el.classList && (el.classList.contains('bm-left') || el.classList.contains('bm-right'))) return; el = el.parentElement; }
     e.preventDefault();
     if (locked) return;
-    var dy = tStartY - e.touches[0].clientY, dir = dy > 0 ? 1 : -1, dist = Math.abs(dy);
+    var now = Date.now(), cy = e.touches[0].clientY;
+    tHistory.push({ t: now, y: cy });
+    while (tHistory.length > 1 && now - tHistory[0].t > 80) tHistory.shift();
+    var dy = tStartY - cy, dir = dy > 0 ? 1 : -1, dist = Math.abs(dy);
     if (!tActive) {
       if (dist < 8) return;
       tActive = true; tDir = dir;
@@ -741,8 +746,16 @@ document.querySelectorAll('.side-loc-tab').forEach(function(btn) {
     if (locked || pendingIdx === -1) return;
     var fi=current, ti=pendingIdx, pd=pendingDir, dp=dragProg; pendingIdx=-1;
     var vdp = Math.min(dp * THRESHOLD / vh, TOUCH_CAP);
-    if (dp >= 1.0) snapComplete(fi, ti, pd, vdp);
-    else            snapBack(fi, ti, pd, vdp);
+    /* 速度判定：直近80ms の変位から算出 */
+    var vel = 0;
+    if (tHistory.length >= 2) {
+      var h0 = tHistory[0], h1 = tHistory[tHistory.length - 1];
+      var dt = h1.t - h0.t;
+      if (dt > 0) vel = Math.abs(h1.y - h0.y) / dt;
+    }
+    var isFling = vel >= VEL_THRESHOLD && dp > 0.05;
+    if (dp >= 1.0 || isFling) snapComplete(fi, ti, pd, vdp);
+    else                       snapBack(fi, ti, pd, vdp);
     tActive = false;
   });
 
