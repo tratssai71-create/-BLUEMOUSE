@@ -288,7 +288,7 @@
 
     /* ===== モバイル ===== */
     @media (max-width: 780px) {
-      body { background: #111; overscroll-behavior-x: none; }
+      body { background: #111; overscroll-behavior: none; }
       .bm-mobile-header__logo { display: none !important; }
       .hero-logo-wordmark { left: 16px; }
       .hero-logo-wordmark img { width: 150px; }
@@ -656,6 +656,7 @@ document.querySelectorAll('.side-loc-tab').forEach(function(btn) {
   function snapComplete(fi, ti, dir, startProg) {
     locked = true;
     updateUI(ti);
+    draw2(fi, ti, dir, startProg); /* 1フレームのギャップをなくす */
     var dur = Math.max(400, 1200 * (1 - startProg)), startT = null;
     function step(ts) {
       if (!startT) startT = ts;
@@ -727,7 +728,7 @@ document.querySelectorAll('.side-loc-tab').forEach(function(btn) {
 
   /* ===== TOUCH ===== */
   var tStartY=0, tDir=0, tActive=false, tHistory=[];
-  var VEL_THRESHOLD = 2.0; /* フリック判定速度(px/ms) */
+  var VEL_THRESHOLD = 3.0; /* フリック判定速度(px/ms) */
   window.addEventListener('touchstart', function (e) {
     tStartY = e.touches[0].clientY; tActive = false;
     tHistory = [{ t: Date.now(), y: tStartY }];
