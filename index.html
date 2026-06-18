@@ -629,8 +629,9 @@ document.querySelectorAll('.side-loc-tab').forEach(function(btn) {
   /* 2枚の中間状態を描画（ドラッグ中・スナップ中共用）*/
   function draw2(fi, ti, dir, prog) {
     cards[fi].style.visibility = 'visible';
+    cards[fi].style.zIndex = '10';
     cards[ti].style.visibility = 'visible';
-    /* 入場カード：スワイプ方向から滑り込む（下から上→下部から、上から下→上部から） */
+    cards[ti].style.zIndex = '11'; /* 入場カードを常に手前に */
     cards[ti].style.transform = 'translateY(' + (dir * (1 - prog) * 100).toFixed(1) + 'vh)';
   }
 
