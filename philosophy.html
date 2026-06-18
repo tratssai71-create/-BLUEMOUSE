@@ -608,29 +608,17 @@
     var next = Math.min(base + 1, n - 1);
     var secSpan = vh, stRel = st - base * vh;
     if (next !== base) {
+      /* touch中・spring中ともに virtualY（DRAG_SENSITIVITY圧縮済）ベースで描画。
+         → 指を離すまで最大35%しか遷移しない（完全入れ替わりは指を離した後のspringが担う）
+         → touchend→spring の opacity 連続性も同時に保証。 */
       var drag_t = Math.min(1, Math.max(0, stRel / secSpan));
-      if (touching) {
-        /* 退場セクションはY=0固定でフェード+スケール。チルトのみ付与。
-           touchRawVY からopacity/scaleを算出 → スプリング中断時の不連続ジャンプを防ぐ。 */
-        var drag_t_raw = Math.min(1, Math.max(0, (touchRawVY - base * vh) / vh));
-        var drag_e = drag_t_raw * drag_t_raw * (3 - 2 * drag_t_raw); /* smoothstep */
-        sections[base].style.zIndex = '100';
-        sections[base].style.opacity = String(1 - drag_e);
-        sections[base].style.transform = 'scale(' + (1 - drag_e * 0.04).toFixed(4) + ')';
-        sections[next].style.zIndex = '50';
-        sections[next].style.opacity = String(drag_e);
-        sections[next].style.transform = 'translateY(0)';
-      } else {
-        /* 指を離した後：チルト収束 + フェード+スケール。退場セクションはY=0固定。 */
-        var e = drag_t;
-        e = e * e * (3 - 2 * e); /* smoothstep */
-        sections[base].style.zIndex = '100';
-        sections[base].style.opacity = String(1 - e);
-        sections[base].style.transform = 'scale(' + (1 - e * 0.04).toFixed(4) + ')';
-        sections[next].style.zIndex = '50';
-        sections[next].style.opacity = String(e);
-        sections[next].style.transform = 'translateY(0)';
-      }
+      var e = drag_t * drag_t * (3 - 2 * drag_t); /* smoothstep */
+      sections[base].style.zIndex = '100';
+      sections[base].style.opacity = String(1 - e);
+      sections[base].style.transform = 'scale(' + (1 - e * 0.04).toFixed(4) + ')';
+      sections[next].style.zIndex = '50';
+      sections[next].style.opacity = String(e);
+      sections[next].style.transform = 'translateY(0)';
     } else {
       tiltDeg = 0; tiltVel = 0; /* touchTiltDegは保持（最終セクションでも次ジェスチャーへ引継ぎ） */
       sections[base].style.opacity = '';
