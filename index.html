@@ -605,6 +605,7 @@ document.querySelectorAll('.side-loc-tab').forEach(function(btn) {
   var dragProg   = 0;    /* 0..1 スクラブ進捗 */
   var locked     = false; /* スナップアニメ中 */
   var TOUCH_CAP = 0.90; /* touch中の最大視覚進捗（0.90 = 90%まで・入れ替わる手前で止まる） */
+  var lastVisualProg = 0; /* touchmoveの最終描画値をtouchendで引き継ぐ */
   var vh         = window.innerHeight;
   var THRESHOLD;         /* setup() で設定 */
 
@@ -728,7 +729,7 @@ document.querySelectorAll('.side-loc-tab').forEach(function(btn) {
 
   /* ===== TOUCH ===== */
   var tStartY=0, tDir=0, tActive=false, tHistory=[];
-  var VEL_THRESHOLD = 3.0; /* フリック判定速度(px/ms) */
+  var VEL_THRESHOLD = 5.0; /* フリック判定速度(px/ms) */
   window.addEventListener('touchstart', function (e) {
     tStartY = e.touches[0].clientY; tActive = false;
     tHistory = [{ t: Date.now(), y: tStartY }];
@@ -749,12 +750,13 @@ document.querySelectorAll('.side-loc-tab').forEach(function(btn) {
     }
     if (dir !== tDir) return;
     dragProg = Math.min(dist / THRESHOLD, 1);
-    draw2(current, pendingIdx, pendingDir, Math.min(dist / vh, TOUCH_CAP));
+    lastVisualProg = Math.min(dist / vh, TOUCH_CAP);
+    draw2(current, pendingIdx, pendingDir, lastVisualProg);
   }, { passive: false });
   window.addEventListener('touchend', function () {
     if (locked || pendingIdx === -1) return;
     var fi=current, ti=pendingIdx, pd=pendingDir, dp=dragProg; pendingIdx=-1;
-    var vdp = Math.min(dp * THRESHOLD / vh, TOUCH_CAP);
+    var vdp = lastVisualProg; /* 最後の描画位置をそのまま引き継ぐ */
     /* 速度判定：直近80ms の変位から算出 */
     var vel = 0;
     if (tHistory.length >= 2) {
