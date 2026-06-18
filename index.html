@@ -39,12 +39,6 @@
       --bm-ink:        40, 30, 24;
     }
 
-    /* ===== Ken Burns keyframes ===== */
-    @keyframes kb       { from{transform:scale(1.0)}                  to{transform:scale(1.06)} }
-    @keyframes kb-down  { from{transform:scale(1.11) translateY(4%)}  to{transform:scale(1.06) translateY(-4%)} }
-    @keyframes kb-up    { from{transform:scale(1.11) translateY(-4%)} to{transform:scale(1.06) translateY(4%)} }
-    @keyframes kb-pan   { from{transform:scale(1.0) translateY(0%)}   to{transform:scale(1.0) translateY(-2%)} }
-    @keyframes kb-pan-x { from{transform:scale(1.07) translateX(-3%)} to{transform:scale(1.07) translateX(3%)} }
 
     /* ===== スクロールジャック ===== */
 
@@ -109,11 +103,6 @@
     }
     .idx-snap-card.is-active .idx-veil { opacity: 0; }
 
-    /* ===== 写真ランディング（セクション入場時のズームイン→アウト） ===== */
-    @keyframes idx-photo-land {
-      from { transform: scale(1.06); }
-      to   { transform: scale(1.0); }
-    }
 
     /* ===== オーバーレイ（テキストエリア） ===== */
     .idx-overlay {
@@ -394,7 +383,7 @@
     <section class="idx-snap-card" id="idx-0" data-idx="0">
       <div class="idx-photo">
         <div class="idx-photo__rail">
-          <img class="idx-photo__img" src="./photos/IMG_8852.jpg" alt="BLUE MOUSE" data-anim="kb-pan" />
+          <img class="idx-photo__img" src="./photos/IMG_8852.jpg" alt="BLUE MOUSE" />
         </div>
       </div>
       <div class="idx-veil"></div>
@@ -410,7 +399,7 @@
     <section class="idx-snap-card" id="idx-1" data-idx="1">
       <div class="idx-photo">
         <div class="idx-photo__rail">
-          <img class="idx-photo__img" src="./photos/jidou_child_opt.jpg" alt="児童発達支援" data-anim="kb-down" />
+          <img class="idx-photo__img" src="./photos/jidou_child_opt.jpg" alt="児童発達支援" />
         </div>
       </div>
       <div class="idx-veil"></div>
@@ -426,7 +415,7 @@
     <section class="idx-snap-card" id="idx-2" data-idx="2">
       <div class="idx-photo">
         <div class="idx-photo__rail">
-          <img class="idx-photo__img" src="./photos/hokago_opt.jpg" alt="放課後等デイサービス" data-anim="kb-up" />
+          <img class="idx-photo__img" src="./photos/hokago_opt.jpg" alt="放課後等デイサービス" />
         </div>
       </div>
       <div class="idx-veil"></div>
@@ -442,7 +431,7 @@
     <section class="idx-snap-card" id="idx-3" data-idx="3">
       <div class="idx-photo">
         <div class="idx-photo__rail">
-          <img class="idx-photo__img" src="./photos/recruit_opt.jpg" alt="採用情報" data-anim="kb-pan-x" />
+          <img class="idx-photo__img" src="./photos/recruit_opt.jpg" alt="採用情報" />
         </div>
       </div>
       <div class="idx-veil"></div>
@@ -602,8 +591,6 @@ document.querySelectorAll('.side-loc-tab').forEach(function(btn) {
 <script>
 /* ===== スクロールジャック（スクラブ式：途中まで引っ張れる・やめたら戻る） ===== */
 (function () {
-  var KB_DUR   = '10s ease-out forwards';
-  var LAND_DUR = '0.85s cubic-bezier(0.22,1,0.36,1) forwards';
   var cards    = Array.from(document.querySelectorAll('.idx-snap-card'));
   var n        = cards.length;
   var spacer   = document.getElementById('idx-spacer');
@@ -630,21 +617,9 @@ document.querySelectorAll('.side-loc-tab').forEach(function(btn) {
 
   function activateCard(card) {
     card.classList.add('is-active');
-    var img = card.querySelector('.idx-photo__img');
-    if (img) {
-      if (img._lt) clearTimeout(img._lt);
-      img.style.animation = 'none';
-      void img.offsetHeight;
-      img.style.animation = 'idx-photo-land ' + LAND_DUR;
-      img._lt = setTimeout(function () {
-        img.style.animation = (img.getAttribute('data-anim') || 'kb-pan') + ' ' + KB_DUR;
-      }, 850);
-    }
   }
   function deactivateCard(card) {
     card.classList.remove('is-active');
-    var img = card.querySelector('.idx-photo__img');
-    if (img) { if (img._lt) clearTimeout(img._lt); img.style.animation = 'none'; }
   }
 
   function easeOut3(t) { return 1 - Math.pow(1 - t, 3); }
