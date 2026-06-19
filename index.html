@@ -649,10 +649,10 @@ document.querySelectorAll('.side-loc-tab').forEach(function(btn) {
     var tiRX, tiRY, tiScale;
     if (prog <= 0.10) {
       var t1 = prog / 0.10;
-      tiRX = 20 * t1; tiRY = -10 * t1; tiScale = 0.40 + 0.30 * t1;
+      tiRX = 20 * t1; tiRY = -10 * t1; tiScale = 0.40;
     } else if (prog <= 0.90) {
       var t2 = (prog - 0.10) / 0.80;
-      tiRX = 20 + 20 * t2; tiRY = -(10 + 10 * t2); tiScale = 0.70 + 0.30 * t2;
+      tiRX = 20 + 20 * t2; tiRY = -(10 + 10 * t2); tiScale = 0.40;
     } else {
       var tSnap = (prog - 0.90) / 0.10;
       tiRX = 40 * (1 - tSnap); tiRY = -20 * (1 - tSnap); tiScale = 1.0;
