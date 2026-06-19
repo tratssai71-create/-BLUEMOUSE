@@ -641,11 +641,7 @@ document.querySelectorAll('.side-loc-tab').forEach(function(btn) {
       var tf2 = Math.min((prog - 0.10) / 0.80, 1);
       fiRX = -20 + 20 * tf2; fiRY = 20 - 20 * tf2;
     }
-    if (prog <= 0.02) {
-      fiScale = 1.0 - 0.05 * (prog / 0.02);
-    } else {
-      fiScale = 0.95;
-    }
+    fiScale = 1.0;
 
     /* 入場(ti)
        0%→10% : rotateX 0→20, rotateY 0→-10, scale 0.70固定
