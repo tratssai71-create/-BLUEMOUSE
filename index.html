@@ -636,23 +636,23 @@ document.querySelectorAll('.side-loc-tab').forEach(function(btn) {
     var fiRX, fiRY, fiScale;
     if (prog <= 0.10) {
       var tf1 = prog / 0.10;
-      fiRX = -30 * tf1; fiRY = 10 * tf1; fiScale = 1.0 - 0.10 * tf1;
+      fiRX = -30 * tf1; fiRY = 10 * tf1; fiScale = 1.0 - 0.15 * tf1;
     } else {
       var tf2 = Math.min((prog - 0.10) / 0.80, 1);
-      fiRX = -30 + 30 * tf2; fiRY = 30 - 30 * tf2; fiScale = 0.90 - 0.10 * tf2;
+      fiRX = -30 + 30 * tf2; fiRY = 30 - 30 * tf2; fiScale = 0.85 - 0.15 * tf2;
     }
 
     /* 入場(ti)
-       0%→10% : rotateX 0→30, rotateY 0→-10, scale 0.80→0.90
-       10%→90%: rotateX 30→60, rotateY -10→-20, scale 0.90→1.0
+       0%→10% : rotateX 0→30, rotateY 0→-10, scale 0.70→0.85
+       10%→90%: rotateX 30→60, rotateY -10→-20, scale 0.85→1.0
        90%→100%: チルトを0へ戻してランディング */
     var tiRX, tiRY, tiScale;
     if (prog <= 0.10) {
       var t1 = prog / 0.10;
-      tiRX = 30 * t1; tiRY = -10 * t1; tiScale = 0.80 + 0.10 * t1;
+      tiRX = 30 * t1; tiRY = -10 * t1; tiScale = 0.70 + 0.15 * t1;
     } else if (prog <= 0.90) {
       var t2 = (prog - 0.10) / 0.80;
-      tiRX = 30 + 30 * t2; tiRY = -(10 + 10 * t2); tiScale = 0.90 + 0.10 * t2;
+      tiRX = 30 + 30 * t2; tiRY = -(10 + 10 * t2); tiScale = 0.85 + 0.15 * t2;
     } else {
       var tSnap = (prog - 0.90) / 0.10;
       tiRX = 60 * (1 - tSnap); tiRY = -20 * (1 - tSnap); tiScale = 1.0;
