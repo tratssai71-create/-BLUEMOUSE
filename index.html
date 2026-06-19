@@ -659,14 +659,14 @@ document.querySelectorAll('.side-loc-tab').forEach(function(btn) {
     }
 
     cards[fi].style.visibility = 'visible';
-    cards[fi].style.zIndex = '10';
+    cards[fi].style.zIndex = '11';
     cards[fi].style.transform =
       'perspective(900px) translateY(' + (-dir * prog * 100).toFixed(1) + 'vh)' +
       ' rotateX(' + fiRX.toFixed(2) + 'deg) rotateY(' + fiRY.toFixed(2) + 'deg)' +
       ' scale(' + fiScale.toFixed(3) + ')';
 
     cards[ti].style.visibility = 'visible';
-    cards[ti].style.zIndex = '11';
+    cards[ti].style.zIndex = '10';
     cards[ti].style.transform =
       'perspective(900px) translateY(' + (dir * (1 - prog) * 60).toFixed(1) + 'vh)' +
       ' rotateX(' + tiRX.toFixed(2) + 'deg) rotateY(' + tiRY.toFixed(2) + 'deg)' +
