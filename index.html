@@ -631,31 +631,31 @@ document.querySelectorAll('.side-loc-tab').forEach(function(btn) {
   function draw2(fi, ti, dir, prog) {
 
     /* 退場(fi)
-       0%→10% : rotateX 0→-30, rotateY 0→10, scale 1.0→0.90
-       10%→90%: rotateX -30→0, rotateY 30→0, scale 0.90→0.80 */
+       0%→10% : rotateX 0→-20, rotateY 0→20, scale 1.0→0.75
+       10%→90%: rotateX -20→0, rotateY 20→0, scale 0.75→0.50 */
     var fiRX, fiRY, fiScale;
     if (prog <= 0.10) {
       var tf1 = prog / 0.10;
-      fiRX = -30 * tf1; fiRY = 10 * tf1; fiScale = 1.0 - 0.25 * tf1;
+      fiRX = -20 * tf1; fiRY = 20 * tf1; fiScale = 1.0 - 0.25 * tf1;
     } else {
       var tf2 = Math.min((prog - 0.10) / 0.80, 1);
-      fiRX = -30 + 30 * tf2; fiRY = 30 - 30 * tf2; fiScale = 0.75 - 0.25 * tf2;
+      fiRX = -20 + 20 * tf2; fiRY = 20 - 20 * tf2; fiScale = 0.75 - 0.25 * tf2;
     }
 
     /* 入場(ti)
-       0%→10% : rotateX 0→30, rotateY 0→-10, scale 0.50→0.75
-       10%→90%: rotateX 30→60, rotateY -10→-20, scale 0.75→1.0
+       0%→10% : rotateX 0→20, rotateY 0→-10, scale 0.50→0.75
+       10%→90%: rotateX 20→40, rotateY -10→-20, scale 0.75→1.0
        90%→100%: チルトを0へ戻してランディング */
     var tiRX, tiRY, tiScale;
     if (prog <= 0.10) {
       var t1 = prog / 0.10;
-      tiRX = 30 * t1; tiRY = -10 * t1; tiScale = 0.50 + 0.25 * t1;
+      tiRX = 20 * t1; tiRY = -10 * t1; tiScale = 0.50 + 0.25 * t1;
     } else if (prog <= 0.90) {
       var t2 = (prog - 0.10) / 0.80;
-      tiRX = 30 + 30 * t2; tiRY = -(10 + 10 * t2); tiScale = 0.75 + 0.25 * t2;
+      tiRX = 20 + 20 * t2; tiRY = -(10 + 10 * t2); tiScale = 0.75 + 0.25 * t2;
     } else {
       var tSnap = (prog - 0.90) / 0.10;
-      tiRX = 60 * (1 - tSnap); tiRY = -20 * (1 - tSnap); tiScale = 1.0;
+      tiRX = 40 * (1 - tSnap); tiRY = -20 * (1 - tSnap); tiScale = 1.0;
     }
 
     cards[fi].style.visibility = 'visible';
