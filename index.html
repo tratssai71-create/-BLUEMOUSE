@@ -670,7 +670,7 @@ document.querySelectorAll('.side-loc-tab').forEach(function(btn) {
     cards[ti].style.transform =
       'perspective(900px) translateY(' + (dir * (1 - prog) * 100).toFixed(1) + 'vh)' +
       ' rotateX(' + tiRX.toFixed(2) + 'deg) rotateY(' + tiRY.toFixed(2) + 'deg)' +
-      ' scaleX(0.80) scaleY(0.85)';
+      ' scaleX(0.80)';
 
     var veil = cards[ti].querySelector('.idx-veil');
     if (veil) { veil.style.transition = 'none'; veil.style.opacity = String(1 - prog); }
