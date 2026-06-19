@@ -643,19 +643,19 @@ document.querySelectorAll('.side-loc-tab').forEach(function(btn) {
     }
 
     /* 入場(ti)
-       0%→10% : rotateX 0→20, rotateY 0→-10, scale 0.70固定
-       10%→90%: rotateX 20→40, rotateY -10→-20, scale 0.70固定
+       0%→10% : rotateX 0→20, rotateY 0→-10, scaleX 0.80 / scaleY 0.85固定
+       10%→90%: rotateX 20→40, rotateY -10→-20, scaleX 0.80 / scaleY 0.85固定
        90%→100%: チルトを0へ戻してランディング */
-    var tiRX, tiRY, tiScale;
+    var tiRX, tiRY;
     if (prog <= 0.10) {
       var t1 = prog / 0.10;
-      tiRX = 20 * t1; tiRY = -10 * t1; tiScale = 0.70;
+      tiRX = 20 * t1; tiRY = -10 * t1;
     } else if (prog <= 0.90) {
       var t2 = (prog - 0.10) / 0.80;
-      tiRX = 20 + 20 * t2; tiRY = -(10 + 10 * t2); tiScale = 0.70;
+      tiRX = 20 + 20 * t2; tiRY = -(10 + 10 * t2);
     } else {
       var tSnap = (prog - 0.90) / 0.10;
-      tiRX = 40 * (1 - tSnap); tiRY = -20 * (1 - tSnap); tiScale = 1.0;
+      tiRX = 40 * (1 - tSnap); tiRY = -20 * (1 - tSnap);
     }
 
     cards[fi].style.visibility = 'visible';
@@ -670,7 +670,7 @@ document.querySelectorAll('.side-loc-tab').forEach(function(btn) {
     cards[ti].style.transform =
       'perspective(900px) translateY(' + (dir * (1 - prog) * 100).toFixed(1) + 'vh)' +
       ' rotateX(' + tiRX.toFixed(2) + 'deg) rotateY(' + tiRY.toFixed(2) + 'deg)' +
-      ' scale(' + tiScale.toFixed(3) + ')';
+      ' scaleX(0.80) scaleY(0.85)';
 
     var veil = cards[ti].querySelector('.idx-veil');
     if (veil) { veil.style.transition = 'none'; veil.style.opacity = String(1 - prog); }
