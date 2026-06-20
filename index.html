@@ -666,7 +666,7 @@ document.querySelectorAll('.side-loc-tab').forEach(function(btn) {
     cards[ti].style.visibility = 'visible';
     cards[ti].style.zIndex = '10';
     cards[ti].style.transform =
-      'perspective(900px) translateY(' + (dir * (1 - prog) * 70).toFixed(1) + 'vh)' +
+      'perspective(900px) translateY(' + (dir * (1 - prog) * 60).toFixed(1) + 'vh)' +
       ' rotateX(' + tiRX.toFixed(2) + 'deg) rotateY(' + tiRY.toFixed(2) + 'deg)' +
       ' scale(' + tiSX.toFixed(3) + ',' + tiSY.toFixed(3) + ')';
 
@@ -706,7 +706,7 @@ document.querySelectorAll('.side-loc-tab').forEach(function(btn) {
       tiRX0 = 60 * (1 - _tSnap); tiRY0 = -20 * (1 - _tSnap);
       tiSX0 = 0.80 + 0.20 * _tSnap; tiSY0 = 1.05 - 0.05 * _tSnap;
     }
-    tiTY0 = (1 - startProg) * 70;
+    tiTY0 = (1 - startProg) * 60;
     tiVeil0 = 1 - startProg;
     draw2(fi, ti, dir, startProg); /* 1フレームのギャップをなくす */
     var dur = Math.max(400, 1200 * (1 - startProg)), startT = null;
