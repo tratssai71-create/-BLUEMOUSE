@@ -650,13 +650,13 @@ document.querySelectorAll('.side-loc-tab').forEach(function(btn) {
     var tiRX, tiRY, tiScale;
     if (prog <= 0.10) {
       var t1 = prog / 0.10;
-      tiRX = 25 * t1; tiRY = -10 * t1; tiScale = 0.70;
+      tiRX = 30 * t1; tiRY = -10 * t1; tiScale = 0.70;
     } else if (prog <= 0.90) {
       var t2 = (prog - 0.10) / 0.80;
-      tiRX = 25 + 25 * t2; tiRY = -(10 + 10 * t2); tiScale = 0.70;
+      tiRX = 30 + 30 * t2; tiRY = -(10 + 10 * t2); tiScale = 0.70;
     } else {
       var tSnap = (prog - 0.90) / 0.10;
-      tiRX = 50 * (1 - tSnap); tiRY = -20 * (1 - tSnap); tiScale = 0.70 + 0.30 * tSnap;
+      tiRX = 60 * (1 - tSnap); tiRY = -20 * (1 - tSnap); tiScale = 0.70 + 0.30 * tSnap;
     }
 
     cards[fi].style.visibility = 'visible';
