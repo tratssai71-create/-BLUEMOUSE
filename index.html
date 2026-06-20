@@ -645,11 +645,11 @@ document.querySelectorAll('.side-loc-tab').forEach(function(btn) {
     var tiRX, tiRY, tiSX, tiSY;
     if (prog <= 0.10) {
       var t1 = prog / 0.10;
-      tiRX = 30 * t1; tiRY = -10 * t1; tiSX = 0.60; tiSY = 1.1;
+      tiRX = 30 * t1; tiRY = -10 * t1; tiSX = 0.70; tiSY = 1.05;
     } else if (prog <= 0.95) {
       var t2 = (prog - 0.10) / 0.85;
       tiRX = 30 + 30 * t2; tiRY = -(10 + 10 * t2);
-      tiSX = 0.60; tiSY = 1.1;
+      tiSX = 0.70; tiSY = 1.05;
     } else {
       var tSnap = (prog - 0.95) / 0.05;
       tiRX = 60 * (1 - tSnap); tiRY = -20 * (1 - tSnap);
