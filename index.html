@@ -692,17 +692,46 @@ document.querySelectorAll('.side-loc-tab').forEach(function(btn) {
   function snapComplete(fi, ti, dir, startProg) {
     locked = true;
     updateUI(ti);
+    /* ti の開始値を startProg から計算（最後の描画値を直接引き継ぐ） */
+    var tiRX0, tiRY0, tiSX0, tiSY0, tiTY0, tiVeil0;
+    if (startProg <= 0.10) {
+      var _t1 = startProg / 0.10;
+      tiRX0 = 30 * _t1; tiRY0 = -10 * _t1; tiSX0 = 0.80; tiSY0 = 1.05;
+    } else if (startProg <= 0.99) {
+      var _t2 = (startProg - 0.10) / 0.89;
+      tiRX0 = 30 + 30 * _t2; tiRY0 = -(10 + 10 * _t2);
+      tiSX0 = 0.80; tiSY0 = 1.05;
+    } else {
+      var _tSnap = (startProg - 0.99) / 0.01;
+      tiRX0 = 60 * (1 - _tSnap); tiRY0 = -20 * (1 - _tSnap);
+      tiSX0 = 0.80 + 0.20 * _tSnap; tiSY0 = 1.05 - 0.05 * _tSnap;
+    }
+    tiTY0 = (1 - startProg) * 70;
+    tiVeil0 = 1 - startProg;
     draw2(fi, ti, dir, startProg); /* 1フレームのギャップをなくす */
     var dur = Math.max(400, 1200 * (1 - startProg)), startT = null;
     function step(ts) {
       if (!startT) startT = ts;
       var p = Math.min((ts - startT) / dur, 1);
-      draw2(fi, ti, dir, startProg + (1 - startProg) * easeOut5(p));
+      var ep = easeOut5(p);
+      draw2(fi, ti, dir, startProg + (1 - startProg) * ep);
+      /* ti: 開始値から直接補間（draw2 の ti 計算を上書き） */
+      var tiRX = tiRX0 * (1 - ep);
+      var tiRY = tiRY0 * (1 - ep);
+      var tiSX = tiSX0 + (1 - tiSX0) * ep;
+      var tiSY = tiSY0 + (1 - tiSY0) * ep;
+      var tiTY = tiTY0 * (1 - ep);
+      cards[ti].style.transform =
+        'perspective(900px) translateY(' + tiTY.toFixed(1) + 'vh)' +
+        ' rotateX(' + tiRX.toFixed(2) + 'deg) rotateY(' + tiRY.toFixed(2) + 'deg)' +
+        ' scale(' + tiSX.toFixed(3) + ',' + tiSY.toFixed(3) + ')';
+      var veil = cards[ti].querySelector('.idx-veil');
+      if (veil) { veil.style.transition = 'none'; veil.style.opacity = String(tiVeil0 * (1 - ep)); }
       if (p < 1) { requestAnimationFrame(step); return; }
       current = ti;
       activateCard(cards[ti]); deactivateCard(cards[fi]);
-      var veil = cards[ti].querySelector('.idx-veil');
-      if (veil) { veil.style.transition = ''; veil.style.opacity = ''; }
+      var veil2 = cards[ti].querySelector('.idx-veil');
+      if (veil2) { veil2.style.transition = ''; veil2.style.opacity = ''; }
       cards[ti].style.transform = ''; cards[ti].style.opacity = ''; cards[ti].style.zIndex = '';
       cards[fi].style.visibility = 'hidden'; cards[fi].style.transform = ''; cards[fi].style.opacity = ''; cards[fi].style.zIndex = '';
       cards.forEach(function (c, i) { if (i !== current) c.style.visibility = 'hidden'; });
