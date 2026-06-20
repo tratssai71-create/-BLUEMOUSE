@@ -653,7 +653,7 @@ document.querySelectorAll('.side-loc-tab').forEach(function(btn) {
     } else {
       var tSnap = (prog - 0.99) / 0.01;
       tiRX = 60 * (1 - tSnap); tiRY = -20 * (1 - tSnap);
-      tiSX = 0.80 + 0.20 * tSnap; tiSY = 1.0;
+      tiSX = 0.80 + 0.20 * tSnap; tiSY = 1.05 - 0.05 * tSnap;
     }
 
     cards[fi].style.visibility = 'visible';
