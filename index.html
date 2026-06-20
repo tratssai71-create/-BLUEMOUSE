@@ -630,10 +630,8 @@ document.querySelectorAll('.side-loc-tab').forEach(function(btn) {
   /* 2枚の中間状態を描画（ドラッグ中・スナップ中共用）*/
   function draw2(fi, ti, dir, prog) {
 
-    /* 退場(fi)
-       チルト: 0%→10% rotateX 0→-20 / rotateY 0→20、10%→90% -20→0 / 20→0
-       スケール: 0%→2% で 1.0→0.95（5%縮小）、以降 0.95 固定 */
-    var fiRX, fiRY, fiScale;
+    /* 退場(fi) */
+    var fiRX, fiRY, fiSX, fiSY;
     if (prog <= 0.10) {
       var tf1 = prog / 0.10;
       fiRX = -20 * tf1; fiRY = 20 * tf1;
@@ -641,22 +639,21 @@ document.querySelectorAll('.side-loc-tab').forEach(function(btn) {
       var tf2 = Math.min((prog - 0.10) / 0.85, 1);
       fiRX = -20 + 20 * tf2; fiRY = 20 - 20 * tf2;
     }
-    fiScale = 1.0;
+    fiSX = 1.0; fiSY = 1.0;
 
-    /* 入場(ti)
-       0%→10% : rotateX 0→20, rotateY 0→-10, scale 0.70固定
-       10%→90%: rotateX 20→40, rotateY -10→-20, scale 0.70固定
-       90%→100%: チルトを0へ戻し scale 0.70→1.0（ランディング） */
-    var tiRX, tiRY, tiScale;
+    /* 入場(ti) */
+    var tiRX, tiRY, tiSX, tiSY;
     if (prog <= 0.10) {
       var t1 = prog / 0.10;
-      tiRX = 30 * t1; tiRY = -10 * t1; tiScale = 0.70;
+      tiRX = 30 * t1; tiRY = -10 * t1; tiSX = 0.70; tiSY = 0.70;
     } else if (prog <= 0.95) {
       var t2 = (prog - 0.10) / 0.85;
-      tiRX = 30 + 30 * t2; tiRY = -(10 + 10 * t2); tiScale = 0.70 + 0.30 * t2;
+      tiRX = 30 + 30 * t2; tiRY = -(10 + 10 * t2);
+      tiSX = 0.70 + 0.30 * t2; tiSY = 0.70 + 0.30 * t2;
     } else {
       var tSnap = (prog - 0.95) / 0.05;
-      tiRX = 60 * (1 - tSnap); tiRY = -20 * (1 - tSnap); tiScale = 1.0;
+      tiRX = 60 * (1 - tSnap); tiRY = -20 * (1 - tSnap);
+      tiSX = 1.0; tiSY = 1.0;
     }
 
     cards[fi].style.visibility = 'visible';
@@ -664,14 +661,14 @@ document.querySelectorAll('.side-loc-tab').forEach(function(btn) {
     cards[fi].style.transform =
       'perspective(900px) translateY(' + (-dir * prog * 100).toFixed(1) + 'vh)' +
       ' rotateX(' + fiRX.toFixed(2) + 'deg) rotateY(' + fiRY.toFixed(2) + 'deg)' +
-      ' scale(' + fiScale.toFixed(3) + ')';
+      ' scale(' + fiSX.toFixed(3) + ',' + fiSY.toFixed(3) + ')';
 
     cards[ti].style.visibility = 'visible';
     cards[ti].style.zIndex = '10';
     cards[ti].style.transform =
       'perspective(900px) translateY(' + (dir * (1 - prog) * 70).toFixed(1) + 'vh)' +
       ' rotateX(' + tiRX.toFixed(2) + 'deg) rotateY(' + tiRY.toFixed(2) + 'deg)' +
-      ' scale(' + tiScale.toFixed(3) + ')';
+      ' scale(' + tiSX.toFixed(3) + ',' + tiSY.toFixed(3) + ')';
 
     var veil = cards[ti].querySelector('.idx-veil');
     if (veil) { veil.style.transition = 'none'; veil.style.opacity = String(1 - prog); }
