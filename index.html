@@ -646,10 +646,14 @@ document.querySelectorAll('.side-loc-tab').forEach(function(btn) {
     if (prog <= 0.10) {
       var t1 = prog / 0.10;
       tiRX = 30 * t1; tiRY = -10 * t1; tiSX = 0.80; tiSY = 1.05;
-    } else {
-      var t2 = (prog - 0.10) / 1.90;
+    } else if (prog <= 0.99) {
+      var t2 = (prog - 0.10) / 0.89;
       tiRX = 30 + 30 * t2; tiRY = -(10 + 10 * t2);
       tiSX = 0.80; tiSY = 1.05;
+    } else {
+      var tSnap = (prog - 0.99) / 0.01;
+      tiRX = 60 * (1 - tSnap); tiRY = -20 * (1 - tSnap);
+      tiSX = 0.80 + 0.20 * tSnap; tiSY = 1.05 - 0.05 * tSnap;
     }
 
     cards[fi].style.visibility = 'visible';
@@ -693,10 +697,14 @@ document.querySelectorAll('.side-loc-tab').forEach(function(btn) {
     if (startProg <= 0.10) {
       var _t1 = startProg / 0.10;
       tiRX0 = 30 * _t1; tiRY0 = -10 * _t1; tiSX0 = 0.80; tiSY0 = 1.05;
-    } else {
-      var _t2 = (startProg - 0.10) / 1.90;
+    } else if (startProg <= 0.99) {
+      var _t2 = (startProg - 0.10) / 0.89;
       tiRX0 = 30 + 30 * _t2; tiRY0 = -(10 + 10 * _t2);
       tiSX0 = 0.80; tiSY0 = 1.05;
+    } else {
+      var _tSnap = (startProg - 0.99) / 0.01;
+      tiRX0 = 60 * (1 - _tSnap); tiRY0 = -20 * (1 - _tSnap);
+      tiSX0 = 0.80 + 0.20 * _tSnap; tiSY0 = 1.05 - 0.05 * _tSnap;
     }
     tiTY0 = (1 - startProg) * 90;
     tiVeil0 = 1 - startProg;
