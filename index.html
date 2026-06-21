@@ -787,13 +787,22 @@ document.querySelectorAll('.side-loc-tab').forEach(function(btn) {
   var tStartY=0, tDir=0, tActive=false, tHistory=[];
   var VEL_THRESHOLD = 4.0; /* フリック判定速度(px/ms) */
   var tStopTimer = null; /* touchmove途絶タイムアウト */
-  function tResolve() {
+  function tResolve(byTimeout) {
     clearTimeout(tStopTimer); tStopTimer = null;
     if (locked || pendingIdx === -1) return;
     var fi=current, ti=pendingIdx, pd=pendingDir, dp=dragProg; pendingIdx=-1;
     var vdp = lastVisualProg;
-    if (dp >= 1.0) snapComplete(fi, ti, pd, vdp);
-    else           snapBack(fi, ti, pd, vdp);
+    var vel = 0;
+    if (tHistory.length >= 2) {
+      var h0 = tHistory[0], h1 = tHistory[tHistory.length - 1];
+      var dt = h1.t - h0.t;
+      if (dt > 0) vel = Math.abs(h1.y - h0.y) / dt;
+    }
+    var isFling = vel >= VEL_THRESHOLD && dp > 0.05;
+    /* iOSに遮断された場合は25%スワイプ以上で完了とみなす */
+    var threshold = byTimeout ? 0.5 : 1.0;
+    if (dp >= threshold || isFling) snapComplete(fi, ti, pd, vdp);
+    else                            snapBack(fi, ti, pd, vdp);
     tActive = false;
   }
   window.addEventListener('touchstart', function (e) {
@@ -821,10 +830,10 @@ document.querySelectorAll('.side-loc-tab').forEach(function(btn) {
     draw2(current, pendingIdx, pendingDir, lastVisualProg);
     /* iOSがtouchmoveを遮断した場合のフォールバック */
     clearTimeout(tStopTimer);
-    tStopTimer = setTimeout(tResolve, 200);
+    tStopTimer = setTimeout(function() { tResolve(true); }, 200);
   }, { passive: false });
-  window.addEventListener('touchend', function () { tResolve(); });
-  window.addEventListener('touchcancel', function () { tResolve(); });
+  window.addEventListener('touchend', function () { tResolve(false); });
+  window.addEventListener('touchcancel', function () { tResolve(false); });
 
   /* ===== KEYBOARD ===== */
   window.addEventListener('keydown', function (e) {
