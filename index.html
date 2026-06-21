@@ -794,9 +794,14 @@ document.querySelectorAll('.side-loc-tab').forEach(function(btn) {
   /* ===== TOUCH ===== */
   var tStartY=0, tDir=0, tActive=false, tHistory=[];
   var VEL_THRESHOLD = 4.0; /* フリック判定速度(px/ms) */
-  var tStopTimer = null; /* touchmove途絶タイムアウト */
-  function tResolve(byTimeout) {
+  var tStopTimer = null;
+  var tInertiaId = null;
+  function tStopInertia() {
+    if (tInertiaId) { cancelAnimationFrame(tInertiaId); tInertiaId = null; }
+  }
+  function tResolve() {
     clearTimeout(tStopTimer); tStopTimer = null;
+    tStopInertia();
     if (locked || pendingIdx === -1) return;
     var fi=current, ti=pendingIdx, pd=pendingDir, dp=dragProg; pendingIdx=-1;
     var vdp = lastVisualProg;
@@ -807,10 +812,8 @@ document.querySelectorAll('.side-loc-tab').forEach(function(btn) {
       if (dt > 0) vel = Math.abs(h1.y - h0.y) / dt;
     }
     var isFling = vel >= VEL_THRESHOLD && dp > 0.05;
-    /* iOSに遮断された場合は25%スワイプ以上で完了とみなす */
-    var threshold = byTimeout ? 0.5 : 1.0;
-    if (dp >= threshold || isFling) snapComplete(fi, ti, pd, vdp);
-    else                            snapBack(fi, ti, pd, vdp);
+    if (vdp >= 0.5 || isFling) snapComplete(fi, ti, pd, vdp);
+    else                        snapBack(fi, ti, pd, vdp);
     tActive = false;
   }
   window.addEventListener('touchstart', function (e) {
@@ -836,12 +839,34 @@ document.querySelectorAll('.side-loc-tab').forEach(function(btn) {
     dragProg = Math.min(dist / THRESHOLD, 1);
     lastVisualProg = Math.min(dist / vh, TOUCH_CAP);
     draw2(current, pendingIdx, pendingDir, lastVisualProg);
-    /* iOSがtouchmoveを遮断した場合のフォールバック */
+    /* iOSがtouchmoveを遮断した場合: 慣性アニメーションで残り距離を補完 */
     clearTimeout(tStopTimer);
-    tStopTimer = setTimeout(function() { tResolve(true); }, 200);
+    tStopTimer = setTimeout(function() {
+      tStopTimer = null;
+      if (locked || pendingIdx === -1) return;
+      var vel = 0;
+      if (tHistory.length >= 2) {
+        var h0 = tHistory[0], h1 = tHistory[tHistory.length - 1];
+        var dt = h1.t - h0.t;
+        if (dt > 0) vel = (h0.y - h1.y) / dt; /* 上方向が正 (px/ms) */
+      }
+      if (vel >= 0.3 && lastVisualProg >= 0.35) {
+        var startP = lastVisualProg, startT = null;
+        var dur = Math.max(150, 400 * (1 - startP));
+        function inertStep(ts) {
+          if (!startT) startT = ts;
+          var p = Math.min((ts - startT) / dur, 1), ep = easeOut3(p);
+          lastVisualProg = startP + (1 - startP) * ep;
+          if (pendingIdx !== -1) draw2(current, pendingIdx, pendingDir, lastVisualProg);
+          if (p < 1 && pendingIdx !== -1) { tInertiaId = requestAnimationFrame(inertStep); }
+          else { tInertiaId = null; }
+        }
+        tInertiaId = requestAnimationFrame(inertStep);
+      }
+    }, 200);
   }, { passive: false });
-  window.addEventListener('touchend', function () { tResolve(false); });
-  window.addEventListener('touchcancel', function () { tResolve(false); });
+  window.addEventListener('touchend', function () { tResolve(); });
+  window.addEventListener('touchcancel', function () { tResolve(); });
 
   /* ===== KEYBOARD ===== */
   window.addEventListener('keydown', function (e) {
