@@ -604,7 +604,7 @@ document.querySelectorAll('.side-loc-tab').forEach(function(btn) {
   var pendingDir = 0;    /* ±1 */
   var dragProg   = 0;    /* 0..1 スクラブ進捗 */
   var locked     = false; /* スナップアニメ中 */
-  var TOUCH_CAP = 0.90; /* touch中の最大視覚進捗（0.90 = 90%まで・入れ替わる手前で止まる） */
+  var TOUCH_CAP = 0.95; /* touch中の最大視覚進捗（ノッチセーフエリア裏に隠れるよう0.95に調整） */
   var lastVisualProg = 0; /* touchmoveの最終描画値をtouchendで引き継ぐ */
   var vh         = window.innerHeight;
   var THRESHOLD;         /* setup() で設定 */
