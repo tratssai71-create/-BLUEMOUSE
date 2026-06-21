@@ -795,6 +795,7 @@ document.querySelectorAll('.side-loc-tab').forEach(function(btn) {
   var tStartY=0, tDir=0, tActive=false, tHistory=[];
   var VEL_THRESHOLD = 4.0; /* フリック判定速度(px/ms) */
   var tStopTimer = null; /* touchmove途絶タイムアウト */
+  var tConsumed = false; /* auto-snapで消費済みフラグ */
   function tResolve(byTimeout) {
     clearTimeout(tStopTimer); tStopTimer = null;
     if (locked || pendingIdx === -1) return;
@@ -815,14 +816,14 @@ document.querySelectorAll('.side-loc-tab').forEach(function(btn) {
   }
   window.addEventListener('touchstart', function (e) {
     clearTimeout(tStopTimer); tStopTimer = null;
-    tStartY = e.touches[0].clientY; tActive = false;
+    tStartY = e.touches[0].clientY; tActive = false; tConsumed = false;
     tHistory = [{ t: Date.now(), y: tStartY }];
   }, { passive: true });
   window.addEventListener('touchmove', function (e) {
     var el = e.target;
     while (el) { if (el.classList && (el.classList.contains('bm-left') || el.classList.contains('bm-right'))) return; el = el.parentElement; }
     e.preventDefault();
-    if (locked) return;
+    if (locked || tConsumed) return;
     var now = Date.now(), cy = e.touches[0].clientY;
     tHistory.push({ t: now, y: cy });
     while (tHistory.length > 1 && now - tHistory[0].t > 80) tHistory.shift();
@@ -840,7 +841,7 @@ document.querySelectorAll('.side-loc-tab').forEach(function(btn) {
     if (lastVisualProg >= TOUCH_CAP && pendingIdx !== -1) {
       clearTimeout(tStopTimer); tStopTimer = null;
       var _fi=current, _ti=pendingIdx, _pd=pendingDir; pendingIdx=-1;
-      tActive = false;
+      tActive = false; tConsumed = true;
       snapComplete(_fi, _ti, _pd, TOUCH_CAP);
       return;
     }
