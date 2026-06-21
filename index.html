@@ -836,6 +836,14 @@ document.querySelectorAll('.side-loc-tab').forEach(function(btn) {
     dragProg = Math.min(dist / THRESHOLD, 1);
     lastVisualProg = Math.min(dist / vh, TOUCH_CAP);
     draw2(current, pendingIdx, pendingDir, lastVisualProg);
+    /* TOUCH_CAP到達 → ノッチ手前で自動snap確定 */
+    if (lastVisualProg >= TOUCH_CAP && pendingIdx !== -1) {
+      clearTimeout(tStopTimer); tStopTimer = null;
+      var _fi=current, _ti=pendingIdx, _pd=pendingDir; pendingIdx=-1;
+      tActive = false;
+      snapComplete(_fi, _ti, _pd, TOUCH_CAP);
+      return;
+    }
     /* iOSがtouchmoveを遮断した場合のフォールバック */
     clearTimeout(tStopTimer);
     tStopTimer = setTimeout(function() { tResolve(true); }, 200);
