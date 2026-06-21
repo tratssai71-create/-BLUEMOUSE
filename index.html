@@ -825,6 +825,14 @@ document.querySelectorAll('.side-loc-tab').forEach(function(btn) {
     else                       snapBack(fi, ti, pd, vdp);
     tActive = false;
   });
+  window.addEventListener('touchcancel', function () {
+    if (locked || pendingIdx === -1) return;
+    var fi=current, ti=pendingIdx, pd=pendingDir, dp=dragProg; pendingIdx=-1;
+    var vdp = lastVisualProg;
+    if (dp >= 1.0) snapComplete(fi, ti, pd, vdp);
+    else           snapBack(fi, ti, pd, vdp);
+    tActive = false;
+  });
 
   /* ===== KEYBOARD ===== */
   window.addEventListener('keydown', function (e) {
