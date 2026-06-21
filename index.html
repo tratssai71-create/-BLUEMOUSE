@@ -31,6 +31,7 @@
 
     /* ===== ブランドカラー ===== */
     :root {
+      --sat: env(safe-area-inset-top, 0px);
       --bm-coral:      #f2906c;
       --bm-coral-dark: #e87e59;
       --bm-teal:       #5fc1c7;
@@ -607,12 +608,14 @@ document.querySelectorAll('.side-loc-tab').forEach(function(btn) {
   var TOUCH_CAP = 0.95; /* touch中の最大視覚進捗（ノッチセーフエリア裏に隠れるよう0.95に調整） */
   var lastVisualProg = 0; /* touchmoveの最終描画値をtouchendで引き継ぐ */
   var vh         = window.innerHeight;
+  var safeTop    = 0;    /* env(safe-area-inset-top) px値 */
   var THRESHOLD;         /* setup() で設定 */
 
   function pad2(x) { return (x < 10 ? '0' : '') + x; }
 
   function setup() {
     vh = window.innerHeight;
+    safeTop = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--sat')) || 0;
     THRESHOLD = vh * 0.50;
     if (spacer) spacer.style.height = (n * vh) + 'px';
   }
@@ -837,7 +840,8 @@ document.querySelectorAll('.side-loc-tab').forEach(function(btn) {
     }
     if (dir !== tDir) return;
     dragProg = Math.min(dist / THRESHOLD, 1);
-    lastVisualProg = Math.min(dist / vh, TOUCH_CAP);
+    var swipeRange = Math.max(tStartY - safeTop, 50);
+    lastVisualProg = Math.min(dist / swipeRange, 1.0);
     draw2(current, pendingIdx, pendingDir, lastVisualProg);
     /* iOSがtouchmoveを遮断した場合: 慣性アニメーションで残り距離を補完 */
     clearTimeout(tStopTimer);
