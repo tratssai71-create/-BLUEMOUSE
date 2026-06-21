@@ -615,7 +615,14 @@ document.querySelectorAll('.side-loc-tab').forEach(function(btn) {
 
   function setup() {
     vh = window.innerHeight;
-    safeTop = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--sat')) || 0;
+    safeTop = (function() {
+      var el = document.createElement('div');
+      el.style.cssText = 'position:fixed;top:0;left:0;right:0;height:0;padding-top:env(safe-area-inset-top,0px);pointer-events:none;visibility:hidden';
+      document.body.appendChild(el);
+      var h = el.offsetHeight || 0;
+      document.body.removeChild(el);
+      return h;
+    })();
     TOUCH_CAP = safeTop > 20 ? 0.98 : 0.95;
     THRESHOLD = vh * 0.50;
     if (spacer) spacer.style.height = (n * vh) + 'px';
