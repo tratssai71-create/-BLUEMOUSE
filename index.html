@@ -850,11 +850,11 @@ document.querySelectorAll('.side-loc-tab').forEach(function(btn) {
     if (dir !== tDir) return;
     dragProg = Math.min(dist / THRESHOLD, 1);
     var rawProg;
-    if (y >= safeTop) {
+    if (cy >= safeTop) {
       rawProg = dist / Math.max(tStartY - safeTop, 50);
     } else {
       /* DIゾーン: y=safeTop→0 を prog 1.0→2.0 にマップ */
-      rawProg = 1.0 + (safeTop - y) / Math.max(safeTop, 10);
+      rawProg = 1.0 + (safeTop - cy) / Math.max(safeTop, 10);
     }
     lastVisualProg = Math.min(rawProg, TOUCH_CAP);
     draw2(current, pendingIdx, pendingDir, lastVisualProg);
