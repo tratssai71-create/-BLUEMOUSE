@@ -196,6 +196,22 @@
     }
     .idx-btn:hover .btn-arrow { transform: translateX(5px); }
 
+    /* Text-only variant */
+    .idx-btn--text {
+      background: transparent !important;
+      border: none;
+      box-shadow: none !important;
+      color: var(--bm-coral) !important;
+      padding-left: 0;
+      padding-right: 0;
+    }
+    .idx-btn--text:hover {
+      background: transparent !important;
+      box-shadow: none !important;
+      color: var(--bm-coral-dark) !important;
+      transform: none;
+    }
+
     /* Ghost variant (recruit) */
     .idx-btn--ghost {
       background: transparent;
@@ -395,7 +411,7 @@
         <p class="idx-kicker">EARLY INTERVENTION</p>
         <h2 class="idx-title">こどもが自ら、<br>育む。</h2>
         <p class="idx-sub">土台となる「見えない力」は、<br>こどもが主役。</p>
-        <a href="./child.html" class="idx-btn js-slide-btn">児童発達支援 <span class="btn-arrow">›</span></a>
+        <a href="./child.html" class="idx-btn idx-btn--text js-slide-btn">児童発達支援 <span class="btn-arrow">›</span></a>
       </div>
     </section>
 
