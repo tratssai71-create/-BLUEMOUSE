@@ -664,9 +664,10 @@ document.querySelectorAll('.side-loc-tab').forEach(function(btn) {
       tiRX = 30 + 30 * t2; tiRY = -(10 + 10 * t2);
       tiSX = 0.80; tiSY = 1.05;
     } else {
-      /* DIゾーン prog 1.0→2.0: スクロールに連動してチルト強化 60°→80° */
-      var tDI = Math.min(prog - 1.0, 1.0);
-      tiRX = 60 + 5 * tDI; tiRY = -(20 + 1.5 * tDI);
+      /* DIゾーン: mainRangeと同レートなのでtDIは微小(0〜0.12程度)
+         スロープをmainゾーン末尾(30/0.89)と揃え視覚速度を連続化 */
+      var tDI = prog - 1.0;
+      tiRX = 60 + (30 / 0.89) * tDI; tiRY = -(20 + (10 / 0.89) * tDI);
       tiSX = 0.80; tiSY = 1.05;
     }
 
@@ -716,8 +717,8 @@ document.querySelectorAll('.side-loc-tab').forEach(function(btn) {
       tiRX0 = 30 + 30 * _t2; tiRY0 = -(10 + 10 * _t2);
       tiSX0 = 0.80; tiSY0 = 1.05;
     } else {
-      var _tDI = Math.min(startProg - 1.0, 1.0);
-      tiRX0 = 60 + 5 * _tDI; tiRY0 = -(20 + 1.5 * _tDI);
+      var _tDI = startProg - 1.0;
+      tiRX0 = 60 + (30 / 0.89) * _tDI; tiRY0 = -(20 + (10 / 0.89) * _tDI);
       tiSX0 = 0.80; tiSY0 = 1.05;
     }
     tiTY0 = Math.max(0, (1 - startProg) * 90);
@@ -848,11 +849,13 @@ document.querySelectorAll('.side-loc-tab').forEach(function(btn) {
     }
     if (dir !== tDir) return;
     dragProg = Math.min(dist / THRESHOLD, 1);
+    var mainRange = Math.max(tStartY - safeTop, 50);
     var rawProg;
     if (cy >= safeTop) {
-      rawProg = dist / Math.max(tStartY - safeTop, 50);
+      rawProg = dist / mainRange;
     } else {
-      rawProg = 1.0 + (safeTop - cy) / Math.max(safeTop, 10);
+      /* DIゾーンもmainRangeで割り同じ変化速度（px/prog）を維持 */
+      rawProg = 1.0 + (safeTop - cy) / mainRange;
     }
     lastVisualProg = Math.min(rawProg, TOUCH_CAP);
     draw2(current, pendingIdx, pendingDir, lastVisualProg);
