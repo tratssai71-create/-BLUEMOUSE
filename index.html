@@ -666,7 +666,7 @@ document.querySelectorAll('.side-loc-tab').forEach(function(btn) {
     cards[ti].style.visibility = 'visible';
     cards[ti].style.zIndex = '10';
     cards[ti].style.transform =
-      'perspective(900px) translateY(' + (dir * (prog <= 1.0 ? (1 - prog) * 90 : Math.min((prog - 1.0) * 90, 10))).toFixed(1) + 'vh)' +
+      'perspective(900px) translateY(' + (dir * Math.abs(1 - prog) * 90).toFixed(1) + 'vh)' +
       ' rotateX(' + tiRX.toFixed(2) + 'deg) rotateY(' + tiRY.toFixed(2) + 'deg)' +
       ' scale(' + tiSX.toFixed(3) + ',' + tiSY.toFixed(3) + ')';
 
@@ -704,7 +704,7 @@ document.querySelectorAll('.side-loc-tab').forEach(function(btn) {
       tiRX0 = 40 + (30 / 0.89) * _tDI; tiRY0 = -(15 + (10 / 0.89) * _tDI);
       tiSX0 = 0.80; tiSY0 = 1.00;
     }
-    tiTY0 = startProg <= 1.0 ? (1 - startProg) * 90 : Math.min((startProg - 1.0) * 90, 10);
+    tiTY0 = Math.abs(1 - startProg) * 90;
     draw2(fi, ti, dir, startProg); /* 1フレームのギャップをなくす */
     var dur = Math.max(400, 1200 * (1 - startProg)), startT = null;
     function step(ts) {
