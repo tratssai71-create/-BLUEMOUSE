@@ -838,13 +838,8 @@ document.querySelectorAll('.side-loc-tab').forEach(function(btn) {
     if (dir !== tDir) return;
     dragProg = Math.min(dist / THRESHOLD, 1);
     var mainRange = Math.max(tStartY - safeTop, 50) * 1.05;
-    var rawProg;
-    if (cy >= safeTop) {
-      rawProg = dist / mainRange;
-    } else {
-      /* DIゾーンもmainRangeで割り同じ変化速度（px/prog）を維持 */
-      rawProg = 1.0 + (safeTop - cy) / mainRange;
-    }
+    /* 全ゾーン統一式: safeTop境界でのジャンプを排除 */
+    var rawProg = dist / mainRange;
     lastVisualProg = Math.min(rawProg, TOUCH_CAP);
     draw2(current, pendingIdx, pendingDir, lastVisualProg);
     /* iOSがtouchmoveを遮断した場合: touchendを待つ（緊急時3秒後にフォールバック） */
