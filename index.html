@@ -841,7 +841,7 @@ document.querySelectorAll('.side-loc-tab').forEach(function(btn) {
     }
     if (dir !== tDir) return;
     dragProg = Math.min(dist / THRESHOLD, 1);
-    var swipeRange = Math.max(tStartY - safeTop, 50);
+    var swipeRange = Math.max(tStartY, 50);
     lastVisualProg = Math.min(dist / swipeRange, TOUCH_CAP);
     draw2(current, pendingIdx, pendingDir, lastVisualProg);
     /* iOSがtouchmoveを遮断した場合: touchendを待つ（緊急時3秒後にフォールバック） */
