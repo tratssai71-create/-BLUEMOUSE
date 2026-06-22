@@ -613,17 +613,19 @@ document.querySelectorAll('.side-loc-tab').forEach(function(btn) {
 
   function pad2(x) { return (x < 10 ? '0' : '') + x; }
 
+  function readSafeTop() {
+    var el = document.createElement('div');
+    el.style.cssText = 'position:fixed;top:0;left:0;width:1px;height:env(safe-area-inset-top,0px);pointer-events:none;visibility:hidden';
+    document.body.appendChild(el);
+    var h = el.getBoundingClientRect().height || 0;
+    document.body.removeChild(el);
+    return h;
+  }
+
   function setup() {
     vh = window.innerHeight;
-    safeTop = (function() {
-      var el = document.createElement('div');
-      el.style.cssText = 'position:fixed;top:0;left:0;right:0;height:0;padding-top:env(safe-area-inset-top,0px);pointer-events:none;visibility:hidden';
-      document.body.appendChild(el);
-      var h = el.offsetHeight || 0;
-      document.body.removeChild(el);
-      return h;
-    })();
-    TOUCH_CAP = safeTop > 20 ? 0.98 : 0.95;
+    safeTop = readSafeTop();
+    TOUCH_CAP = 1.0;
     THRESHOLD = vh * 0.50;
     if (spacer) spacer.style.height = (n * vh) + 'px';
   }
@@ -824,6 +826,8 @@ document.querySelectorAll('.side-loc-tab').forEach(function(btn) {
   }
   window.addEventListener('touchstart', function (e) {
     clearTimeout(tStopTimer); tStopTimer = null;
+    /* setup()が早期実行でenv()未解決だった場合の再読み取り */
+    if (safeTop === 0) safeTop = readSafeTop();
     tStartY = e.touches[0].clientY; tActive = false;
     tHistory = [{ t: Date.now(), y: tStartY }];
   }, { passive: true });
