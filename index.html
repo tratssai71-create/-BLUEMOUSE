@@ -92,17 +92,6 @@
       transform-origin: center center;
     }
 
-    /* ===== ベール（非アクティブ時の暗幕 → アクティブで消える） ===== */
-    .idx-veil {
-      position: absolute;
-      inset: 0;
-      background: rgba(20,12,6,0.45);
-      z-index: 2;
-      pointer-events: none;
-      opacity: 1;
-      transition: opacity 0.75s cubic-bezier(0.22,1,0.36,1);
-    }
-    .idx-snap-card.is-active .idx-veil { opacity: 0; }
 
 
     /* ===== オーバーレイ（テキストエリア） ===== */
@@ -387,7 +376,6 @@
           <img class="idx-photo__img" src="./photos/IMG_8852.jpg" alt="BLUE MOUSE" />
         </div>
       </div>
-      <div class="idx-veil"></div>
       <div class="idx-overlay idx-overlay--bl">
         <p class="idx-kicker">PHILOSOPHY</p>
         <h2 class="idx-title">主体性療育から<br>IT療育へ</h2>
@@ -403,7 +391,6 @@
           <img class="idx-photo__img" src="./photos/jidou_child_opt.jpg" alt="児童発達支援" />
         </div>
       </div>
-      <div class="idx-veil"></div>
       <div class="idx-overlay idx-overlay--bl">
         <p class="idx-kicker">EARLY INTERVENTION</p>
         <h2 class="idx-title">こどもが自ら、<br>育む。</h2>
@@ -419,7 +406,6 @@
           <img class="idx-photo__img" src="./photos/hokago_opt.jpg" alt="放課後等デイサービス" />
         </div>
       </div>
-      <div class="idx-veil"></div>
       <div class="idx-overlay idx-overlay--br">
         <p class="idx-kicker">AFTER SCHOOL</p>
         <h2 class="idx-title">強みとなる<br>「見える力」を、<br>武器に。</h2>
@@ -435,7 +421,6 @@
           <img class="idx-photo__img" src="./photos/recruit_opt.jpg" alt="採用情報" />
         </div>
       </div>
-      <div class="idx-veil"></div>
       <div class="idx-overlay idx-overlay--bl">
         <p class="idx-kicker">RECRUIT</p>
         <h2 class="idx-title">自分らしく、<br>働く。</h2>
@@ -658,17 +643,17 @@ document.querySelectorAll('.side-loc-tab').forEach(function(btn) {
     var tiRX, tiRY, tiSX, tiSY;
     if (prog <= 0.10) {
       var t1 = prog / 0.10;
-      tiRX = 20 * t1; tiRY = -5 * t1; tiSX = 0.80; tiSY = 1.05;
+      tiRX = 20 * t1; tiRY = -5 * t1; tiSX = 0.80; tiSY = 1.00;
     } else if (prog <= 1.0) {
       var t2 = Math.min((prog - 0.10) / 0.89, 1.0);
       tiRX = 30 + 10 * t2; tiRY = -(5 + 5 * t2);
-      tiSX = 0.80; tiSY = 1.05;
+      tiSX = 0.80; tiSY = 1.00;
     } else {
       /* DIゾーン: mainRangeと同レートなのでtDIは微小(0〜0.12程度)
          スロープをmainゾーン末尾と揃え視覚速度を連続化 */
       var tDI = prog - 1.0;
       tiRX = 40 + (30 / 0.89) * tDI; tiRY = -(10 + (10 / 0.89) * tDI);
-      tiSX = 0.80; tiSY = 1.05;
+      tiSX = 0.80; tiSY = 1.00;
     }
 
     cards[fi].style.visibility = 'visible';
@@ -685,8 +670,6 @@ document.querySelectorAll('.side-loc-tab').forEach(function(btn) {
       ' rotateX(' + tiRX.toFixed(2) + 'deg) rotateY(' + tiRY.toFixed(2) + 'deg)' +
       ' scale(' + tiSX.toFixed(3) + ',' + tiSY.toFixed(3) + ')';
 
-    var veil = cards[ti].querySelector('.idx-veil');
-    if (veil) { veil.style.transition = 'none'; veil.style.opacity = String(Math.max(0, 1 - prog)); }
   }
 
   function startDrag(dir) {
@@ -708,21 +691,20 @@ document.querySelectorAll('.side-loc-tab').forEach(function(btn) {
     locked = true;
     updateUI(ti);
     /* ti の開始値を startProg から計算（最後の描画値を直接引き継ぐ） */
-    var tiRX0, tiRY0, tiSX0, tiSY0, tiTY0, tiVeil0;
+    var tiRX0, tiRY0, tiSX0, tiSY0, tiTY0;
     if (startProg <= 0.10) {
       var _t1 = startProg / 0.10;
-      tiRX0 = 20 * _t1; tiRY0 = -5 * _t1; tiSX0 = 0.80; tiSY0 = 1.05;
+      tiRX0 = 20 * _t1; tiRY0 = -5 * _t1; tiSX0 = 0.80; tiSY0 = 1.00;
     } else if (startProg <= 1.0) {
       var _t2 = Math.min((startProg - 0.10) / 0.89, 1.0);
       tiRX0 = 30 + 10 * _t2; tiRY0 = -(5 + 5 * _t2);
-      tiSX0 = 0.80; tiSY0 = 1.05;
+      tiSX0 = 0.80; tiSY0 = 1.00;
     } else {
       var _tDI = startProg - 1.0;
       tiRX0 = 40 + (30 / 0.89) * _tDI; tiRY0 = -(10 + (10 / 0.89) * _tDI);
-      tiSX0 = 0.80; tiSY0 = 1.05;
+      tiSX0 = 0.80; tiSY0 = 1.00;
     }
     tiTY0 = Math.max(0, (1 - startProg) * 90);
-    tiVeil0 = Math.max(0, 1 - startProg);
     draw2(fi, ti, dir, startProg); /* 1フレームのギャップをなくす */
     var dur = Math.max(400, 1200 * (1 - startProg)), startT = null;
     function step(ts) {
@@ -740,13 +722,9 @@ document.querySelectorAll('.side-loc-tab').forEach(function(btn) {
         'perspective(900px) translateY(' + tiTY.toFixed(1) + 'vh)' +
         ' rotateX(' + tiRX.toFixed(2) + 'deg) rotateY(' + tiRY.toFixed(2) + 'deg)' +
         ' scale(' + tiSX.toFixed(3) + ',' + tiSY.toFixed(3) + ')';
-      var veil = cards[ti].querySelector('.idx-veil');
-      if (veil) { veil.style.transition = 'none'; veil.style.opacity = String(tiVeil0 * (1 - ep)); }
       if (p < 1) { requestAnimationFrame(step); return; }
       current = ti;
       activateCard(cards[ti]); deactivateCard(cards[fi]);
-      var veil2 = cards[ti].querySelector('.idx-veil');
-      if (veil2) { veil2.style.transition = ''; veil2.style.opacity = ''; }
       cards[ti].style.transform = ''; cards[ti].style.opacity = ''; cards[ti].style.zIndex = '';
       cards[fi].style.visibility = 'hidden'; cards[fi].style.transform = ''; cards[fi].style.opacity = ''; cards[fi].style.zIndex = '';
       cards.forEach(function (c, i) { if (i !== current) c.style.visibility = 'hidden'; });
