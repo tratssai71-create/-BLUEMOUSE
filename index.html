@@ -666,7 +666,7 @@ document.querySelectorAll('.side-loc-tab').forEach(function(btn) {
     } else {
       /* DIゾーン prog 1.0→2.0: スクロールに連動してチルト強化 60°→80° */
       var tDI = Math.min(prog - 1.0, 1.0);
-      tiRX = 60 + 20 * tDI; tiRY = -(20 + 5 * tDI);
+      tiRX = 60 + 5 * tDI; tiRY = -(20 + 1.5 * tDI);
       tiSX = 0.80; tiSY = 1.05;
     }
 
@@ -717,7 +717,7 @@ document.querySelectorAll('.side-loc-tab').forEach(function(btn) {
       tiSX0 = 0.80; tiSY0 = 1.05;
     } else {
       var _tDI = Math.min(startProg - 1.0, 1.0);
-      tiRX0 = 60 + 20 * _tDI; tiRY0 = -(20 + 5 * _tDI);
+      tiRX0 = 60 + 5 * _tDI; tiRY0 = -(20 + 1.5 * _tDI);
       tiSX0 = 0.80; tiSY0 = 1.05;
     }
     tiTY0 = Math.max(0, (1 - startProg) * 90);
