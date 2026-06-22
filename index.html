@@ -625,7 +625,7 @@ document.querySelectorAll('.side-loc-tab').forEach(function(btn) {
   function setup() {
     vh = window.innerHeight;
     safeTop = readSafeTop();
-    TOUCH_CAP = 1.0;
+    TOUCH_CAP = 0.99; /* drag中はsnap phase(0.99→1.0)に入らせない */
     THRESHOLD = vh * 0.50;
     if (spacer) spacer.style.height = (n * vh) + 'px';
   }
