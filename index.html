@@ -649,14 +649,14 @@ document.querySelectorAll('.side-loc-tab').forEach(function(btn) {
       var t2 = Math.min((prog - 0.10) / 0.89, 1.0);
       tiRX = 30 + 20 * t2; tiRY = -(10 + 10 * t2);
       tiSX = 0.80; tiSY = 1.00;
-      tiTY = dir * (-5 + (1.0 - t2) * 86);                 /* 81→-5vh */
+      tiTY = dir * (1.0 - t2) * 81;                         /* 81→0vh */
     } else {
       /* DIゾーン: mainRangeと同レートなのでtDIは微小(0〜0.12程度)
          スロープをmainゾーン末尾と揃え視覚速度を連続化 */
       var tDI = prog - 1.0;
       tiRX = 50 + (30 / 0.89) * tDI; tiRY = -(20 + (10 / 0.89) * tDI);
       tiSX = 0.80; tiSY = 1.00;
-      tiTY = dir * (-5);                                   /* -5vh固定 */
+      tiTY = dir * Math.max(-5, -tDI * 90);               /* 0→-5vh */
     }
 
     cards[fi].style.visibility = 'visible';
@@ -711,9 +711,9 @@ document.querySelectorAll('.side-loc-tab').forEach(function(btn) {
       tiTY0 = (1 - startProg) * 90;
     } else if (startProg <= 1.0) {
       var _t2b = Math.min((startProg - 0.10) / 0.89, 1.0);
-      tiTY0 = -5 + (1.0 - _t2b) * 86;
+      tiTY0 = (1.0 - _t2b) * 81;
     } else {
-      tiTY0 = -5;
+      tiTY0 = Math.max(-5, -(startProg - 1.0) * 90);
     }
     draw2(fi, ti, dir, startProg); /* 1フレームのギャップをなくす */
     var dur = Math.max(400, 1200 * (1 - startProg)), startT = null;
