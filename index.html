@@ -743,6 +743,7 @@ document.querySelectorAll('.side-loc-tab').forEach(function(btn) {
     }
     draw2(fi, ti, dir, startProg); /* 1フレームのギャップをなくす */
     var dur = Math.max(1200, 7000 * (1 - startProg)), startT = null;
+    var textActivated = false;
     function step(ts) {
       if (!startT) startT = ts;
       var p = Math.min((ts - startT) / dur, 1);
@@ -760,9 +761,13 @@ document.querySelectorAll('.side-loc-tab').forEach(function(btn) {
         ' rotateX(' + tiRX.toFixed(2) + 'deg) rotateY(' + tiRY.toFixed(2) + 'deg)' +
         ' rotateZ(' + tiRZ.toFixed(2) + 'deg)' +
         ' scale(' + tiSX.toFixed(3) + ',' + tiSY.toFixed(3) + ')';
+      if (!textActivated && ep >= 0.6) {
+        textActivated = true;
+        activateCard(cards[ti]); deactivateCard(cards[fi]);
+      }
       if (p < 1) { requestAnimationFrame(step); return; }
       current = ti;
-      activateCard(cards[ti]); deactivateCard(cards[fi]);
+      if (!textActivated) { activateCard(cards[ti]); deactivateCard(cards[fi]); }
       cards[ti].style.transform = ''; cards[ti].style.opacity = ''; cards[ti].style.zIndex = '';
       cards[fi].style.visibility = 'hidden'; cards[fi].style.transform = ''; cards[fi].style.opacity = ''; cards[fi].style.zIndex = '';
       cards.forEach(function (c, i) { if (i !== current) c.style.visibility = 'hidden'; });
