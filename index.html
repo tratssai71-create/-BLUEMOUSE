@@ -664,7 +664,7 @@ document.querySelectorAll('.side-loc-tab').forEach(function(btn) {
     var tiRX, tiRY, tiRZ, tiSX, tiSY, tiTY;
     if (prog <= 0.10) {
       var t1 = prog / 0.10;
-      tiRX = 30 * t1; tiRY = -(5 + 5 * t1); tiSX = 0.90; tiSY = 1.10;
+      tiRX = 20 + 10 * t1; tiRY = -(5 + 5 * t1); tiSX = 0.90; tiSY = 1.10;
       tiTY = dir * (1 - prog) * 90;                       /* 90→81vh */
       tiRZ = 0;                                            /* 0°固定 */
     } else if (prog <= 1.0) {
@@ -723,7 +723,7 @@ document.querySelectorAll('.side-loc-tab').forEach(function(btn) {
     var tiRX0, tiRY0, tiRZ0, tiSX0, tiSY0, tiTY0;
     if (startProg <= 0.10) {
       var _t1 = startProg / 0.10;
-      tiRX0 = 30 * _t1; tiRY0 = -(5 + 5 * _t1); tiSX0 = 0.90; tiSY0 = 1.10;
+      tiRX0 = 20 + 10 * _t1; tiRY0 = -(5 + 5 * _t1); tiSX0 = 0.90; tiSY0 = 1.10;
       tiRZ0 = 0;
     } else if (startProg <= 1.0) {
       var _t2 = Math.min((startProg - 0.10) / 0.90, 1.0);
