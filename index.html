@@ -648,13 +648,15 @@ document.querySelectorAll('.side-loc-tab').forEach(function(btn) {
   function draw2(fi, ti, dir, prog) {
 
     /* 退場(fi) */
-    var fiRX, fiRY, fiSX, fiSY;
+    var fiRX, fiRY, fiRZ, fiSX, fiSY;
     if (prog <= 0.10) {
       var tf1 = prog / 0.10;
       fiRX = -20 * tf1; fiRY = 20 * tf1;
+      fiRZ = 0;
     } else {
       var tf2 = Math.min((prog - 0.10) / 0.90, 1);
       fiRX = -20 + 20 * tf2; fiRY = 20 - 20 * tf2;
+      fiRZ = 3 * tf2;
     }
     fiSX = 1.0; fiSY = 1.0;
 
@@ -686,6 +688,7 @@ document.querySelectorAll('.side-loc-tab').forEach(function(btn) {
     cards[fi].style.transform =
       'perspective(900px) translateY(' + (-dir * prog * 130).toFixed(1) + 'vh)' +
       ' rotateX(' + fiRX.toFixed(2) + 'deg) rotateY(' + fiRY.toFixed(2) + 'deg)' +
+      ' rotateZ(' + fiRZ.toFixed(2) + 'deg)' +
       ' scale(' + fiSX.toFixed(3) + ',' + fiSY.toFixed(3) + ')';
 
     cards[ti].style.visibility = 'visible';
