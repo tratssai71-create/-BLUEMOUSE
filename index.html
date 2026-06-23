@@ -694,7 +694,7 @@ document.querySelectorAll('.side-loc-tab').forEach(function(btn) {
     cards[ti].style.visibility = 'visible';
     cards[ti].style.zIndex = '10';
     cards[ti].style.transform =
-      'perspective(900px) translateY(' + tiTY.toFixed(1) + 'vh)' +
+      'perspective(800px) translateY(' + tiTY.toFixed(1) + 'vh)' +
       ' rotateX(' + tiRX.toFixed(2) + 'deg) rotateY(' + tiRY.toFixed(2) + 'deg)' +
       ' rotateZ(' + tiRZ.toFixed(2) + 'deg)' +
       ' scale(' + tiSX.toFixed(3) + ',' + tiSY.toFixed(3) + ')';
@@ -760,7 +760,7 @@ document.querySelectorAll('.side-loc-tab').forEach(function(btn) {
       var tiSY = tiSY0 + (1 - tiSY0) * ep;
       var tiTY = tiTY0 * (1 - ep);
       cards[ti].style.transform =
-        'perspective(900px) translateY(' + tiTY.toFixed(1) + 'vh)' +
+        'perspective(800px) translateY(' + tiTY.toFixed(1) + 'vh)' +
         ' rotateX(' + tiRX.toFixed(2) + 'deg) rotateY(' + tiRY.toFixed(2) + 'deg)' +
         ' rotateZ(' + tiRZ.toFixed(2) + 'deg)' +
         ' scale(' + tiSX.toFixed(3) + ',' + tiSY.toFixed(3) + ')';
