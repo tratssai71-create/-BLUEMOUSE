@@ -672,7 +672,7 @@ document.querySelectorAll('.side-loc-tab').forEach(function(btn) {
       tiRX = 20 + 20 * t2; tiRY = -(10 + 10 * t2);
       tiSX = 0.80; tiSY = 0.80;
       tiTY = dir * (1.0 - t2) * 81;                       /* 81→0vh */
-      tiRZ = 7 * t2;                                       /* 0→7° */
+      tiRZ = 4 * t2;                                       /* 0→4° */
     } else {
       /* DIゾーン: mainRangeと同レートなのでtDIは微小(0〜0.12程度)
          スロープをmainゾーン末尾と揃え視覚速度を連続化 */
@@ -680,7 +680,7 @@ document.querySelectorAll('.side-loc-tab').forEach(function(btn) {
       tiRX = 40 + (20 / 0.90) * tDI; tiRY = -(20 + (10 / 0.90) * tDI);
       tiSX = 0.80; tiSY = 0.80;
       tiTY = dir * Math.max(-5, -tDI * 90);               /* 0→-5vh */
-      tiRZ = 7;
+      tiRZ = 4;
     }
 
     cards[fi].style.visibility = 'visible';
@@ -729,12 +729,12 @@ document.querySelectorAll('.side-loc-tab').forEach(function(btn) {
       var _t2 = Math.min((startProg - 0.10) / 0.90, 1.0);
       tiRX0 = 20 + 20 * _t2; tiRY0 = -(10 + 10 * _t2);
       tiSX0 = 0.80; tiSY0 = 0.80;
-      tiRZ0 = 7 * _t2;
+      tiRZ0 = 4 * _t2;
     } else {
       var _tDI = startProg - 1.0;
       tiRX0 = 40 + (20 / 0.90) * _tDI; tiRY0 = -(20 + (10 / 0.90) * _tDI);
       tiSX0 = 0.80; tiSY0 = 0.80;
-      tiRZ0 = 7;
+      tiRZ0 = 4;
     }
     if (startProg <= 0.10) {
       tiTY0 = (1 - startProg) * 90;
