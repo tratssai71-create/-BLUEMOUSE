@@ -671,7 +671,7 @@ document.querySelectorAll('.side-loc-tab').forEach(function(btn) {
       var t2 = Math.min((prog - 0.10) / 0.90, 1.0);
       tiRX = 20 + 20 * t2; tiRY = -(10 + 10 * t2);
       tiSX = 0.80; tiSY = 0.85;
-      tiTY = dir * (1.0 - t2) * 76.5;                     /* 76.5→0vh */
+      tiTY = dir * ((1.0 - t2) * 76.5 - 10 * t2);          /* 76.5→-10vh */
       tiRZ = -1 * t2;                                      /* 0→-1° */
     } else {
       /* DIゾーン: mainRangeと同レートなのでtDIは微小(0〜0.12程度)
@@ -679,7 +679,7 @@ document.querySelectorAll('.side-loc-tab').forEach(function(btn) {
       var tDI = prog - 1.0;
       tiRX = 40 + (20 / 0.90) * tDI; tiRY = -(20 + (10 / 0.90) * tDI);
       tiSX = 0.80; tiSY = 0.85;
-      tiTY = dir * Math.max(-5, -tDI * 85);               /* 0→-5vh */
+      tiTY = dir * Math.max(-15, -10 - (86.5 / 0.90) * tDI); /* -10→-15vh */
       tiRZ = -1;
     }
 
@@ -740,9 +740,9 @@ document.querySelectorAll('.side-loc-tab').forEach(function(btn) {
       tiTY0 = (1 - startProg) * 85;
     } else if (startProg <= 1.0) {
       var _t2b = Math.min((startProg - 0.10) / 0.90, 1.0);
-      tiTY0 = (1.0 - _t2b) * 76.5;
+      tiTY0 = (1.0 - _t2b) * 76.5 - 10 * _t2b;
     } else {
-      tiTY0 = Math.max(-5, -(startProg - 1.0) * 85);
+      tiTY0 = Math.max(-15, -10 - (86.5 / 0.90) * (startProg - 1.0));
     }
     draw2(fi, ti, dir, startProg); /* 1フレームのギャップをなくす */
     var dur = Math.max(1200, 7000 * (1 - startProg)), startT = null;
