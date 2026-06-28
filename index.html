@@ -316,30 +316,6 @@
       .idx-counter { right: 18px; }
     }
 
-    /* ===== ページ遷移オーバーレイ ===== */
-    #page-transition {
-      position: fixed;
-      inset: 0;
-      background: rgba(255, 254, 251, 0.9);
-      z-index: 10000;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      transform: scaleX(0);
-      transform-origin: left center;
-      transition: transform 0.38s cubic-bezier(0.65, 0, 0.35, 1);
-      pointer-events: none;
-    }
-    #page-transition.is-enter {
-      transform: scaleX(1);
-      pointer-events: all;
-    }
-    #page-transition img {
-      width: 220px;
-      opacity: 0;
-      transition: opacity 0.28s ease 0.3s;
-    }
-    #page-transition.is-enter img { opacity: 1; }
   </style>
 </head>
 <body>
@@ -986,16 +962,12 @@ document.querySelectorAll('.side-loc-tab').forEach(function(btn) {
 })();
 </script>
 
-<div id="page-transition">
-  <img src="./logo.png" alt="BLUE MOUSE" />
-</div>
-
 <script>
 (function () {
-  var overlay = document.getElementById('page-transition');
   window.addEventListener('pageshow', function (e) {
     if (e.persisted || (performance.getEntriesByType('navigation')[0] || {}).type === 'back_forward') {
-      overlay.classList.remove('is-enter');
+      var leaving = document.querySelector('.idx-snap-card.is-leaving');
+      if (leaving) leaving.classList.remove('is-leaving');
     }
   });
   document.addEventListener('click', function (e) {
@@ -1005,7 +977,6 @@ document.querySelectorAll('.side-loc-tab').forEach(function(btn) {
     var href = btn.href;
     var activeCard = document.querySelector('.idx-snap-card.is-active');
     if (activeCard) activeCard.classList.add('is-leaving');
-    overlay.classList.add('is-enter');
     setTimeout(function () { window.location.href = href; }, 700);
   });
 })();
