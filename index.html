@@ -666,13 +666,13 @@ document.querySelectorAll('.side-loc-tab').forEach(function(btn) {
       var t1 = prog / 0.10;
       tiRX = 2 + 2 * t1; tiRY = 11 - 3 * t1; tiSX = 0.85; tiSY = 0.85;
       tiTY = dir * (1 - prog) * 85;                       /* 85→76.5vh */
-      tiRZ = 4.5 + 4.5 * t1;                               /* 4.5→9° */
+      tiRZ = 4.5 - 2 * t1;                                 /* 4.5→2.5° */
     } else if (prog <= 1.0) {
       var t2 = Math.min((prog - 0.10) / 0.90, 1.0);
       tiRX = 4 + 36 * t2; tiRY = 8 - 28 * t2;
       tiSX = 0.85; tiSY = 0.85;
       tiTY = dir * ((1.0 - t2) * 76.5 - 3 * t2);           /* 76.5→-3vh */
-      tiRZ = 9 - 8 * t2;                                   /* 9→1° */
+      tiRZ = 2.5 - 1.5 * t2;                               /* 2.5→1° */
     } else {
       /* DIゾーン: mainRangeと同レートなのでtDIは微小(0〜0.12程度)
          スロープをmainゾーン末尾と揃え視覚速度を連続化 */
@@ -724,12 +724,12 @@ document.querySelectorAll('.side-loc-tab').forEach(function(btn) {
     if (startProg <= 0.10) {
       var _t1 = startProg / 0.10;
       tiRX0 = 2 + 2 * _t1; tiRY0 = 11 - 3 * _t1; tiSX0 = 0.85; tiSY0 = 0.85;
-      tiRZ0 = 4.5 + 4.5 * _t1;
+      tiRZ0 = 4.5 - 2 * _t1;
     } else if (startProg <= 1.0) {
       var _t2 = Math.min((startProg - 0.10) / 0.90, 1.0);
       tiRX0 = 4 + 36 * _t2; tiRY0 = 8 - 28 * _t2;
       tiSX0 = 0.85; tiSY0 = 0.85;
-      tiRZ0 = 9 - 8 * _t2;
+      tiRZ0 = 2.5 - 1.5 * _t2;
     } else {
       var _tDI = startProg - 1.0;
       tiRX0 = 40 + (20 / 0.90) * _tDI; tiRY0 = -(20 + (10 / 0.90) * _tDI);
