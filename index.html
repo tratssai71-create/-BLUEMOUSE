@@ -62,26 +62,13 @@
       z-index: 20;
     }
     @keyframes cardLeaveArc {
-      0%   { transform: perspective(900px) translate(0,   0)   rotateX(0deg)  rotateY(0deg)   scale(0.95); }
-      35%  { transform: perspective(900px) translate(4vw, 0)   rotateX(10deg) rotateY(-18deg) scale(0.91); }
-      100% { transform: perspective(900px) translate(12vw, 0) rotateX(0deg)  rotateY(0deg)   scale(0.85); }
+      0%   { transform: perspective(900px) translate(0,    0) rotateX(0deg)  rotateY(0deg)   scale(0.95); }
+      35%  { transform: perspective(900px) translate(0,    0) rotateX(10deg) rotateY(-18deg) scale(0.91); }
+      100% { transform: perspective(900px) translate(140vw,0) rotateX(0deg)  rotateY(0deg)   scale(0.85); }
     }
     .idx-snap-card.is-leaving {
       animation: cardLeaveArc 1.2s cubic-bezier(0.45, 0, 0.55, 1) forwards;
       z-index: 20;
-    }
-    /* 写真は移動+チルトが完了してから消える */
-    .idx-snap-card.is-leaving .idx-photo {
-      transition: opacity 0.3s ease-in 1.2s;
-      opacity: 0;
-    }
-    /* テキストも写真と同時に消え切る */
-    .idx-snap-card.is-active.is-leaving .idx-kicker,
-    .idx-snap-card.is-active.is-leaving .idx-title,
-    .idx-snap-card.is-active.is-leaving .idx-sub,
-    .idx-snap-card.is-active.is-leaving .idx-btn {
-      opacity: 0 !important;
-      transition: opacity 0.3s ease-in 1.2s !important;
     }
     @media (max-width: 780px) {
       .idx-snap-card { left: 0; width: 100%; height: 100svh; }
@@ -1001,7 +988,7 @@ document.querySelectorAll('.side-loc-tab').forEach(function(btn) {
       activeCard.classList.add('is-pressing');
       setTimeout(function () { activeCard.classList.add('is-leaving'); }, 200);
     }
-    setTimeout(function () { window.location.href = href; }, 1700);
+    setTimeout(function () { window.location.href = href; }, 1400);
   });
 })();
 </script>
