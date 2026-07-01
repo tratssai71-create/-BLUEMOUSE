@@ -75,14 +75,13 @@
       transition: opacity 0.7s ease-in 0.5s;
       opacity: 0;
     }
-    /* テキストは先に速くフェード */
+    /* テキストは写真と同時に消え切る */
     .idx-snap-card.is-active.is-leaving .idx-kicker,
     .idx-snap-card.is-active.is-leaving .idx-title,
     .idx-snap-card.is-active.is-leaving .idx-sub,
     .idx-snap-card.is-active.is-leaving .idx-btn {
       opacity: 0 !important;
-      transition: opacity 0.4s ease !important;
-      transition-delay: 0s !important;
+      transition: opacity 0.7s ease-in 0.5s !important;
     }
     @media (max-width: 780px) {
       .idx-snap-card { left: 0; width: 100%; height: 100svh; }
