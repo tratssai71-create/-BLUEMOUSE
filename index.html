@@ -61,9 +61,14 @@
       transform: scale(0.95);
       z-index: 20;
     }
+    @keyframes cardLeaveArc {
+      0%   { transform: perspective(900px) translate(0,   0)   rotateX(0deg)  rotateY(0deg)   scale(0.95); }
+      35%  { transform: perspective(900px) translate(1vw, 4vh) rotateX(10deg) rotateY(-18deg) scale(0.91); }
+      70%  { transform: perspective(900px) translate(3vw, 0)   rotateX(0deg)  rotateY(0deg)   scale(0.87); }
+      100% { transform: perspective(900px) translate(12vw, 0) rotateX(0deg)  rotateY(0deg)   scale(0.85); }
+    }
     .idx-snap-card.is-leaving {
-      transition: transform 1.2s cubic-bezier(0.65, 0, 0.35, 1);
-      transform: perspective(900px) translateX(12vw) rotateX(10deg) rotateY(-18deg) scale(0.85);
+      animation: cardLeaveArc 1.2s cubic-bezier(0.45, 0, 0.55, 1) forwards;
       z-index: 20;
     }
     /* 写真は遅れて長く残る（余韻） */
