@@ -57,7 +57,7 @@
     }
     /* ===== ボタンタップ時のカード退場（横フェードアウト） ===== */
     .idx-snap-card.is-pressing {
-      transition: transform 0.1s ease;
+      transition: transform 0.2s cubic-bezier(0.33, 1, 0.68, 1);
       transform: scale(0.95);
       z-index: 20;
     }
@@ -996,9 +996,9 @@ document.querySelectorAll('.side-loc-tab').forEach(function(btn) {
     var activeCard = document.querySelector('.idx-snap-card.is-active');
     if (activeCard) {
       activeCard.classList.add('is-pressing');
-      setTimeout(function () { activeCard.classList.add('is-leaving'); }, 100);
+      setTimeout(function () { activeCard.classList.add('is-leaving'); }, 200);
     }
-    setTimeout(function () { window.location.href = href; }, 1400);
+    setTimeout(function () { window.location.href = href; }, 1500);
   });
 })();
 </script>
