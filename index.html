@@ -63,7 +63,7 @@
       100%  { transform: perspective(900px) translate(140vw,0) rotateX(0deg)  rotateY(0deg)   scale(0.85); }
     }
     .idx-snap-card.is-leaving {
-      animation: cardLeaveArc 2.0s ease-in-out forwards;
+      animation: cardLeaveArc 2.0s cubic-bezier(0.65, 0, 0.35, 1) forwards;
       z-index: 20;
     }
     @media (max-width: 780px) {
