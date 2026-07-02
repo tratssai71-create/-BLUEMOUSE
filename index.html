@@ -56,13 +56,8 @@
       z-index: 10;
     }
     /* ===== ボタンタップ時のカード退場（横フェードアウト） ===== */
-    .idx-snap-card.is-pressing {
-      transition: transform 0.2s cubic-bezier(0.33, 1, 0.68, 1);
-      transform: scale(0.95);
-      z-index: 20;
-    }
     @keyframes cardLeaveArc {
-      0%   { transform: perspective(900px) translate(0,    0) rotateX(0deg)  rotateY(0deg)   scale(0.95); }
+      0%   { transform: perspective(900px) translate(0,    0) rotateX(0deg)  rotateY(0deg)   scale(1);    }
       35%  { transform: perspective(900px) translate(0,    0) rotateX(10deg) rotateY(-18deg) scale(0.91); }
       100% { transform: perspective(900px) translate(140vw,0) rotateX(0deg)  rotateY(0deg)   scale(0.85); }
     }
@@ -974,8 +969,8 @@ document.querySelectorAll('.side-loc-tab').forEach(function(btn) {
 (function () {
   window.addEventListener('pageshow', function (e) {
     if (e.persisted || (performance.getEntriesByType('navigation')[0] || {}).type === 'back_forward') {
-      var leaving = document.querySelector('.idx-snap-card.is-leaving, .idx-snap-card.is-pressing');
-      if (leaving) { leaving.classList.remove('is-leaving'); leaving.classList.remove('is-pressing'); }
+      var leaving = document.querySelector('.idx-snap-card.is-leaving');
+      if (leaving) { leaving.classList.remove('is-leaving'); }
     }
   });
   document.addEventListener('click', function (e) {
@@ -985,10 +980,9 @@ document.querySelectorAll('.side-loc-tab').forEach(function(btn) {
     var href = btn.href;
     var activeCard = document.querySelector('.idx-snap-card.is-active');
     if (activeCard) {
-      activeCard.classList.add('is-pressing');
-      setTimeout(function () { activeCard.classList.add('is-leaving'); }, 200);
+      activeCard.classList.add('is-leaving');
     }
-    setTimeout(function () { window.location.href = href; }, 1400);
+    setTimeout(function () { window.location.href = href; }, 1200);
   });
 })();
 </script>
