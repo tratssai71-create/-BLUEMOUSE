@@ -739,7 +739,15 @@ document.querySelectorAll('.side-loc-tab').forEach(function(btn) {
       tiTY0 = Math.max(-8, -3 - (79.5 / 0.90) * (startProg - 1.0));
     }
     draw2(fi, ti, dir, startProg); /* 1フレームのギャップをなくす */
-    var dur = Math.max(1200, 7000 * (1 - startProg)), startT = null;
+    var dur;
+    if (startProg > 1.0) {
+      /* DIゾーンからの戻り: 引っ張った深さ(tDI)に比例して1.2〜2.0秒 */
+      var tDI = startProg - 1.0;
+      dur = 1200 + 800 * tDI;
+    } else {
+      dur = Math.max(1200, 7000 * (1 - startProg));
+    }
+    var startT = null;
     var textActivated = false;
     function step(ts) {
       if (!startT) startT = ts;
