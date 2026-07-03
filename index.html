@@ -57,10 +57,11 @@
     }
     /* ===== ボタンタップ時のカード退場（横フェードアウト） ===== */
     @keyframes cardLeaveSlide {
-      0%    { translate: 0     0; scale: 1;    }
-      5%    { translate: 0     0; scale: 0.99; }
-      75%   { translate: 50vw  0; scale: 0.91; }
-      100%  { translate: 180vw 0; scale: 0.85; }
+      0%     { translate: 0       0; scale: 1;     }
+      5%     { translate: 0       0; scale: 0.99;  }
+      32.5%  { translate: 8.04vw  0; scale: 0.977; }
+      47.5%  { translate: 96.14vw 0; scale: 0.923; }
+      100%   { translate: 180vw   0; scale: 0.85;  }
     }
     @keyframes cardLeaveTilt {
       0%    { transform: perspective(900px) rotateX(0deg)  rotateY(0deg);   }
