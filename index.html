@@ -671,7 +671,7 @@ document.querySelectorAll('.side-loc-tab').forEach(function(btn) {
       /* DIゾーン: mainRangeと同レートなのでtDIは微小(0〜0.12程度)
          スロープをmainゾーン末尾と揃え視覚速度を連続化 */
       var tDI = prog - 1.0;
-      tiRX = 43 + (3 / 0.90) * tDI; tiRY = -(20 + (10 / 0.90) * tDI);
+      tiRX = 43 + (3 / 0.90) * tDI; tiRY = -(20 + (5 / 0.90) * tDI);
       tiSX = 0.85; tiSY = 0.85;
       tiTY = dir * Math.max(-8, -3 - (79.5 / 0.90) * tDI); /* -3→-8vh */
       tiRZ = 1;
