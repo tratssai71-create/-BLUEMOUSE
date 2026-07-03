@@ -56,14 +56,20 @@
       z-index: 10;
     }
     /* ===== ボタンタップ時のカード退場（横フェードアウト） ===== */
-    @keyframes cardLeaveArc {
-      0%    { transform: perspective(900px) translate(0,    0) rotateX(0deg)  rotateY(0deg)   scale(1);    }
-      5%    { transform: perspective(900px) translate(0,    0) rotateX(0deg)  rotateY(0deg)   scale(0.99); }
-      75%   { transform: perspective(900px) translate(103vw,0) rotateX(20deg) rotateY(-28deg) scale(0.91); }
-      100%  { transform: perspective(900px) translate(140vw,0) rotateX(0deg)  rotateY(0deg)   scale(0.85); }
+    @keyframes cardLeaveSlide {
+      0%    { translate: 0     0; scale: 1;    }
+      5%    { translate: 0     0; scale: 0.99; }
+      75%   { translate: 103vw 0; scale: 0.91; }
+      100%  { translate: 140vw 0; scale: 0.85; }
+    }
+    @keyframes cardLeaveTilt {
+      0%    { transform: perspective(900px) rotateX(0deg)  rotateY(0deg);   }
+      70%   { transform: perspective(900px) rotateX(20deg) rotateY(-28deg); }
+      100%  { transform: perspective(900px) rotateX(0deg)  rotateY(0deg);   }
     }
     .idx-snap-card.is-leaving {
-      animation: cardLeaveArc 2.0s cubic-bezier(0.83, 0, 0.17, 1) forwards;
+      animation: cardLeaveSlide 2.0s cubic-bezier(0.83, 0, 0.17, 1) forwards,
+                 cardLeaveTilt 1.0s cubic-bezier(0.65, 0, 0.35, 1) 100ms forwards;
       z-index: 20;
     }
     @media (max-width: 780px) {
