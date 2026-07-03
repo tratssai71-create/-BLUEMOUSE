@@ -68,7 +68,7 @@
       100%  { transform: perspective(900px) rotateX(0deg)  rotateY(0deg);   }
     }
     .idx-snap-card.is-leaving {
-      animation: cardLeaveSlide 2.0s cubic-bezier(0.83, 0, 0.17, 1) forwards,
+      animation: cardLeaveSlide 2.0s cubic-bezier(0.83, 0, 0.17, 1) 150ms forwards,
                  cardLeaveTilt 1.0s cubic-bezier(0.65, 0, 0.35, 1) 100ms forwards;
       z-index: 20;
     }
@@ -989,7 +989,7 @@ document.querySelectorAll('.side-loc-tab').forEach(function(btn) {
     if (activeCard) {
       activeCard.classList.add('is-leaving');
     }
-    setTimeout(function () { window.location.href = href; }, 2000);
+    setTimeout(function () { window.location.href = href; }, 2150);
   });
 })();
 </script>
