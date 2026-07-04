@@ -738,17 +738,17 @@ document.querySelectorAll('.side-loc-tab').forEach(function(btn) {
       tiRZ0 = 1;
     } else {
       var _tDI = startProg - 1.0;
-      tiRX0 = 43 + (3 / 0.90) * _tDI; tiRY0 = -(20 + (10 / 0.90) * _tDI);
+      tiRX0 = 43 + (3 / 0.90) * _tDI; tiRY0 = -(20 + (5 / 0.90) * _tDI);
       tiSX0 = 0.85; tiSY0 = 0.85;
       tiRZ0 = 1;
     }
     if (startProg <= 0.10) {
-      tiTY0 = (1 - startProg) * 85;
+      tiTY0 = dir * (1 - startProg) * 85;
     } else if (startProg <= 1.0) {
       var _t2b = Math.min((startProg - 0.10) / 0.90, 1.0);
-      tiTY0 = (1.0 - _t2b) * 76.5 - 3 * _t2b;
+      tiTY0 = dir * ((1.0 - _t2b) * 76.5 - 3 * _t2b);
     } else {
-      tiTY0 = Math.max(-8, -3 - (79.5 / 0.90) * (startProg - 1.0));
+      tiTY0 = dir * (-8 + 5 * Math.exp(-(79.5 / 4.5) * (startProg - 1.0)));
     }
     draw2(fi, ti, dir, startProg); /* 1フレームのギャップをなくす */
     var dur;
