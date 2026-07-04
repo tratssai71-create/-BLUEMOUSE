@@ -648,7 +648,7 @@ document.querySelectorAll('.side-loc-tab').forEach(function(btn) {
       fiRX = -20 * tf1; fiRY = 20 * tf1;
       fiRZ = 0;
     } else {
-      var tf2 = Math.min((prog - 0.10) / 0.90, 1);
+      var tf2 = (prog - 0.10) / 0.90;
       fiRX = -20 + 20 * tf2; fiRY = 20 - 20 * tf2;
       fiRZ = 3 * tf2;
     }
