@@ -13,14 +13,18 @@
   function setActive() {
     document.querySelectorAll('.bm-nav__item[data-page]').forEach(function (a) {
       var page = a.getAttribute('data-page');
-      if (
-        (page === 'index'   && isIndex) ||
-        (page === 'contact' && isContact)
-      ) {
+      if (page === 'index' && isIndex) {
         a.classList.add('is-active');
       }
     });
 
+    if (isContact) {
+      var tCon = document.querySelector('.bm-nav__toggle[data-group="contact"]');
+      if (tCon) {
+        var ghCon = tCon.closest('.bm-nav__group-header');
+        (ghCon || tCon).classList.add('is-parent-active');
+      }
+    }
     if (isAfterschool) {
       var t = document.querySelector('.bm-nav__toggle[data-group="afterschool"]');
       if (t) {
@@ -66,7 +70,8 @@
     var startOpen =
       (isAfterschool && groupName === 'afterschool') ||
       (isAfterschool && groupName === 'overview') ||
-      (isChild       && groupName === 'child');
+      (isChild       && groupName === 'child') ||
+      (isContact     && groupName === 'contact');
 
     if (startOpen) {
       group.classList.add('is-open');

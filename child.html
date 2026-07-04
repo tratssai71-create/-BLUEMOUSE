@@ -86,6 +86,8 @@
     .pf-btn--primary:hover .pf-btn__arrow { transform: translateX(5px); }
     .pf-btn--ink { background: transparent; color: var(--pf-ink); border: 1.5px solid rgba(42,29,18,.3); }
     .pf-btn--ink:hover { background: rgba(42,29,18,.06); border-color: var(--pf-ink); transform: translateY(-2px); }
+    .pf-btn--teal { background: var(--pf-teal); color: #fff; box-shadow: 0 6px 18px rgba(95,193,199,.38); }
+    .pf-btn--teal:hover { background: #4aa8ae; transform: scale(1.04); box-shadow: 0 10px 26px rgba(95,193,199,.5); }
 
     /* アニメーション基底 */
     .pf-anim { will-change: opacity, transform; -webkit-backface-visibility: hidden; backface-visibility: hidden; }
@@ -158,7 +160,19 @@
         </ul>
       </div>
       <a href="./recruit.html"     class="bm-nav__item" data-page="recruit">採用情報</a>
-      <a href="./contact.html"     class="bm-nav__item" data-page="contact">お問い合わせ</a>
+      <div class="bm-nav__group">
+        <div class="bm-nav__group-header">
+          <a href="./contact.html" class="bm-nav__group-link" data-page="contact">お問い合わせ</a>
+          <button type="button" class="bm-nav__toggle" data-group="contact" data-target="nav-contact">
+            <span class="bm-nav__arrow">▶</span>
+          </button>
+        </div>
+        <ul class="bm-nav__sub" id="nav-contact">
+          <li><a href="./contact.html" class="bm-nav__subitem" data-group="contact">お問い合わせ</a></li>
+          <li><a href="./contact.html?type=afterschool" class="bm-nav__subitem" data-group="contact">放課後等デイサービス 見学</a></li>
+          <li><a href="./contact.html?type=child" class="bm-nav__subitem" data-group="contact">児童発達支援 見学</a></li>
+        </ul>
+      </div>
     </nav>
     <a class="bm-drawer-sns" href="https://www.instagram.com/blue_mouse_okayama/" target="_blank" rel="noopener" aria-label="Instagram"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2.5" y="2.5" width="19" height="19" rx="5"/><circle cx="12" cy="12" r="4.2"/><circle cx="17.3" cy="6.7" r="1.1" fill="currentColor" stroke="none"/></svg></a>
   </aside>
@@ -242,7 +256,8 @@
       <p class="pf-cta__lead pf-anim">まずは、<br>見学から。</p>
       <p class="pf-cta__sub pf-anim">受給者証の取得からサポートします。お気軽にご相談ください。</p>
       <div class="pf-btns">
-        <a href="./contact.html" class="pf-btn pf-btn--primary pf-anim">見学・相談のお申し込み <span class="pf-btn__arrow">›</span></a>
+        <a href="./contact.html?type=child" class="pf-btn pf-btn--primary pf-anim">児童発達支援 見学・相談 <span class="pf-btn__arrow">›</span></a>
+        <a href="./contact.html?type=afterschool" class="pf-btn pf-btn--teal pf-anim">放課後等デイサービス 見学</a>
         <a href="./philosophy.html" class="pf-btn pf-btn--ink pf-anim">BLUE MOUSEの想いを読む</a>
       </div>
     </section>

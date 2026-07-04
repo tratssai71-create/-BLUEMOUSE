@@ -145,7 +145,19 @@
         </ul>
       </div>
       <a href="./recruit.html"     class="bm-nav__item" data-page="recruit">採用情報</a>
-      <a href="./contact.html"     class="bm-nav__item is-active" data-page="contact">お問い合わせ</a>
+      <div class="bm-nav__group">
+        <div class="bm-nav__group-header">
+          <a href="./contact.html" class="bm-nav__group-link" data-page="contact">お問い合わせ</a>
+          <button type="button" class="bm-nav__toggle" data-group="contact" data-target="nav-contact">
+            <span class="bm-nav__arrow">▶</span>
+          </button>
+        </div>
+        <ul class="bm-nav__sub" id="nav-contact">
+          <li><a href="./contact.html" class="bm-nav__subitem" data-group="contact">お問い合わせ</a></li>
+          <li><a href="./contact.html?type=afterschool" class="bm-nav__subitem" data-group="contact">放課後等デイサービス 見学</a></li>
+          <li><a href="./contact.html?type=child" class="bm-nav__subitem" data-group="contact">児童発達支援 見学</a></li>
+        </ul>
+      </div>
     </nav>
     <a class="bm-drawer-sns" href="https://www.instagram.com/blue_mouse_okayama/" target="_blank" rel="noopener" aria-label="Instagram"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2.5" y="2.5" width="19" height="19" rx="5"/><circle cx="12" cy="12" r="4.2"/><circle cx="17.3" cy="6.7" r="1.1" fill="currentColor" stroke="none"/></svg></a>
   </aside>

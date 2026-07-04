@@ -408,7 +408,19 @@
         </ul>
       </div>
       <a href="./recruit.html"     class="bm-nav__item" data-page="recruit">採用情報</a>
-      <a href="./contact.html"     class="bm-nav__item is-active" data-page="contact">お問い合わせ</a>
+      <div class="bm-nav__group">
+        <div class="bm-nav__group-header">
+          <a href="./contact.html" class="bm-nav__group-link" data-page="contact">お問い合わせ</a>
+          <button type="button" class="bm-nav__toggle" data-group="contact" data-target="nav-contact">
+            <span class="bm-nav__arrow">▶</span>
+          </button>
+        </div>
+        <ul class="bm-nav__sub" id="nav-contact">
+          <li><a href="./contact.html" class="bm-nav__subitem" data-group="contact">お問い合わせ</a></li>
+          <li><a href="./contact.html?type=afterschool" class="bm-nav__subitem" data-group="contact">放課後等デイサービス 見学</a></li>
+          <li><a href="./contact.html?type=child" class="bm-nav__subitem" data-group="contact">児童発達支援 見学</a></li>
+        </ul>
+      </div>
     </nav>
     <a class="bm-drawer-sns" href="https://www.instagram.com/blue_mouse_okayama/" target="_blank" rel="noopener" aria-label="Instagram"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2.5" y="2.5" width="19" height="19" rx="5"/><circle cx="12" cy="12" r="4.2"/><circle cx="17.3" cy="6.7" r="1.1" fill="currentColor" stroke="none"/></svg></a>
   </aside>
@@ -434,8 +446,8 @@
     <!-- コンテンツ（ヒーローの上に重なってスライドアップ） -->
     <div class="ct-content" id="ct-content">
 
-    <!-- フォーム -->
-    <div class="ct-section ct-anim">
+    <!-- フォーム（通常） -->
+    <div class="ct-section ct-anim" id="form-general">
       <h2 class="ct-section-title">お問い合わせフォーム</h2>
       <form class="bm-form" id="contact-form" novalidate>
         <div class="bm-form__row">
@@ -494,6 +506,54 @@
         </div>
         <div class="bm-form__submit">
           <button class="bm-btn bm-btn--primary" id="submit-btn" type="submit" style="font-size:14px; padding:12px 36px;">送信する</button>
+          <p style="margin-top:14px; font-size:12px; color:rgba(51,37,26,.38); font-family:'Zen Kaku Gothic New','Noto Sans JP',sans-serif; line-height:1.9;">送信いただいた情報はお問い合わせへの返信目的にのみ使用します。<br><a href="./privacy.html" style="color:#6aadcc; text-decoration:none;" target="_blank">プライバシーポリシー</a>をご確認の上、送信してください。</p>
+        </div>
+      </form>
+    </div>
+
+    <!-- フォーム（児童発達支援専用・?type=child） -->
+    <div class="ct-section ct-anim" id="form-child" style="display:none;">
+      <h2 class="ct-section-title">児童発達支援 見学・お申し込み</h2>
+      <form class="bm-form" id="child-form" novalidate>
+        <div class="bm-form__row">
+          <div class="bm-form__field">
+            <label class="bm-form__label" for="c-age">お子さまの年齢<span class="bm-form__req">*</span></label>
+            <select class="bm-form__select" id="c-age" name="child_age">
+              <option value="">選択してください</option>
+              <option value="3歳">3歳</option>
+              <option value="4歳">4歳</option>
+              <option value="5歳">5歳</option>
+              <option value="6歳">6歳</option>
+            </select>
+            <span class="bm-form__error" id="cerr-age">年齢を選択してください。</span>
+          </div>
+          <div class="bm-form__field">
+            <label class="bm-form__label" for="c-gender">性別<span class="bm-form__req">*</span></label>
+            <select class="bm-form__select" id="c-gender" name="gender">
+              <option value="">選択してください</option>
+              <option value="男の子">男の子</option>
+              <option value="女の子">女の子</option>
+            </select>
+            <span class="bm-form__error" id="cerr-gender">性別を選択してください。</span>
+          </div>
+          <div class="bm-form__field bm-form__field--full">
+            <label class="bm-form__label" for="c-child-name">お子さまのお名前<span class="bm-form__req">*</span></label>
+            <input class="bm-form__input" id="c-child-name" name="child_name" type="text" placeholder="山田 花子" />
+            <span class="bm-form__error" id="cerr-child-name">お子さまのお名前を入力してください。</span>
+          </div>
+          <div class="bm-form__field">
+            <label class="bm-form__label" for="c-email">メールアドレス<span class="bm-form__req">*</span></label>
+            <input class="bm-form__input" id="c-email" name="email" type="email" placeholder="example@mail.com" autocomplete="email" />
+            <span class="bm-form__error" id="cerr-email">有効なメールアドレスを入力してください。</span>
+          </div>
+          <div class="bm-form__field">
+            <label class="bm-form__label" for="c-tel">電話番号<span class="bm-form__req">*</span></label>
+            <input class="bm-form__input" id="c-tel" name="phone" type="tel" placeholder="000-0000-0000" autocomplete="tel" />
+            <span class="bm-form__error" id="cerr-tel">電話番号を入力してください。</span>
+          </div>
+        </div>
+        <div class="bm-form__submit">
+          <button class="bm-btn bm-btn--primary" id="child-submit-btn" type="submit" style="font-size:14px; padding:12px 36px;">送信する</button>
           <p style="margin-top:14px; font-size:12px; color:rgba(51,37,26,.38); font-family:'Zen Kaku Gothic New','Noto Sans JP',sans-serif; line-height:1.9;">送信いただいた情報はお問い合わせへの返信目的にのみ使用します。<br><a href="./privacy.html" style="color:#6aadcc; text-decoration:none;" target="_blank">プライバシーポリシー</a>をご確認の上、送信してください。</p>
         </div>
       </form>
@@ -743,6 +803,20 @@
   });
 
   /* ================================================================
+     URLパラメータ（?type=child / ?type=afterschool）でフォーム切替
+  ================================================================ */
+  var urlType = new URLSearchParams(window.location.search).get('type');
+  if (urlType === 'child') {
+    document.getElementById('form-general').style.display = 'none';
+    document.getElementById('form-child').style.display = '';
+  } else if (urlType === 'afterschool') {
+    var facilitySelectEl = document.getElementById('facility-select');
+    var typeSelectEl     = document.getElementById('f-type');
+    if (facilitySelectEl) facilitySelectEl.value = 'BLUE MOUSE（放課後等デイサービス）';
+    if (typeSelectEl)     typeSelectEl.value     = '施設見学のご希望';
+  }
+
+  /* ================================================================
      初期化
   ================================================================ */
   setup();
@@ -833,6 +907,72 @@
       alert('送信に失敗しました。時間をおいて再度お試しいただくか、お電話にてお問い合わせください。');
     });
   });
+
+  /* ---- 児童発達支援専用フォーム（?type=child） ---- */
+  var childForm = document.getElementById('child-form');
+  if (childForm) {
+    [['c-age','cerr-age'],['c-gender','cerr-gender'],['c-child-name','cerr-child-name'],
+     ['c-email','cerr-email'],['c-tel','cerr-tel']].forEach(function (pair) {
+      var el = document.getElementById(pair[0]);
+      if (!el) return;
+      ['input','change'].forEach(function (ev) {
+        el.addEventListener(ev, function () { clearError(el, pair[1]); });
+      });
+    });
+
+    childForm.addEventListener('submit', function (e) {
+      e.preventDefault();
+      var ageEl   = document.getElementById('c-age');
+      var genEl   = document.getElementById('c-gender');
+      var cNameEl = document.getElementById('c-child-name');
+      var emailEl = document.getElementById('c-email');
+      var telEl   = document.getElementById('c-tel');
+      var valid   = true;
+
+      if (!ageEl.value)                                       { showError(ageEl,   'cerr-age');        valid = false; } else clearError(ageEl,   'cerr-age');
+      if (!genEl.value)                                       { showError(genEl,   'cerr-gender');     valid = false; } else clearError(genEl,   'cerr-gender');
+      if (!cNameEl.value.trim())                              { showError(cNameEl, 'cerr-child-name'); valid = false; } else clearError(cNameEl, 'cerr-child-name');
+      if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailEl.value)) { showError(emailEl, 'cerr-email');      valid = false; } else clearError(emailEl, 'cerr-email');
+      if (!telEl.value.trim())                                { showError(telEl,   'cerr-tel');        valid = false; } else clearError(telEl,   'cerr-tel');
+
+      if (!valid) {
+        var first = document.querySelector('#child-form .bm-form__input.is-error, #child-form .bm-form__select.is-error');
+        if (first) first.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        return;
+      }
+
+      var cbtn = document.getElementById('child-submit-btn');
+      cbtn.disabled    = true;
+      cbtn.textContent = '送信中…';
+
+      fetch('https://api.web3forms.com/submit', {
+        method:  'POST',
+        headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+        body: JSON.stringify({
+          access_key:   'a29dfa4e-2c38-4961-93dd-9e9b197d0e19',
+          subject:      '【BLUE MOUSE】児童発達支援 見学のお申し込みが届きました',
+          from_name:    'BLUE MOUSE 児童発達支援 専用フォーム',
+          facility:     'LITTLE BLUE MOUSE（児童発達支援事業）',
+          inquiry_type: '施設見学のご希望',
+          child_age:    ageEl.value,
+          gender:       genEl.value,
+          child_name:   cNameEl.value,
+          email:        emailEl.value,
+          phone:        telEl.value
+        })
+      })
+      .then(function (r) { return r.json(); })
+      .then(function (j) {
+        if (j.success) { window.location.href = './thanks.html'; }
+        else           { throw new Error(j.message || 'error'); }
+      })
+      .catch(function () {
+        cbtn.disabled    = false;
+        cbtn.textContent = '送信する';
+        alert('送信に失敗しました。時間をおいて再度お試しいただくか、お電話にてお問い合わせください。');
+      });
+    });
+  }
 })();
 </script>
 </body>
