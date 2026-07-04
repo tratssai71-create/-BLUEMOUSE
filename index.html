@@ -673,7 +673,7 @@ document.querySelectorAll('.side-loc-tab').forEach(function(btn) {
       var tDI = prog - 1.0;
       tiRX = 43 + (3 / 0.90) * tDI; tiRY = -(20 + (5 / 0.90) * tDI);
       tiSX = 0.85; tiSY = 0.85;
-      tiTY = dir * Math.max(-8, -3 - (79.5 / 0.90) * tDI); /* -3→-8vh */
+      tiTY = dir * (-8 + 5 * Math.exp(-(79.5 / 4.5) * tDI)); /* -3→-8vhへ漸近(速度を維持しつつなめらかに減速) */
       tiRZ = 1;
     }
 
