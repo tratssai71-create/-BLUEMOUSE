@@ -60,17 +60,17 @@
       0%      { translate: 0       0; scale: 1;     }
       2.76%   { translate: 0       0; scale: 0.99;  }
       17.96%  { translate: 45vw    0; scale: 0.977; }
-      36.19%  { translate: 96.14vw 0; scale: 0.923; }
+      45.30%  { translate: 96.14vw 0; scale: 0.923; }
       100%    { translate: 180vw   0; scale: 0.85;  }
     }
     @keyframes cardLeaveTilt {
       0%      { transform: perspective(900px) rotateX(0deg)  rotateY(0deg);   }
-      51.47%  { transform: perspective(900px) rotateX(25deg) rotateY(-40deg); }
+      41.42%  { transform: perspective(900px) rotateX(25deg) rotateY(-40deg); }
       100%    { transform: perspective(900px) rotateX(0deg)  rotateY(0deg);   }
     }
     .idx-snap-card.is-leaving {
       animation: cardLeaveSlide 3.62s cubic-bezier(0.83, 0, 0.17, 1) 150ms forwards,
-                 cardLeaveTilt 1.36s cubic-bezier(0.65, 0, 0.35, 1) 100ms forwards;
+                 cardLeaveTilt 1.69s cubic-bezier(0.65, 0, 0.35, 1) 100ms forwards;
       z-index: 20;
     }
     @media (max-width: 780px) {
